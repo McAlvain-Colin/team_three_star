@@ -1,4 +1,4 @@
-# team_three_star: Web Portal for the NevWx Edge-to-Edge System
+# Team Three Star: Web Portal for the NevWx Edge-to-Edge System
 University of Nevada, Reno, Computer Science and Engineering Capstone Project in Software engineering, focusing on Full Stack Web Development
 
 ## Table of Contents
@@ -25,44 +25,44 @@ a tool for research and a catalyst to the expansion of LoRa technology infrastru
 ## Features
 
 Web Portal Functionality
-• User account system
-• Multiple account types
-• Account permissions
-• Reset password via email
-• Device management
-• Add/remove gateways
-• Add/remove sensors
-• Change device permissions
+- User account system
+- Multiple account types
+- Account permissions
+- Reset password via email
+- Device management
+- Add/remove gateways
+- Add/remove sensors
+- Change device permissions
 
 Web Portal Functionality Continued
-• Data exports
-• JSON
-• CSV
-• Plain text
-• Data visualization
-• Lists
-• Charts/graphs
-• Maps
+- Data exports
+- JSON
+- CSV
+- Plain text
+- Data visualization
+- Lists
+- Charts/graphs
+- Maps
 
 Metrics to Visualize/Export
-• Sensor packet readings
-• Air temperature
-• Soil moisture
-• Humidity
-• Sensor packet metadata
-• Sensor battery life
-• Sensor RSSI & SNR
-• Calculated values
-• Median temperature
-• Packet loss
-• Sensor health
+- Sensor packet readings
+- Air temperature
+- Soil moisture
+- Humidity
+- Sensor packet metadata
+- Sensor battery life
+- Sensor RSSI & SNR
+- Calculated values
+- Median temperature
+- Packet loss
+- Sensor health
 
 ## Usage
 
-• Improve the understanding, prediction, and management of natural disasters such as wildfires, earthquakes, and floods
-• Facilitate access to climate data
-• Democratize the climate science network in Nevada
-• Provide open LoRaWAN infrastructure for the general public
+- Improve the understanding, prediction, and management of natural disasters such as wildfires, earthquakes, and floods
+- Facilitate access to climate data
+- Democratize the climate science network in Nevada
+- Provide open LoRaWAN infrastructure for the general public
 
 ## Contributing
 
