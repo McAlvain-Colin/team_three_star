@@ -66,9 +66,9 @@ Metrics to Visualize/Export
 
 ## Contributing
 
-Colin McAlvain
-David Vargas Delgado
-Huy Tran
+- Colin McAlvain | cmcalvain@nevada.unr.edu
+- David Vargas Delgado | TODO
+- Huy Tran | TODO
 
 ## License
 
