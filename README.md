@@ -5,7 +5,8 @@ University of Nevada, Reno, Computer Science and Engineering Capstone Project in
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Tech Stack](#getting-started)
+- [Technology Stack](#getting-started)
+- [System Design](#system-design)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -56,6 +57,12 @@ Metrics to Visualize/Export
 - Median temperature
 - Packet loss
 - Sensor health
+
+## Technology Stack
+- TODO
+
+## System Design
+- TODO
 
 ## Usage
 
