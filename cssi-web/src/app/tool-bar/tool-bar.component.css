@@ -25,6 +25,11 @@ mat-toolbar a {
   text-decoration: none;
 }
 
+.vertical-seperator {
+  /* Adjusts the vertical bars between login credentials to make it align evenly */
+  margin-top: 10px;
+}
+
 /*Basically this removes the side nav bar from the page, and now it'll only be in a menu when the screen is minimized */
 @media (min-width: 1000px) {
   .sidenav {
