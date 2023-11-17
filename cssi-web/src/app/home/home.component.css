@@ -4,6 +4,12 @@
   background-color: darkblue;
 }
 
+.home-text {
+  font-size: x-large;
+  text-align: center;
+  color: aqua;
+}
+
 .clicky-button {
   text-align: center;
 }

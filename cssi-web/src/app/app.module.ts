@@ -13,13 +13,15 @@ import { HomeComponent } from './home/home.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
-  declarations: [AppComponent, SignupComponent, HomeComponent, ForgotPasswordComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
     LoginComponent,
+    SignupComponent,
+    ForgotPasswordComponent,
     ToolBarComponent,
   ],
   providers: [],
