@@ -12,11 +12,12 @@
     <mat-toolbar>Options</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item href="#">Forgot Password</a>
-      <a mat-list-item href="#">Login</a>
+      <a mat-list-item href="/login">Login</a>
       <a mat-list-item href="#">Signup</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
+    <!--Remove the ngIf to keep the icon for the sidenave consistent through all sizes if wanted.-->
     <mat-toolbar color="primary">
       <button
         type="button"
@@ -27,11 +28,11 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>CSSI Home</span>
+      <a href="#">CSSI Home</a>
       <span class="push-links-right"></span>
       <a href="#">Forgot Password</a>
       <p class="vertical-seperator">|</p>
-      <a href="#">Login</a>
+      <a href="/login">Login</a>
       <p class="vertical-seperator">|</p>
       <a href="#">Signup</a>
     </mat-toolbar>
