@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DeviceTableComponent } from './device-table/device-table.component';
 import { MaterialModule } from './material/material.module';
 import { DeviceMapComponent } from './device-map/device-map.component';
+import { ChartService } from './chart.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { DeviceMapComponent } from './device-map/device-map.component';
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [ChartService], // addedd this for som reason
   bootstrap: [AppComponent]
 })
 export class AppModule { }

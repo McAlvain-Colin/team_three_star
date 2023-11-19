@@ -16,6 +16,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -43,6 +44,7 @@ const Materials = [
   MatStepperModule,
   MatTableModule,
   MatFormFieldModule,
+  FormsModule,
   MatInputModule,
   MatSortModule,
   MatPaginatorModule,
