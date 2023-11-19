@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { DeviceElement } from '../app.component';
 
 @Component({
   selector: 'app-device-map',
@@ -6,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./device-map.component.css']
 })
 export class DeviceMapComponent {
+  @Input() Devicelist!: DeviceElement [];
+
+  
 
 }

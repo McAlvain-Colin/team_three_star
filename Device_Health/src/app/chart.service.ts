@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { DeviceElement } from './app.component';
+import { startWith } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,16 +11,17 @@ export class ChartService {
 
   chart!: Chart;
 
-  createChart(): Chart
+  createPktLossChart(device: DeviceElement): Chart
   {
+
     this.chart = new Chart("myChart", 
                     {
                       type: 'line',
                       data: {
-                        labels: ['11/17/23', '11/18/23', '11/19/23', '11/20/23', '11/21/23', '11/22/23', '11/23/23'],
+                        labels: device.time,
                         datasets: [{
                           label: 'packet loss',
-                          data: [1.5, 2, 4, 2, 4, 2,1,2]
+                          data: device.packetLoss
                         }]
                       }
                     });
@@ -32,9 +34,28 @@ export class ChartService {
     this.chart.update();
   }
 
-  updateChartType(chartType: string) 
+  toBarChart(device: DeviceElement)
   {
-    // this.chart = 
+   // this.chart.destroy();
+    this.chart = new Chart("myChart", {
+                            type: 'bar',
+                            data: {
+                              labels: device.time,
+                              datasets: [{
+                                //label: '# of Votes',
+                                data: device.batteryStat,
+                                borderWidth: 1
+                              }]
+                            },
+                            options: {
+                              scales: {
+                                y: {
+                                  beginAtZero: true
+                                }
+                              }
+                            }
+                          });
+   
   }
 
 }
