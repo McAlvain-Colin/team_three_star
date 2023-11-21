@@ -15,9 +15,9 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.css'],
   standalone: true,
   imports: [
     ToolBarComponent,
@@ -32,11 +32,9 @@ import { ToolBarComponent } from '../tool-bar/tool-bar.component';
     NgIf,
   ],
 })
-export class LoginComponent {
+export class ForgotPasswordComponent {
   emailField = new FormControl('', [Validators.required, Validators.email]);
-  hide: boolean = true;
   email: string = '';
-  password: string = '';
 
   //use the `` to allow connections to the variable in the declaration.
   submitForm() {
