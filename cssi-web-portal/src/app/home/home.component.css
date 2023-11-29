@@ -1,0 +1,29 @@
+body {
+    background-color: aliceblue;
+}
+
+/* The vw stands for viewport width and determines how the text will resize based on the parameters of the browser
+For the margin the short hand is top, right, bottom, left.
+When using padding, it helps gives elements a border without moving the container*/
+.home-text {
+    margin: 0px 40px 70px 40px;
+    padding-top: 120px;
+    font-size: 5vw;
+    font-weight: bolder;
+    text-align: center;
+    color: black;
+}
+
+.button-box {
+    margin: auto;
+    width: 150px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    padding: 20px;
+    background-color: beige;
+}
+
+.clicky-button {
+    text-align: center;
+}
