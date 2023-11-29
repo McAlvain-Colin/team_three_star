@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+header {
+    background-color: #333;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header a {
+    color: balck;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+.right-links {
+    margin-left: auto;
+    background-color: white;
+}
+.left-links {
+    background-color: white;
+}
+
+h1{
+    text-align: center;
+}
+
+* {
+    background-color: aliceblue;
+}
