@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router'; 
+import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,7 +9,6 @@ import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
-import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
@@ -29,41 +28,38 @@ import { DeviceStatsComponent } from './device-stats/device-stats.component';
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    AboutComponent, 
-    ContactComponent, 
-    HomeComponent, 
-    SignInComponent,
+    AppComponent,
+    AboutComponent,
+    ContactComponent,
+    HomeComponent,
     ResetPasswordComponent,
     DeviceMapComponent,
     DeviceTableComponent,
     DashboardComponent,
     DeviceDataComponent,
-    DeviceStatsComponent, 
+    DeviceStatsComponent,
   ],
 
   imports: [
     MaterialModule,
-    BrowserModule, 
-    RouterModule, 
-    AppRoutingModule, 
+    BrowserModule,
+    RouterModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
     LoginComponent,
-    SignUpComponent, 
+    SignUpComponent,
     ToolBarComponent,
     MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    ForgottenPasswordComponent,  
+    ForgottenPasswordComponent,
     MaterialModule,
-  ], 
+  ],
 
   providers: [ChartService],
-  
-  bootstrap: [
-    AppComponent
-  ],
+
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

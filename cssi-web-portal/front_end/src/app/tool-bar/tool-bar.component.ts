@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 //Common module is imported for pipes such as async.
 import { CommonModule } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -23,6 +24,7 @@ import { MatListModule } from '@angular/material/list';
     MatIconModule,
     MatListModule,
     CommonModule,
+    RouterModule,
   ],
 })
 export class ToolBarComponent {

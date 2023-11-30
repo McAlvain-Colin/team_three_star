@@ -1,58 +1,59 @@
 <div>
-    <link rel="stylesheet" href="./login.component.css">
-    <body class="main-body">
+  <link rel="stylesheet" href="./login.component.css" />
+  <body class="main-body">
     <mat-card class="login-form">
-        <h1 class="title">Login</h1>
-        <form class="container" (ngSubmit)="submitForm()" #loginForm="ngForm">
+      <h1 class="title">Login</h1>
+      <form class="container" (ngSubmit)="submitForm()" #loginForm="ngForm">
         <mat-form-field color="primary">
-            <mat-label>Email</mat-label>
-            <input
+          <mat-label>Email</mat-label>
+          <input
             matInput
             name="email"
             placeholder="good@example.com"
             [(ngModel)]="email"
             [formControl]="emailField"
             required
-            />
-            <mat-error *ngIf="emailField.invalid">{{
+          />
+          <mat-error *ngIf="emailField.invalid">{{
             getErrorMessage()
-            }}</mat-error>
+          }}</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <!--Password-->
-            <mat-label>Password</mat-label>
-            <input
+          <!--Password-->
+          <mat-label>Password</mat-label>
+          <input
             matInput
             name="password"
             [(ngModel)]="password"
             #passwordInput="ngModel"
             [type]="hide ? 'password' : 'text'"
             required
-            />
-            <button
+          />
+          <button
             mat-icon-button
             matSuffix
             (click)="hide = !hide"
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hide"
-            >
+          >
             <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-            </button>
-            <!--Declared for the password input above, if this field is either wrong or empty after user has selected the input-->
-            <mat-error
+          </button>
+          <!--Declared for the password input above, if this field is either wrong or empty after user has selected the input-->
+          <mat-error
             *ngIf="
-                passwordInput.invalid &&
-                (passwordInput.dirty || passwordInput.touched)
+              passwordInput.invalid &&
+              (passwordInput.dirty || passwordInput.touched)
             "
-            >
+          >
             Password is incorrect or empty</mat-error
-            >
+          >
         </mat-form-field>
         <!--Button will only be valid if all the required forms are filled out-->
         <button mat-raised-button color="accent" [disabled]="loginForm.invalid">
-            Login
+          Login
         </button>
-        </form>
+      </form>
     </mat-card>
-    </body>
-</div>>
+  </body>
+</div>
+>
