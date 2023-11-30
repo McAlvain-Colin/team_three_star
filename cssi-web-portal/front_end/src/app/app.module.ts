@@ -32,7 +32,6 @@ import { DeviceStatsComponent } from './device-stats/device-stats.component';
     AboutComponent,
     ContactComponent,
     HomeComponent,
-    ResetPasswordComponent,
     DeviceMapComponent,
     DeviceTableComponent,
     DashboardComponent,
@@ -55,6 +54,7 @@ import { DeviceStatsComponent } from './device-stats/device-stats.component';
     MatIconModule,
     MatListModule,
     ForgottenPasswordComponent,
+    ResetPasswordComponent,
     MaterialModule,
   ],
 
