@@ -41,6 +41,11 @@ export class ResetPasswordComponent {
   //use the `` to allow connections to the variable in the declaration.
   submitForm() {
     var message: string = `Password submitted`;
-    alert(message);
+    if (this.password === this.repeatPassword) {
+      message = "Password doesn't match";
+      alert(message);
+    } else {
+      alert(message);
+    }
   }
 }

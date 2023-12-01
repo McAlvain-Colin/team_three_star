@@ -53,10 +53,14 @@
           mat-raised-button
           color="accent"
           (ngSubmit)="submitForm()"
-          [disabled]="loginForm.invalid"
+          [disabled]="loginForm.invalid || emailField.invalid"
         >
           Login
         </button>
+        <a class="forgot-link" routerLink="/forgotten-password"
+          >Forgot Password?</a
+        >
+        <router-outlet></router-outlet>
       </form>
     </mat-card>
   </body>
