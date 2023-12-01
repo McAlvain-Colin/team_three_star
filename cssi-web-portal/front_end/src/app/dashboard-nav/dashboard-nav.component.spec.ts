@@ -14,16 +14,16 @@ describe('DashboardNavComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [DashboardNavComponent],
-      imports: [
+    imports: [
         NoopAnimationsModule,
         MatButtonModule,
         MatIconModule,
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
-      ]
-    }).compileComponents();
+        DashboardNavComponent,
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {

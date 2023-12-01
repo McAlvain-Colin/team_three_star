@@ -1,47 +1,4 @@
-<!--This is the side nave container, and it wraps everything because otherwaise the side bar wouldn't be able to pop out over page-->
-<div>
-  <mat-sidenav-container class="sidenav-container">
-    <!-- Can add ngclass that defines a hidden which only shows the hamburger side nav if the user is on handheld mode, mode makes the side bar either push or appear over main page -->
-    <mat-sidenav
-      #drawer
-      class="sidenav"
-      fixedInViewport="false"
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="'over'"
-      [opened]="false"
-    >
-      <mat-toolbar>Organizations</mat-toolbar>
-      <button mat-raised-button color="accent">Add</button>
-      <button mat-raised-button color="warn">Remove</button>
-      <mat-nav-list>
-        <a mat-list-item href="#">Organization 1</a>
-        <a mat-list-item href="#">Organization 2</a>
-        <a mat-list-item href="#">Organization 3</a>
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <mat-toolbar color="primary">
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()"
-        >
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-        <div class="push-links-left">
-          <p>Organization Home</p>
-        </div>
-        <div class="push-links-right">
-          <p>Hello,</p>
-          <a href="#">User Name</a>
-        </div>
-      </mat-toolbar>
-      <!-- Add Content Here, ng-content is used for angular content projection so we can add stuff in tool-bar wrapper in app html -->
-      <ng-content></ng-content>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-
+<app-dashboard-nav>
   <div>
     <app-device-data [Devicelist]="dataSource"></app-device-data>
     <mat-divider></mat-divider>
@@ -57,4 +14,4 @@
   <div>
     <app-device-map [Devicelist]="dataSource"></app-device-map>
   </div>
-</div>
+</app-dashboard-nav>

@@ -8,8 +8,8 @@ describe('DeviceMapComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DeviceMapComponent]
-    });
+    imports: [DeviceMapComponent]
+});
     fixture = TestBed.createComponent(DeviceMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

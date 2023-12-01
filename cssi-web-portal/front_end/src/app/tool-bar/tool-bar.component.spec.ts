@@ -14,16 +14,16 @@ describe('ToolBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ToolBarComponent],
-      imports: [
+    imports: [
         NoopAnimationsModule,
         MatButtonModule,
         MatIconModule,
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
-      ]
-    }).compileComponents();
+        ToolBarComponent,
+    ]
+}).compileComponents();
   }));
 
   beforeEach(() => {
