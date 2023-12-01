@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
+import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 
 @Component({
   selector: 'app-forgot-password',
@@ -29,6 +30,7 @@ import { ToolBarComponent } from '../tool-bar/tool-bar.component';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    TempNavBarComponent,
     NgIf,
   ],
 })

@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="contact.component.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About</title>
-</head>
-<body>
-    <div>
+  <app-dashboard-nav>
+    <head>
+      <link rel="stylesheet" href="contact.component.css" />
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>About</title>
+    </head>
+    <body>
+      <div>
         <mat-card>
-            <mat-card-title>Organization Name</mat-card-title>
-            <mat-card-header>Organization Bio:</mat-card-header>
-            <mat-card-content>
-                <table>
-                    <form>
-                        <ng-container matColumnDef="Name">
-                            <th mat-header-cell *matHeaderCellDef> Name </th>
-                        </ng-container>
-                    </form>
-                </table>
-            </mat-card-content>
+          <mat-card-title>Organization Name</mat-card-title>
+          <mat-card-header>Organization Bio:</mat-card-header>
+          <mat-card-content>
+            <table>
+              <form>
+                <ng-container matColumnDef="Name">
+                  <th mat-header-cell *matHeaderCellDef>Name</th>
+                </ng-container>
+              </form>
+            </table>
+          </mat-card-content>
         </mat-card>
-    </div>
-    
-    
-</body>
+      </div>
+    </body>
+    <app-temp-nav-bar></app-temp-nav-bar>
+  </app-dashboard-nav>
 </html>

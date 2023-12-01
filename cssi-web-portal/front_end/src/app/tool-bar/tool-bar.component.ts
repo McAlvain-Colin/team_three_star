@@ -13,7 +13,7 @@ import { MatListModule } from '@angular/material/list';
 
 @Component({
   //Altered selector for easier selection in html
-  selector: 'tool-bar',
+  selector: 'app-tool-bar',
   templateUrl: './tool-bar.component.html',
   styleUrls: ['./tool-bar.component.css'],
   standalone: true,

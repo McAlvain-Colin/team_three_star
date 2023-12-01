@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { RouterModule } from '@angular/router';
+import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +31,7 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    TempNavBarComponent,
     RouterModule,
     NgIf,
   ],

@@ -8,6 +8,7 @@ import { DeviceStatsComponent } from '../device-stats/device-stats.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { DeviceDataComponent } from '../device-data/device-data.component';
 import { DashboardNavComponent } from '../dashboard-nav/dashboard-nav.component';
+import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 
 export interface DeviceElement {
   endDeviceId: number;
@@ -33,6 +34,7 @@ const ELEMENT_DATA: DeviceElement[] = [
     DeviceStatsComponent,
     DeviceTableComponent,
     DeviceMapComponent,
+    TempNavBarComponent,
   ],
 })
 export class DashboardComponent {
