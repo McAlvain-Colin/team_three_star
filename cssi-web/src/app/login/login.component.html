@@ -21,19 +21,6 @@
             getErrorMessage()
           }}</mat-error>
         </mat-form-field>
-        <mat-form-field color="primary">
-          <mat-label>Name</mat-label>
-          <input
-            matInput
-            name="name"
-            placeholder="John Joestar"
-            [(ngModel)]="name"
-            #nameInput="ngModel"
-            required
-          />
-          <!--Only invalid if left empty, and has been clicked into-->
-          <mat-error *ngIf="nameInput.invalid && nameInput.touched"></mat-error>
-        </mat-form-field>
         <mat-form-field>
           <!--Password-->
           <mat-label>Password</mat-label>

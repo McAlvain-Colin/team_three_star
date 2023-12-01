@@ -35,7 +35,6 @@ import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 export class LoginComponent {
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
-  name: string = '';
   email: string = '';
   password: string = '';
 
