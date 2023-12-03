@@ -11,22 +11,22 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    selector: 'app-device-stats',
-    templateUrl: './device-stats.component.html',
-    styleUrls: ['./device-stats.component.css'],
-    providers: [ChartService],
-    standalone: true,
-    imports: [
-        MatCardModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTableModule,
-        MatButtonModule,
-        NgIf,
-        MatProgressSpinnerModule,
-        PercentPipe,
-    ],
+  selector: 'app-device-stats',
+  templateUrl: './device-stats.component.html',
+  styleUrls: ['./device-stats.component.css'],
+  providers: [ChartService],
+  standalone: true,
+  imports: [
+    MatCardModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatButtonModule,
+    NgIf,
+    MatProgressSpinnerModule,
+    PercentPipe,
+  ],
 })
 export class DeviceStatsComponent implements OnInit {
   @Input() Devicelist!: DeviceElement[];

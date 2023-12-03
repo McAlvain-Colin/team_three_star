@@ -22,6 +22,7 @@ export interface DeviceElement {
 const ELEMENT_DATA: DeviceElement[] = [
   // Your data
 ];
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
