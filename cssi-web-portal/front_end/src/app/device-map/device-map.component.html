@@ -17,8 +17,10 @@
 
                     <tr mat-header-row *matHeaderRowDef="['endDeviceId', 'appId']"></tr>
                     
-                    <tr mat-row mat-ripple [matRippleCentered]="true" [matRippleUnbounded]="false" 
-                    [matRippleRadius]="30" *matRowDef="let row; columns: ['endDeviceId', 'appId'];"></tr>
+                    <tr mat-row matRipple [matRippleCentered]="false"
+                    [matRippleDisabled]="false"
+                    [matRippleUnbounded]="false"
+                   *matRowDef="let row; columns: ['endDeviceId', 'appId'];"></tr>
                 </table>
             </div>
     

@@ -37,20 +37,20 @@ export class DeviceStatsComponent implements OnInit {
   constructor(private chart: ChartService) {}
 
   ngOnInit(): void {
-    this.chart.createPktLossChart(this.Devicelist[0]);
+   // this.chart.createPktLossChart(this.Devicelist[0]);
   }
 
   viewDeviceHealth(row: DeviceElement) {
     this.tempDevice = row;
-    this.chart.updateChartData(row);
+    //this.chart.updateChartData(row);
   }
 
   viewDevicePktloss() {
-    this.chart.updateChartData(this.tempDevice);
+   // this.chart.updateChartData(this.tempDevice);
   }
 
   viewDeviceBattery() {
-    this.chart.toBarChart(this.tempDevice);
+    //this.chart.toBarChart(this.tempDevice);
   }
   loadSpinner() {
     this.showSpinner = true;
