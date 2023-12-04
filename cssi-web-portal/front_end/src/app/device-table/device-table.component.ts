@@ -33,29 +33,46 @@ export class DeviceTableComponent implements OnInit {
 
   showSpinner: boolean = false;
   tempDevice!: DeviceElement;
+  typeOfChart!: string;
 
   constructor(private chart: ChartService) {}
 
-  ngOnInit(): void {
-    this.chart.createPktLossChart(this.Devicelist[0]);
-  }
+  ngOnInit(): void 
+  {
+    //ensuring that the device sent as a parameter is not undefined at initialization
+    this.tempDevice = this.Devicelist[0];
+    this.typeOfChart = 'packetLoss'
 
-  viewDeviceHealth(row: DeviceElement) {
+    console.log('oninit is called');
+    this.chart.createInitLineChart(this.Devicelist[0]);
+    
+  }
+  
+  //when a row in a table is clicked, this function will be called, updating the data on chart
+  viewDeviceHealth(row: DeviceElement)
+  {
+    console.log('inside of viewDeviceHealth');
+    console.log(row);
     this.tempDevice = row;
-    this.chart.updateChartData(row);
+    this.chart.updateChartData(row, this.typeOfChart);
   }
 
-  viewDevicePktloss() {
-    this.chart.updateChartData(this.tempDevice);
+  viewDevicePktloss()
+  {
+    this.typeOfChart = 'packetLoss';
+    //this.chart.updateChartData(this.tempDevice, this.typeOfChart);
+    this.chart.createLineChart(this.tempDevice);
   }
 
-  viewDeviceBattery() {
-    this.chart.toBarChart(this.tempDevice);
+  viewDeviceBattery()
+  {
+    this.chart.createBarChart(this.tempDevice);
+    this.typeOfChart = 'batteryStat';
+
   }
   loadSpinner() {
     this.showSpinner = true;
-    setTimeout(() => {
-      this.showSpinner = false;
-    }, 250);
+    setTimeout(() =>{this.showSpinner = false}, 250)
   }
+
 }

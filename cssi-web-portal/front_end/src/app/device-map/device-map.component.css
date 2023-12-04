@@ -4,6 +4,11 @@
     grid-gap: 20px;
 }
 
+.grid-child {   
+    width: 99%;
+    height: 99%;
+}
+
 mat-card {
     margin: 15px;
     padding: 15px;
