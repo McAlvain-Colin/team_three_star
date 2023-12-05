@@ -26,6 +26,7 @@ import { ChartService } from './chart.service';
 import { DeviceDataComponent } from './device-data/device-data.component';
 import { DeviceStatsComponent } from './device-stats/device-stats.component';
 import { TempNavBarComponent } from './temp-nav-bar/temp-nav-bar.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [AppComponent],
@@ -55,6 +56,7 @@ import { TempNavBarComponent } from './temp-nav-bar/temp-nav-bar.component';
     DashboardComponent,
     DeviceDataComponent,
     DeviceStatsComponent,
+    
   ],
   providers: [ChartService],
   bootstrap: [AppComponent],
