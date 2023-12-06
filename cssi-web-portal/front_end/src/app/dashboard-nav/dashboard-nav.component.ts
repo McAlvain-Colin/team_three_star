@@ -8,7 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard-nav',
@@ -19,14 +21,17 @@ import { RouterModule } from '@angular/router';
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
+    MatSlideToggleModule,
     MatIconModule,
     MatListModule,
+    FormsModule,
     RouterModule,
     CommonModule,
   ],
 })
 export class DashboardNavComponent {
   private breakpointObserver = inject(BreakpointObserver);
+  darkMode: boolean = false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)

@@ -1,5 +1,8 @@
 <!--This is the side nave container, and it wraps everything because otherwaise the side bar wouldn't be able to pop out over page-->
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container
+  class="sidenav-container"
+  [ngClass]="{ 'dark-theme': darkMode }"
+>
   <!-- Can add ngclass that defines a hidden which only shows the hamburger side nav if the user is on handheld mode, mode makes the side bar either push or appear over main page -->
   <mat-sidenav
     #drawer
@@ -29,6 +32,12 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <p>Organization Home</p>
+      <mat-slide-toggle
+        color="primary"
+        class="theme-slider"
+        aria-label="Dark mode"
+        [(ngModel)]="darkMode"
+      ></mat-slide-toggle>
       <span class="push-links-right"></span>
       <p>Hello,</p>
       <a routerLink="/">UserName</a>

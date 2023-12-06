@@ -9,12 +9,16 @@
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 10;
 }
 
 .push-links-right {
   /* The three values are grow, shrink, and basis, the span will grow or shrink to fill the container, in this case the toolbar */
   flex: 1 1 auto;
+}
+
+.theme-slider {
+  margin-left: 10px;
 }
 
 /* Selects the toolbar material, and assigns the CSS to all the links within it */
