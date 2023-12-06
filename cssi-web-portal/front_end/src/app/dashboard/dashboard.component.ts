@@ -17,7 +17,11 @@ export interface DeviceElement {
   gatewayId: string,
   time: string[],
   batteryStat: number[],
-  location: number[]
+  endDeviceLocation: number[],
+  gatewayLocation: number[],
+  RSSI: {x: number, y: number}[],
+  SNR: number[]
+  distance: number[]
 }
 
 const ELEMENT_DATA: DeviceElement[] = [
@@ -28,7 +32,26 @@ const ELEMENT_DATA: DeviceElement[] = [
     gatewayId: 'gtw1',
     time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'],
     batteryStat: [3, 2, 1],
-    location: [39.24, -119.92]
+    endDeviceLocation: [39.24, -119.92],
+    gatewayLocation: [39.27, -119.95],
+    RSSI: [
+      {x: 100, y: 88},
+      {x: 101, y: 88},
+      {x: 102, y: 89},
+      {x: 104, y: 89},
+      {x: 103, y: 89},
+      {x: 104, y: 89},
+      {x: 105, y: 90},
+      {x: 106, y: 91},
+      {x: 107, y: 92},
+      {x: 108, y: 94},
+      {x: 109, y: 95},
+      {x: 110, y: 97},
+      {x: 111, y: 100}
+    ],
+    SNR: [20, 15, 13],
+    distance: [100, 150, 200]
+    
   },
   {
     endDeviceId: 120,
@@ -37,8 +60,27 @@ const ELEMENT_DATA: DeviceElement[] = [
     gatewayId: 'gtw3',
     time: ['11/16/23 10:05', '11/18/23 01:15', '11/19/23 04:15'],
     batteryStat: [3, 2.5, 1], 
-    location: [39.218423, -120.121765]
+    endDeviceLocation: [39.218423, -120.121765],
+    gatewayLocation: [39.22, -120.14],
+    RSSI: [
+      {x: 100, y: 88},
+      {x: 101, y: 88},
+      {x: 102, y: 89},
+      {x: 104, y: 89},
+      {x: 103, y: 89},
+      {x: 104, y: 89},
+      {x: 105, y: 90},
+      {x: 106, y: 91},
+      {x: 107, y: 92},
+      {x: 108, y: 94},
+      {x: 109, y: 95},
+      {x: 110, y: 97},
+      {x: 111, y: 110}
+    ],
+    SNR: [20, 16, 12],
+    distance: [100, 150, 200]
   },
+  
   {
     endDeviceId: 143,
     appId: 464,
@@ -46,7 +88,25 @@ const ELEMENT_DATA: DeviceElement[] = [
     gatewayId: 'gtw2',
     time: ['11/15/23 10:05', '11/18/23 11:15', '11/19/23 04:15'],
     batteryStat: [4, 2, 1.5],
-    location: [39.257778, -120.051727]
+    endDeviceLocation: [39.257778, -120.051727],
+    gatewayLocation: [39.29, -119.99],
+    RSSI: [
+      {x: 100, y: 88},
+      {x: 101, y: 88},
+      {x: 102, y: 89},
+      {x: 104, y: 89},
+      {x: 103, y: 89},
+      {x: 104, y: 89},
+      {x: 105, y: 90},
+      {x: 106, y: 80},
+      {x: 107, y: 92},
+      {x: 108, y: 94},
+      {x: 109, y: 95},
+      {x: 110, y: 97},
+      {x: 111, y: 120}
+    ],
+    SNR: [21, 13, 15],
+    distance: [100, 150, 200]
   },
 ];
 
