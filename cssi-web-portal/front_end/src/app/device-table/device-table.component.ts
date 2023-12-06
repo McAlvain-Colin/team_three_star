@@ -16,7 +16,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-device-table',
   templateUrl: './device-table.component.html',
   styleUrls: ['./device-table.component.css'],
-  providers: [ChartService],
+  providers: [],
   standalone: true,
   imports: [
     MatCardModule,

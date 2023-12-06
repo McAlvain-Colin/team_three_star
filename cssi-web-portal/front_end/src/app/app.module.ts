@@ -30,38 +30,41 @@ import { DataStatsService } from 'src/charts/data-stats.service';
 import { DatePicker } from './date-picker/date-picker.component';
 import { OrganizationPageComponent } from './organization-page/organization-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
+import { DeviceDataComponent } from './device-data/device-data.component';
 
 @NgModule({
   declarations: [
     AppComponent, 
+    OrganizationPageComponent,
+    UserPageComponent,
+  ],
+  imports: [
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    BrowserModule,
+    RouterModule,
+    BrowserAnimationsModule,
+    LeafletModule,
     AboutComponent, 
     ContactComponent, 
     HomeComponent, 
-    SignInComponent,
     ResetPasswordComponent,
     DeviceMapComponent,
     DeviceTableComponent,
     DashboardComponent,
     DeviceDataComponent,
     DeviceStatsComponent,
-    OrganizationPageComponent,
-    UserPageComponent,
     MaterialModule,
-    BrowserModule,
-    RouterModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
     LoginComponent,
     SignUpComponent,
     ToolBarComponent,
-    MatButtonModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
     ForgottenPasswordComponent,
     TempNavBarComponent,
-    LeafletModule,
     DatePicker,
   ],
   providers: [ChartService, 
@@ -69,5 +72,6 @@ import { UserPageComponent } from './user-page/user-page.component';
               DataStatsService
             ],
   bootstrap: [AppComponent],
+  
 })
 export class AppModule {}
