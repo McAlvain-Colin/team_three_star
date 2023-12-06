@@ -12,7 +12,6 @@ export class ChartService {
   chart!: Chart;
   chartLabels!: string[];
   chartData!: number[];
-
   createPktLossChart(device: DeviceElement): Chart {
     this.chart = new Chart('myChart', {
       type: 'line',
