@@ -33,6 +33,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class DashboardNavComponent {
   private breakpointObserver = inject(BreakpointObserver);
+  darkMode: boolean = false;
 
   //Huy's attempt to make a global variable with the Input module from Angular to maintain the theme outside of the webpage.
   @Input() darkMode: boolean = false;
