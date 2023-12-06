@@ -40,6 +40,43 @@ const ELEMENT_DATA: DeviceElement[] = [
   },
 ];
 
+export interface DeviceData {
+  endDeviceId: number;
+  appId: number;
+  DataName: string;
+  DataValue: number[];
+  time: string[];
+  Unit: string;
+}
+
+const DATA: DeviceData[] = [
+  {
+    endDeviceId: 123,
+    appId: 456,
+    DataName: 'Tahoe North Shore Temperature',
+    DataValue: [1.5, 2, 4],
+    time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'],
+    Unit: 'Celcius',
+  },
+  {
+    endDeviceId: 5,
+    appId: 456,
+    DataName: 'Tahoe South Shore Temperature',
+    DataValue: [5.6, 4, 8],
+    time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'],
+    Unit: 'Celcius',
+  },
+  {
+    endDeviceId: 63,
+    appId: 15,
+    DataName: 'Mt. Rose Humidity',
+    DataValue: [25, 16, 42],
+    time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'],
+    Unit: 'H2O ppm',
+  },
+];
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -55,4 +92,5 @@ export class AppComponent {
   title = 'cssi_web_portal';
 
   dataSource: DeviceElement[] = ELEMENT_DATA;
+  data: DeviceData[] = DATA
 }
