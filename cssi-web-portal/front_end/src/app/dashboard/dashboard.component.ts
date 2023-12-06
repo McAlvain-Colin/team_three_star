@@ -1,14 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject  } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { DeviceMapComponent } from '../device-map/device-map.component';
 import { DeviceTableComponent } from '../device-table/device-table.component';
 import { DeviceStatsComponent } from '../device-stats/device-stats.component';
-import { MatDividerModule } from '@angular/material/divider';
 import { DeviceDataComponent } from '../device-data/device-data.component';
 import { DashboardNavComponent } from '../dashboard-nav/dashboard-nav.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 export interface DeviceElement {
   endDeviceId: number,
@@ -110,23 +110,42 @@ const ELEMENT_DATA: DeviceElement[] = [
   },
 ];
 
+
+export interface DeviceData {
+  endDeviceId: number,
+  appId: number,
+  DataName: string,
+  DataValue: number[],
+  time: string[]
+  Unit: string
+};
+
+const DATA: DeviceData[] = 
+[
+  {endDeviceId: 123, appId: 456, DataName: 'Tahoe Temp Sensor North Shore', DataValue: [32, 30, 29],  time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'], Unit: 'Celcius'},
+  {endDeviceId: 120, appId: 431, DataName: 'Tahoe Temp Sensor South Shore', DataValue: [30, 28, 31], time: ['11/16/23 10:05', '11/18/23 01:15', '11/19/23 04:15'], Unit: 'Celcius' },
+  {endDeviceId: 143, appId: 464, DataName: 'Mt. Rose Humidity Sensor', DataValue: [65, 85, 100], time: ['11/15/23 10:05', '11/18/23 11:15', '11/19/23 04:15'], Unit: 'Percent' }
+];
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   standalone: true,
-  imports: [
-    DashboardNavComponent,
-    DeviceDataComponent,
-    MatDividerModule,
-    DeviceStatsComponent,
-    DeviceTableComponent,
-    DeviceMapComponent,
-    TempNavBarComponent,
-  ],
+  imports: [DashboardNavComponent,
+            DeviceDataComponent,
+            DeviceStatsComponent,
+            DeviceTableComponent,
+            DeviceMapComponent,
+            TempNavBarComponent,
+            MatDividerModule]
 })
 export class DashboardComponent {
   private breakpointObserver = inject(BreakpointObserver);
+
+  constructor(breakpointObserver: BreakpointObserver) {
+    this.breakpointObserver = breakpointObserver;
+  }
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -136,4 +155,5 @@ export class DashboardComponent {
     );
 
   dataSource: DeviceElement[] = ELEMENT_DATA;
+  data_input: DeviceData[] = DATA;
 }

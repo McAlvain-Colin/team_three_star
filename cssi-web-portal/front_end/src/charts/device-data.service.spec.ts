@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DeviceDataService } from './device-data.service';
 
+
 describe('DeviceDataService', () => {
   let service: DeviceDataService;
 
