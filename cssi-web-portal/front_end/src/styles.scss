@@ -1,5 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
-/* Default light theme that our website uses */
+// /* You can add global styles to this file, and also import other style files */
+// /* Default light theme that our website uses */
 @import "@angular/material/theming";
 
 @include mat-core();
@@ -30,6 +30,46 @@ $dark-theme: mat-dark-theme(
 .dark-theme {
   @include angular-material-theme($dark-theme);
 }
+
+// Example
+// @use "@angular/material" as mat;
+
+// @include mat.core();
+
+// // Define a light theme
+// $light-theme: mat.define-light-theme(
+//   (
+//     color: (
+//       primary: mat.define-palette(mat.$indigo-palette),
+//       accent: mat.define-palette(mat.$pink-palette),
+//     ),
+//     // Only include `typography` and `density` in the default light theme.
+//     typography: mat.define-typography-config(),
+//     density: 0,
+//   )
+// );
+
+// // Define a dark theme
+// $dark-theme: mat.define-dark-theme(
+//   (
+//     color: (
+//       primary: mat.define-palette(mat.$grey-palette),
+//       accent: mat.define-palette(mat.$blue-grey-palette),
+//     ),
+//   )
+// );
+
+// // Apply the dark theme by default
+// @include mat.core-theme($light-theme);
+// @include mat.button-theme($light-theme);
+
+// // Apply the light theme only when the user prefers light themes.
+// @media (prefers-color-scheme: dark) {
+//   // Use the `-color` mixins to only apply color styles without reapplying the same
+//   // typography and density styles.
+//   @include mat.core-color($dark-theme);
+//   @include mat.button-color($dark-theme);
+// }
 
 html,
 body {

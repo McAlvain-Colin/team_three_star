@@ -43,6 +43,7 @@ const ELEMENT_DATA: DeviceElement[] = [
 })
 export class AppComponent {
   title = 'cssi_web_portal';
+  isDarkMode: boolean = false;
 
   dataSource: DeviceElement[] = ELEMENT_DATA;
 }

@@ -9,7 +9,6 @@ import { ForgottenPasswordComponent } from './forgotten-password/forgotten-passw
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { LoginComponent } from './login/login.component';
-// import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
