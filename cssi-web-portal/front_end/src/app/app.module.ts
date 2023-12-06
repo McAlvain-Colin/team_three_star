@@ -26,9 +26,23 @@ import { DeviceDataComponent } from './device-data/device-data.component';
 import { DeviceStatsComponent } from './device-stats/device-stats.component';
 import { TempNavBarComponent } from './temp-nav-bar/temp-nav-bar.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+imort { sign}
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent, 
+    AboutComponent, 
+    ContactComponent, 
+    HomeComponent, 
+    SignInComponent,
+    ResetPasswordComponent,
+    DeviceMapComponent,
+    DeviceTableComponent,
+    DashboardComponent,
+    DeviceDataComponent,
+    DeviceStatsComponent,
+  ],
+
   imports: [
     MaterialModule,
     BrowserModule,
