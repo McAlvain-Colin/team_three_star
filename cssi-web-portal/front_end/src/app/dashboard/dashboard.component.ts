@@ -10,6 +10,11 @@ import { DashboardNavComponent } from '../dashboard-nav/dashboard-nav.component'
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatDividerModule } from '@angular/material/divider';
 
+const time: string[] = ['1/15/23 10:05', '2/15/23 12:15', '3/15/23 04:15',
+                        '4/15/23 10:05', '5/15/23 12:15', '6/15/23 04:15',
+                        '7/15/23 10:05', '8/15/23 12:15', '9/15/23 04:15',
+                        '10/15/23 10:05', '11/15/23 12:15', '12/15/23 04:15']
+
 export interface DeviceElement {
   endDeviceId: number,
   appId: number,
@@ -122,10 +127,51 @@ export interface DeviceData {
 
 const DATA: DeviceData[] = 
 [
-  {endDeviceId: 123, appId: 456, DataName: 'Tahoe Temp Sensor North Shore', DataValue: [32, 30, 29],  time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'], Unit: 'Celcius'},
-  {endDeviceId: 120, appId: 431, DataName: 'Tahoe Temp Sensor South Shore', DataValue: [30, 28, 31], time: ['11/16/23 10:05', '11/18/23 01:15', '11/19/23 04:15'], Unit: 'Celcius' },
-  {endDeviceId: 143, appId: 464, DataName: 'Mt. Rose Humidity Sensor', DataValue: [65, 85, 100], time: ['11/15/23 10:05', '11/18/23 11:15', '11/19/23 04:15'], Unit: 'Percent' }
+  {endDeviceId: 123, appId: 456, DataName: 'Tahoe Temp Sensor North Shore', DataValue: [32, 30, 29, 30, 28, 31, 30, 29, 30, 28, 31, 30],  time, Unit: 'Celcius'},
+  {endDeviceId: 120, appId: 431, DataName: 'Tahoe Temp Sensor South Shore', DataValue: [30, 28, 31, 29, 30, 28, 30, 29, 30, 30, 28, 31], time, Unit: 'Celcius' },
+  {endDeviceId: 143, appId: 464, DataName: 'Mt. Rose Humidity Sensor', DataValue: [65, 85, 100, 98, 87, 96, 85, 100, 98, 87, 96, 85], time, Unit: 'Percent' }
 ];
+
+export interface DataStats {
+  endDeviceId: number;
+  appId: number;
+  DataName: string;
+  mean: number[];
+  variance: number[];
+  standardDeviation: number[];
+  time: string[];
+}
+
+const STATISTIC_DATA: DataStats[] = [
+  {
+    endDeviceId: 123,
+    appId: 456,
+    DataName: 'Tahoe North Shore Temperature',
+    mean: [10, 9, 11, 8, 6, 7, 9, 11, 11, 8, 6, 7],
+    variance: [5, 3, 8, 6, 7, 9, 3, 8, 6, 3, 8, 2],
+    standardDeviation: [2, 3, 1, 3, 1, 2, 3, 1, 3, 4, 2, 5],
+    time,
+  },
+  {
+    endDeviceId: 5,
+    appId: 456,
+    DataName: 'Tahoe South Shore Temperature',
+    mean: [20, 18, 24, 11, 8, 6, 7, 9, 11, 11, 8, 15],
+    variance: [4, 6, 2, 6, 7, 3, 1, 3, 4, 3, 8, 2, 6, 7],
+    standardDeviation: [5, 3, 4, 6, 2, 6, 7, 11, 8, 15],
+    time,
+  },
+  {
+    endDeviceId: 63,
+    appId: 15,
+    DataName: 'Mt. Rose Humidity',
+    mean: [31, 30, 26, 29, 35, 24, 23, 28, 37, 29, 35, 24],
+    variance: [6, 8, 4, 7, 3, 1, 3, 4, 5, 3, 4, 6],
+    standardDeviation: [1, 3, 1, 3, 1, 3, 4, 5, 5, 3, 4, 6],
+    time,
+  },
+];
+
 
 @Component({
   selector: 'app-dashboard',
@@ -156,4 +202,5 @@ export class DashboardComponent {
 
   dataSource: DeviceElement[] = ELEMENT_DATA;
   data_input: DeviceData[] = DATA;
+  stats_data: DataStats[] = STATISTIC_DATA;
 }
