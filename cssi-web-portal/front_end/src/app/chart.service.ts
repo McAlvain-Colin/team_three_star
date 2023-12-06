@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { DeviceElement } from './app.component';
 import { startWith } from 'rxjs';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChartService {
-
-  constructor() { }
+  constructor() {}
 
   chart!: Chart;
   chartLabels!: string[];
