@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DeviceElement } from '../app.component';
+import { DeviceElement } from '../dashboard/dashboard.component';
 import { ChartService } from '../chart.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgIf, PercentPipe } from '@angular/common';

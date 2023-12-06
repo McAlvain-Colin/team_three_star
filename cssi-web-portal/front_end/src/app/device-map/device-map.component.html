@@ -27,10 +27,15 @@
             </div>
     
             <div class="grid-child" id='map' style="height: 200px; border-radius: 5%;"></div>
-
-            <!-- <div class="grid-child" class="map" >
-                <img class="mat-elevation-z4" src="../../assets/lakeTahoeMap.jpg" alt="Lake Tahoe Sample Image">
-            </div> -->
         </div>
     </mat-card-content>
+
+    <mat-card-actions>
+        <div class="button-container">
+            <button mat-raised-button (click)="addMarkers()">Devices</button>
+            <button mat-raised-button (click)="showGatewayRanges()">Gateways</button>
+            
+            <button mat-raised-button (click)="showDevicesAndGateways()">Device and Gateways</button>
+        </div>
+    </mat-card-actions>
 </mat-card>
