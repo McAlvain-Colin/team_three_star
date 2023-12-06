@@ -485,6 +485,7 @@ const DATA: DeviceData[] = [
     time,
     Unit: 'Celcius',
   },
+  
   {
     endDeviceId: 143,
     appId: 464,

@@ -11,8 +11,8 @@
 
 @media screen and (max-width: 610px) {
     .grid-container {display: flex; flex-flow: column;}
+    .button-container{display: flex; flex-flow:wrap;}
 }
-
 mat-card {
     margin: 15px;
     padding: 15px;
@@ -23,6 +23,12 @@ mat-card {
     margin-left: auto;
     margin-right: auto;
     
+}
+
+.button-container {
+    display: flex;
+    /* justify-content: center; */
+    gap: 10px;
 }
 
 *{

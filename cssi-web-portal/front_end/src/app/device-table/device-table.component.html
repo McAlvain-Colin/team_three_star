@@ -1,26 +1,9 @@
 <div>
     <mat-card>
         <mat-card-title>Application Devices</mat-card-title>
-        <mat-card-header>Device Health</mat-card-header>
+        <!-- <mat-card-header>Device Health</mat-card-header> -->
         <mat-card-content>
-            <form>
-                <table>
-                    <tr>
-                        <td>
-                            <mat-form-field class="example-full-width">
-                            <mat-label>Start Date-Time</mat-label>
-                            <input matInput placeholder="Ex. 11/17/23 10:05">
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="example-full-width">
-                            <mat-label>End Date-Time</mat-label>
-                            <input matInput placeholder="Ex. 11/19/23 10:05">
-                            </mat-form-field>
-                        </td>
-                    </tr>
-                </table>          
-            </form>
+            
             <div class="grid-container">
                 <div class="grid-child">
                     <table mat-table [dataSource]="Devicelist" class="mat-elevation-z4">
@@ -53,12 +36,14 @@
         </mat-card-content>
 
         <mat-card-actions>
-            <button mat-raised-button (click)="loadSpinner()">Add Device</button>
-            <button mat-raised-button (click)="loadSpinner()" (click)="viewDevicePktloss()">Packet Loss</button>
-            <button mat-raised-button (click)="loadSpinner()">RSSI</button>
-            <button mat-raised-button (click)="loadSpinner()">SNR</button>
-            <button mat-raised-button (click)="loadSpinner()" (click)="viewDeviceBattery()">Battery</button>
-            <button mat-raised-button (click)="loadSpinner()">Export Data</button>
+            <div class="button-container">
+                <!-- <button mat-raised-button (click)="loadSpinner()">Add Device</button> -->
+                <button mat-raised-button (click)="loadSpinner()" (click)="viewDevicePktloss()">Packet Loss</button>
+                <button mat-raised-button (click)="loadSpinner()" (click)="viewGatewayRSSI()">Gateway RSSI</button>
+                <button mat-raised-button (click)="loadSpinner()" (click)="viewGatewaySNR()">Gateway SNR</button>
+                <button mat-raised-button (click)="loadSpinner()" (click)="viewDeviceBattery()">Battery</button>
+                <button mat-raised-button (click)="loadSpinner()" (click)="getDownload()">Export Data</button>
+            </div>
             <mat-spinner *ngIf="showSpinner"></mat-spinner>
         </mat-card-actions>
 

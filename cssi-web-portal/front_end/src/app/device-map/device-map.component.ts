@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DeviceElement } from '../app.component';
+import { DeviceElement } from '../dashboard/dashboard.component';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import * as Leaflet from 'leaflet'; 
 
 @Component({
@@ -14,6 +15,7 @@ import * as Leaflet from 'leaflet';
         MatCardModule,
         MatTableModule,
         MatRippleModule,
+        MatButtonModule
     ],
 })
 export class DeviceMapComponent implements OnInit{
@@ -29,7 +31,10 @@ export class DeviceMapComponent implements OnInit{
   });
   //array to keep map sensor info
   sensors: Leaflet.Marker<any>[] = [];
+  gateways: Leaflet.Circle<any>[] = []
+
   showSensors: boolean = false;
+  showGateways: boolean = false;
 
   ngOnInit()
   {
@@ -43,6 +48,16 @@ export class DeviceMapComponent implements OnInit{
 
   addMarkers(): void
   {
+
+    if(this.showGateways === true)
+    {
+      this.showGateways = false;
+      for(let i = this.gateways.length -1; i >= 0; i--)
+      {
+        this.gateways[i].removeFrom(this.myMap);
+        this.gateways.pop();
+      } 
+    }
     
     if(this.showSensors === false)
     {
@@ -50,12 +65,12 @@ export class DeviceMapComponent implements OnInit{
       //placing all sensor locations in an array to be used later to delete if view gateways is called as well as placing the sensors into the leaflet map
       for(let i = 0; i < this.deviceList.length; i++)
       {
-        this.sensors[i] = Leaflet.marker(Leaflet.latLng(this.deviceList[i].location[0], this.deviceList[i].location[1]), {icon: this.sensorIcon}).addTo(this.myMap).bindPopup("endDevice: " + (this.deviceList[i].endDeviceId.toString()));
+        this.sensors[i] = Leaflet.marker(Leaflet.latLng(this.deviceList[i].endDeviceLocation[0], this.deviceList[i].endDeviceLocation[1]), {icon: this.sensorIcon}).addTo(this.myMap).bindPopup("endDevice: " + (this.deviceList[i].endDeviceId.toString()));
       } 
     }
     
   }
-  addGatewayRanges()
+  showGatewayRanges()
   {
     if(this.showSensors === true)
     {
@@ -65,17 +80,44 @@ export class DeviceMapComponent implements OnInit{
         this.sensors.pop()
       } 
       this.showSensors = false;
+    }
+    if(this.showGateways === false)
+    {
+      this.showGateways = true;
 
       for(let i = 0; i < this.deviceList.length; i++)
       {
-        Leaflet.circle(Leaflet.latLng(this.deviceList[i].location[0], this.deviceList[i].location[1]), {radius: 1500}).addTo(this.myMap).bindPopup("gateway: " + (this.deviceList[i].appId.toString()));
+        this.gateways[i] = Leaflet.circle(Leaflet.latLng(this.deviceList[i].gatewayLocation[0], this.deviceList[i].gatewayLocation[1]), {radius: 3500}).addTo(this.myMap).bindPopup("gateway: " + (this.deviceList[i].appId.toString()));
       }
     }
   }
 
+  showDevicesAndGateways()
+  {
+    if(this.showSensors === false)
+    {
+      this.showSensors = true;
+
+      for(let i = 0; i < this.deviceList.length; i++)
+      {
+        this.sensors[i] = Leaflet.marker(Leaflet.latLng(this.deviceList[i].endDeviceLocation[0], this.deviceList[i].endDeviceLocation[1]), {icon: this.sensorIcon}).addTo(this.myMap).bindPopup("endDevice: " + (this.deviceList[i].endDeviceId.toString()));
+      } 
+    }
+
+    if(this.showGateways === false)
+    {
+      this.showGateways = true;
+      for(let i = 0; i < this.deviceList.length; i++)
+      {
+        this.gateways[i] = Leaflet.circle(Leaflet.latLng(this.deviceList[i].gatewayLocation[0], this.deviceList[i].gatewayLocation[1]), {radius: 3500}).addTo(this.myMap).bindPopup("gateway: " + (this.deviceList[i].appId.toString()));
+      }
+    }
+    
+  }
+
   flyTo(row: DeviceElement)
   {
-    if(this.sensors.length !== 0)
-    this.myMap.flyTo(Leaflet.latLng(row.location[0], row.location[1]), 11);
+    if(this.showSensors === true)
+    this.myMap.flyTo(Leaflet.latLng(row.endDeviceLocation[0], row.endDeviceLocation[1]), 11);
   }
 }
