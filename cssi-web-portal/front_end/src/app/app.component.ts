@@ -76,6 +76,46 @@ const DATA: DeviceData[] = [
   },
 ];
 
+export interface DataStats {
+  endDeviceId: number;
+  appId: number;
+  DataName: string;
+  mean: number[];
+  variance: number[];
+  standardDeviation: number[];
+  time: string[];
+}
+
+const STATISTIC_DATA: DataStats[] = [
+  {
+    endDeviceId: 123,
+    appId: 456,
+    DataName: 'Tahoe North Shore Temperature',
+    mean: [10, 9, 11],
+    variance: [5, 3, 8],
+    standardDeviation: [2, 3, 1],
+    time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'],
+  },
+  {
+    endDeviceId: 5,
+    appId: 456,
+    DataName: 'Tahoe South Shore Temperature',
+    mean: [20, 18, 24],
+    variance: [4, 6, 2],
+    standardDeviation: [5, 3, 4],
+    time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'],
+  },
+  {
+    endDeviceId: 63,
+    appId: 15,
+    DataName: 'Mt. Rose Humidity',
+    mean: [31, 30, 26],
+    variance: [6, 8, 4],
+    standardDeviation: [1, 3, 1],
+    time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'],
+  },
+];
+
 
 @Component({
   selector: 'app-root',
@@ -94,4 +134,5 @@ export class AppComponent {
 
   dataSource: DeviceElement[] = ELEMENT_DATA;
   data: DeviceData[] = DATA
+  stats: DataStats[] = STATISTIC_DATA
 }

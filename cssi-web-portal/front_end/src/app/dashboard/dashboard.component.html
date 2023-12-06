@@ -1,11 +1,10 @@
-<p>dashboard works</p>
 <app-dashboard-nav>
   <div>
     <app-device-data [data]="data_input"></app-device-data>
     <mat-divider></mat-divider>
   </div>
   <div>
-    <app-device-stats></app-device-stats>
+    <app-device-stats [stats] ="stats_data"></app-device-stats>
     <mat-divider></mat-divider>
   </div>
   <div>

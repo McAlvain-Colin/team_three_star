@@ -26,10 +26,12 @@ import { DeviceDataService } from '../charts/device-data.service';
 import { DeviceStatsComponent } from './device-stats/device-stats.component';
 import { TempNavBarComponent } from './temp-nav-bar/temp-nav-bar.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-imort { sign}
+import { DataStatsService } from 'src/charts/data-stats.service';
+import { DatePicker } from './date-picker/date-picker.component';
+import { OrganizationPageComponent } from './organization-page/organization-page.component';
+import { UserPageComponent } from './user-page/user-page.component';
 
 @NgModule({
-<<<<<<< HEAD
   declarations: [
     AppComponent, 
     AboutComponent, 
@@ -42,12 +44,8 @@ imort { sign}
     DashboardComponent,
     DeviceDataComponent,
     DeviceStatsComponent,
-  ],
-
-=======
-  declarations: [AppComponent,],
->>>>>>> 4db7d584 (Have the device data section importing devices and data. Need the chart to work next.)
-  imports: [
+    OrganizationPageComponent,
+    UserPageComponent,
     MaterialModule,
     BrowserModule,
     RouterModule,
@@ -63,23 +61,13 @@ imort { sign}
     MatListModule,
     ForgottenPasswordComponent,
     TempNavBarComponent,
-    ResetPasswordComponent,
-    MaterialModule,
-    AboutComponent,
-    ContactComponent,
-    HomeComponent,
-    DeviceMapComponent,
-    DeviceTableComponent,
-    DeviceStatsComponent,
-<<<<<<< HEAD
-    LeafletModule
-    
-=======
-    DashboardComponent
->>>>>>> 4db7d584 (Have the device data section importing devices and data. Need the chart to work next.)
+    LeafletModule,
+    DatePicker,
   ],
   providers: [ChartService, 
-              DeviceDataService],
+              DeviceDataService,
+              DataStatsService
+            ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
