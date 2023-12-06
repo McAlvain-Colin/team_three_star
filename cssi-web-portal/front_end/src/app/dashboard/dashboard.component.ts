@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject  } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -534,6 +534,23 @@ const STATISTIC_DATA: DataStats[] = [
     standardDeviation: [1, 3, 1, 3, 1, 3, 4, 5, 5, 3, 4, 6],
     time,
   },
+];
+
+
+export interface DeviceData {
+  endDeviceId: number,
+  appId: number,
+  DataName: string,
+  DataValue: number[],
+  time: string[]
+  Unit: string
+};
+
+const DATA: DeviceData[] = 
+[
+  {endDeviceId: 123, appId: 456, DataName: 'Tahoe Temp Sensor North Shore', DataValue: [32, 30, 29],  time: ['11/17/23 10:05', '11/18/23 12:15', '11/19/23 04:15'], Unit: 'Celcius'},
+  {endDeviceId: 120, appId: 431, DataName: 'Tahoe Temp Sensor South Shore', DataValue: [30, 28, 31], time: ['11/16/23 10:05', '11/18/23 01:15', '11/19/23 04:15'], Unit: 'Celcius' },
+  {endDeviceId: 143, appId: 464, DataName: 'Mt. Rose Humidity Sensor', DataValue: [65, 85, 100], time: ['11/15/23 10:05', '11/18/23 11:15', '11/19/23 04:15'], Unit: 'Percent' }
 ];
 
 @Component({

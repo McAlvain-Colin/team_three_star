@@ -22,13 +22,14 @@ import { DeviceMapComponent } from './device-map/device-map.component';
 import { DeviceTableComponent } from './device-table/device-table.component';
 import { MaterialModule } from './material/material.module';
 import { ChartService } from './chart.service';
-import { DeviceDataComponent } from './device-data/device-data.component';
+import { DeviceDataService } from '../charts/device-data.service';
 import { DeviceStatsComponent } from './device-stats/device-stats.component';
 import { TempNavBarComponent } from './temp-nav-bar/temp-nav-bar.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 imort { sign}
 
 @NgModule({
+<<<<<<< HEAD
   declarations: [
     AppComponent, 
     AboutComponent, 
@@ -43,6 +44,9 @@ imort { sign}
     DeviceStatsComponent,
   ],
 
+=======
+  declarations: [AppComponent,],
+>>>>>>> 4db7d584 (Have the device data section importing devices and data. Need the chart to work next.)
   imports: [
     MaterialModule,
     BrowserModule,
@@ -66,13 +70,16 @@ imort { sign}
     HomeComponent,
     DeviceMapComponent,
     DeviceTableComponent,
-    DashboardComponent,
-    DeviceDataComponent,
     DeviceStatsComponent,
+<<<<<<< HEAD
     LeafletModule
     
+=======
+    DashboardComponent
+>>>>>>> 4db7d584 (Have the device data section importing devices and data. Need the chart to work next.)
   ],
-  providers: [ChartService],
+  providers: [ChartService, 
+              DeviceDataService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
