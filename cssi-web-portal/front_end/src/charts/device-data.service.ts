@@ -10,49 +10,29 @@ export class DeviceDataService {
   constructor() { }
 
   chart!: Chart;
+  chartLabels!: string[];
+  chartData!: number[];
 
-  createPktLossChart(device: DeviceData): Chart {
-    this.chart = new Chart('myChart', {
+  createSensorDataChart(device: DeviceData): Chart  { 
+    this.chart = new Chart("dataChart", {
       type: 'line',
       data: {
-        labels: ['1', '2', '3', '4'], //device.time,
+        labels: device.time, //device.time,
         datasets: [
           {
-            label: 'packet loss',
-            data: [1, 2, 3, 4], //device.packetLoss,
+            label:device.DataName,
+            data: device.DataValue, //device.dataValue
           },
         ],
-      },
+      },options: {maintainAspectRatio: false}
     });
     return this.chart;
   }
 
-  updateChartData(row: DeviceData) {
-    // this.chart.data.datasets[0].data = row.DataName;
-    // this.chart.update();
-  }
-
-  toBarChart(device: DeviceData) {
-    // this.chart.destroy();
-    this.chart = new Chart('myChart', {
-      type: 'bar',
-      data: {
-        labels: device.time,
-        datasets: [
-          {
-            //label: '# of Votes',
-            data: device.DataValue,
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
+  updateChartData(row: DeviceData)
+  {
+    this.chart.data.datasets[0].label = row.DataName
+    this.chart.data.datasets[0].data = row.DataValue;
+    this.chart.update();
   }
 }
