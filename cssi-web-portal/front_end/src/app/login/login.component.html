@@ -4,7 +4,7 @@
     <body class="main-body">
       <mat-card class="login-form">
         <h1 class="title">Login</h1>
-        <form class="container" #loginForm="ngForm">
+        <form class="container" (ngSubmit)="submitForm()" #loginForm="ngForm">
           <mat-form-field color="primary">
             <mat-label>Email</mat-label>
             <input
@@ -36,6 +36,7 @@
               (click)="hide = !hide"
               [attr.aria-label]="'Hide password'"
               [attr.aria-pressed]="hide"
+              type="button"
             >
               <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
             </button>
@@ -53,7 +54,6 @@
           <button
             mat-raised-button
             color="accent"
-            (ngSubmit)="submitForm()"
             [disabled]="loginForm.invalid || emailField.invalid"
           >
             Login
