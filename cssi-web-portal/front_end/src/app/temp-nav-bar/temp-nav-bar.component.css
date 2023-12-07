@@ -47,3 +47,9 @@ h1 {
 * {
   background-color: aliceblue;
 }
+
+@media screen and (max-width: 610px) {
+  .right-links {display: flex; flex-flow: column;}
+  .left-links{display: flex; flex-flow:column;}
+  .temp-nav-bar{display: flex; flex-flow:column;}
+}

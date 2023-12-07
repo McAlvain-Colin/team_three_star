@@ -50,10 +50,12 @@
         </mat-card-content>
 
         <mat-card-actions>
+        <div class="button-container">
             <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="addDevice()">Add Device</button>
             <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="removeDevice()">Remove Device</button>
             <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="exportData()">Export Data</button>
             <mat-spinner *ngIf="showSpinner"></mat-spinner>
+        </div>
         </mat-card-actions>
 
     </mat-card>
