@@ -18,7 +18,7 @@
                     <tr mat-header-row *matHeaderRowDef="['endDeviceId', 'appId']"></tr>
                     
                     <tr mat-row matRipple [matRippleCentered]="false"
-                        [matRippleDisabled]="false"
+                        [matRippleDisabled]="true"
                         [matRippleUnbounded]="false"
                         *matRowDef="let row; columns: ['endDeviceId', 'appId'];"
                         (click)="flyTo(row)"
