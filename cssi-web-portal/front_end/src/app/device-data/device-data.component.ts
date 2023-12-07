@@ -60,7 +60,9 @@ export class DeviceDataComponent implements OnInit {
   }
   addDevice(){}
   removeDevice(){}
-  exportData(){}
+  exportData(){
+    this.dataChart.getDownload();
+  }
 
   calculateAve(array: number[]): number {
     var total: number= 0;
@@ -81,4 +83,5 @@ export class DeviceDataComponent implements OnInit {
       }
     }
   }
+  
 }
