@@ -44,9 +44,9 @@ export class ResetPasswordComponent {
   submitForm() {
     var message: string = `Password submitted`;
     if (this.password === this.repeatPassword) {
-      message = "Password doesn't match";
       alert(message);
     } else {
+      message = "Password doesn't match";
       alert(message);
     }
   }

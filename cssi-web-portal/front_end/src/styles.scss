@@ -5,7 +5,7 @@
 @include mat-core();
 
 $light-theme-primary: mat-palette($mat-indigo);
-$light-theme-accent: mat-palette($mat-amber);
+$light-theme-accent: mat-palette($mat-pink);
 $light-theme-warn: mat-palette($mat-red);
 
 $light-theme: mat-light-theme(
