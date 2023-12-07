@@ -59,7 +59,9 @@ export class DeviceStatsComponent implements OnInit {
   }
   addDevice(){}
   removeDevice(){}
-  exportData(){}
+  exportData(){
+    this.statsChart.getDownload();
+  }
 
 
   calculateAve(array: number[]): number {
