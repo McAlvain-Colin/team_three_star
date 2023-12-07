@@ -4,7 +4,7 @@
     
     display: grid; 
     /* grid-template-columns: 1fr 1fr; */
-    grid-template-columns: 1fr minmax(0, 3fr);
+    grid-template-columns: 2fr minmax(0, 3fr);
 
     grid-gap: 20px;
 }
@@ -23,6 +23,9 @@
 @media screen and (max-width: 610px) {
     .grid-container {display: flex; flex-flow: column;}
     .button-container{display: flex; flex-flow:wrap;}
+    .grid-child{ width: 100%; 
+            max-width: 100%; 
+            overflow-x: auto;}
 }
 
 .button-container {
