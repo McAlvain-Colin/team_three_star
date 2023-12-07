@@ -54,4 +54,12 @@ export class DataStatsService {
     var avg = total/array.length
     return avg
   }
+
+  getDownload()
+  {
+    let link = document.createElement('a');
+    link.href = this.chart.toBase64Image();
+    link.download = 'dataChart.png';
+    link.click();
+  }
 }

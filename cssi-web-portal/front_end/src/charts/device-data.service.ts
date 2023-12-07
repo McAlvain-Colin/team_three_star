@@ -35,4 +35,12 @@ export class DeviceDataService {
     this.chart.data.datasets[0].data = row.DataValue;
     this.chart.update();
   }
+
+  getDownload()
+  {
+    let link = document.createElement('a');
+    link.href = this.chart.toBase64Image();
+    link.download = 'dataChart.png';
+    link.click();
+  }
 }

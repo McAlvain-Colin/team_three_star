@@ -1,7 +1,6 @@
 <div>
     <mat-card>
         <mat-card-title>Application Devices</mat-card-title>
-        <!-- <mat-card-header>Device Health</mat-card-header> -->
         <mat-card-content>
             
             <div class="grid-container">
@@ -17,13 +16,13 @@
                             <td mat-cell *matCellDef="let element"> {{element.gatewayId}} </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="packetLoss">
+                        <!-- <ng-container matColumnDef="packetLoss">
                             <th mat-header-cell *matHeaderCellDef> Packet Loss </th>
                             <td mat-cell *matCellDef="let element"> {{element.packetLoss[0]/100 | percent: '1.1'}}</td>
-                        </ng-container>
+                        </ng-container> -->
 
-                        <tr mat-header-row *matHeaderRowDef="['endDeviceId', 'gatewayId', 'packetLoss']"></tr>
-                        <tr (click)="loadSpinner()" (click)="viewDeviceHealth(row)" mat-row *matRowDef="let row; columns: ['endDeviceId', 'gatewayId', 'packetLoss']"></tr>
+                        <tr mat-header-row *matHeaderRowDef="['endDeviceId', 'gatewayId']"></tr>
+                        <tr (click)="loadSpinner()" (click)="viewDeviceHealth(row)" mat-row *matRowDef="let row; columns: ['endDeviceId', 'gatewayId']"></tr>
 
                     </table>
                 </div>
@@ -38,11 +37,11 @@
         <mat-card-actions>
             <div class="button-container">
                 <!-- <button mat-raised-button (click)="loadSpinner()">Add Device</button> -->
-                <button mat-raised-button (click)="loadSpinner()" (click)="viewDevicePktloss()">Packet Loss</button>
-                <button mat-raised-button (click)="loadSpinner()" (click)="viewGatewayRSSI()">Gateway RSSI</button>
-                <button mat-raised-button (click)="loadSpinner()" (click)="viewGatewaySNR()">Gateway SNR</button>
-                <button mat-raised-button (click)="loadSpinner()" (click)="viewDeviceBattery()">Battery</button>
-                <button mat-raised-button (click)="loadSpinner()" (click)="getDownload()">Export Data</button>
+                <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="viewDevicePktloss()">Packet Loss</button>
+                <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="viewGatewayRSSI()">Gateway RSSI</button>
+                <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="viewGatewaySNR()">Gateway SNR</button>
+                <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="viewDeviceBattery()">Battery</button>
+                <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="getDownload()">Export Data</button>
             </div>
             <mat-spinner *ngIf="showSpinner"></mat-spinner>
         </mat-card-actions>

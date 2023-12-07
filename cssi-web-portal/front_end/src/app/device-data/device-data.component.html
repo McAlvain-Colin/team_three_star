@@ -1,14 +1,11 @@
 <div>
     <mat-card>
         <mat-card-title>Devices Data</mat-card-title>
+        <form>
+            <app-date-picker></app-date-picker>
+        </form>
         <mat-card-header>Device List</mat-card-header>
         <mat-card-content>
-            
-            <form>
-                <app-date-picker></app-date-picker>
-            </form>
-                
-            
             <div class="grid-container">
                 <div class="grid-child">
                     <table mat-table [dataSource]="data" class="mat-elevation-z4">
@@ -53,9 +50,9 @@
         </mat-card-content>
 
         <mat-card-actions>
-            <button mat-raised-button (click)="loadSpinner()" (click)="addDevice()">Add Device</button>
-            <button mat-raised-button (click)="loadSpinner()" (click)="removeDevice()">Remove Device</button>
-            <button mat-raised-button (click)="loadSpinner()" (click)="exportData()">Export Data</button>
+            <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="addDevice()">Add Device</button>
+            <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="removeDevice()">Remove Device</button>
+            <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="exportData()">Export Data</button>
             <mat-spinner *ngIf="showSpinner"></mat-spinner>
         </mat-card-actions>
 
