@@ -10,6 +10,7 @@ import { DashboardNavComponent } from '../dashboard-nav/dashboard-nav.component'
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatDividerModule } from '@angular/material/divider';
 
+//mock data for device health
 const time: string[] = ['1/15/23 10:05', '2/15/23 12:15', '3/15/23 04:15',
                         '4/15/23 10:05', '5/15/23 12:15', '6/15/23 04:15',
                         '7/15/23 10:05', '8/15/23 12:15', '9/15/23 04:15',
@@ -445,7 +446,7 @@ const ELEMENT_DATA: DeviceElement[] = [
   },
 ];
 
-
+//mock data for device data
 export interface DeviceData {
   endDeviceId: number,
   appId: number,
@@ -461,7 +462,7 @@ const DATA: DeviceData[] =
   {endDeviceId: 120, appId: 431, DataName: 'Tahoe Temp Sensor South Shore', DataValue: [30, 28, 31, 29, 30, 28, 30, 29, 30, 30, 28, 31], time, Unit: 'Celcius' },
   {endDeviceId: 143, appId: 464, DataName: 'Mt. Rose Humidity Sensor', DataValue: [65, 85, 100, 98, 87, 96, 85, 100, 98, 87, 96, 85], time, Unit: 'Percent' }
 ];
-
+//mock data for device stats
 export interface DataStats {
   endDeviceId: number;
   appId: number;

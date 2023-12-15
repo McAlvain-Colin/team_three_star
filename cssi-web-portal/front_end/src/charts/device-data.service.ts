@@ -1,3 +1,5 @@
+// Created a chart to display sensor data
+
 import { Injectable } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { DeviceData } from '../app/app.component';
