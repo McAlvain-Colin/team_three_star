@@ -14,7 +14,7 @@
     width: 99%;
 }
 
-
+/* modified boxs to fit screen */
 @media screen and (max-width: 610px) {
     .grid-container {display: flex; flex-flow: column;}
     .button-container{display: flex; flex-flow:wrap;}

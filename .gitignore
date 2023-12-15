@@ -1,2 +1,3 @@
+#ignore files that are larger than 100mb 
 .angular/
 node_modules/
