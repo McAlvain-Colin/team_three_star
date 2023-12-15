@@ -1,3 +1,4 @@
+// default page. Needs to be built
 import { Component, Input, OnInit } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgIf, PercentPipe } from '@angular/common';

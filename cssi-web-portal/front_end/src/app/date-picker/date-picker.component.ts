@@ -1,3 +1,4 @@
+//create by terminal and then added too 
 import {Component} from '@angular/core';
 import {FormGroup, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgIf, JsonPipe} from '@angular/common';
@@ -23,6 +24,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 })
 export class DatePicker {
   range = new FormGroup({
+    //data variables
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });

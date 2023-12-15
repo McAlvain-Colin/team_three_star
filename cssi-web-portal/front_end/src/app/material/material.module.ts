@@ -1,3 +1,4 @@
+//libraries we need to run. Import materials instead of everything in every file. 
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
