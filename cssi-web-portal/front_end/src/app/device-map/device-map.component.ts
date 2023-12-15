@@ -117,7 +117,11 @@ export class DeviceMapComponent implements OnInit{
 
   flyTo(row: DeviceElement)
   {
-    if(this.showSensors === true)
-    this.myMap.flyTo(Leaflet.latLng(row.endDeviceLocation[0], row.endDeviceLocation[1]), 11);
+    if(this.showSensors === true){
+      this.myMap.flyTo(Leaflet.latLng(row.endDeviceLocation[0], row.endDeviceLocation[1]), 11);
+    }
+    if(this.showGateways === true){
+      this.myMap.flyTo(Leaflet.latLng(row.gatewayLocation[0], row.gatewayLocation[1]), 11);
+    }
   }
 }
