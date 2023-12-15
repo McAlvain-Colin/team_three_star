@@ -35,7 +35,6 @@ import { DeviceDataComponent } from './device-data/device-data.component';
 @NgModule({
   declarations: [
     AppComponent, 
-    OrganizationPageComponent,
     UserPageComponent,
   ],
   imports: [
@@ -66,8 +65,10 @@ import { DeviceDataComponent } from './device-data/device-data.component';
     ForgottenPasswordComponent,
     TempNavBarComponent,
     DatePicker,
+    OrganizationPageComponent,
   ],
-  providers: [ChartService, 
+  providers: [
+              ChartService, 
               DeviceDataService,
               DataStatsService
             ],

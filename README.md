@@ -5,7 +5,7 @@ University of Nevada, Reno, Computer Science and Engineering Capstone Project in
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Technology Stack](#getting-started)
+- [Technology Stack](#Technology-stack)
 - [System Design](#system-design)
 - [Usage](#usage)
 - [Contributing](#contributing)
@@ -59,7 +59,15 @@ Metrics to Visualize/Export
 - Sensor health
 
 ## Technology Stack
-- TODO
+- Angular
+- Leaflet
+- Charts.js
+- RxJS
+- Python
+- typescript
+- html
+- css
+
 
 ## System Design
 - TODO

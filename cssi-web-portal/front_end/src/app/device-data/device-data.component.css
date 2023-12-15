@@ -9,11 +9,6 @@
     grid-gap: 20px;
 }
 
-.grid-child { 
-    position: relative;
-    
-}
-
 .chart {
     position: relative;
     width: 99%;
@@ -24,9 +19,6 @@
     .grid-container {display: flex; flex-flow: column;}
     .button-container{display: flex; flex-flow:wrap;}
     .grid-child{ width: 100%; 
-        max-width: 100%; 
-        overflow-x: auto;}
-    .matColumnDef{ width: 100%; 
         max-width: 100%; 
         overflow-x: auto;}
 }

@@ -9,6 +9,7 @@ import { ForgottenPasswordComponent } from './forgotten-password/forgotten-passw
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { LoginComponent } from './login/login.component';
+import { OrganizationPageComponent } from './organization-page/organization-page.component';
 
 // Huy and Colin created the paths and linked the respective components to in order to properly route with Angular's routing
 
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'forgotten-password', component: ForgottenPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'tool-bar', component: ToolBarComponent },
+  { path: 'organization-page', component: OrganizationPageComponent}
 ];
 
 //NgModule was generated when creating the application's routing file by angular.
