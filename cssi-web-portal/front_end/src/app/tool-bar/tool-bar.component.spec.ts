@@ -8,13 +8,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { ToolBarComponent } from './tool-bar.component';
 
+// Spec.ts is a testing component that is automatically generated for an angular component, and the team has not modified these files.
+
 describe('ToolBarComponent', () => {
   let component: ToolBarComponent;
   let fixture: ComponentFixture<ToolBarComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [
+      imports: [
         NoopAnimationsModule,
         MatButtonModule,
         MatIconModule,
@@ -22,8 +24,8 @@ describe('ToolBarComponent', () => {
         MatSidenavModule,
         MatToolbarModule,
         ToolBarComponent,
-    ]
-}).compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
