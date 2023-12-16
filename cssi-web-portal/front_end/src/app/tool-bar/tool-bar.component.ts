@@ -27,6 +27,8 @@ import { MatListModule } from '@angular/material/list';
     RouterModule,
   ],
 })
+
+//The break point observer is to act as a listener for events which will tell the component if the user is on a handheld, which isHandset%
 export class ToolBarComponent {
   private breakpointObserver = inject(BreakpointObserver);
 

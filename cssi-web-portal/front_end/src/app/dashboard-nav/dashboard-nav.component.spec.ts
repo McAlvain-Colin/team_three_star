@@ -8,13 +8,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { DashboardNavComponent } from './dashboard-nav.component';
 
+// Spec.ts is a testing component that is automatically generated for an angular component, and the team has not modified these files.
+
 describe('DashboardNavComponent', () => {
   let component: DashboardNavComponent;
   let fixture: ComponentFixture<DashboardNavComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [
+      imports: [
         NoopAnimationsModule,
         MatButtonModule,
         MatIconModule,
@@ -22,8 +24,8 @@ describe('DashboardNavComponent', () => {
         MatSidenavModule,
         MatToolbarModule,
         DashboardNavComponent,
-    ]
-}).compileComponents();
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
