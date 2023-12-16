@@ -1,3 +1,4 @@
+/* Colin wrote the CSS, and Huy transferred the code into the component */
 .temp-nav-bar {
   position: fixed;
   left: 0;
@@ -49,7 +50,16 @@ h1 {
 }
 
 @media screen and (max-width: 610px) {
-  .right-links {display: flex; flex-flow: column;}
-  .left-links{display: flex; flex-flow:column;}
-  .temp-nav-bar{display: flex; flex-flow:column;}
+  .right-links {
+    display: flex;
+    flex-flow: column;
+  }
+  .left-links {
+    display: flex;
+    flex-flow: column;
+  }
+  .temp-nav-bar {
+    display: flex;
+    flex-flow: column;
+  }
 }

@@ -2,9 +2,14 @@
 
 .home-text {
   /* This is the home text style which will act as the main view and type that the user sees upon initial visit of the web portal */
+<<<<<<< HEAD
   padding-top: 35px;
   padding-bottom: 35px;
   line-height: 1.2;
+=======
+  margin: 0px 40px 70px 40px;
+  padding-top: 120px;
+>>>>>>> 4969fd96 (Added the rest of the comments for the remaining components I've edited.)
   font-size: 5vw;
   font-weight: bolder;
   text-align: center;
