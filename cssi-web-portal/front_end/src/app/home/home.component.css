@@ -1,4 +1,7 @@
+/* The home page stylings were made by Huy, with the thought of keeping the current values as a place holder until the homepage has complete information */
+
 .home-text {
+  /* This is the home text style which will act as the main view and type that the user sees upon initial visit of the web portal */
   margin: 0px 40px 70px 40px;
   padding-top: 120px;
   font-size: 5vw;
@@ -8,6 +11,7 @@
 }
 
 .button-box {
+  /* This alters the button to be in the middle bottom of the screen so that it's more of an entrance button than the main element on the page */
   margin: auto;
   width: 150px;
   text-align: center;
@@ -21,8 +25,9 @@
 }
 
 body {
+  /* This is the main control for the visuals on the background of the home page */
   background-color: aliceblue;
-  background-image: url('../../assets/home_page_image.jpg');
+  background-image: url("../../assets/home_page_image.jpg");
   background-repeat: no-repeat;
-  background-size: cover
+  background-size: cover;
 }
