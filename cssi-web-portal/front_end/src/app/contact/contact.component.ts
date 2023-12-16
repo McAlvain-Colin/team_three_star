@@ -1,3 +1,4 @@
+/* artifact and will be replaced*/
 import { Component } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';

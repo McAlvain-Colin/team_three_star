@@ -9,6 +9,7 @@ import { ForgottenPasswordComponent } from './forgotten-password/forgotten-passw
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { LoginComponent } from './login/login.component';
+import { OrganizationPageComponent } from './organization-page/organization-page.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'forgotten-password', component: ForgottenPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'tool-bar', component: ToolBarComponent },
+  { path: 'organization-page', component: OrganizationPageComponent}
 ];
 
 @NgModule({
