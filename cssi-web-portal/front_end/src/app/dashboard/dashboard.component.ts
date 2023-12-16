@@ -16,6 +16,8 @@ const time: string[] = ['1/15/23 10:05', '2/15/23 12:15', '3/15/23 04:15',
                         '7/15/23 10:05', '8/15/23 12:15', '9/15/23 04:15',
                         '10/15/23 10:05', '11/15/23 12:15', '12/15/23 04:15']
 
+//the interface which has what the team views as central information which will be retrieved from the device JSON data, consisting of the Device and Gateway EUI, packet loss, time recorded, battery life, RSSI, SNR
+//distance, location of each device/gateway, application ID. This information was based off "The Things Stack"  JSON file information provided in the website https://www.thethingsindustries.com/docs/the-things-stack/concepts/data-formats/
 export interface DeviceElement {
   endDeviceId: number,
   appId: number,
@@ -30,6 +32,7 @@ export interface DeviceElement {
   distance: number[]
 }
 
+//Team created mock data of what data can be retrieved from backend for presentation purposes.
 const ELEMENT_DATA: DeviceElement[] = [
   {
     endDeviceId: 123,
