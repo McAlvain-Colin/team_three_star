@@ -1,15 +1,19 @@
+/* Huy developed the Css in order to move the elments into their respective spots and provide styling */
 .container {
+  /* This ensures the form has the fields in a column so that it looks more like a traditional form */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
 .forgot-link {
+  /* The forgot link will have a slight shift off the main form, and helps make it more distinct */
   text-align: right;
   transform: translate(100%, 0%);
 }
 
 .title {
+  /* This affects the main title that's on the form, ensuring that it has a decorated look to it */
   text-align: center;
   border-bottom: 2px solid;
   transform: translate(0%, -60%);
