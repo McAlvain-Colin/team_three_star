@@ -44,26 +44,30 @@ export class DeviceDataComponent implements OnInit {
 
   constructor(private dataChart: DeviceDataService) {}
 
+  // when page is create this happens. Loads chart
   ngOnInit(): void {
     this.dataChart.createSensorDataChart(this.data[0]);
   }
-
+  //creates spinners for button presses
   loadSpinner() {
     this.showSpinner = true;
     setTimeout(() => {
       this.showSpinner = false;
     }, 250);
   }
+  //updates data
   updateData(row: DeviceData) {
     this.tempDevice = row;
     this.dataChart.updateChartData(row);
   }
+  //non functioning as of demo
   addDevice() {}
   removeDevice() {}
+  //creates a png thats placed in downloads
   exportData() {
     this.dataChart.getDownload();
   }
-
+  //calculates avg value
   calculateAve(array: number[]): number {
     var total: number = 0;
 
@@ -73,9 +77,11 @@ export class DeviceDataComponent implements OnInit {
     var avg = total / array.length;
     return avg;
   }
+  //rounds number to whole number
   roundNumber(value: number): number {
     return Math.round(value);
   }
+  //none functioning as of demo
   updateDataByDate(
     row: DeviceData,
     startTime: FormControl<Date>,

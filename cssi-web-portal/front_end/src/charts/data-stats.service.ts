@@ -1,3 +1,4 @@
+// Created a chart to display statistic data
 import { Injectable } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { DataStats } from '../app/app.component';

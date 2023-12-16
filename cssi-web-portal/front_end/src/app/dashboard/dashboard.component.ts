@@ -10,6 +10,7 @@ import { DashboardNavComponent } from '../dashboard-nav/dashboard-nav.component'
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatDividerModule } from '@angular/material/divider';
 
+//mock data for device health
 const time: string[] = [
   '1/15/23 10:05',
   '2/15/23 12:15',
@@ -454,6 +455,7 @@ const ELEMENT_DATA: DeviceElement[] = [
   },
 ];
 
+//mock data for device data
 export interface DeviceData {
   endDeviceId: number;
   appId: number;
@@ -489,7 +491,7 @@ const DATA: DeviceData[] = [
     Unit: 'Percent',
   },
 ];
-
+//mock data for device stats
 export interface DataStats {
   endDeviceId: number;
   appId: number;
