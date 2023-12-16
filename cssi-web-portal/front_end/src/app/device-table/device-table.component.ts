@@ -30,6 +30,13 @@ import { MatCardModule } from '@angular/material/card';
     PercentPipe,
   ],
 })
+// The DeviceTable component will recieve data from the dashboard component using the input decorator and will be placed in the
+// variable DeviceElement array, here a boolean variable showSpinner is initialized to indicate whether the spinner should appear in the webpage.
+// tempdevice is used to keep track of which device has been currently selected by the user from a row in the table.
+// chart is declared here to keep track of which visualization should be displayed to the user depending on the selected option and device.
+// typeOfChart varible will keep track of what type of chart the user has selcted to be visualized.
+// Chartdata array was used to debug and checking whether the parameter when executing methods was able to alter the values within the array, this result was consistently 
+// used for logging to the console for debugging purposes.
 export class DeviceTableComponent implements OnInit {
   @Input() Devicelist!: DeviceElement[];
 
