@@ -1,0 +1,57 @@
+.grid-container {
+    /* display: flex; */
+    /* flex-flow:row; */
+    
+    display: grid; 
+    /* grid-template-columns: 1fr 1fr; */
+    grid-template-columns: 1fr minmax(0, 3fr);
+
+    grid-gap: 20px;
+}
+
+.grid-child { 
+    position: relative;
+    
+}
+
+.chart {
+    position: relative;
+    width: 99%;
+}
+
+
+@media screen and (max-width: 610px) {
+    .grid-container {display: flex; flex-flow: column;}
+    .button-container{display: flex; flex-flow:wrap;}
+}
+
+.button-container {
+    display: flex;
+    /* justify-content: center; */
+    gap: 10px;
+}
+
+
+mat-card {
+    margin: 15px;
+    padding: 15px;
+}
+
+mat-card-actions {
+    margin-top: 5px;
+}
+
+* {
+    background-color: aliceblue;
+}
+
+
+
+.form-width {
+    width: 50%;
+}
+
+td {
+    padding-right: 10px;
+} 
+

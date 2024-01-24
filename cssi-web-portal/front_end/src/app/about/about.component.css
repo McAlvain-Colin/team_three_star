@@ -1,0 +1,22 @@
+/* about.component.css */
+/* artifact and will be replaced*/
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+.left-links, .right-links {
+    display: flex;
+}
+
+.left-links a, .right-links a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.content {
+    margin: 20px;
+}

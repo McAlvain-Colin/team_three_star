@@ -1,0 +1,18 @@
+<app-dashboard-nav>
+  <div>
+    <app-device-data [data]="data_input"></app-device-data>
+    <mat-divider></mat-divider>
+  </div>
+  <div>
+    <app-device-stats [stats] ="stats_data"></app-device-stats>
+    <mat-divider></mat-divider>
+  </div>
+  <div>
+    <app-device-table [Devicelist]="dataSource"></app-device-table>
+    <mat-divider></mat-divider>
+  </div>
+  <div>
+    <app-device-map [deviceList]="dataSource"></app-device-map>
+  </div>
+  <app-temp-nav-bar></app-temp-nav-bar>
+</app-dashboard-nav>

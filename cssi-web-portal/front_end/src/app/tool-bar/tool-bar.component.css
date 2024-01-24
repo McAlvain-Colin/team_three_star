@@ -1,0 +1,38 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.push-links-right {
+  /* The three values are grow, shrink, and basis, the span will grow or shrink to fill the container, in this case the toolbar */
+  flex: 1 1 auto;
+}
+
+mat-toolbar a {
+  /* Display inline-block considers the margins and sets a width and height */
+  display: inline-block;
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
+}
+
+.vertical-seperator {
+  /* Adjusts the vertical bars between login credentials to make it align evenly */
+  margin-top: 10px;
+}
+
+/*Basically this removes the side nav bar from the page, and now it'll only be in a menu when the screen is minimized */
+@media (min-width: 1000px) {
+  .sidenav {
+    display: none;
+  }
+}

@@ -5,7 +5,8 @@ University of Nevada, Reno, Computer Science and Engineering Capstone Project in
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Tech Stack](#getting-started)
+- [Technology Stack](#Technology-stack)
+- [System Design](#system-design)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -57,6 +58,20 @@ Metrics to Visualize/Export
 - Packet loss
 - Sensor health
 
+## Technology Stack
+- Angular
+- Leaflet
+- Charts.js
+- RxJS
+- Python
+- typescript
+- html
+- css
+
+
+## System Design
+- TODO
+
 ## Usage
 
 - Improve the understanding, prediction, and management of natural disasters such as wildfires, earthquakes, and floods
@@ -67,7 +82,7 @@ Metrics to Visualize/Export
 ## Contributing
 
 - Colin McAlvain | cmcalvain@nevada.unr.edu
-- David Vargas Delgado | TODO
+- David Vargas Delgado | davidadbdiel775@gmail.com
 - Huy Tran | TODO
 
 ## License
