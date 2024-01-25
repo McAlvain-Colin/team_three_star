@@ -33,10 +33,7 @@ import { UserPageComponent } from './user-page/user-page.component';
 import { DeviceDataComponent } from './device-data/device-data.component';
 
 @NgModule({
-  declarations: [
-    AppComponent, 
-    UserPageComponent,
-  ],
+  declarations: [AppComponent, UserPageComponent],
   imports: [
     BrowserAnimationsModule,
     MatButtonModule,
@@ -48,9 +45,9 @@ import { DeviceDataComponent } from './device-data/device-data.component';
     RouterModule,
     BrowserAnimationsModule,
     LeafletModule,
-    AboutComponent, 
-    ContactComponent, 
-    HomeComponent, 
+    AboutComponent,
+    ContactComponent,
+    HomeComponent,
     ResetPasswordComponent,
     DeviceMapComponent,
     DeviceTableComponent,
@@ -67,12 +64,7 @@ import { DeviceDataComponent } from './device-data/device-data.component';
     DatePicker,
     OrganizationPageComponent,
   ],
-  providers: [
-              ChartService, 
-              DeviceDataService,
-              DataStatsService
-            ],
+  providers: [ChartService, DeviceDataService, DataStatsService],
   bootstrap: [AppComponent],
-  
 })
 export class AppModule {}
