@@ -6,6 +6,7 @@ University of Nevada, Reno, Computer Science and Engineering Capstone Project in
 - [Introduction](#introduction)
 - [Features](#features)
 - [Technology Stack](#Technology-stack)
+- [Download](#Downloads)
 - [System Design](#system-design)
 - [Usage](#usage)
 - [Contributing](#contributing)
@@ -67,7 +68,25 @@ Metrics to Visualize/Export
 - typescript
 - html
 - css
+- Nginx
+- jsNode
+- git/github
+- docker/dockerhub
 
+## Technology Stack
+- These are downloads that we need to get the website up on the server. Housed in docker container
+
+### Downloads
+- apt-get update && \
+- apt-get install -y \
+- build-essential \
+- git \
+- curl \
+- gnupg \
+- wget \
+- nginx \
+- && apt-get clean \
+- && rm -rf /var/lib/apt/lists/*
 
 ## System Design
 - TODO
