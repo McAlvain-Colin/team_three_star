@@ -53,6 +53,9 @@ export class SignUpComponent {
     ) {
       message = 'Email incorrect!';
       alert(message);
+    } else if (this.email != this.emailConfirm) {
+      message = "Emails don't match!";
+      alert(message);
     } else {
       alert(message);
     }
