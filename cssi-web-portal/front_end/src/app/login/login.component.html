@@ -6,7 +6,7 @@
         <h1 class="title">Login</h1>
         <!--Sets up the main form, and binds the button to the function in the typescript-->
         <form class="container" (ngSubmit)="submitForm()" #loginForm="ngForm">
-          <mat-form-field color="primary">
+          <mat-form-field color="primary" [style.width.px]="250">
             <mat-label>Email</mat-label>
             <!--The email field input that's set up with a form control value from the angular library which checks for proper email inputs-->
             <input
@@ -22,7 +22,7 @@
               getErrorMessage()
             }}</mat-error>
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field color="primary">
             <!--Password, defined with an input that will register the user's input and associate to a variable called password in the typescript-->
             <mat-label>Password</mat-label>
             <input

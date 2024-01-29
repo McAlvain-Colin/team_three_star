@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { DatePicker } from '../date-picker/date-picker.component';
 import { DataLayout } from '../data.config';
-import { ConnectionService } from '../connection.service';
+import { RequestService } from '../request.service';
 
 import { AboutComponent } from '../about/about.component';
 import { ContactComponent } from '../contact/contact.component';
@@ -39,16 +39,34 @@ import { ContactComponent } from '../contact/contact.component';
 })
 export class OrganizationPageComponent {
   //Here we're injecting the service into the component's constructor so that we can call the service's methods
-  constructor(private connectionService: ConnectionService) {}
+  constructor(private requestService: RequestService) {}
 
   config: DataLayout | undefined;
+  headers: Array<string> | undefined;
 
   //Broadcasts a data parameter with the Config interface layout, and then maps it into values for the object in this class
   //Subscribe is a method of the HTTPClient which allows us to make an HTTP request for the backend
   showData() {
-    this.connectionService
+    this.requestService
       .getJson()
-      //Calls the method to locate the Url to get the data from, then submits an HTTP Request where we clone the data over to config since they have the same type
+      //Calls the method to locate the Url to get the data from, then submits an HTTP Request where we clone the data over to config since they have the same type using destructuring
       .subscribe((data) => (this.config = { ...data }));
+  }
+
+  showServerResponse() {
+    this.requestService
+      .getResponse()
+
+      //This subscription asks the server for a response, and the casts that response into the attributes in the HTTP Response class
+      .subscribe((response) => {
+        //Assigning keys from the values received from the the HTTP Request as well as the headers
+        const keys = response.headers.keys();
+        this.headers = keys.map(
+          (key) => '${key}: ${response.headers.get(key)}'
+        );
+
+        //Accesses the body of the response which has the typing as DataLayout
+        this.config = { ...response.body! };
+      });
   }
 }
