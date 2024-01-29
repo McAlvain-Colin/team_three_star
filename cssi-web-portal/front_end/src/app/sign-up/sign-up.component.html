@@ -9,7 +9,7 @@
         <form class="container" (ngSubmit)="submitForm()" #signupForm="ngForm">
           <!--"Banana in the box" [()], property binding, then event binding. Connects template to class and likewise-->
           <!--Using {{variable}} would show how the variable is now connected to the field-->
-          <mat-form-field color="primary">
+          <mat-form-field color="primary" [style.width.px]="250">
             <mat-label>Name</mat-label>
             <input
               matInput
@@ -25,7 +25,7 @@
             ></mat-error>
           </mat-form-field>
           <!--The email field utilizes the angular framework to check for invalid email entries-->
-          <mat-form-field color="primary">
+          <mat-form-field color="primary" [style.width.px]="250">
             <mat-label>Email</mat-label>
             <input
               matInput
@@ -40,7 +40,7 @@
             }}</mat-error>
           </mat-form-field>
           <!--Just make the confirm part check if it matches the same as the top one-->
-          <mat-form-field color="primary">
+          <mat-form-field color="primary" [style.width.px]="250">
             <mat-label>Confirm Email</mat-label>
             <input
               matInput

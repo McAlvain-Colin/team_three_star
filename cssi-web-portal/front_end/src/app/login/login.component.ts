@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { RouterModule } from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,7 @@ import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
     MatCardModule,
     MatIconModule,
     MatButtonModule,
+    MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
     TempNavBarComponent,
@@ -37,6 +39,7 @@ import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
   ],
 })
 export class LoginComponent {
+  constructor(private snackBar: MatSnackBar) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
   email: string = '';
@@ -51,9 +54,15 @@ export class LoginComponent {
       this.emailField.hasError('email')
     ) {
       message = 'Email incorrect!';
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     } else {
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     }
   }
 

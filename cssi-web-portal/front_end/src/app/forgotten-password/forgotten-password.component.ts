@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-forgot-password',
@@ -31,10 +32,12 @@ import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
     FormsModule,
     ReactiveFormsModule,
     TempNavBarComponent,
+    MatSnackBarModule,
     NgIf,
   ],
 })
 export class ForgottenPasswordComponent {
+  constructor(private snackBar: MatSnackBar) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   email: string = '';
 
@@ -47,9 +50,15 @@ export class ForgottenPasswordComponent {
       this.emailField.hasError('email')
     ) {
       message = 'Email incorrect!';
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     } else {
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     }
   }
 

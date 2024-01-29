@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 
 @Component({
@@ -31,11 +32,14 @@ import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
     FormsModule,
     ReactiveFormsModule,
     ToolBarComponent,
+    MatSnackBarModule,
     TempNavBarComponent,
+    MatSnackBarModule,
     NgIf,
   ],
 })
 export class SignUpComponent {
+  constructor(private snackBar: MatSnackBar) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
   name: string = '';
@@ -52,12 +56,21 @@ export class SignUpComponent {
       this.emailField.hasError('email')
     ) {
       message = 'Email incorrect!';
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     } else if (this.email != this.emailConfirm) {
       message = "Emails don't match!";
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     } else {
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     }
   }
 
