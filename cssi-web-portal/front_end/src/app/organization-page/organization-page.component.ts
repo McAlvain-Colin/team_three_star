@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { DatePicker } from '../date-picker/date-picker.component';
-import { DataLayout } from '../data.config';
+import { DataLayout, SentData } from '../data.config';
 import { RequestService } from '../request.service';
 
 import { AboutComponent } from '../about/about.component';
@@ -68,5 +68,9 @@ export class OrganizationPageComponent {
         //Accesses the body of the response which has the typing as DataLayout
         this.config = { ...response.body! };
       });
+  }
+
+  newData() {
+    //this.requestService.sendData(newData); //Sends a newData variable to the sendData function to be processed
   }
 }
