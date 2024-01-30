@@ -31,6 +31,8 @@ import { DatePicker } from './date-picker/date-picker.component';
 import { OrganizationPageComponent } from './organization-page/organization-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { DeviceDataComponent } from './device-data/device-data.component';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
@@ -63,6 +65,7 @@ import { DeviceDataComponent } from './device-data/device-data.component';
     TempNavBarComponent,
     DatePicker,
     OrganizationPageComponent,
+    HttpClientModule
   ],
   providers: [ChartService, DeviceDataService, DataStatsService],
   bootstrap: [AppComponent],
