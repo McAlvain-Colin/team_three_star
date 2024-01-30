@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { DataLayout } from './data.config';
 import { Observable } from 'rxjs';
-import { Data } from '@angular/router';
+// import { Data } from '@angular/router';
 
 //Since json files can't have comments, the connection.json simiulates what a configuration file would be like on the server which specifies our resource URLs.
 //The Http get function has parameters url, and options, which will determine how the data is read from the server side
