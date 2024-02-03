@@ -1,10 +1,11 @@
+<!--Html is created by the team with the dashboard nav being placed by Huy, and the data and stats by Colin, and table and map by David-->
 <app-dashboard-nav>
   <div>
-    <app-device-data [Devicelist]="dataSource"></app-device-data>
+    <app-device-data [data]="data_input"></app-device-data>
     <mat-divider></mat-divider>
   </div>
   <div>
-    <app-device-stats></app-device-stats>
+    <app-device-stats [stats]="stats_data"></app-device-stats>
     <mat-divider></mat-divider>
   </div>
   <div>
@@ -12,7 +13,7 @@
     <mat-divider></mat-divider>
   </div>
   <div>
-    <app-device-map [Devicelist]="dataSource"></app-device-map>
+    <app-device-map [deviceList]="dataSource"></app-device-map>
   </div>
   <app-temp-nav-bar></app-temp-nav-bar>
 </app-dashboard-nav>

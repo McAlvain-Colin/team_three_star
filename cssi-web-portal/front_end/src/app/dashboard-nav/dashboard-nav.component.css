@@ -1,3 +1,4 @@
+/* The sidenav and mat toolbar css was imported from the library, Huy only added a z-index to the field in order to provide better viewing experience*/
 .sidenav-container {
   height: 100%;
 }
@@ -9,12 +10,18 @@
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 10;
 }
+
+/*Huy added the theme slider css, and the push links right in order to make the nave bar properly display the text on the right of the tool bar, and to align the toggle slider */
 
 .push-links-right {
   /* The three values are grow, shrink, and basis, the span will grow or shrink to fill the container, in this case the toolbar */
   flex: 1 1 auto;
+}
+
+.theme-slider {
+  margin-left: 10px;
 }
 
 /* Selects the toolbar material, and assigns the CSS to all the links within it */
