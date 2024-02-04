@@ -1,8 +1,39 @@
 .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* display: flex; */
+    /* flex-flow:row; */
+    
+    display: grid; 
+    /* grid-template-columns: 1fr 1fr; */
+    grid-template-columns: 2fr minmax(0, 3fr);
+
     grid-gap: 20px;
 }
+
+.grid-child { 
+    position: relative;
+    
+}
+
+.chart {
+    position: relative;
+    width: 99%;
+}
+
+
+@media screen and (max-width: 610px) {
+    .grid-container {display: flex; flex-flow: column;}
+    .button-container{display: flex; flex-flow:wrap;}
+    .grid-child{ width: 100%; 
+            max-width: 100%; 
+            overflow-x: auto;}
+}
+
+.button-container {
+    display: flex;
+    /* justify-content: center; */
+    gap: 10px;
+}
+
 
 mat-card {
     margin: 15px;

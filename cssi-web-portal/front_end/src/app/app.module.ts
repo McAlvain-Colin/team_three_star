@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
@@ -23,40 +22,49 @@ import { DeviceMapComponent } from './device-map/device-map.component';
 import { DeviceTableComponent } from './device-table/device-table.component';
 import { MaterialModule } from './material/material.module';
 import { ChartService } from './chart.service';
-import { DeviceDataComponent } from './device-data/device-data.component';
+import { DeviceDataService } from '../charts/device-data.service';
 import { DeviceStatsComponent } from './device-stats/device-stats.component';
 import { TempNavBarComponent } from './temp-nav-bar/temp-nav-bar.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { DataStatsService } from 'src/charts/data-stats.service';
+import { DatePicker } from './date-picker/date-picker.component';
+import { OrganizationPageComponent } from './organization-page/organization-page.component';
+import { UserPageComponent } from './user-page/user-page.component';
+import { DeviceDataComponent } from './device-data/device-data.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, UserPageComponent],
   imports: [
-    MaterialModule,
-    BrowserModule,
-    RouterModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
-    LoginComponent,
-    SignUpComponent,
-    ToolBarComponent,
     MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    ForgottenPasswordComponent,
-    TempNavBarComponent,
-    ResetPasswordComponent,
-    MaterialModule,
+    BrowserModule,
+    RouterModule,
+    BrowserAnimationsModule,
+    LeafletModule,
     AboutComponent,
     ContactComponent,
     HomeComponent,
+    ResetPasswordComponent,
     DeviceMapComponent,
     DeviceTableComponent,
     DashboardComponent,
     DeviceDataComponent,
     DeviceStatsComponent,
+    MaterialModule,
+    AppRoutingModule,
+    LoginComponent,
+    SignUpComponent,
+    ToolBarComponent,
+    ForgottenPasswordComponent,
+    TempNavBarComponent,
+    DatePicker,
+    OrganizationPageComponent,
   ],
-  providers: [ChartService],
+  providers: [ChartService, DeviceDataService, DataStatsService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

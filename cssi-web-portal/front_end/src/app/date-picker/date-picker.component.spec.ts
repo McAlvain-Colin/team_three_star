@@ -1,17 +1,17 @@
 //created by angular
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeviceStatsComponent } from './device-stats.component';
+import { DatePicker } from './date-picker.component';
 
-describe('DeviceStatsComponent', () => {
-  let component: DeviceStatsComponent;
-  let fixture: ComponentFixture<DeviceStatsComponent>;
+describe('DatePickerComponent', () => {
+  let component: DatePicker;
+  let fixture: ComponentFixture<DatePicker>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [DeviceStatsComponent]
-});
-    fixture = TestBed.createComponent(DeviceStatsComponent);
+      declarations: [DatePicker]
+    });
+    fixture = TestBed.createComponent(DatePicker);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

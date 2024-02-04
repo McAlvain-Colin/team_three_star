@@ -1,67 +1,67 @@
 <div>
-    <mat-card>
-        <mat-card-title>Application Devices</mat-card-title>
-        <mat-card-header>Device Health</mat-card-header>
-        <mat-card-content>
-            <form>
-                <table>
-                    <tr>
-                        <td>
-                            <mat-form-field class="example-full-width">
-                            <mat-label>Start Date-Time</mat-label>
-                            <input matInput placeholder="Ex. 11/17/23 10:05">
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="example-full-width">
-                            <mat-label>End Date-Time</mat-label>
-                            <input matInput placeholder="Ex. 11/19/23 10:05">
-                            </mat-form-field>
-                        </td>
-                    </tr>
-                </table>          
-            </form>
-            <div class="grid-container">
-                <div class="grid-child">
-                    <table mat-table [dataSource]="Devicelist" class="mat-elevation-z4">
-                        <ng-container matColumnDef="endDeviceId">
-                            <th mat-header-cell *matHeaderCellDef> Device EUI </th>
-                            <td mat-cell *matCellDef="let element"> {{element.endDeviceId}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="gatewayId">
-                            <th mat-header-cell *matHeaderCellDef> Gateway EUI </th>
-                            <td mat-cell *matCellDef="let element"> {{element.gatewayId}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="packetLoss">
-                            <th mat-header-cell *matHeaderCellDef> Packet Loss </th>
-                            <td mat-cell *matCellDef="let element"> {{element.packetLoss[0]/100 | percent: '1.1'}}</td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="['endDeviceId', 'gatewayId', 'packetLoss']"></tr>
-                        <tr (click)="loadSpinner()" (click)="viewDeviceHealth(row)" mat-row *matRowDef="let row; columns: ['endDeviceId', 'gatewayId', 'packetLoss']"></tr>
-
-                    </table>
-                </div>
+    <!-- The mat card is from the Angular Material Library for Angular 16.2.10, the mat card will consist of the title-->
+    <!-- as well as the content which will consist of a table and a chart which will be altered baed upon the selected -->
+    <!-- button with avaliable options Packet Loss, Gateway RSSI, Gateway SNR, Battery, Export Data The table structure is based upon the -->
+    <!-- example presented in the Angular Material Library which can installed using command "ng add @angular/material"
+    , https://material.angular.io/components/table/overview , https://material.angular.io/components/card/overview -->
+    <!-- The Table used in the device-table.html will appear once selector of the component is used in the dashboard component and will -->
+    <!-- present the device EUI (identifier) as well as the gateway EUI (identifier), once a row in the table is selected the respective row's -->
+    <!-- data is presented with respect to how which button has been pressed, the chart will display packet loss initially by Default. -->
+    
+        <mat-card>
+            <mat-card-title>Application Devices</mat-card-title>
+            <mat-card-content>
                 
-                <div class="grid-child" class="mat-elevation-z4">
-                    <canvas id="myChart"></canvas>
+                <div class="grid-container">
+                    <div class="grid-child">
+    <!-- The table used stucture and styling provided from the Material library in Angular, includes list of devices and their information retrieved from the dashboard component, -->
+    <!-- consisting of the Packet Loss, Gateway RSSI, Gateway SNR for the corresponding row presented in the table. Along with the td and tr for table data and row using the device list as for the dataSource value need for the table, the ng container element -->
+    <!-- allows for the team to be able to place content within the element to not use excessive div elements and also be able to use mtuiple structural directives if needed -->
+    <!-- the table rows will be able to use event based binding on if the user clicks on a specific row, in which case the information for the corresponding device is presented with the viewDeviceHealth method is called. -->                  
+                        <table mat-table [dataSource]="Devicelist" class="mat-elevation-z4">
+                            <ng-container matColumnDef="endDeviceId">
+                                <th mat-header-cell *matHeaderCellDef> Device EUI </th>
+                                <td mat-cell *matCellDef="let element"> {{element.endDeviceId}} </td>
+                            </ng-container>
+    
+                            <ng-container matColumnDef="gatewayId">
+                                <th mat-header-cell *matHeaderCellDef> Gateway EUI </th>
+                                <td mat-cell *matCellDef="let element"> {{element.gatewayId}} </td>
+                            </ng-container>
+    
+                            <!-- <ng-container matColumnDef="packetLoss">
+                                <th mat-header-cell *matHeaderCellDef> Packet Loss </th>
+                                <td mat-cell *matCellDef="let element"> {{element.packetLoss[0]/100 | percent: '1.1'}}</td>
+                            </ng-container> -->
+    
+                            <tr mat-header-row *matHeaderRowDef="['endDeviceId', 'gatewayId']"></tr>
+                            <tr (click)="loadSpinner()" (click)="viewDeviceHealth(row)" mat-row *matRowDef="let row; columns: ['endDeviceId', 'gatewayId']"></tr>
+    
+                        </table>
+                    </div>
+    <!--The chart will be used to visualize what is the current displayed device and the currently selected visualization option selected by the user  -->                
+                    <div class="grid-child" class="chart" class="mat-elevation-z4">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    
                 </div>
-                
-            </div>
-        </mat-card-content>
-
-        <mat-card-actions>
-            <button mat-raised-button (click)="loadSpinner()" (click)="viewDevicePktloss()">Add Device</button>
-            <button mat-raised-button (click)="loadSpinner()" >View Packet Loss</button>
-            <button mat-raised-button (click)="loadSpinner()">View RSSI</button>
-            <button mat-raised-button (click)="loadSpinner()">View SNR</button>
-            <button mat-raised-button (click)="loadSpinner()" (click)="viewDeviceBattery()">View Battery</button>
-            <button mat-raised-button (click)="loadSpinner()">Export Data</button>
-            <mat-spinner *ngIf="showSpinner"></mat-spinner>
-        </mat-card-actions>
-
-    </mat-card>
-</div>
-
+            </mat-card-content>
+    <!-- The mat card will also have buttons present to retrieve user input and specific what infromation the user would like to view with respect tot he device health. -->
+    <!-- using event based binding which will use the correpsonding method and allow the user to view the selected information visuallized with the chart, here the chart is specified-->
+    <!-- through canvas element "myChart" -->
+            <mat-card-actions>
+                <div class="button-container">
+                    <!-- <button mat-raised-button (click)="loadSpinner()">Add Device</button> -->
+                    <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="viewDevicePktloss()">Packet Loss</button>
+                    <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="viewGatewayRSSI()">Gateway RSSI</button>
+                    <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="viewGatewaySNR()">Gateway SNR</button>
+                    <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="viewDeviceBattery()">Battery</button>
+                    <button mat-raised-button color="accent" (click)="loadSpinner()" (click)="getDownload()">Export Data</button>
+                </div>
+                <mat-spinner *ngIf="showSpinner"></mat-spinner>
+            </mat-card-actions>
+    
+        </mat-card>
+    </div>
+    
+    

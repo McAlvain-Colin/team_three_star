@@ -1,9 +1,40 @@
+/* container for mat cards which indicate the children should be side by side minmax function allows for variation in the grid children(table and chart) size upon window size. */
 .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+
+    display: grid; 
+
+    grid-template-columns: 1fr minmax(0, 3fr);
+
     grid-gap: 20px;
 }
 
+/* indicates the how grid child should be positioned within the avaliable space in the container */
+.grid-child { 
+    position: relative;
+    
+}
+
+/* indicates the how chart should be positioned within the avaliable space in the container */
+.chart {
+    position: relative;
+    width: 99%;
+}
+
+/* indicating the ordering of the children (table and chart) once changing into a small window size similar to a mobile device. similarly the orde rof the buttons will aslo cahnge based on 
+the window size*/
+@media screen and (max-width: 610px) {
+    .grid-container {display: flex; flex-flow: column;}
+    .button-container{display: flex; flex-flow:wrap;}
+}
+
+/* adds space between buttons */
+.button-container {
+    display: flex;
+    /* justify-content: center; */
+    gap: 10px;
+}
+
+/* mat card should appear not closer to the center not having contact to the sides of the page.*/
 mat-card {
     margin: 15px;
     padding: 15px;
@@ -13,6 +44,7 @@ mat-card-actions {
     margin-top: 5px;
 }
 
+/* add color to all the elements available in the component */
 * {
     background-color: aliceblue;
 }
