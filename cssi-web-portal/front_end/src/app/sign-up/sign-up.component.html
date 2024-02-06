@@ -1,3 +1,4 @@
+<!-- Huy developed the code for the forms in the HTML, which utilizes the angular form control field to check values such as the email parameter. -->
 <app-tool-bar>
   <div>
     <body class="main-body">
@@ -8,7 +9,7 @@
         <form class="container" (ngSubmit)="submitForm()" #signupForm="ngForm">
           <!--"Banana in the box" [()], property binding, then event binding. Connects template to class and likewise-->
           <!--Using {{variable}} would show how the variable is now connected to the field-->
-          <mat-form-field color="primary">
+          <mat-form-field color="primary" [style.width.px]="250">
             <mat-label>Name</mat-label>
             <input
               matInput
@@ -23,7 +24,8 @@
               *ngIf="nameInput.invalid && nameInput.touched"
             ></mat-error>
           </mat-form-field>
-          <mat-form-field color="primary">
+          <!--The email field utilizes the angular framework to check for invalid email entries-->
+          <mat-form-field color="primary" [style.width.px]="250">
             <mat-label>Email</mat-label>
             <input
               matInput
@@ -38,7 +40,7 @@
             }}</mat-error>
           </mat-form-field>
           <!--Just make the confirm part check if it matches the same as the top one-->
-          <mat-form-field color="primary">
+          <mat-form-field color="primary" [style.width.px]="250">
             <mat-label>Confirm Email</mat-label>
             <input
               matInput
@@ -68,6 +70,7 @@
               matSuffix
               (click)="hide = !hide"
               [attr.aria-label]="'Hide password'"
+              type="button"
               [attr.aria-pressed]="hide"
             >
               <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>

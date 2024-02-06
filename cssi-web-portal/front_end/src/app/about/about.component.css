@@ -1,22 +1,58 @@
 /* about.component.css */
-
-.header {
+.mat-card {
     display: flex;
-    justify-content: space-between;
-    background-color: #f0f0f0;
-    padding: 10px;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+.mat-card-title {
+    text-align: center;
+    display: block;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
 }
 
-.left-links, .right-links {
+.mat-card-header {
+    align-self: center;
+    display: block;
+    justify-content: center;
+}
+
+.mat-grid-list {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+mat-card-content {    
+    text-align: center;
+    display: block;
+}
+
+.mat-grid-tile {
+    background: #e0e0e0;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.left-links a, .right-links a {
-    margin-right: 10px;
-    text-decoration: none;
-    color: #007BFF;
+.mat-grid-tile img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 4px;
 }
 
-.content {
-    margin: 20px;
-}
+body {
+    /* This is the main control for the visuals on the background of the home page */
+    background-color: aliceblue;
+    background-image: url("../../assets/unr.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+  }

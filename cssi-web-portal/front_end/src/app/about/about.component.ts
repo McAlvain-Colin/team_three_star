@@ -30,13 +30,13 @@ export class AboutComponent {
     { url: '../../assets/Huy.jpg', alt: 'Huy Tran'},
   ];
   professor_images = [
-    { url: '../../assets/Colin.jpg', alt: 'David Feil-Seifer'},
-    { url: '../../assets/David.jpg', alt: 'Devrin Lee'},
-    { url: '../../assets/Huy.jpg', alt: 'Sara Davis'},
+    { url: '../../assets/DavidFeilSeifer.jpg', alt: 'Dr. David Feil-Seifer'},
+    { url: '../../assets/default.png', alt: 'Devrin Lee'},
+    { url: '../../assets/Sara-Davis.jpg', alt: 'Sara Davis'},
   ];
   advisor_image = [
-    { url: '../../assets/zach.png', alt: 'Dr. Dascalu '},
+    { url: '../../assets/SergiuDascalu.jpg', alt: 'Dr.Sergui Dascalu '},
     { url: '../../assets/zach.png', alt: 'Zach Estreito'},
-    { url: '../../assets/Colin.jpg', alt: 'Vinh Le'},
+    { url: '../../assets/default.png', alt: 'Vinh Le'},
   ];
 }

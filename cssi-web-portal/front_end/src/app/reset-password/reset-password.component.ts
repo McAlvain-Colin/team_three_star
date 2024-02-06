@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reset-password',
@@ -30,24 +31,33 @@ import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
     TempNavBarComponent,
     NgIf,
   ],
 })
 export class ResetPasswordComponent {
+  constructor(private snackBar: MatSnackBar) {}
   password: string = '';
   repeatPassword: string = '';
   hide1st: boolean = true;
   hide2nd: boolean = true;
 
   //use the `` to allow connections to the variable in the declaration.
+  //This method was developed by Huy to check if both submitted password fields match with one another, and alerts the user with the respective message
   submitForm() {
     var message: string = `Password submitted`;
     if (this.password === this.repeatPassword) {
-      message = "Password doesn't match";
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     } else {
-      alert(message);
+      message = "Password doesn't match";
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     }
   }
 }

@@ -18,18 +18,10 @@
           allowing quick access to climate information.</p>
       </mat-card-content>
     </mat-card>
-    
-
-    <!-- <div class="image-grid">
-      <div class="image-item" *ngFor="let image of images">
-        <img [src]="image.url" [alt]="image.alt">
-      </div>
-    </div> -->
-
-
 
     <mat-card>
       <mat-card-title>The Team</mat-card-title>
+      <mat-card-header>Students</mat-card-header>
       <mat-grid-list cols="3" rowHeight="1:1">
         <mat-grid-tile *ngFor="let image of team_images">
           <img src = '{{ image.url }}' alt="{{ image.alt }}" style="width:100%">
@@ -42,7 +34,7 @@
         </mat-grid-tile>
       </mat-grid-list>
       <mat-card-header>Advisors</mat-card-header>
-      <mat-grid-list cols="2" rowHeight="1:1">
+      <mat-grid-list cols="3" rowHeight="1:1">
         <mat-grid-tile *ngFor="let image of advisor_image">
           <img src = '{{ image.url }}' alt="{{ image.alt }}" style="width:100%">
         </mat-grid-tile>
@@ -59,9 +51,7 @@
       <mat-card-header>University of Nevada, Reno</mat-card-header>
       <mat-card-header>Computer Science Engineering Department</mat-card-header>
       <mat-card-content>
-        <form>
-          <p> TODO: description</p>
-        </form>
+        <p> TODO: description</p>
       </mat-card-content>
     </mat-card>
     
