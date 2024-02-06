@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { DashboardNavComponent } from '../dashboard-nav/dashboard-nav.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+
+
 
 @Component({
   selector: 'app-about',
@@ -15,6 +18,7 @@ import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
     FormsModule,
     DashboardNavComponent,
     TempNavBarComponent,
+    MatGridListModule,
   ],
 })
 export class AboutComponent {
