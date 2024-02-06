@@ -1,26 +1,85 @@
 <!-- /* artifact and will be replaced*/ -->
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About</title>
+  <link rel="stylesheet" href="about.component.css" />
+</head>
+<body>
   <app-dashboard-nav>
-    <head>
-      <link rel="stylesheet" href="about.component.css" />
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>About</title>
-    </head>
-    <body>
-      <div>
-        <mat-card>
-          <mat-card-title>Organization Name</mat-card-title>
-          <mat-card-header>Organization Bio:</mat-card-header>
-          <mat-card-content>
-            <form>
-              <p>Info about organization</p>
-            </form>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </body>
-    <app-temp-nav-bar></app-temp-nav-bar>
+    <mat-card>
+      <mat-card-title>Team Three Star TO5: CSSI-Portal</mat-card-title>
+      <mat-card-header>Connecting Data and Scientists</mat-card-header>
+      <mat-card-content>
+        <p>The purpose of this web portal is to provide easier accessibility for
+          scientists, and the public to view and manage their LoRa devices
+          allowing quick access to climate information.</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>The Team</mat-card-title>
+      <mat-card-header>Students</mat-card-header>
+      <mat-grid-list cols="3" rowHeight="1:1">
+        <mat-grid-tile *ngFor="let image of team_images">
+          <img src = '{{ image.url }}' alt="{{ image.alt }}" style="width:100%">
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-card-header>Instructors</mat-card-header>
+      <mat-grid-list cols="3" rowHeight="1:1">
+        <mat-grid-tile *ngFor="let image of professor_images">
+          <img src = '{{ image.url }}' alt="{{ image.alt }}" style="width:100%">
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-card-header>Advisors</mat-card-header>
+      <mat-grid-list cols="3" rowHeight="1:1">
+        <mat-grid-tile *ngFor="let image of advisor_image">
+          <img src = '{{ image.url }}' alt="{{ image.alt }}" style="width:100%">
+        </mat-grid-tile>
+      </mat-grid-list> 
+    </mat-card>
+
+
+
+    
+    <mat-card>
+      <mat-card-title>Description</mat-card-title>
+      <mat-card-header>CS426 Senior Project Computer Science</mat-card-header>
+      <mat-card-header>Spring 2024</mat-card-header>
+      <mat-card-header>University of Nevada, Reno</mat-card-header>
+      <mat-card-header>Computer Science Engineering Department</mat-card-header>
+      <mat-card-content>
+        <p> TODO: description</p>
+      </mat-card-content>
+    </mat-card>
+    
+    
+    <mat-card>
+      <mat-card-title>Resources</mat-card-title>
+      <mat-card-header>Resources #1</mat-card-header>
+      <mat-card-header>Resources #2</mat-card-header>
+      <mat-card-header>Resources #3</mat-card-header>
+      <mat-card-header>Resources #4</mat-card-header>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Project Poster</mat-card-title>
+      <mat-card-header>TBD</mat-card-header>
+    </mat-card>
+    
+    <mat-card>
+      <mat-card-title>Project Video</mat-card-title>
+      <mat-card-header>TBD</mat-card-header>
+    </mat-card>
+    
+    <mat-card>
+      <mat-card-title>Contact Us</mat-card-title>
+      <mat-card-header>TBD</mat-card-header>
+    </mat-card>
+    
   </app-dashboard-nav>
+  <app-temp-nav-bar></app-temp-nav-bar>
+</body>
 </html>

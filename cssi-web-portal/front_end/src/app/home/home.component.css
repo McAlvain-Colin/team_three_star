@@ -91,3 +91,13 @@ html {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+body {
+  /* This is the main control for the visuals on the background of the home page */
+  background-color: aliceblue;
+  background-image: url("../../assets/home_page_image.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
