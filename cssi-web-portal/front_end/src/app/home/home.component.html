@@ -2,21 +2,29 @@
 <body>
   <!-- This is the toolbar which wraps around the home content, and stuff within are what would be displayed to the user. -->
   <app-tool-bar>
-    <div>
-      <body>
-        <p class="home-text">About Us</p>
-        <p class="home-text">CSSI Web Portal</p>
-        <p class="body-text">
-          The purpose of this web portal is to provide easier accessibility for
-          scientists, and the public to view and manage their LoRa devices
-          allowing quick access to climate information.
-        </p>
-        <div class="button-box">
+    <div class="background">
+      <p class="home-text">About Us</p>
+      <p class="home-text">CSSI Web Portal</p>
+      <p class="body-text">
+        The purpose of this web portal is to provide easier accessibility for
+        scientists, and the public to view and manage their LoRa devices
+        allowing quick access to climate information.
+      </p>
+
+      <mat-card class="login-box">
+        <a routerLink="/login">
           <button mat-raised-button color="accent" class="clicky-button">
-            Clicky Clicky
+            Login
           </button>
-        </div>
-      </body>
+        </a>
+      </mat-card>
+      <mat-card class="sign-up-box">
+        <a routerLink="/sign-up">
+          <button mat-raised-button color="accent" class="clicky-button">
+            Signup
+          </button>
+        </a>
+      </mat-card>
     </div>
     <app-temp-nav-bar></app-temp-nav-bar>
   </app-tool-bar>

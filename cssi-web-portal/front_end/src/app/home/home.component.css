@@ -29,26 +29,46 @@ body {
   margin: 0;
 }
 
-.button-box {
+.login-box {
   /* This alters the button to be in the middle bottom of the screen so that it's more of an entrance button than the main element on the page */
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
   margin: auto;
-  width: 150px;
+  padding: 7px;
+  /* width: 90px;
+  height: 50px; */
+  justify-content: center;
   text-align: center;
-  top: 50%;
-  left: 50%;
-  padding: 30px;
+  display: inline-block;
+  left: 58%;
 }
 
-.clicky-button {
+.sign-up-box {
+  /* This alters the button to be in the middle bottom of the screen so that it's more of an entrance button than the main element on the page */
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  margin: auto;
+  padding: 7px;
+  /* width: 100px;
+  height: 50px; */
+  justify-content: center;
   text-align: center;
+  display: inline-block;
+  left: 40%;
 }
 
-body {
+body,
+html {
   /* This is the main control for the visuals on the background of the home page */
   background-color: aliceblue;
-  background-image: url("../../assets/home_page_image.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
   width: 100%;
   height: 100%;
+}
+
+.background {
+  background-image: url("../../assets/home_page_image.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
