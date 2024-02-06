@@ -1,101 +1,97 @@
 <!-- Huy developed the code for the forms in the HTML, which utilizes the angular form control field to check values such as the email parameter. -->
 <app-tool-bar>
-  <div>
-    <body class="main-body">
-      <mat-card class="signup-form">
-        <h1 class="title">Signup</h1>
-        <!--hr is for forming a line under the title-->
-        <!--Form starts here and is event bound to a method that will let us connect all these entries-->
-        <form class="container" (ngSubmit)="submitForm()" #signupForm="ngForm">
-          <!--"Banana in the box" [()], property binding, then event binding. Connects template to class and likewise-->
-          <!--Using {{variable}} would show how the variable is now connected to the field-->
-          <mat-form-field color="primary" [style.width.px]="250">
-            <mat-label>Name</mat-label>
-            <input
-              matInput
-              name="name"
-              placeholder="John Joestar"
-              [(ngModel)]="name"
-              #nameInput="ngModel"
-              required
-            />
-            <!--Only invalid if left empty, and has been clicked into-->
-            <mat-error
-              *ngIf="nameInput.invalid && nameInput.touched"
-            ></mat-error>
-          </mat-form-field>
-          <!--The email field utilizes the angular framework to check for invalid email entries-->
-          <mat-form-field color="primary" [style.width.px]="250">
-            <mat-label>Email</mat-label>
-            <input
-              matInput
-              name="email"
-              placeholder="good@example.com"
-              [(ngModel)]="email"
-              [formControl]="emailField"
-              required
-            />
-            <mat-error *ngIf="emailField.invalid">{{
-              getErrorMessage(0)
-            }}</mat-error>
-          </mat-form-field>
-          <!--Just make the confirm part check if it matches the same as the top one-->
-          <mat-form-field color="primary" [style.width.px]="250">
-            <mat-label>Confirm Email</mat-label>
-            <input
-              matInput
-              name="emailConfirm"
-              placeholder="good@example.com"
-              [(ngModel)]="emailConfirm"
-              [formControl]="emailField"
-              required
-            />
-            <mat-error *ngIf="emailField.invalid">{{
-              getErrorMessage(1)
-            }}</mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <!--Password-->
-            <mat-label>Password</mat-label>
-            <input
-              matInput
-              name="password"
-              [(ngModel)]="password"
-              #passwordInput="ngModel"
-              [type]="hide ? 'password' : 'text'"
-              required
-            />
-            <button
-              mat-icon-button
-              matSuffix
-              (click)="hide = !hide"
-              [attr.aria-label]="'Hide password'"
-              type="button"
-              [attr.aria-pressed]="hide"
-            >
-              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-            </button>
-            <!--Declared for the password input above, if this field is either wrong or empty after user has selected the input-->
-            <mat-error
-              *ngIf="
-                passwordInput.invalid &&
-                (passwordInput.dirty || passwordInput.touched)
-              "
-            >
-              Password is incorrect or empty</mat-error
-            >
-          </mat-form-field>
-          <!--Button will only be valid if all the required forms are filled out-->
+  <body class="main-body">
+    <mat-card class="signup-form">
+      <h1 class="title">Signup</h1>
+      <!--hr is for forming a line under the title-->
+      <!--Form starts here and is event bound to a method that will let us connect all these entries-->
+      <form class="container" (ngSubmit)="submitForm()" #signupForm="ngForm">
+        <!--"Banana in the box" [()], property binding, then event binding. Connects template to class and likewise-->
+        <!--Using {{variable}} would show how the variable is now connected to the field-->
+        <mat-form-field color="primary" [style.width.px]="250">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            name="name"
+            placeholder="John Joestar"
+            [(ngModel)]="name"
+            #nameInput="ngModel"
+            required
+          />
+          <!--Only invalid if left empty, and has been clicked into-->
+          <mat-error *ngIf="nameInput.invalid && nameInput.touched"></mat-error>
+        </mat-form-field>
+        <!--The email field utilizes the angular framework to check for invalid email entries-->
+        <mat-form-field color="primary" [style.width.px]="250">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            name="email"
+            placeholder="good@example.com"
+            [(ngModel)]="email"
+            [formControl]="emailField"
+            required
+          />
+          <mat-error *ngIf="emailField.invalid">{{
+            getErrorMessage(0)
+          }}</mat-error>
+        </mat-form-field>
+        <!--Just make the confirm part check if it matches the same as the top one-->
+        <mat-form-field color="primary" [style.width.px]="250">
+          <mat-label>Confirm Email</mat-label>
+          <input
+            matInput
+            name="emailConfirm"
+            placeholder="good@example.com"
+            [(ngModel)]="emailConfirm"
+            [formControl]="emailField"
+            required
+          />
+          <mat-error *ngIf="emailField.invalid">{{
+            getErrorMessage(1)
+          }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <!--Password-->
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            name="password"
+            [(ngModel)]="password"
+            #passwordInput="ngModel"
+            [type]="hide ? 'password' : 'text'"
+            required
+          />
           <button
-            mat-raised-button
-            color="accent"
-            [disabled]="signupForm.invalid"
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            type="button"
+            [attr.aria-pressed]="hide"
           >
-            Signup
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
-        </form>
-      </mat-card>
-    </body>
-  </div>
+          <!--Declared for the password input above, if this field is either wrong or empty after user has selected the input-->
+          <mat-error
+            *ngIf="
+              passwordInput.invalid &&
+              (passwordInput.dirty || passwordInput.touched)
+            "
+          >
+            Password is incorrect or empty</mat-error
+          >
+        </mat-form-field>
+        <!--Button will only be valid if all the required forms are filled out-->
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="signupForm.invalid"
+        >
+          Signup
+        </button>
+      </form>
+    </mat-card>
+  </body>
   <app-temp-nav-bar></app-temp-nav-bar>
 </app-tool-bar>
