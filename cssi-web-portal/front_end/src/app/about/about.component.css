@@ -5,9 +5,7 @@ mat-card {
     padding: 30px;
 }
 mat-card-title {
-    background-color: gray;
     color: black;
-    opacity: 20%;
     text-align: center;
     display: block;
     width: 50%;
