@@ -26,30 +26,27 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
       ><a routerLink="/home" class="color-white">Home ></a>
-      Organization</mat-toolbar
+      <a routerLink="/organization" class="color-white">Organization</a> >
+      Device</mat-toolbar
     >
     <body class="background">
-      <mat-card class="about-org-box"
-        ><header>Organization Name</header>
-        <p>This is a generic organization</p></mat-card
+      <mat-card class="about-device-box"
+        ><header>Device Name</header>
+        <p>
+          This has information about the device, could be description or
+          something else
+        </p></mat-card
       >
-      <mat-grid-list cols="1" rowHeight="2:1">
-        <mat-grid-tile class="tile-container">
-          <mat-grid-tile-header class="tile-header" [style.background]="'black'"
-            >Devices</mat-grid-tile-header
-          >
-          <mat-card class="object-box"
-            ><mat-card-content> Device 1 </mat-card-content></mat-card
-          >
-          <mat-card class="object-box"
-            ><mat-card-content> Device 2 </mat-card-content></mat-card
-          >
-        </mat-grid-tile>
-      </mat-grid-list>
-      <button mat-raised-button color="accent" class="device-button">
-        Device Request
-      </button>
       <app-device-map></app-device-map>
+      <button
+        mat-raised-button
+        color="accent"
+        class="data-button"
+        [routerLink]="['/filter']"
+      >
+        Device Data
+        <!--Having a routerlink with the brackets allows for the button to link properly, and if needed, adding , after the link allows for dynamic linking-->
+      </button>
       <app-temp-nav-bar></app-temp-nav-bar>
     </body>
   </mat-sidenav-content>

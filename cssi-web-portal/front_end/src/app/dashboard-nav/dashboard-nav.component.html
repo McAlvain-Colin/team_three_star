@@ -14,13 +14,19 @@
     [mode]="'over'"
     [opened]="false"
   >
-    <mat-toolbar>Organizations</mat-toolbar>
-    <button mat-raised-button color="accent">Add</button>
-    <button mat-raised-button color="warn">Remove</button>
+    <mat-toolbar class="sidenav-title"
+      >Organizations
+      <button mat-raised-button color="accent" class="sidenav-button">
+        Add
+      </button>
+      <button mat-raised-button color="warn" class="sidenav-button">
+        Remove
+      </button></mat-toolbar
+    >
     <mat-nav-list>
-      <a mat-list-item routerLink="/">Organization 1</a>
-      <a mat-list-item routerLink="/">Organization 2</a>
-      <a mat-list-item routerLink="/">Organization 3</a>
+      <a mat-list-item routerLink="/" class="sidenav-item">Organization 1</a>
+      <a mat-list-item routerLink="/" class="sidenav-item">Organization 2</a>
+      <a mat-list-item routerLink="/" class="sidenav-item">Organization 3</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
