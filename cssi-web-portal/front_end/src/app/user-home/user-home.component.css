@@ -56,7 +56,19 @@ body {
   z-index: 10;
 }
 
+.stop-overflow {
+  max-height: 45%;
+  width: 92%;
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
+}
+
 .object-box {
+  background-color: rgba(102, 178, 255, 0.6);
+  width: 14%;
+  height: 30%;
+  margin: 10px;
   padding: 40px;
 }
 
@@ -68,9 +80,8 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   border-color: black;
   border-radius: 20px;
-  transform: translate(20%, 0%);
-  scale: auto;
-  max-width: 70%;
+  transform: translate(5%, 0%);
+  max-width: 90%;
   max-height: 50%;
 }
 
