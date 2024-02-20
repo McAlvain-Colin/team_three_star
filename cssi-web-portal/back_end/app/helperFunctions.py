@@ -1,8 +1,6 @@
-from data_parser import dev_eui, time, metadata, payload
+from data_parser import sensor_data_list, dictionary_list
 
 
-for i in range(0,1):      
-    print(f'dev_eui: {dev_eui}')
-    print(f'time: {time}')
-    print(f'payload: {payload}')
-    print(f'metadata: {metadata}')
+
+print(f'sensor_data_list: {sensor_data_list}')
+print(f'dictionary_list: {dictionary_list}')
