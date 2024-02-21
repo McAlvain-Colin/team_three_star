@@ -1,6 +1,9 @@
-.angular/cache/16.2.10/angular-webpack/
-.angular/cache/16.2.10/
-.angular/cache/16.2.10/babel-webpack/
+#ignore files that are larger than 100mb 
 .angular/
 nodemodules/
 node_modules/
+package-lock.json/
+package.json/
+cssi-web-portal/front_end/angular.json
+cssi-web-portal/front_end/package-lock.json
+cssi-web-portal/front_end/package.json

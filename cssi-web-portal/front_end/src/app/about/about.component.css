@@ -1,17 +1,9 @@
 /* about.component.css */
-mat-card {
-    color: black;
-    text-align: center;
-    padding: 30px;
-}
-mat-card-title {
-    color: black;
-    text-align: center;
-    display: block;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    justify-content: center;
+/* artifact and will be replaced*/
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f0f0;
     padding: 10px;
 }
 
