@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import {
   FormControl,
   Validators,
@@ -15,10 +15,35 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
-import { RouterModule } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterModule, RouterState, RouterStateSnapshot } from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
-import { HttpClient } from '@angular/common/http';                   
+// import { HttpClient, HttpResponse } from ' angular/common/http';                   
 import { Router } from '@angular/router';
+import { HttpClient,HttpInterceptor, HttpEvent, HttpHandler, HttpRequest, HTTP_INTERCEPTORS} from '@angular/common/http';
+
+
+import { Observable } from 'rxjs'; 
+
+@Injectable()
+export class appInterceptor implements HttpInterceptor {
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const currToken = localStorage.getItem('token')
+    req = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
+    return next.handle(req);
+  }
+}
+
+
+
+export interface Resp{
+  success: boolean
+  token: any
+}
+
+
+
+
 
 @Component({
   selector: 'app-login',
@@ -40,6 +65,8 @@ import { Router } from '@angular/router';
     NgIf,
   ],
 })
+
+
 export class LoginComponent {
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
@@ -47,7 +74,7 @@ export class LoginComponent {
   password: string = '';
 
   userForm!: FormGroup;
-  backendResponse: string = '';
+  backendResponse!: any;
 
   base_url : string = 'http://localhost:5000';
 
@@ -90,17 +117,67 @@ export class LoginComponent {
 
     // )
 
-
+    //=================================================== 
     //send to the backend so to check if user is valid
-    this.http.post(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'text'}).subscribe(
+    // this.http.post(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'text'}).subscribe(
+    //   {
+    //     next: (response) => 
+    //     {
+    //       this.backendResponse = response;
+    //       console.log("this post is :" + this.backendResponse + "space");
+    //       console.log("this post is : " + typeof(this.backendResponse));
+    //       this.checkResponse(this.backendResponse);
+
+    //     },
+    //     error: (error) => 
+    //     {
+    //       console.error(error);
+    //     },
+    //   }
+    // );
+    //========================================================
+    //new implementation returning json data saved to an TS interface instance
+    // this.http.post<Resp>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
+    //   {
+    //     next: (response) => 
+    //     {
+    //       this.checkResponse(response.success);
+
+    //     },
+    //     error: (error) => 
+    //     {
+    //       console.error(error);
+    //     },
+    //   }
+    // );
+    // ==================
+    // this.http.post <httpResponse<Resp>>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
+    //   {
+    //     next: (response) => 
+    //     {
+    //       this.checkResponse(response.success);
+
+    //     },
+    //     error: (error) => 
+    //     {
+    //       console.error(error);
+    //     },
+    //   }
+    // );
+
+
+    //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC: 
+    this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, {observe: 'response', responseType : 'json'}).subscribe(
       {
         next: (response) => 
         {
-          this.backendResponse = response;
-          console.log("this post is :" + this.backendResponse + "space");
-          console.log("this post is : " + typeof(this.backendResponse));
-          this.checkResponse(this.backendResponse);
+          const res = JSON.stringify(response.body)
 
+          let resp = JSON.parse(res)
+          
+          localStorage.setItem('token', resp.token)
+          
+          this.checkResponse(resp.success);
         },
         error: (error) => 
         {
@@ -112,14 +189,29 @@ export class LoginComponent {
     
   }
 
-  //check value retunred from the backend response
-  checkResponse(response : string)
+  //check value retunred from the backend response, not sure if else condition works
+  checkResponse(response: boolean)//, route: ActivatedRouteSnapshot, state : RouterStateSnapshot)
   {
-    if(response == '1')
+    if(response)
     {
-      console.log('entered if stgate');
+      this.http.get(this.base_url + '/protected', {observe: 'response', responseType : 'json'}).subscribe(
+        {
+          next: (response) => 
+          {
+            const resp = {...response.body}
+          },
+          error: (error) => 
+          {
+            console.error(error);
+          }
+        });
+
       this.router.navigate(['/dashboard']);
 
+    }
+    else
+    {
+      this.getErrorMessage()
     }
   }
 

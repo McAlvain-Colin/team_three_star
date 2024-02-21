@@ -7,7 +7,7 @@ import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent, appInterceptor } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
@@ -31,7 +31,7 @@ import { DatePicker } from './date-picker/date-picker.component';
 import { OrganizationPageComponent } from './organization-page/organization-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { DeviceDataComponent } from './device-data/device-data.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -67,7 +67,7 @@ import { HttpClientModule } from '@angular/common/http';
     OrganizationPageComponent,
     HttpClientModule
   ],
-  providers: [ChartService, DeviceDataService, DataStatsService],
+  providers: [ChartService, DeviceDataService, DataStatsService, {provide: HTTP_INTERCEPTORS, useClass: appInterceptor, multi: true} ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
