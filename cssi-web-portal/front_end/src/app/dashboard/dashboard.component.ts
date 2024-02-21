@@ -537,6 +537,84 @@ const STATISTIC_DATA: DataStats[] = [
 
 //mock data for device data
 export interface DeviceData {
+  endDeviceId: number;
+  appId: number;
+  DataName: string;
+  DataValue: number[];
+  time: string[];
+  Unit: string;
+}
+
+const DATA: DeviceData[] = [
+  {
+    endDeviceId: 123,
+    appId: 456,
+    DataName: 'Tahoe Temp Sensor North Shore',
+    DataValue: [32, 30, 29, 30, 28, 31, 30, 29, 30, 28, 31, 30],
+    time,
+    Unit: 'Celcius',
+  },
+  {
+    endDeviceId: 120,
+    appId: 431,
+    DataName: 'Tahoe Temp Sensor South Shore',
+    DataValue: [30, 28, 31, 29, 30, 28, 30, 29, 30, 30, 28, 31],
+    time,
+    Unit: 'Celcius',
+  },
+  
+  {
+    endDeviceId: 143,
+    appId: 464,
+    DataName: 'Mt. Rose Humidity Sensor',
+    DataValue: [65, 85, 100, 98, 87, 96, 85, 100, 98, 87, 96, 85],
+    time,
+    Unit: 'Percent',
+  },
+];
+//mock data for device stats
+export interface DataStats {
+  endDeviceId: number;
+  appId: number;
+  DataName: string;
+  mean: number[];
+  variance: number[];
+  standardDeviation: number[];
+  time: string[];
+}
+
+const STATISTIC_DATA: DataStats[] = [
+  {
+    endDeviceId: 123,
+    appId: 456,
+    DataName: 'Tahoe North Shore Temperature',
+    mean: [10, 9, 11, 8, 6, 7, 9, 11, 11, 8, 6, 7],
+    variance: [5, 3, 8, 6, 7, 9, 3, 8, 6, 3, 8, 2],
+    standardDeviation: [2, 3, 1, 3, 1, 2, 3, 1, 3, 4, 2, 5],
+    time,
+  },
+  {
+    endDeviceId: 5,
+    appId: 456,
+    DataName: 'Tahoe South Shore Temperature',
+    mean: [20, 18, 24, 11, 8, 6, 7, 9, 11, 11, 8, 15],
+    variance: [4, 6, 2, 6, 7, 3, 1, 3, 4, 3, 8, 2, 6, 7],
+    standardDeviation: [5, 3, 4, 6, 2, 6, 7, 11, 8, 15],
+    time,
+  },
+  {
+    endDeviceId: 63,
+    appId: 15,
+    DataName: 'Mt. Rose Humidity',
+    mean: [31, 30, 26, 29, 35, 24, 23, 28, 37, 29, 35, 24],
+    variance: [6, 8, 4, 7, 3, 1, 3, 4, 5, 3, 4, 6],
+    standardDeviation: [1, 3, 1, 3, 1, 3, 4, 5, 5, 3, 4, 6],
+    time,
+  },
+];
+
+//mock data for device data
+export interface DeviceData {
   endDeviceId: number,
   appId: number,
   DataName: string,
