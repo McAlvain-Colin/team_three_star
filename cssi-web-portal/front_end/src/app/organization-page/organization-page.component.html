@@ -1,15 +1,56 @@
-<!-- defualt page -->
-<div>
-    <mat-card>
-        <mat-card-title>Organization</mat-card-title>
-        <mat-card-header>Bio</mat-card-header>
-        <mat-card-content>
-            <div class="grid-container">
-                <div class="grid-child" class="mat-elevation-z4">
-                    <p>This area should be populated with a description of the orgaization</p>
-                </div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-</div>
-
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="false"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="'over'"
+    [opened]="false"
+  >
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <button class="absorb" mat-button></button>
+      <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
+      <a mat-list-item href="#">Link 1</a>
+      <a mat-list-item href="#">Link 2</a>
+      <a mat-list-item href="#">Link 3</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
+      ><a routerLink="/home" class="color-white">Home ></a>
+      Organization</mat-toolbar
+    >
+    <body class="background">
+      <mat-card class="about-org-box"
+        ><header>Organization Name</header>
+        <p>This is a generic organization</p></mat-card
+      >
+      <mat-grid-list cols="1" rowHeight="2:1">
+        <mat-grid-tile class="tile-container">
+          <mat-grid-tile-header class="tile-header" [style.background]="'black'"
+            >Devices</mat-grid-tile-header
+          >
+          <mat-card class="object-box"
+            ><mat-card-content> Device 1 </mat-card-content></mat-card
+          >
+          <mat-card class="object-box"
+            ><mat-card-content> Device 2 </mat-card-content></mat-card
+          >
+        </mat-grid-tile>
+      </mat-grid-list>
+      <button mat-raised-button color="accent" class="device-button">
+        Device Request
+      </button>
+      <app-device-map></app-device-map>
+      <app-temp-nav-bar></app-temp-nav-bar>
+    </body>
+  </mat-sidenav-content>
+</mat-sidenav-container>
