@@ -1,74 +1,72 @@
 <!-- Huy developed the code for the forms in the HTML, which utilizes the angular form control field to check values such as the email parameter. -->
 <app-tool-bar>
-  <div>
-    <body class="main-body">
-      <mat-card class="login-form">
-        <h1 class="title">Login</h1>
-        <!--Sets up the main form, and binds the button to the function in the typescript-->
-        <form class="container" (ngSubmit)="submitForm()" #loginForm="ngForm">
-          <mat-form-field color="primary" [style.width.px]="250">
-            <mat-label>Email</mat-label>
-            <!--The email field input that's set up with a form control value from the angular library which checks for proper email inputs-->
-            <input
-              matInput
-              name="email"
-              placeholder="good@example.com"
-              [(ngModel)]="email"
-              [formControl]="emailField"
-              required
-            />
-            <!--Prints ou the error if the email field is wrong in any aspect-->
-            <mat-error *ngIf="emailField.invalid">{{
-              getErrorMessage()
-            }}</mat-error>
-          </mat-form-field>
-          <mat-form-field color="primary">
-            <!--Password, defined with an input that will register the user's input and associate to a variable called password in the typescript-->
-            <mat-label>Password</mat-label>
-            <input
-              matInput
-              name="password"
-              [(ngModel)]="password"
-              #passwordInput="ngModel"
-              [type]="hide ? 'password' : 'text'"
-              required
-            />
-            <!--This is the eye icon button for the hiding and showing of the button, having type= button ensure it doesn't trigger the form submission function-->
-            <button
-              mat-icon-button
-              matSuffix
-              (click)="hide = !hide"
-              [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="hide"
-              type="button"
-            >
-              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-            </button>
-            <!--Declared for the password input above, if this field is either wrong or empty after user has selected the input-->
-            <mat-error
-              *ngIf="
-                passwordInput.invalid &&
-                (passwordInput.dirty || passwordInput.touched)
-              "
-            >
-              Password is incorrect or empty</mat-error
-            >
-          </mat-form-field>
-          <!--Button will only be valid if all the required forms are filled out and submit the form when pressed-->
+  <body class="main-body">
+    <mat-card class="login-form">
+      <h1 class="title">Login</h1>
+      <!--Sets up the main form, and binds the button to the function in the typescript-->
+      <form class="container" (ngSubmit)="submitForm()" #loginForm="ngForm">
+        <mat-form-field color="primary" [style.width.px]="250">
+          <mat-label>Email</mat-label>
+          <!--The email field input that's set up with a form control value from the angular library which checks for proper email inputs-->
+          <input
+            matInput
+            name="email"
+            placeholder="good@example.com"
+            [(ngModel)]="email"
+            [formControl]="emailField"
+            required
+          />
+          <!--Prints ou the error if the email field is wrong in any aspect-->
+          <mat-error *ngIf="emailField.invalid">{{
+            getErrorMessage()
+          }}</mat-error>
+        </mat-form-field>
+        <mat-form-field color="primary">
+          <!--Password, defined with an input that will register the user's input and associate to a variable called password in the typescript-->
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            name="password"
+            [(ngModel)]="password"
+            #passwordInput="ngModel"
+            [type]="hide ? 'password' : 'text'"
+            required
+          />
+          <!--This is the eye icon button for the hiding and showing of the button, having type= button ensure it doesn't trigger the form submission function-->
           <button
-            mat-raised-button
-            color="accent"
-            [disabled]="loginForm.invalid || emailField.invalid"
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+            type="button"
           >
-            Login
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
-          <a class="forgot-link" routerLink="/forgotten-password"
-            >Forgot Password?</a
+          <!--Declared for the password input above, if this field is either wrong or empty after user has selected the input-->
+          <mat-error
+            *ngIf="
+              passwordInput.invalid &&
+              (passwordInput.dirty || passwordInput.touched)
+            "
           >
-          <router-outlet></router-outlet>
-        </form>
-      </mat-card>
-    </body>
-  </div>
+            Password is incorrect or empty</mat-error
+          >
+        </mat-form-field>
+        <!--Button will only be valid if all the required forms are filled out and submit the form when pressed-->
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="loginForm.invalid || emailField.invalid"
+        >
+          Login
+        </button>
+        <a class="forgot-link" routerLink="/forgotten-password"
+          >Forgot Password?</a
+        >
+        <router-outlet></router-outlet>
+      </form>
+    </mat-card>
+  </body>
   <app-temp-nav-bar></app-temp-nav-bar>
 </app-tool-bar>
