@@ -1,0 +1,17 @@
+.background {
+  background-color: rgb(167, 199, 231);
+}
+
+.header-text {
+  position: inline;
+  font-size: 10vw;
+  transform: translate(24%, 700%);
+  color: aliceblue;
+  -webkit-text-stroke: 0.2vw black;
+}
+
+.search-expansion-box {
+  width: 50%;
+  left: 25%;
+  top: 30%;
+}

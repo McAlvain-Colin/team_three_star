@@ -53,34 +53,36 @@ export class DeviceStatsComponent implements OnInit {
       this.showSpinner = false;
     }, 250);
   }
-  updateData(row: DataStats){
+  updateData(row: DataStats) {
     this.statsChart.updateChartData(row);
   }
-  addDevice(){}
-  removeDevice(){}
-  exportData(){
+  addDevice() {}
+  removeDevice() {}
+  exportData() {
     this.statsChart.getDownload();
   }
 
-
   calculateAve(array: number[]): number {
-    var total: number= 0;
+    var total: number = 0;
 
-    for(var i = 0; i < array.length; i++){
-      total = total + array[i]
+    for (var i = 0; i < array.length; i++) {
+      total = total + array[i];
     }
-    var avg = total/array.length
-    return avg
+    var avg = total / array.length;
+    return avg;
   }
   roundNumber(value: number): number {
     return Math.round(value);
   }
-  updateDataByDate(row: DataStats, startTime: FormControl<Date>, endTime: FormControl<Date>) {
+  updateDataByDate(
+    row: DataStats,
+    startTime: FormControl<Date>,
+    endTime: FormControl<Date>
+  ) {
     for (var i = 0; i < row.time.length; i++) {
       if (row.time[i] >= typeof startTime && row.time[i] <= typeof endTime) {
         this.statsChart.updateChartData(row);
       }
     }
   }
-  
 }

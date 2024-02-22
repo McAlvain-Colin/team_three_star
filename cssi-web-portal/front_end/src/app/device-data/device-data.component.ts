@@ -9,9 +9,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { DatePicker } from '../date-picker/date-picker.component'
+import { DatePicker } from '../date-picker/date-picker.component';
 
-import { FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-device-data',
@@ -56,38 +56,41 @@ export class DeviceDataComponent implements OnInit {
     }, 250);
   }
   //updates data
-  updateData(row: DeviceData){
+  updateData(row: DeviceData) {
     this.tempDevice = row;
     this.dataChart.updateChartData(row);
   }
   //non functioning as of demo
-  addDevice(){}
-  removeDevice(){}
+  addDevice() {}
+  removeDevice() {}
   //creates a png thats placed in downloads
-  exportData(){
+  exportData() {
     this.dataChart.getDownload();
   }
   //calculates avg value
   calculateAve(array: number[]): number {
-    var total: number= 0;
+    var total: number = 0;
 
-    for(var i = 0; i < array.length; i++){
-      total = total + array[i]
+    for (var i = 0; i < array.length; i++) {
+      total = total + array[i];
     }
-    var avg = total/array.length
-    return avg
+    var avg = total / array.length;
+    return avg;
   }
   //rounds number to whole number
   roundNumber(value: number): number {
     return Math.round(value);
   }
   //none functioning as of demo
-  updateDataByDate(row: DeviceData, startTime: FormControl<Date>, endTime: FormControl<Date>) {
+  updateDataByDate(
+    row: DeviceData,
+    startTime: FormControl<Date>,
+    endTime: FormControl<Date>
+  ) {
     for (var i = 0; i < row.time.length; i++) {
       if (row.time[i] >= typeof startTime && row.time[i] <= typeof endTime) {
         this.dataChart.updateChartData(row);
       }
     }
   }
-  
 }
