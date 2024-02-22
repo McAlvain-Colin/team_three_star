@@ -23,24 +23,12 @@
 
 .home-text {
   /* This is the home text style which will act as the main view and type that the user sees upon initial visit of the web portal */
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> David_Vargas
   padding-top: 35px;
   padding-bottom: 35px;
   line-height: 1.2;
-=======
-=======
->>>>>>> c602d5edd9bbf03ebf20744d91d5c404c9449cb8
-  margin: 0px 40px 70px 40px;
-  padding-top: 120px;
->>>>>>> 4969fd96 (Added the rest of the comments for the remaining components I've edited.)
   font-size: 5vw;
   font-weight: bolder;
   text-align: center;
-<<<<<<< HEAD
   -webkit-text-stroke-width: 0.5px;
   -webkit-text-stroke-color: black;
   color: white;
@@ -59,18 +47,7 @@
   color: white;
 }
 
-<<<<<<< HEAD
 .login-box {
-=======
-body {
-  margin: 0;
-=======
-  color: white;
->>>>>>> c602d5edd9bbf03ebf20744d91d5c404c9449cb8
-}
-
-.button-box {
->>>>>>> David_Vargas
   /* This alters the button to be in the middle bottom of the screen so that it's more of an entrance button than the main element on the page */
   background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
@@ -123,20 +100,4 @@ body {
   background-size: cover;
   width: 100%;
   height: 100%;
-}
-
-body {
-  /* This is the main control for the visuals on the background of the home page */
-  background-color: aliceblue;
-  background-image: url("../../assets/home_page_image.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> David_Vargas
-  width: 100%;
-  height: 100%;
-=======
->>>>>>> c602d5edd9bbf03ebf20744d91d5c404c9449cb8
 }
