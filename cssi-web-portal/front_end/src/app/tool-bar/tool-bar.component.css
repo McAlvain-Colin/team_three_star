@@ -1,3 +1,4 @@
+/* The sidenav and mat toolbar css was imported from the library, Huy only added a z-index to the field in order to provide better viewing experience*/
 .sidenav-container {
   height: 100%;
 }
@@ -9,7 +10,7 @@
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 10;
 }
 
 .push-links-right {
@@ -30,7 +31,7 @@ mat-toolbar a {
   margin-top: 10px;
 }
 
-/*Basically this removes the side nav bar from the page, and now it'll only be in a menu when the screen is minimized */
+/*Developed by Huy, which is an event listener that removes the side nav bar from the page, and now it'll only be in a menu when the screen is minimized */
 @media (min-width: 1000px) {
   .sidenav {
     display: none;

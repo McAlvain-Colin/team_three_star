@@ -44,6 +44,7 @@ export class SignUpComponent {
   password: string = '';
 
   //use the `` to allow connections to the variable in the declaration.
+  //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
   submitForm() {
     var message: string = `Welcome ${this.email}`;
     if (
@@ -51,6 +52,9 @@ export class SignUpComponent {
       this.emailField.hasError('email')
     ) {
       message = 'Email incorrect!';
+      alert(message);
+    } else if (this.email != this.emailConfirm) {
+      message = "Emails don't match!";
       alert(message);
     } else {
       alert(message);

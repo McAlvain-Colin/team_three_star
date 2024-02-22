@@ -1,0 +1,44 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+/* doesnt work at 100%*/
+.chart {
+    width: 99%;
+    /* height: 99%; */
+}
+@media only screen and (max-width: 475px){
+    .chart{
+        width:7%;
+    }
+}
+
+mat-card {
+    margin: 15px;
+    padding: 15px;
+}
+
+mat-card-actions {
+    margin-top: 5px;
+}
+
+* {
+    background-color: aliceblue;
+}
+
+.mat-raised-button {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.form-width {
+    width: 50%;
+}
+   
+td {
+    padding-right: 10px;
+} 
+

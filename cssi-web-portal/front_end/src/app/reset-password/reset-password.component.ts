@@ -41,12 +41,13 @@ export class ResetPasswordComponent {
   hide2nd: boolean = true;
 
   //use the `` to allow connections to the variable in the declaration.
+  //This method was developed by Huy to check if both submitted password fields match with one another, and alerts the user with the respective message
   submitForm() {
     var message: string = `Password submitted`;
     if (this.password === this.repeatPassword) {
-      message = "Password doesn't match";
       alert(message);
     } else {
+      message = "Password doesn't match";
       alert(message);
     }
   }
