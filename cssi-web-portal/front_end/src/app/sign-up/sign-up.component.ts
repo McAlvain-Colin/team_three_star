@@ -46,6 +46,7 @@ export class SignUpComponent {
   email: string = '';
   emailConfirm: string = '';
   password: string = '';
+  passwordConfirm: string = '';
 
   //use the `` to allow connections to the variable in the declaration.
   //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
@@ -62,6 +63,12 @@ export class SignUpComponent {
       });
     } else if (this.email != this.emailConfirm) {
       message = "Emails don't match!";
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+    } else if (this.password != this.passwordConfirm) {
+      message = "Passwords don't match!";
       this.snackBar.open(message, 'Close', {
         horizontalPosition: 'center',
         verticalPosition: 'top',

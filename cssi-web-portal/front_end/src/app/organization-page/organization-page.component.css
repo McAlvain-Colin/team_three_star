@@ -17,7 +17,32 @@
 }
 
 .sidenav-title {
-  text-align: center;
+  transform: translate(75%, 25%);
+  color: white;
+  font-size: 36px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  opacity: 0.95;
+}
+
+.sidenav-toolbar {
+  background-image: url("../../assets/Home-page-2.jpg") !important;
+  background-size: cover !important;
+  height: 200px !important;
+
+  /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, #000000, #000000);
+    opacity: 0.27;
+  }
 }
 
 .sidenav-button {
@@ -45,18 +70,73 @@
   max-height: 10px;
 }
 
-.about-org-box {
-  position: relative;
-  width: 100%;
-  height: 100px;
-}
-
 .device-button {
+  position: inline;
   left: 45%;
+  top: 100%;
 }
 
 .color-white {
   text-decoration: none;
   color: white;
   padding-right: 6px;
+}
+
+.organization-title {
+  color: rgba(63, 81, 181, 1);
+}
+
+.organization-divider {
+  border-top-color: rgba(63, 81, 181, 0.6);
+  border-top-width: 3px;
+}
+
+.organization-image {
+  width: 300px;
+  height: 220px;
+}
+
+.organization-box {
+  display: flex;
+  position: absolute;
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+  height: 32%;
+  max-height: 32%;
+  width: 90%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.organization-content {
+  display: flex;
+  flex-flow: row;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.about-org-box {
+  width: 100%;
+  height: 100%;
+}
+
+.devices-box {
+  display: flex;
+  position: absolute;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 3%;
+  top: 40%;
+  height: 60%;
+  max-height: 60%;
+  width: 90%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.devices-content {
+  height: 100%;
+  overflow-y: scroll;
 }

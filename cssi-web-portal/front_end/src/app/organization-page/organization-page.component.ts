@@ -14,6 +14,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, shareReplay } from 'rxjs';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-organization-page',
@@ -29,6 +30,7 @@ import { Observable, map, shareReplay } from 'rxjs';
     MatSidenavModule,
     MatListModule,
     MatCardModule,
+    MatTabsModule,
     MatButtonModule,
     TempNavBarComponent,
     DeviceMapComponent,
@@ -64,6 +66,9 @@ export class OrganizationPageComponent {
   //   newData() {
   //     //this.requestService.sendData(newData); //Sends a newData variable to the sendData function to be processed
   //   }
+
+  routerLinkVariable = '/home';
+  links = ['link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7'];
 
   private breakpointObserver = inject(BreakpointObserver);
 

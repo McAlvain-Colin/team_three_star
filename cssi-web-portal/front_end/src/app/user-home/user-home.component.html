@@ -7,13 +7,15 @@
     [mode]="'over'"
     [opened]="false"
   >
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar class="sidenav-toolbar"
+      ><p class="sidenav-title">Menu</p></mat-toolbar
+    >
     <mat-nav-list>
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item *ngFor="let item of menuItems" [activated]="true">
+        {{ item }}
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -28,110 +30,96 @@
       </button>
       Welcome User</mat-toolbar
     >
+    <mat-card class="notifications-box">
+      <mat-card-content class="notifications-content">
+        <mat-card-header
+          ><h3 class="notifications-title" matBadge="{{ links.length }}">
+            Notifications
+          </h3>
+        </mat-card-header>
+        <mat-divider class="notifications-divider"></mat-divider>
+        <mat-nav-list>
+          <!-- Activated just adjusts the colors of the individual links whether to be the primary angular color or black-->
+          <a
+            mat-list-item
+            routerLink="/organization/{{ routerLinkVariable }}"
+            *ngFor="let link of links"
+            [activated]="false"
+          >
+            {{ link }}
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="organization-box">
+      <mat-card-content class="organization-content">
+        <mat-tab-group [style.position]="'sticky'">
+          <mat-tab label="Owned Organizations">
+            <mat-nav-list>
+              <a mat-list-item routerLink="/organization"> Organization 1</a>
+              <a mat-list-item routerLink="/organization"> Organization 2</a>
+              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a mat-list-item routerLink="/organization"> Organization 4</a>
+              <a mat-list-item routerLink="/organization"> Organization 5</a>
+              <a mat-list-item routerLink="/organization"> Organization 1</a>
+              <a mat-list-item routerLink="/organization"> Organization 2</a>
+              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a mat-list-item routerLink="/organization"> Organization 4</a>
+              <a mat-list-item routerLink="/organization"> Organization 5</a>
+              <a mat-list-item routerLink="/organization"> Organization 1</a>
+              <a mat-list-item routerLink="/organization"> Organization 2</a>
+              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a mat-list-item routerLink="/organization"> Organization 4</a>
+              <a mat-list-item routerLink="/organization"> Organization 5</a>
+              <a mat-list-item routerLink="/organization"> Organization 1</a>
+              <a mat-list-item routerLink="/organization"> Organization 2</a>
+              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a mat-list-item routerLink="/organization"> Organization 4</a>
+              <a mat-list-item routerLink="/organization"> Organization 5</a>
+            </mat-nav-list>
+          </mat-tab>
+          <mat-tab label="Joined Organizations">
+            <mat-nav-list>
+              <a mat-list-item routerLink="/organization"> Organization 1</a>
+              <a mat-list-item routerLink="/organization"> Organization 2</a>
+              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a mat-list-item routerLink="/organization"> Organization 4</a>
+              <a mat-list-item routerLink="/organization"> Organization 5</a>
+              <a mat-list-item routerLink="/organization"> Organization 1</a>
+              <a mat-list-item routerLink="/organization"> Organization 2</a>
+              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a mat-list-item routerLink="/organization"> Organization 4</a>
+              <a mat-list-item routerLink="/organization"> Organization 5</a>
+              <a mat-list-item routerLink="/organization"> Organization 1</a>
+              <a mat-list-item routerLink="/organization"> Organization 2</a>
+              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a mat-list-item routerLink="/organization"> Organization 4</a>
+              <a mat-list-item routerLink="/organization"> Organization 5</a>
+              <a mat-list-item routerLink="/organization"> Organization 1</a>
+              <a mat-list-item routerLink="/organization"> Organization 2</a>
+              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a mat-list-item routerLink="/organization"> Organization 4</a>
+              <a mat-list-item routerLink="/organization"> Organization 5</a>
+              <a mat-list-item routerLink="/organization"> Organization 1</a>
+              <a mat-list-item routerLink="/organization"> Organization 2</a>
+              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a mat-list-item routerLink="/organization"> Organization 4</a>
+              <a mat-list-item routerLink="/organization"> Organization 5</a>
+            </mat-nav-list>
+          </mat-tab>
+          <mat-tab label="Favorite Devices">
+            <mat-nav-list>
+              <a mat-list-item routerLink="/device"> Device 1</a>
+              <a mat-list-item routerLink="/device"> Device 2</a>
+              <a mat-list-item routerLink="/device"> Device 3</a>
+              <a mat-list-item routerLink="/device"> Device 4</a>
+              <a mat-list-item routerLink="/device"> Device 5</a>
+            </mat-nav-list>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
     <body class="background">
-      <div class="padding">
-        <mat-card class="notifications-box"
-          ><p
-            matBadge="0"
-            matBadgePosition="above after"
-            matBadgeColor="accent"
-            class="notification-badge"
-          >
-            You have no notifications!
-          </p></mat-card
-        >
-      </div>
-      <mat-grid-list
-        class="list-background"
-        cols="1"
-        rowHeight="500px"
-        gutterSize="20px"
-      >
-        <!--Gutter size adjusts the gap between the tiles-->
-        <mat-grid-tile class="tile-container" [style.height]="'10px'">
-          <mat-grid-tile-header
-            class="tile-header"
-            [style.background]="'rgba(50, 50, 70, 0.6)'"
-            [style.border-color]="'black'"
-            [style.border-radius]="'10px'"
-            [style.width]="'90%'"
-            [style.left]="'4%'"
-            >Organizations</mat-grid-tile-header
-          >
-          <div class="stop-overflow">
-            <mat-card class="object-box"
-              ><mat-card-content> Org 1 </mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content> Org 2 </mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content> Org 2 </mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content> Org 2 </mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content> Org 2 </mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content> Org 2 </mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content> Org 2 </mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content> Org 2 </mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content> Org 2 </mat-card-content></mat-card
-            >
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile class="tile-container">
-          <mat-grid-tile-header
-            class="tile-header"
-            [style.background]="'rgba(50, 50, 70, 0.6)'"
-            [style.border-color]="'black'"
-            [style.border-radius]="'10px'"
-            [style.width]="'90%'"
-            [style.left]="'4%'"
-            >Favorite Devices</mat-grid-tile-header
-          >
-          <div class="stop-overflow">
-            <mat-card class="object-box"
-              ><mat-card-content>Device 1</mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content>Device 2</mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content>Device 1</mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content>Device 2</mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content>Device 1</mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content>Device 2</mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content>Device 1</mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content>Device 2</mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content>Device 1</mat-card-content></mat-card
-            >
-            <mat-card class="object-box"
-              ><mat-card-content>Device 2</mat-card-content></mat-card
-            >
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
       <app-temp-nav-bar></app-temp-nav-bar>
     </body> </mat-sidenav-content
 ></mat-sidenav-container>

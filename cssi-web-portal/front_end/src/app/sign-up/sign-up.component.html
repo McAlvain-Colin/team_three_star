@@ -82,6 +82,38 @@
             Password is incorrect or empty</mat-error
           >
         </mat-form-field>
+        <mat-form-field>
+          <!--Confirm Password-->
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            name="passwordConfirm"
+            [(ngModel)]="passwordConfirm"
+            #passwordInput="ngModel"
+            [type]="hide ? 'password' : 'text'"
+            required
+          />
+          <!-- The attribute indicates if the button has been pressed or not. Mat suffix puts the button at the end of the form field-->
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            type="button"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <!--Declared for the password input above, if this field is either wrong or empty after user has selected the input-->
+          <mat-error
+            *ngIf="
+              passwordInput.invalid &&
+              (passwordInput.dirty || passwordInput.touched)
+            "
+          >
+            Password is incorrect or empty</mat-error
+          >
+        </mat-form-field>
         <!--Button will only be valid if all the required forms are filled out-->
         <button
           mat-raised-button

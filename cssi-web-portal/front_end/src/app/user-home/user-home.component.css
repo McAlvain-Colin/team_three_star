@@ -2,6 +2,7 @@ html,
 body {
   margin: 0;
   height: 100%;
+  overflow: hidden;
 }
 
 .toolbar {
@@ -22,17 +23,37 @@ body {
   width: 300px;
 }
 
-.sidenav-title {
-  text-align: center;
-}
-
-.sidenav-button {
-  margin: 4px;
-  transform: translate(20%, 0%);
-}
-
 .sidenav-item {
-  text-align: center;
+  left: 5%;
+}
+
+.sidenav-title {
+  transform: translate(75%, 25%);
+  color: white;
+  font-size: 36px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  opacity: 0.95;
+}
+
+.sidenav-toolbar {
+  background-image: url("../../assets/Home-page-2.jpg") !important;
+  background-size: cover !important;
+  height: 200px !important;
+
+  /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, #000000, #000000);
+    opacity: 0.27;
+  }
 }
 
 .background {
@@ -41,50 +62,49 @@ body {
   width: 100%;
 }
 
+.notifications-title {
+  color: rgba(63, 81, 181, 1);
+}
+
+.notifications-divider {
+  border-top-color: rgba(63, 81, 181, 0.6);
+  border-top-width: 3px;
+}
+
 .notifications-box {
-  padding: 10px;
-  text-align: center;
-  color: white;
-  background-color: rgba(112, 128, 144, 0.6);
-  position: relative;
-  width: 70%;
-  height: 100px;
-}
-
-.notification-badge {
-  opacity: 0.9;
-  z-index: 10;
-}
-
-.stop-overflow {
-  max-height: 45%;
-  width: 92%;
   display: flex;
-  flex-direction: row;
-  overflow: auto;
+  position: absolute;
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+  height: 32%;
+  max-height: 32%;
+  width: 90%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.object-box {
-  background-color: rgba(102, 178, 255, 0.6);
-  width: 14%;
-  height: 30%;
-  margin: 10px;
-  padding: 40px;
+.notifications-content {
+  height: 100%;
+  overflow-y: scroll;
 }
 
-.list-background {
-  background-color: aliceblue;
+.organization-box {
+  display: flex;
+  position: absolute;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 3%;
+  top: 40%;
+  height: 60%;
+  max-height: 60%;
+  width: 90%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.tile-container {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-color: black;
-  border-radius: 20px;
-  transform: translate(5%, 0%);
-  max-width: 90%;
-  max-height: 50%;
-}
-
-.padding {
-  padding: 20px;
+.organization-content {
+  height: 100%;
+  overflow-y: scroll;
 }
