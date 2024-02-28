@@ -1,0 +1,81 @@
+.toolbar {
+  opacity: 0.9;
+}
+
+.absorb {
+  height: 0;
+  position: absolute;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+  width: 300px;
+}
+
+.sidenav-title {
+  transform: translate(75%, 25%);
+  color: white;
+  font-size: 36px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  opacity: 0.95;
+}
+
+.sidenav-toolbar {
+  background-image: url("../../assets/Home-page-2.jpg") !important;
+  background-size: cover !important;
+  height: 200px !important;
+
+  /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, #000000, #000000);
+    opacity: 0.27;
+  }
+}
+
+.sidenav-button {
+  margin: 4px;
+  transform: translate(20%, 0%);
+}
+
+.sidenav-item {
+  text-align: center;
+}
+
+.background {
+  background-color: aliceblue;
+  height: 90%;
+  width: 100%;
+}
+
+.about-device-box {
+  position: relative;
+  width: 100%;
+  height: 100px;
+}
+
+.tile-header {
+  background-color: black;
+}
+
+.data-button {
+  left: 45%;
+}
+
+.color-white {
+  text-decoration: none;
+  color: white;
+  padding-right: 6px;
+}

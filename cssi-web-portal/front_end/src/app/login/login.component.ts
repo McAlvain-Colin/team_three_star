@@ -17,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { ActivatedRouteSnapshot, RouterModule, RouterState, RouterStateSnapshot } from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+<<<<<<< HEAD
 // import { HttpClient, HttpResponse } from ' angular/common/http';                   
 import { Router } from '@angular/router';
 import { HttpClient,HttpInterceptor, HttpEvent, HttpHandler, HttpRequest, HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -44,6 +45,9 @@ export interface Resp{
 
 
 
+=======
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+>>>>>>> Huy_Tran
 
 @Component({
   selector: 'app-login',
@@ -58,6 +62,7 @@ export interface Resp{
     MatCardModule,
     MatIconModule,
     MatButtonModule,
+    MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
     TempNavBarComponent,
@@ -68,6 +73,7 @@ export interface Resp{
 
 
 export class LoginComponent {
+  constructor(private snackBar: MatSnackBar) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
   email: string = '';
@@ -92,10 +98,22 @@ export class LoginComponent {
       this.emailField.hasError('email')
     ) {
       message = 'Email incorrect!';
+<<<<<<< HEAD
       alert(message);
     } 
     else {
       alert(message);
+=======
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+    } else {
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+>>>>>>> Huy_Tran
     }
 
     

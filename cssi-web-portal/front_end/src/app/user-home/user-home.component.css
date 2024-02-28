@@ -1,7 +1,14 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 .toolbar {
   opacity: 0.9;
 }
-
+/* Absorb resolves a hover bug from angular side nav over property functionality */
 .absorb {
   height: 0;
   position: absolute;
@@ -14,6 +21,10 @@
 .sidenav .mat-toolbar {
   background: inherit;
   width: 300px;
+}
+
+.sidenav-item {
+  left: 5%;
 }
 
 .sidenav-title {
@@ -45,58 +56,22 @@
   }
 }
 
-.sidenav-button {
-  margin: 4px;
-  transform: translate(20%, 0%);
-}
-
-.sidenav-item {
-  text-align: center;
-}
-
 .background {
   background-color: aliceblue;
-  height: 100%;
+  min-height: 90%;
   width: 100%;
 }
 
-.object-box {
-  padding: 40px;
-}
-
-.tile-container {
-  scale: auto;
-  max-width: 100%;
-  max-height: 10px;
-}
-
-.device-button {
-  position: inline;
-  left: 45%;
-  top: 100%;
-}
-
-.color-white {
-  text-decoration: none;
-  color: white;
-  padding-right: 6px;
-}
-
-.organization-title {
+.notifications-title {
   color: rgba(63, 81, 181, 1);
 }
 
-.organization-divider {
+.notifications-divider {
   border-top-color: rgba(63, 81, 181, 0.6);
   border-top-width: 3px;
 }
 
-.organization-image {
-  width: 300px;
-  height: 220px;
-}
-
-.organization-box {
+.notifications-box {
   display: flex;
   position: absolute;
   margin-top: 1%;
@@ -110,19 +85,12 @@
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.organization-content {
-  display: flex;
-  flex-flow: row;
+.notifications-content {
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
-.about-org-box {
-  width: 100%;
-  height: 100%;
-}
-
-.devices-box {
+.organization-box {
   display: flex;
   position: absolute;
   margin-left: 5%;
@@ -136,7 +104,7 @@
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.devices-content {
+.organization-content {
   height: 100%;
   overflow-y: scroll;
 }

@@ -1,0 +1,55 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="false"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="'over'"
+    [opened]="false"
+  >
+    <mat-toolbar class="sidenav-toolbar"
+      ><p class="sidenav-title">Menu</p></mat-toolbar
+    >
+    <mat-nav-list>
+      <button class="absorb" mat-button></button>
+      <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
+      <a mat-list-item href="#">Link 1</a>
+      <a mat-list-item href="#">Link 2</a>
+      <a mat-list-item href="#">Link 3</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
+      ><a routerLink="/home" class="color-white">Home ></a>
+      <a routerLink="/organization" class="color-white">Organization</a> >
+      Device</mat-toolbar
+    >
+    <body class="background">
+      <mat-card class="about-device-box"
+        ><header>Device Name</header>
+        <p>
+          This has information about the device, could be description or
+          something else
+        </p></mat-card
+      >
+      <app-device-map></app-device-map>
+      <button
+        mat-raised-button
+        color="accent"
+        class="data-button"
+        [routerLink]="['/filter']"
+      >
+        Device Data
+        <!--Having a routerlink with the brackets allows for the button to link properly, and if needed, adding , after the link allows for dynamic linking-->
+      </button>
+      <app-temp-nav-bar></app-temp-nav-bar>
+    </body>
+  </mat-sidenav-content>
+</mat-sidenav-container>

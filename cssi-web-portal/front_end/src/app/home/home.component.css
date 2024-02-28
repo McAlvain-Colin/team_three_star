@@ -1,9 +1,33 @@
 /* The home page stylings were made by Huy, with the thought of keeping the current values as a place holder until the homepage has complete information */
 
+.window-pane-1 {
+  width: fit-content;
+  height: fit-content;
+  max-height: 140px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.window-pane-2 {
+  width: fit-content;
+  height: fit-content;
+  max-height: 140px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.center {
+  height: 25vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .home-text {
   /* This is the home text style which will act as the main view and type that the user sees upon initial visit of the web portal */
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Huy_Tran
   padding-top: 35px;
   padding-bottom: 35px;
   line-height: 1.2;
@@ -25,6 +49,7 @@
 .body-text {
   padding-top: 40px;
   padding-bottom: 40px;
+  background-color: rgba(0, 0, 0, 0.5);
   line-height: 1.3;
   font-size: 2vw;
   font-weight: bold;
@@ -34,6 +59,7 @@
   color: white;
 }
 
+<<<<<<< HEAD
 body {
   margin: 0;
 =======
@@ -42,17 +68,51 @@ body {
 }
 
 .button-box {
+=======
+.login-box {
+>>>>>>> Huy_Tran
   /* This alters the button to be in the middle bottom of the screen so that it's more of an entrance button than the main element on the page */
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
   margin: auto;
-  width: 150px;
+  padding: 7px;
+  /* width: 90px;
+  height: 50px; */
+  justify-content: center;
   text-align: center;
-  top: 50%;
-  left: 50%;
-  padding: 30px;
+  display: inline-block;
+  left: 58%;
 }
 
-.clicky-button {
+.sign-up-box {
+  /* This alters the button to be in the middle bottom of the screen so that it's more of an entrance button than the main element on the page */
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  margin: auto;
+  padding: 7px;
+  /* width: 100px;
+  height: 50px; */
+  justify-content: center;
   text-align: center;
+  display: inline-block;
+  left: 40%;
+}
+
+body,
+html {
+  /* This is the main control for the visuals on the background of the home page */
+  background-color: aliceblue;
+  width: 100%;
+  height: 100%;
+}
+
+.background {
+  background-image: url("../../assets/home-background.jpg");
+  /*Adjust height in order to keep contents within page without a nescessary scroll wheel*/
+  height: 90%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 body {
@@ -62,6 +122,9 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Huy_Tran
   width: 100%;
   height: 100%;
 =======

@@ -5,12 +5,27 @@
 
 .sidenav .mat-toolbar {
   background: inherit;
+  width: 300px;
+}
+
+.sidenav-title {
+  text-align: center;
+}
+
+.sidenav-button {
+  margin: 4px;
+  transform: translate(20%, 0%);
+}
+
+.sidenav-item {
+  text-align: center;
 }
 
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
   z-index: 10;
+  opacity: 0.9;
 }
 
 /*Huy added the theme slider css, and the push links right in order to make the nave bar properly display the text on the right of the tool bar, and to align the toggle slider */

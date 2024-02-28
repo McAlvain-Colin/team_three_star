@@ -11,6 +11,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  opacity: 0.9;
 }
 
 .push-links-right {

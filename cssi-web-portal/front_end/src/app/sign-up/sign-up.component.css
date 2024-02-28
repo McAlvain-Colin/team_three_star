@@ -14,16 +14,36 @@
 
 .signup-form {
   /* This aligns the div form, horizontally and vertically so it becomes the center of the page */
-  margin-top: 20px;
-  border: 5px solid;
+  display: flex;
   position: absolute;
-  top: 50%;
+  top: 53%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 30%;
+  height: 85%;
+  max-height: 85%;
   padding: 100px;
-  background-color: beige;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
 .main-body {
-  background-color: aliceblue;
+  width: 100%;
+  height: 90% !important;
+  background-image: url("../../assets/Home-page-2.jpg") !important;
+  background-size: cover !important;
+
+  /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, #000000, #000000);
+    opacity: 0.27;
+  }
 }

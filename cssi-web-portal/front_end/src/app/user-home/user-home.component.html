@@ -13,9 +13,9 @@
     <mat-nav-list>
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item *ngFor="let item of menuItems" [activated]="true">
+        {{ item }}
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -26,32 +26,33 @@
         mat-icon-button
         (click)="drawer.toggle()"
       >
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
-      ><a routerLink="/home" class="color-white">Home ></a>
-      Organization</mat-toolbar
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      Welcome User</mat-toolbar
     >
-    <mat-card class="organization-box">
-      <mat-card-content class="organization-content">
-        <img
-          class="organization-image"
-          src="../../assets/placeholder_cat2.jpg"
-          alt="Grey cat sitting on couch"
-        />
-        <mat-card-content class="about-org=box">
-          <mat-card-header
-            ><h3 class="organization-title">About Cat Chairs</h3>
-          </mat-card-header>
-          <mat-divider class="organization-divider"></mat-divider>
-          <p>
-            This cat is the sole representative of this company, he watches over
-            the data. If there are any issues that you have with this CEO,
-            please send a request at 1-420-MEOW-MEOW.
-          </p>
-        </mat-card-content>
+    <mat-card class="notifications-box">
+      <mat-card-content class="notifications-content">
+        <mat-card-header
+          ><h3 class="notifications-title" matBadge="{{ links.length }}">
+            Notifications
+          </h3>
+        </mat-card-header>
+        <mat-divider class="notifications-divider"></mat-divider>
+        <mat-nav-list>
+          <!-- Activated just adjusts the colors of the individual links whether to be the primary angular color or black-->
+          <a
+            mat-list-item
+            routerLink="/organization/{{ routerLinkVariable }}"
+            *ngFor="let link of links"
+            [activated]="false"
+          >
+            {{ link }}
+          </a>
+        </mat-nav-list>
       </mat-card-content>
     </mat-card>
-    <mat-card class="devices-box">
-      <mat-card-content class="devices-content">
+    <mat-card class="organization-box">
+      <mat-card-content class="organization-content">
         <mat-tab-group [style.position]="'sticky'">
           <mat-tab label="Owned Organizations">
             <mat-nav-list>
@@ -118,11 +119,7 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <button mat-raised-button color="accent" class="device-button">
-      Device Request
-    </button>
     <body class="background">
       <app-temp-nav-bar></app-temp-nav-bar>
-    </body>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    </body> </mat-sidenav-content
+></mat-sidenav-container>

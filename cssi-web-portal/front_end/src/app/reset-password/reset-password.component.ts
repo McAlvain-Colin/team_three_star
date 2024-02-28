@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reset-password',
@@ -30,11 +31,13 @@ import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
     TempNavBarComponent,
     NgIf,
   ],
 })
 export class ResetPasswordComponent {
+  constructor(private snackBar: MatSnackBar) {}
   password: string = '';
   repeatPassword: string = '';
   hide1st: boolean = true;
@@ -45,10 +48,16 @@ export class ResetPasswordComponent {
   submitForm() {
     var message: string = `Password submitted`;
     if (this.password === this.repeatPassword) {
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     } else {
       message = "Password doesn't match";
-      alert(message);
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     }
   }
 }

@@ -1,0 +1,31 @@
+<mat-toolbar color="primary" class="toolbar"
+  >Filter Data<span class="push-links-right"></span
+  ><a routerLink="/home" class="color-white">Go Home</a></mat-toolbar
+>
+<body class="background">
+  <p class="header-text">Select Data</p>
+  <mat-accordion class="search-bar">
+    <mat-expansion-panel
+      class="search-expansion-box"
+      (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false"
+    >
+      <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
+      <mat-expansion-panel-header>
+        <mat-panel-title> Sort your data here! </mat-panel-title>
+        <mat-panel-description>
+          {{
+            panelOpenState
+              ? "Choose the parameters you'd like to view"
+              : "Click me!"
+          }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <img
+        src="../../assets/placeholder_cat.jfif"
+        alt="Grey cat sitting on couch"
+      />
+    </mat-expansion-panel>
+  </mat-accordion>
+  <app-temp-nav-bar></app-temp-nav-bar>
+</body>

@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
-import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent, appInterceptor } from './login/login.component';
@@ -31,8 +30,14 @@ import { DatePicker } from './date-picker/date-picker.component';
 import { OrganizationPageComponent } from './organization-page/organization-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { DeviceDataComponent } from './device-data/device-data.component';
+<<<<<<< HEAD
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
+=======
+import { UserHomeComponent } from './user-home/user-home.component';
+import { DevicePageComponent } from './device-page/device-page.component';
+import { FilterPageComponent } from './filter-page/filter-page.component';
+>>>>>>> Huy_Tran
 
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
@@ -48,7 +53,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     LeafletModule,
     AboutComponent,
-    ContactComponent,
     HomeComponent,
     ResetPasswordComponent,
     DeviceMapComponent,
@@ -66,6 +70,13 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
     DatePicker,
     OrganizationPageComponent,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    UserHomeComponent,
+    DevicePageComponent,
+    FilterPageComponent,
+    OrganizationPageComponent,
+>>>>>>> Huy_Tran
   ],
   providers: [ChartService, DeviceDataService, DataStatsService],
 =======
