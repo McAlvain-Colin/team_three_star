@@ -20,7 +20,7 @@ cur = conn.cursor()
 
 #test quesry
 
-cur.execute("SELECT * FROM lab_sensor_data WHERE dev_eui = '002CA0A00015E62'")
+cur.execute("SELECT * FROM lab_sensor_data WHERE dev_eui = '0025CA0A00015E62';")
 
 
 rows = cur.fetchall()
