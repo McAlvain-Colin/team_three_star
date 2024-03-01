@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { OnInit } from '@angular/core';
+import { ApiService } from '../api.service'; 
 
 @Component({
   selector: 'app-filter-page',
@@ -22,6 +24,37 @@ import { MatExpansionModule } from '@angular/material/expansion';
     TempNavBarComponent,
   ],
 })
-export class FilterPageComponent {
+export class FilterPageComponent implements OnInit{
   panelOpenState = false;
+  records: any[] = []; //Property to hold the full JSON record
+  payloadData: any[] = []; //Property to hold the payloadData JSON record
+  metadataData: any[] = []; //Property to hold the metadataData JSON record
+  payloadFilter: string = ''; // Property to hold the payload filter query
+  metadataFilter: string = ''; // Property to hold the metadata filter query
+
+  constructor(private apiService: ApiService) { }
+
+  //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
+  //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
+  ngOnInit(): void {
+    this.apiService.getData().subscribe({
+      next: (data) => {
+        this.records = data;
+      },
+      error: (error) => {
+        console.error('There was an error!', error);
+      }
+    });
+  }
+  //filter function in order to allow users display only realivant data. 
+  filterData(data: any[], query: string): any[] {
+    if (!query) {
+      return data;
+    }
+    return data.filter(item => 
+      Object.keys(item).some(key =>
+        item[key].toString().toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  }
 }
