@@ -14,6 +14,7 @@ import { DevicePageComponent } from './device-page/device-page.component';
 import { FilterPageComponent } from './filter-page/filter-page.component';
 
 // Huy and Colin created the paths and linked the respective components to in order to properly route with Angular's routing
+// Huy created the dynamic routing pathways
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,8 +26,11 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'tool-bar', component: ToolBarComponent },
   { path: 'home', component: UserHomeComponent },
+  { path: 'home/:user', component: UserHomeComponent }, //:user is dynamic
   { path: 'organization', component: OrganizationPageComponent },
+  { path: 'organization/:org', component: OrganizationPageComponent }, //:org is dynamic
   { path: 'device', component: DevicePageComponent },
+  { path: 'device/:curDevice', component: DevicePageComponent }, //:curDevice is dynamic
   { path: 'filter', component: FilterPageComponent },
 ];
 

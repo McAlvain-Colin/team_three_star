@@ -69,6 +69,7 @@ export class OrganizationPageComponent {
 
   routerLinkVariable = '/home';
   links = ['link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7'];
+  orgName: string = 'Cat Chairs';
 
   private breakpointObserver = inject(BreakpointObserver);
 

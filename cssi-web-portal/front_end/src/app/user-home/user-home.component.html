@@ -56,9 +56,24 @@
         <mat-tab-group [style.position]="'sticky'">
           <mat-tab label="Owned Organizations">
             <mat-nav-list>
-              <a mat-list-item routerLink="/organization"> Organization 1</a>
-              <a mat-list-item routerLink="/organization"> Organization 2</a>
-              <a mat-list-item routerLink="/organization"> Organization 3</a>
+              <a
+                mat-list-item
+                routerLink="/organization/{{ routerLinkVariable }}"
+              >
+                Organization 1</a
+              >
+              <a
+                mat-list-item
+                routerLink="/organization/ {{ routerLinkVariable }}"
+              >
+                Organization 2</a
+              >
+              <a
+                mat-list-item
+                routerLink="/organization/{{ routerLinkVariable }}"
+              >
+                Organization 3</a
+              >
               <a mat-list-item routerLink="/organization"> Organization 4</a>
               <a mat-list-item routerLink="/organization"> Organization 5</a>
               <a mat-list-item routerLink="/organization"> Organization 1</a>

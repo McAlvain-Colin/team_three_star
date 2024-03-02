@@ -70,12 +70,69 @@
   background-color: black;
 }
 
-.data-button {
-  left: 45%;
-}
-
 .color-white {
   text-decoration: none;
   color: white;
   padding-right: 6px;
+}
+
+.device-title {
+  color: rgba(63, 81, 181, 1);
+}
+
+.device-divider {
+  border-top-color: rgba(63, 81, 181, 0.6);
+  border-top-width: 3px;
+}
+
+.device-image {
+  width: 300px;
+  height: 220px;
+}
+
+.device-box {
+  display: flex;
+  position: absolute;
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+  height: 32%;
+  max-height: 32%;
+  width: 90%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.device-content {
+  display: flex;
+  flex-flow: row;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.data-button {
+  position: inline;
+  left: 45%;
+  top: 45%;
+}
+
+.about-device-box {
+  width: 100%;
+  height: 100%;
+}
+
+.device-data-box {
+  display: flex;
+  position: inline;
+  margin-left: 5%;
+  margin-right: 5%;
+  top: 40%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.device-data {
+  height: 100%;
+  overflow-y: scroll;
 }

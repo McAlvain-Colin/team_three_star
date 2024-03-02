@@ -32,21 +32,59 @@
       Device</mat-toolbar
     >
     <body class="background">
-      <mat-card class="about-device-box"
-        ><header>Device Name</header>
-        <p>
-          This has information about the device, could be description or
-          something else
-        </p></mat-card
-      >
-      <app-device-map></app-device-map>
+      <mat-card class="device-box">
+        <mat-card-content class="device-content">
+          <img
+            class="device-image"
+            src="../../assets/placeholder_cat2.jpg"
+            alt="Grey cat sitting on couch"
+          />
+          <mat-card-content class="about-device-box">
+            <mat-card-header
+              ><h3 class="device-title">About Cat Device</h3>
+            </mat-card-header>
+            <mat-divider class="device-divider"></mat-divider>
+            <p>
+              This is the device that the cat owns, so we must consider how much
+              it data it has and can display.
+            </p>
+          </mat-card-content>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="device-data-box">
+        <mat-card-content class="device-data">
+          <mat-accordion class="search-bar">
+            <mat-expansion-panel
+              class="search-expansion-box"
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+              <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
+              <mat-expansion-panel-header>
+                <mat-panel-title> View the data here! </mat-panel-title>
+                <mat-panel-description>
+                  {{
+                    panelOpenState
+                      ? "This is all the data of the device."
+                      : "Click me!"
+                  }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <img
+                src="../../assets/placeholder_cat.jfif"
+                alt="Grey cat sitting on couch"
+              />
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-card-content>
+      </mat-card>
       <button
         mat-raised-button
         color="accent"
         class="data-button"
         [routerLink]="['/filter']"
       >
-        Device Data
+        Filter Device Data
         <!--Having a routerlink with the brackets allows for the button to link properly, and if needed, adding , after the link allows for dynamic linking-->
       </button>
       <app-temp-nav-bar></app-temp-nav-bar>

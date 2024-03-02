@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, shareReplay } from 'rxjs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-device-page',
@@ -27,6 +28,7 @@ import { Observable, map, shareReplay } from 'rxjs';
     MatIconModule,
     MatListModule,
     MatCardModule,
+    MatExpansionModule,
     MatButtonModule,
     TempNavBarComponent,
     DeviceMapComponent,
@@ -34,6 +36,8 @@ import { Observable, map, shareReplay } from 'rxjs';
 })
 export class DevicePageComponent {
   private breakpointObserver = inject(BreakpointObserver);
+
+  panelOpenState = false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)

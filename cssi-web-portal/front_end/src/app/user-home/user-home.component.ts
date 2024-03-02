@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
-import { MatBadge, MatBadgeModule } from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -40,8 +40,10 @@ import { MatDividerModule } from '@angular/material/divider';
     TempNavBarComponent,
   ],
 })
-export class UserHomeComponent {
+export class UserHomeComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
+  constructor(public router: Router) {} //makes an instance of the router
+  ngOnInit() {}
 
   data: HomeValues[] = [
     {
@@ -69,7 +71,7 @@ export class UserHomeComponent {
 
   newData = this.info[0].name;
 
-  routerLinkVariable = '';
+  routerLinkVariable = 'hi';
 
   //For the toolbar examination
   isHandset$: Observable<boolean> = this.breakpointObserver
