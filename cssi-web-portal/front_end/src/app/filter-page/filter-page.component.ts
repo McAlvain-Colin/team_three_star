@@ -8,7 +8,11 @@ import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { OnInit } from '@angular/core';
 import { ApiService } from '../api.service'; 
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+// import { CommonModule } from '@angular/common';
+import { NgFor } from '@angular/common';
 @Component({
   selector: 'app-filter-page',
   templateUrl: './filter-page.component.html',
@@ -22,6 +26,12 @@ import { ApiService } from '../api.service';
     MatExpansionModule,
     MatRadioModule,
     TempNavBarComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    // CommonModule,
+    NgFor,
+    
   ],
 })
 export class FilterPageComponent implements OnInit{

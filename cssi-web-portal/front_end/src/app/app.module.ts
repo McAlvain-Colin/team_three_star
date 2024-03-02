@@ -33,6 +33,11 @@ import { DeviceDataComponent } from './device-data/device-data.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { DevicePageComponent } from './device-page/device-page.component';
 import { FilterPageComponent } from './filter-page/filter-page.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
@@ -68,6 +73,11 @@ import { FilterPageComponent } from './filter-page/filter-page.component';
     DevicePageComponent,
     FilterPageComponent,
     OrganizationPageComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    NgFor,
+    HttpClientModule,
   ],
   providers: [ChartService, DeviceDataService, DataStatsService],
   bootstrap: [AppComponent],

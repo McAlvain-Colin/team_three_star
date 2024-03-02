@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import datetime
-from app.helperFunctions import * 
+from helperFunctions import * 
 
 from flask_jwt_extended import (create_access_token, JWTManager, 
                                 jwt_required, get_jwt_identity)

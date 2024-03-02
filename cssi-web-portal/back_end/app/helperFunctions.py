@@ -1,10 +1,12 @@
 from data_parser import sensor_data_list, dictionary_list
 import psycopg2
 from psycopg2 import pool
-from logging import Logger
+# from logging import Logger
 import logging
 
-log = Logger.basicConfig(filename='example.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='example.log', encoding='utf-8', level=logging.DEBUG)
+
+log = logging.getLogger(__name__)
 
 db_pool = pool.SimpleConnectionPool(
     minconn=1,          # minimum number of connections to keep open
