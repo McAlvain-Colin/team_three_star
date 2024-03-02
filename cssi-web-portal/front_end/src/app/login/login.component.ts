@@ -19,30 +19,34 @@ import { ActivatedRouteSnapshot, RouterModule, RouterState, RouterStateSnapshot 
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 // import { HttpClient, HttpResponse } from ' angular/common/http';                   
 import { Router } from '@angular/router';
-import { HttpClient,HttpInterceptor, HttpEvent, HttpHandler, HttpRequest, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpClient,HttpInterceptor, HttpEvent, HttpHandler, HttpRequest, HTTP_INTERCEPTORS, HttpHeaders} from '@angular/common/http';
 
 
 import { Observable } from 'rxjs'; 
+
+// import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class appInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const currToken = localStorage.getItem('token')
-    req = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
+    req = req.clone({ withCredentials: true, headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
     return next.handle(req);
   }
 }
 
 
+// @Injectable()
+// export class appInterceptor implements HttpInterceptor {
 
-export interface Resp{
-  success: boolean
-  token: any
-}
+//   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+//     const currToken = localStorage.getItem('token')
+//     req = req.clone({withCredentials: true})
 
-
-
+//     return next.handle(req);
+//   }
+// }
 
 
 @Component({
@@ -101,7 +105,7 @@ export class LoginComponent {
     
     // console.log("the form is: ", {email  : this.emailField.getRawValue(),  password : this.password})
 
-    //this code for seneding get requests and saving response in a variable
+    //this code for sending get requests and saving response in a variable
     // this.http.get(this.base_url,{responseType : 'text'}).subscribe(
     // {
     //   next: (response) => 
@@ -165,19 +169,36 @@ export class LoginComponent {
     //   }
     // );
 
+    const httpOptions = {
+          withCredentials: true,
+          headers: new HttpHeaders({ 
+            'Content-Type': 'application/json',
+            'charset': 'UTF-8',
+            observe: 'response', responseType : 'json'
+        
+            })
+        };
+
 
     //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC: 
-    this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, {observe: 'response', responseType : 'json'}).subscribe(
+    this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, {withCredentials : true}).subscribe(
       {
         next: (response) => 
         {
-          const res = JSON.stringify(response.body)
+          
+          const res = JSON.stringify(response)
 
           let resp = JSON.parse(res)
-          
-          localStorage.setItem('token', resp.token)
-          
-          this.checkResponse(resp.success);
+
+          console.log('response is ')
+
+          console.log(resp)
+
+
+          // this.cookieService.get('')
+          // localStorage.setItem('token', resp.token)
+
+          this.checkResponse(resp.login);
         },
         error: (error) => 
         {
@@ -186,7 +207,6 @@ export class LoginComponent {
       }
     );
 
-    
   }
 
   //check value retunred from the backend response, not sure if else condition works
@@ -194,11 +214,15 @@ export class LoginComponent {
   {
     if(response)
     {
+      console.log('in if cond')
       this.http.get(this.base_url + '/protected', {observe: 'response', responseType : 'json'}).subscribe(
         {
           next: (response) => 
           {
             const resp = {...response.body}
+
+            console.log('protected message')
+            console.log(resp)
           },
           error: (error) => 
           {
@@ -214,6 +238,81 @@ export class LoginComponent {
       this.getErrorMessage()
     }
   }
+
+
+  //   const httpOptions = {
+  //     withCredentials: true,
+  //     headers: new HttpHeaders({ 
+  //       'Content-Type': 'application/json',
+  //       'charset': 'UTF-8',
+    
+  //       })
+  //   };
+
+  //   //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC: 
+  //   this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, httpOptions).subscribe(
+  //     {
+  //       next: (response) => 
+  //       {
+  //         const res = JSON.stringify(response)
+
+  //         let resp = JSON.parse(res)
+
+  //         console.log('response is')
+  //         console.log(resp)
+          
+          
+  //         //localStorage.setItem('token', resp.token)
+          
+  //         this.checkResponse(resp.login);
+  //       },
+  //       error: (error) => 
+  //       {
+  //         console.error(error);
+  //       },
+  //     }
+  //   );
+    
+  // }
+
+  // //check value retunred from the backend response, not sure if else condition works
+  // checkResponse(response: boolean)//, route: ActivatedRouteSnapshot, state : RouterStateSnapshot)
+  // {
+  //   console.log('check response is called')
+  //   if(response)
+  //   {
+
+  //     const httpOptions = {
+  //       withCredentials: true,
+  //       headers: new HttpHeaders({ 
+  //         'Content-Type': 'application/json',
+  //         'charset': 'UTF-8',
+      
+  //         })
+  //     };
+
+  //     //this get request was used to ensure the user can access protected backend routes and working
+  //     this.http.get(this.base_url + '/protected', httpOptions).subscribe(
+  //       {
+  //         next: (response) => 
+  //         {
+  //           console.log('get request next is called')
+  //           console.log(response)
+  //         },
+  //         error: (error) => 
+  //         {
+  //           console.error(error);
+  //         }
+  //       });
+
+  //     this.router.navigate(['/dashboard']);
+
+  //   }
+  //   else
+  //   {
+  //     this.getErrorMessage()
+  //   }
+  // }
 
   // This method gets an error message based on what error that the user has produced, empty, or invalid email.
   getErrorMessage() {

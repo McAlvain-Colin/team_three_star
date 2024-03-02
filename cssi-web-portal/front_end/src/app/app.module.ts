@@ -32,6 +32,7 @@ import { OrganizationPageComponent } from './organization-page/organization-page
 import { UserPageComponent } from './user-page/user-page.component';
 import { DeviceDataComponent } from './device-data/device-data.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -65,7 +66,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
     TempNavBarComponent,
     DatePicker,
     OrganizationPageComponent,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [ChartService, DeviceDataService, DataStatsService, {provide: HTTP_INTERCEPTORS, useClass: appInterceptor, multi: true} ],
   bootstrap: [AppComponent],

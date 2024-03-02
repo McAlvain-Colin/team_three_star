@@ -9,6 +9,7 @@ import { DeviceDataComponent } from '../device-data/device-data.component';
 import { DashboardNavComponent } from '../dashboard-nav/dashboard-nav.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 //mock data for device health
 const time: string[] = [
@@ -553,7 +554,10 @@ const STATISTIC_DATA: DataStats[] = [
 export class DashboardComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
-  constructor(breakpointObserver: BreakpointObserver) {
+  base_url : string = 'http://localhost:5000';
+
+
+  constructor(breakpointObserver: BreakpointObserver, private http : HttpClient) {
     this.breakpointObserver = breakpointObserver;
   }
 
@@ -567,4 +571,43 @@ export class DashboardComponent {
   dataSource: DeviceElement[] = ELEMENT_DATA;
   data_input: DeviceData[] = DATA;
   stats_data: DataStats[] = STATISTIC_DATA;
+
+
+    logout()
+    {
+      const httpOptions = {
+        withCredentials: true,
+        headers: new HttpHeaders({ 
+          'Content-Type': 'application/json',
+          'charset': 'UTF-8',
+      
+          })
+      };
+      this.http.delete(this.base_url + '/logout', httpOptions).subscribe(
+        {
+          next: (response) => 
+          {
+            const res = JSON.stringify(response)
+  
+            let resp = JSON.parse(res)
+  
+            console.log('response is')
+            console.log(resp)
+                        
+            this.checkResponse(resp.login);
+          },
+          error: (error) => 
+          {
+            console.error(error);
+          },
+        }
+      );
+      
+    }
+  
+    //check value retunred from the backend response, not sure if else condition works
+    checkResponse(response: boolean)//, route: ActivatedRouteSnapshot, state : RouterStateSnapshot)
+    {
+
+    }
 }
