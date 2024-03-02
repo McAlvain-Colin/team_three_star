@@ -11,7 +11,7 @@ import { ApiService } from '../api.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-// import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 @Component({
   selector: 'app-filter-page',
@@ -29,7 +29,7 @@ import { NgFor } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    // CommonModule,
+    CommonModule,
     NgFor,
     
   ],
@@ -39,6 +39,7 @@ export class FilterPageComponent implements OnInit{
   records: any[] = []; //Property to hold the full JSON record
   payloadData: any[] = []; //Property to hold the payloadData JSON record
   metadataData: any[] = []; //Property to hold the metadataData JSON record
+  recordsFilter: string = ''; // Property to hold the payload filter query
   payloadFilter: string = ''; // Property to hold the payload filter query
   metadataFilter: string = ''; // Property to hold the metadata filter query
 
