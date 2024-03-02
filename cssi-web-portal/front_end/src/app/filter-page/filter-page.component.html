@@ -27,6 +27,24 @@
       />
     </mat-expansion-panel>
   </mat-accordion>
+
+  <!-- Filter for Records -->
+  <mat-form-field appearance="fill">
+    <mat-label>Filter Records</mat-label>
+    <input matInput [(ngModel)]="recordsFilter">
+  </mat-form-field>
+
+  <!-- Records Cards -->
+  <div *ngFor="let item of filterData(records, recordsFilter)">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ item.key }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        {{ item.value }}
+      </mat-card-content>
+    </mat-card>
+  </div>
   
   <!-- Filter for Payload -->
   <mat-form-field appearance="fill">
