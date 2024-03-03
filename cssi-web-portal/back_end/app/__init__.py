@@ -64,8 +64,10 @@ def deleteUser():
 def get_data():
     try:
         records = read_records('lab_sensor_json') #hard coded for test
-        dev_eui, dev_time, payload_dict, metadata_dict = parse_data(records)
-        return jsonify(dev_eui, dev_time, payload_dict, metadata_dict), 200 #200 shows correct  http responses
+        data = parse_data(records)
+        for row in data:
+            print(f'Data: {row}')
+        return jsonify(data), 200 #200 shows correct  http responses
     except Exception as e:
         return jsonify({'Error': str(e)}), 500 #500 shows server error
 

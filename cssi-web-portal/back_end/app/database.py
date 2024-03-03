@@ -1,5 +1,3 @@
-from flask import Flask
-from flask import jsonify
 import psycopg2
 
 
