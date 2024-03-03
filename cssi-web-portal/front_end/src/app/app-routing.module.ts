@@ -8,14 +8,14 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent, authGuard } from './login/login.component';
 import { OrganizationPageComponent } from './organization-page/organization-page.component';
 
 // Huy and Colin created the paths and linked the respective components to in order to properly route with Angular's routing
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'sign-up', component: SignUpComponent },

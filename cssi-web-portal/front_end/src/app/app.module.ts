@@ -33,7 +33,6 @@ import { UserPageComponent } from './user-page/user-page.component';
 import { DeviceDataComponent } from './device-data/device-data.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
-
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
   imports: [

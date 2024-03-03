@@ -15,6 +15,9 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -42,6 +45,10 @@ export class SignUpComponent {
   email: string = '';
   emailConfirm: string = '';
   password: string = '';
+  base_url : string = 'http://localhost:5000';
+
+
+  constructor(private http: HttpClient, private router : Router){}
 
   //use the `` to allow connections to the variable in the declaration.
   //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
@@ -58,6 +65,48 @@ export class SignUpComponent {
       alert(message);
     } else {
       alert(message);
+    }
+
+    console.log('in signin ')
+    this.http.put(this.base_url + '/createUser', {email  : this.emailField.getRawValue()}, {observe: 'response', responseType : 'json'}).subscribe(
+      {
+        next: (response) => 
+        {
+          const res = JSON.stringify(response.body)
+
+          let resp = JSON.parse(res)
+
+          console.log('sign in resp is ')
+
+          console.log(resp)
+
+          console.log(resp.emailConfirmation)
+
+          this.checkEmailConfirmation(resp.emailConfirmation)
+
+        },
+        error: (error) => 
+        {
+          console.error(error);
+        }
+      });
+
+    
+
+
+
+  }
+
+  checkEmailConfirmation(check:boolean)
+  {
+    if(check)
+    {
+      this.router.navigate(['/login'])
+    }
+    else
+    {
+      this.router.navigate(['/signin'])
+      alert('signup was unsuccessful')
     }
   }
 
