@@ -46,7 +46,54 @@
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.search-bar {
+.search-bar {  
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.mat-elevation-z8 {  
+  display: flex;
+  position: absolute;  
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+  width: 85%;
+  left: 25%;
+  top: 40%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dev_eui {
+  width: 50%;
+  left: 25%;
+  top: 40%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dev_time {
+  width: 50%;
+  left: 25%;
+  top: 40%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dynamic_column {
+  width: 50%;
+  left: 25%;
+  top: 40%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.devices-content {
+  height: 100%;
+  overflow-y: scroll;
 }
