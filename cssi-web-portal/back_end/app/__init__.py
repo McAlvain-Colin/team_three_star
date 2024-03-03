@@ -63,7 +63,7 @@ def deleteUser():
 @app.route('/data', methods=['GET'])
 def get_data():
     try:
-        records = read_records('lab_sensor_json') #hard coded for test
+        records = read_records('lab_sensor_json', "dev_eui = '0025CA0A00015E62';") #hard coded for test
         data = parse_data(records)
         return jsonify(data), 200 #200 shows correct  http responses
     except Exception as e:

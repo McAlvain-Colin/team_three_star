@@ -13,11 +13,12 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
+import { MatTableModule }  from '@angular/material/table';
 
 //testing the inteface as a solution next to several individual declations
 interface SensorData {
   dev_eui: string;
-  dev_time: string | Date; 
+  dev_time: string; 
   payload_dict: any; 
   metadata_dict: any;
   payloadColumns: any;
@@ -42,7 +43,7 @@ interface SensorData {
     FormsModule,
     CommonModule,
     NgFor,
-    
+    MatTableModule,    
   ],
 })
 export class FilterPageComponent implements OnInit{
@@ -78,8 +79,8 @@ export class FilterPageComponent implements OnInit{
     this.apiService.getData().subscribe({
       next: (data: SensorData[]) => {
         this.records = data.map((item: SensorData) => ({
-          dev_eui: item.dev_eui,
-          dev_time: item.dev_time,
+          dev_eui: JSON.parse(item.dev_eui),
+          dev_time: JSON.parse(item.dev_time),
           payload_dict: JSON.parse(item.payload_dict),
           metadata_dict: JSON.parse(item.metadata_dict)
         }));
