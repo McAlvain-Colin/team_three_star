@@ -59,8 +59,8 @@ def read_records(table, conditions=None):
         cursor = conn.cursor()
         sql = f"SELECT * FROM {table}"
         if conditions:
-            sql += " WHERE " + " AND ".join([f"{k} = %s" for k in conditions.keys()])
-            cursor.execute(sql, list(conditions.values()))
+            sql += " WHERE " + conditions
+            cursor.execute(sql)
         else:
             cursor.execute(sql)
         records = cursor.fetchall()

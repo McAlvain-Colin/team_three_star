@@ -17,8 +17,8 @@ import { MatTableModule }  from '@angular/material/table';
 
 //testing the inteface as a solution next to several individual declations
 interface SensorData {
-  dev_eui: string;
-  dev_time: string; 
+  dev_eui: any;
+  dev_time: any; 
   payload_dict: any; 
   metadata_dict: any;
   payloadColumns: any;
@@ -49,8 +49,8 @@ interface SensorData {
 export class FilterPageComponent implements OnInit{
   // Declared variables. Currently has duplicates until the better method is determined. 
   panelOpenState = false;
-  dev_eui: any //Property to hold the device id
-  dev_time: any //Property to hold to hold the data time stamp
+  dev_eui: any[] = []; //Property to hold the device id
+  dev_time: any[] = []; //Property to hold to hold the data time stamp
   records: any[] = []; //Property to hold the full JSON record
   payloadData: any[] = []; //Property to hold the payloadData JSON record
   metadataData: any[] = []; //Property to hold the metadataData JSON record
