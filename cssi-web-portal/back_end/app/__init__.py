@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import datetime
 from helperFunctions import * 
+from data_parser import *
 
 from flask_jwt_extended import (create_access_token, JWTManager, 
                                 jwt_required, get_jwt_identity)
@@ -62,10 +63,11 @@ def deleteUser():
 @app.route('/data', methods=['GET'])
 def get_data():
     try:
-        records = read_records('lab_sensor_data') #hard coded for test
-        return jsonify(records), 200 #200 shows correct  http responses
+        records = read_records('lab_sensor_json') #hard coded for test
+        dev_eui, dev_time, payload_dict, metadata_dict = parse_data(records)
+        return jsonify(dev_eui, dev_time, payload_dict, metadata_dict), 200 #200 shows correct  http responses
     except Exception as e:
-        return jsonify({'error': str(e)}), 500 #500 shows server error
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
 
 
 if __name__ == '__main__':

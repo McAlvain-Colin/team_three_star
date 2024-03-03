@@ -36,6 +36,8 @@ import { NgFor } from '@angular/common';
 })
 export class FilterPageComponent implements OnInit{
   panelOpenState = false;
+  dev_eui: any
+  dev_time: any
   records: any[] = []; //Property to hold the full JSON record
   payloadData: any[] = []; //Property to hold the payloadData JSON record
   metadataData: any[] = []; //Property to hold the metadataData JSON record
@@ -50,7 +52,10 @@ export class FilterPageComponent implements OnInit{
   ngOnInit(): void {
     this.apiService.getData().subscribe({
       next: (data) => {
-        this.records = data;
+        this.dev_eui = data['dev_eui'];
+        this.dev_time = data['dev_time'];
+        this.payloadData = data['payload_dict'];
+        this.metadataData = data['metadata_dict']
       },
       error: (error) => {
         console.error('There was an error!', error);
