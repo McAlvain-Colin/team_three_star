@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
@@ -41,10 +41,6 @@ import { MatDividerModule } from '@angular/material/divider';
   ],
 })
 export class UserHomeComponent implements OnInit {
-  private breakpointObserver = inject(BreakpointObserver);
-  constructor(public router: Router) {} //makes an instance of the router
-  ngOnInit() {}
-
   data: HomeValues[] = [
     {
       name: 'Item 1',
@@ -63,21 +59,45 @@ export class UserHomeComponent implements OnInit {
     },
   ];
 
-  links = ['link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7'];
+  notifications: string[] = [];
+  ownedOrgs: string[] = [];
+  joinedOrgs: string[] = [];
+  favDevices: string[] = [];
   menuItems = ['Organization', 'Devices'];
 
-  result = JSON.stringify(this.data);
+  result = JSON.stringify(this.data); //Example working with JSON
   info = JSON.parse(this.result);
 
   newData = this.info[0].name;
 
+  userName: string | null = '';
   routerLinkVariable = 'hi';
 
-  //For the toolbar examination
+  constructor(private route: ActivatedRoute) {} //makes an instance of the router
+  ngOnInit(): void {
+    this.userName = this.route.snapshot.paramMap.get('user'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    console.log(this.userName);
+    if (this.userName == null) {
+      this.userName = 'John';
+    }
+    this.setupExampleLists();
+  }
+
+  private breakpointObserver = inject(BreakpointObserver);
+
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
       map((result) => result.matches),
       shareReplay()
     );
+
+  setupExampleLists() {
+    for (let i = 1; i <= 14; i++) {
+      this.notifications.push('Notification ' + i);
+      this.ownedOrgs.push('Owned Organization ' + i);
+      this.joinedOrgs.push('Joined Organization ' + i);
+      this.favDevices.push('Favorite Device ' + i);
+    }
+  }
 }

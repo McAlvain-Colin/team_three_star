@@ -28,12 +28,15 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      Welcome User</mat-toolbar
+      Welcome {{ userName }}</mat-toolbar
     >
     <mat-card class="notifications-box">
       <mat-card-content class="notifications-content">
         <mat-card-header
-          ><h3 class="notifications-title" matBadge="{{ links.length }}">
+          ><h3
+            class="notifications-title"
+            matBadge="{{ notifications.length }}"
+          >
             Notifications
           </h3>
         </mat-card-header>
@@ -43,10 +46,10 @@
           <a
             mat-list-item
             routerLink="/organization/{{ routerLinkVariable }}"
-            *ngFor="let link of links"
+            *ngFor="let notification of notifications"
             [activated]="false"
           >
-            {{ link }}
+            {{ notification }}
           </a>
         </mat-nav-list>
       </mat-card-content>
@@ -56,79 +59,36 @@
         <mat-tab-group [style.position]="'sticky'">
           <mat-tab label="Owned Organizations">
             <mat-nav-list>
+              <!--Note that the let parameter only creates a variable that lasts for the loop and has scope only in the loop.-->
               <a
                 mat-list-item
-                routerLink="/organization/{{ routerLinkVariable }}"
+                routerLink="/organization/{{ organization }}"
+                *ngFor="let organization of ownedOrgs"
               >
-                Organization 1</a
-              >
-              <a
-                mat-list-item
-                routerLink="/organization/ {{ routerLinkVariable }}"
-              >
-                Organization 2</a
-              >
-              <a
-                mat-list-item
-                routerLink="/organization/{{ routerLinkVariable }}"
-              >
-                Organization 3</a
-              >
-              <a mat-list-item routerLink="/organization"> Organization 4</a>
-              <a mat-list-item routerLink="/organization"> Organization 5</a>
-              <a mat-list-item routerLink="/organization"> Organization 1</a>
-              <a mat-list-item routerLink="/organization"> Organization 2</a>
-              <a mat-list-item routerLink="/organization"> Organization 3</a>
-              <a mat-list-item routerLink="/organization"> Organization 4</a>
-              <a mat-list-item routerLink="/organization"> Organization 5</a>
-              <a mat-list-item routerLink="/organization"> Organization 1</a>
-              <a mat-list-item routerLink="/organization"> Organization 2</a>
-              <a mat-list-item routerLink="/organization"> Organization 3</a>
-              <a mat-list-item routerLink="/organization"> Organization 4</a>
-              <a mat-list-item routerLink="/organization"> Organization 5</a>
-              <a mat-list-item routerLink="/organization"> Organization 1</a>
-              <a mat-list-item routerLink="/organization"> Organization 2</a>
-              <a mat-list-item routerLink="/organization"> Organization 3</a>
-              <a mat-list-item routerLink="/organization"> Organization 4</a>
-              <a mat-list-item routerLink="/organization"> Organization 5</a>
+                {{ organization }}
+              </a>
             </mat-nav-list>
           </mat-tab>
           <mat-tab label="Joined Organizations">
             <mat-nav-list>
-              <a mat-list-item routerLink="/organization"> Organization 1</a>
-              <a mat-list-item routerLink="/organization"> Organization 2</a>
-              <a mat-list-item routerLink="/organization"> Organization 3</a>
-              <a mat-list-item routerLink="/organization"> Organization 4</a>
-              <a mat-list-item routerLink="/organization"> Organization 5</a>
-              <a mat-list-item routerLink="/organization"> Organization 1</a>
-              <a mat-list-item routerLink="/organization"> Organization 2</a>
-              <a mat-list-item routerLink="/organization"> Organization 3</a>
-              <a mat-list-item routerLink="/organization"> Organization 4</a>
-              <a mat-list-item routerLink="/organization"> Organization 5</a>
-              <a mat-list-item routerLink="/organization"> Organization 1</a>
-              <a mat-list-item routerLink="/organization"> Organization 2</a>
-              <a mat-list-item routerLink="/organization"> Organization 3</a>
-              <a mat-list-item routerLink="/organization"> Organization 4</a>
-              <a mat-list-item routerLink="/organization"> Organization 5</a>
-              <a mat-list-item routerLink="/organization"> Organization 1</a>
-              <a mat-list-item routerLink="/organization"> Organization 2</a>
-              <a mat-list-item routerLink="/organization"> Organization 3</a>
-              <a mat-list-item routerLink="/organization"> Organization 4</a>
-              <a mat-list-item routerLink="/organization"> Organization 5</a>
-              <a mat-list-item routerLink="/organization"> Organization 1</a>
-              <a mat-list-item routerLink="/organization"> Organization 2</a>
-              <a mat-list-item routerLink="/organization"> Organization 3</a>
-              <a mat-list-item routerLink="/organization"> Organization 4</a>
-              <a mat-list-item routerLink="/organization"> Organization 5</a>
+              <a
+                mat-list-item
+                routerLink="/organization/{{ organization }}"
+                *ngFor="let organization of joinedOrgs"
+              >
+                {{ organization }}
+              </a>
             </mat-nav-list>
           </mat-tab>
           <mat-tab label="Favorite Devices">
             <mat-nav-list>
-              <a mat-list-item routerLink="/device"> Device 1</a>
-              <a mat-list-item routerLink="/device"> Device 2</a>
-              <a mat-list-item routerLink="/device"> Device 3</a>
-              <a mat-list-item routerLink="/device"> Device 4</a>
-              <a mat-list-item routerLink="/device"> Device 5</a>
+              <a
+                mat-list-item
+                routerLink="/device/{{ device }}"
+                *ngFor="let device of favDevices"
+              >
+                {{ device }}
+              </a>
             </mat-nav-list>
           </mat-tab>
         </mat-tab-group>

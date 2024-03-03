@@ -4,7 +4,7 @@ import { RequestService } from '../request.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { DeviceMapComponent } from '../device-map/device-map.component';
@@ -67,9 +67,22 @@ export class OrganizationPageComponent {
   //     //this.requestService.sendData(newData); //Sends a newData variable to the sendData function to be processed
   //   }
 
-  routerLinkVariable = '/home';
-  links = ['link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7'];
-  orgName: string = 'Cat Chairs';
+  routerLinkVariable = '/hi';
+  devices: string[] = [];
+  orgName: string | null = 'Cat Chairs';
+  orgDescription: string | null =
+    'This cat is the sole representative of this company, he watches over the data. If there are any issues that you have with this CEO, please send a request at 1-420-MEOW-MEOW.';
+  imgName: string | null = 'placeholder_cat2';
+
+  constructor(private route: ActivatedRoute) {} //makes an instance of the router
+  ngOnInit(): void {
+    this.orgName = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    console.log(this.orgName);
+    if (this.orgName == null) {
+      this.orgName = 'Cat Chairs';
+    }
+    this.setupDevices();
+  }
 
   private breakpointObserver = inject(BreakpointObserver);
 
@@ -79,4 +92,10 @@ export class OrganizationPageComponent {
       map((result) => result.matches),
       shareReplay()
     );
+
+  setupDevices() {
+    for (let i = 1; i <= 10; i++) {
+      this.devices.push('Device ' + i);
+    }
+  }
 }
