@@ -79,8 +79,8 @@ export class FilterPageComponent implements OnInit{
     this.apiService.getData().subscribe({
       next: (data: SensorData[]) => {
         this.records = data.map((item: SensorData) => ({
-          dev_eui: JSON.parse(item.dev_eui),
-          dev_time: JSON.parse(item.dev_time),
+          dev_eui: item.dev_eui,
+          dev_time: item.dev_time,
           payload_dict: JSON.parse(item.payload_dict),
           metadata_dict: JSON.parse(item.metadata_dict)
         }));
