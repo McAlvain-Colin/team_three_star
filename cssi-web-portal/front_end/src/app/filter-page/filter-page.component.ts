@@ -63,6 +63,14 @@ export class FilterPageComponent implements OnInit{
 
   constructor(private apiService: ApiService) { }
 
+  add_device(): void {
+    this.apiService.getData().subscribe({
+      
+    })
+  
+  }
+  
+
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
   //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
   //itterating code to try and get the data in a formate I can use.
@@ -77,8 +85,8 @@ export class FilterPageComponent implements OnInit{
         }));
         if (this.records.length > 0) {        
           //finding column values for all data types
-          this.payloadColumns = Object.keys(this.records[j].payload_dict);
-          this.metadataColumns = Object.keys(this.records[j].metadata_dict);
+          this.payloadColumns = Object.keys(this.records[0].payload_dict);
+          this.metadataColumns = Object.keys(this.records[0].metadata_dict);
           
           //concating all columns together
           this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(this.payloadColumns);
@@ -103,3 +111,4 @@ export class FilterPageComponent implements OnInit{
     );
   }
 }
+
