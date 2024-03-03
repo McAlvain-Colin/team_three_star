@@ -59,7 +59,7 @@ def read_records(table, conditions=None):
         cursor = conn.cursor()
         sql = f"SELECT * FROM {table}"
         if conditions:
-            sql += " WHERE " + conditions + ' LIMIT 100' 
+            sql += " WHERE " + conditions + ' ORDER BY time DESC LIMIT 100' 
             cursor.execute(sql)
         else:
             cursor.execute(sql)
