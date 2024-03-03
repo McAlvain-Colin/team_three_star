@@ -50,7 +50,7 @@
   </mat-form-field> -->
 
   <!--  Payload Table -->
-  <p class="header-text">Payload Table</p>
+  <p>Payload Table
   <table mat-table [dataSource]="records" class="mat-elevation-z8">
     <!-- Dev_eui Column -->
     <ng-container matColumnDef="Dev_eui">
@@ -72,12 +72,11 @@
 
     <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(payloadColumns)"></tr>
     <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(payloadColumns);"></tr>
-
-
   </table>
+  </p>
 
   <!--  Metadata Table -->
-  <p class="header-text">Metadata Table</p>
+  <p>Metadata Table
   <table mat-table [dataSource]="records" class="mat-elevation-z8">
     <!-- Dev_eui Column -->
     <ng-container matColumnDef="Dev_eui">
@@ -101,7 +100,7 @@
     <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(metadataColumns);"></tr>
     
   </table>
-
+  </p>
 
   <app-temp-nav-bar></app-temp-nav-bar>
 </body>
