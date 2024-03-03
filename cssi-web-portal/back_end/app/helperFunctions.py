@@ -1,4 +1,4 @@
-from data_parser import sensor_data_list, dictionary_list
+# from data_parser import sensor_data_list, dictionary_list
 import psycopg2
 from psycopg2 import pool
 # from logging import Logger

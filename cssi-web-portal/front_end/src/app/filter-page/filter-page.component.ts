@@ -67,9 +67,6 @@ export class FilterPageComponent implements OnInit{
           payloadData: item.payload_dict,
           metadataData: item.metadata_dict
         }));
-        
-        this.payloadData = this.records.map(record => record.payloadData);
-        this.metadataData = this.records.map(record => record.metadataData);
       },
       error: (error) => {
         console.error('Error: ', error);
