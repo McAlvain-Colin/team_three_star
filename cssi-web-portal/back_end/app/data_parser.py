@@ -49,7 +49,6 @@ def parse_data(records):
     dictionary_list = []
 
     try:
-        print('a')
         for row in records:
             dev_eui, dev_time, payload, metadata = row
             payload_dict = json.dumps(payload)

@@ -14,11 +14,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 
+//testing the inteface as a solution next to several individual declations
 interface SensorData {
   dev_eui: string;
   dev_time: string | Date; 
   payload_dict: any; 
   metadata_dict: any;
+  payloadColumns: any;
+  metadataColumns: any;
 }
 
 @Component({
@@ -43,6 +46,7 @@ interface SensorData {
   ],
 })
 export class FilterPageComponent implements OnInit{
+  // Declared variables. Currently has duplicates until the better method is determined. 
   panelOpenState = false;
   dev_eui: any //Property to hold the device id
   dev_time: any //Property to hold to hold the data time stamp
@@ -52,6 +56,10 @@ export class FilterPageComponent implements OnInit{
   recordsFilter: string = ''; // Property to hold the payload filter query
   payloadFilter: string = ''; // Property to hold the payload filter query
   metadataFilter: string = ''; // Property to hold the metadata filter query
+  payloadColumns: string[] = [];  // Property to hold the 
+  metadataColumns: string[] = [];  // Property to hold the
+  displayedPayloadColumns: string[] = [];  // Property to hold the
+  displayedMetadataColumns: string[] = [];  // Property to hold the
 
   constructor(private apiService: ApiService) { }
 
@@ -60,13 +68,22 @@ export class FilterPageComponent implements OnInit{
   //itterating code to try and get the data in a formate I can use.
   ngOnInit(): void {
     this.apiService.getData().subscribe({
-      next: (data: SensorData[]) => { 
+      next: (data: SensorData[]) => {
         this.records = data.map((item: SensorData) => ({
           dev_eui: item.dev_eui,
           dev_time: item.dev_time,
-          payloadData: item.payload_dict,
-          metadataData: item.metadata_dict
+          payload_dict: JSON.parse(item.payload_dict),
+          metadata_dict: JSON.parse(item.metadata_dict)
         }));
+        if (this.records.length > 0) {        
+          //finding column values for all data types
+          this.payloadColumns = Object.keys(this.records[j].payload_dict);
+          this.metadataColumns = Object.keys(this.records[j].metadata_dict);
+          
+          //concating all columns together
+          this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(this.payloadColumns);
+          this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(this.metadataColumns);
+        }
       },
       error: (error) => {
         console.error('Error: ', error);
