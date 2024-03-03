@@ -9,12 +9,15 @@ def parse_data(records):
     try:
         print('a')
         for row in records:
+            print('c')
             dev_eui, dev_time, payload, metadata = row
-
+            print('d')
             payload_dict = json.loads(payload)
+            print('e')
             metadata_dict = json.loads(metadata)
-            
-            dictionary_list.append((payload_dict, metadata_dict))  
+            print('f')
+            dictionary_list.append((payload_dict, metadata_dict)) 
+            print('g') 
             sensor_data_list.append({'dev_eui': dev_eui, 'dev_time': dev_time, 'payload_dict': payload_dict, 'metadata_dict': metadata_dict})
         print('b')        
         return sensor_data_list
