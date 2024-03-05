@@ -41,12 +41,13 @@ export class DeviceDataComponent implements OnInit {
   typeOfChart!: string;
   startTime!: string;
   endTime!: string;
+  startNumber: number = 0;
 
   constructor(private dataChart: DeviceDataService) {}
 
   // when page is create this happens. Loads chart
   ngOnInit(): void {
-    this.dataChart.createSensorDataChart(this.data[0]);
+    this.dataChart.createSensorDataChart(this.data[this.startNumber]);
   }
   //creates spinners for button presses
   loadSpinner() {
