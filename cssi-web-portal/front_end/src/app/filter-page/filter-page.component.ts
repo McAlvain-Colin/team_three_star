@@ -16,7 +16,7 @@ import { NgFor } from '@angular/common';
 import { MatTableModule }  from '@angular/material/table';
 
 //testing the inteface as a solution next to several individual declations
-interface SensorData {
+export interface SensorData {
   dev_eui: any;
   dev_time: any; 
   payload_dict: any; 
@@ -43,10 +43,11 @@ interface SensorData {
     FormsModule,
     CommonModule,
     NgFor,
-    MatTableModule,    
+    MatTableModule,  
   ],
 })
 export class FilterPageComponent implements OnInit{
+
   // Declared variables. Currently has duplicates until the better method is determined. 
   panelOpenState = false;
   dev_eui: any[] = []; //Property to hold the device id
@@ -71,7 +72,6 @@ export class FilterPageComponent implements OnInit{
   
   }
   
-
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
   //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
   //itterating code to try and get the data in a formate I can use.
@@ -112,4 +112,6 @@ export class FilterPageComponent implements OnInit{
     );
   }
 }
+
+
 

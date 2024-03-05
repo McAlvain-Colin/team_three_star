@@ -16,6 +16,9 @@ import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -39,7 +42,7 @@ import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
   ],
 })
 export class SignUpComponent {
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar, private http: HttpClient, private router : Router) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
   name: string = '';
@@ -47,6 +50,10 @@ export class SignUpComponent {
   emailConfirm: string = '';
   password: string = '';
   passwordConfirm: string = '';
+  base_url : string = 'http://localhost:5000';
+
+
+  // constructor(private http: HttpClient, private router : Router){}
 
   //use the `` to allow connections to the variable in the declaration.
   //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
@@ -78,6 +85,48 @@ export class SignUpComponent {
         horizontalPosition: 'center',
         verticalPosition: 'top',
       });
+    }
+
+    console.log('in signin ')
+    this.http.put(this.base_url + '/createUser', {email  : this.emailField.getRawValue()}, {observe: 'response', responseType : 'json'}).subscribe(
+      {
+        next: (response) => 
+        {
+          const res = JSON.stringify(response.body)
+
+          let resp = JSON.parse(res)
+
+          console.log('sign in resp is ')
+
+          console.log(resp)
+
+          console.log(resp.emailConfirmation)
+
+          this.checkEmailConfirmation(resp.emailConfirmation)
+
+        },
+        error: (error) => 
+        {
+          console.error(error);
+        }
+      });
+
+    
+
+
+
+  }
+
+  checkEmailConfirmation(check:boolean)
+  {
+    if(check)
+    {
+      this.router.navigate(['/login'])
+    }
+    else
+    {
+      this.router.navigate(['/signin'])
+      alert('signup was unsuccessful')
     }
   }
 
