@@ -13,8 +13,11 @@
   >
     <mat-toolbar>Options</mat-toolbar>
     <mat-nav-list>
+      <button class="absorb" mat-button></button>
+      <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
       <a mat-list-item routerLink="/login">Login</a>
       <a mat-list-item routerLink="/sign-up">Signup</a>
+      <a mat-list-item routerLink="/about">About Us</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -31,6 +34,8 @@
       </button>
       <a routerLink="/">CSSI Home</a>
       <span class="push-links-right"></span>
+      <a routerLink="/about">About Us</a>
+      <p class="vertical-seperator">|</p>
       <a routerLink="/login">Login</a>
       <p class="vertical-seperator">|</p>
       <a routerLink="/sign-up">Signup</a>

@@ -51,7 +51,10 @@
             getErrorMessage(1)
           }}</mat-error>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field
+          [matTooltip]="toolTipText"
+          matTooltipClass="password-tooltip"
+        >
           <!--Password-->
           <mat-label>Password</mat-label>
           <input

@@ -2,10 +2,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { DashboardNavComponent } from '../dashboard-nav/dashboard-nav.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CommonModule } from '@angular/common';
+import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 
 @Component({
   selector: 'app-about',
@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     MatCardModule,
     FormsModule,
-    DashboardNavComponent,
+    ToolBarComponent,
     TempNavBarComponent,
     MatGridListModule,
   ],
@@ -32,7 +32,7 @@ export class AboutComponent {
     { url: '../../assets/default.png', alt: 'Devrin Lee' },
     { url: '../../assets/Sara-Davis.jpg', alt: 'Sara Davis' },
   ];
-  advisor_image = [
+  advisor_images = [
     { url: '../../assets/SergiuDascalu.jpg', alt: 'Dr.Sergui Dascalu ' },
     { url: '../../assets/zach.png', alt: 'Zach Estreito' },
     { url: '../../assets/default.png', alt: 'Vinh Le' },
