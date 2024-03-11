@@ -61,6 +61,7 @@ def deleteUser():
     return jsonify(deleted_user =  True)
 
 @app.route('/data', methods=['GET'])
+@jwt_required()
 def get_data():
     try:
         records = read_records('lab_sensor_json', "dev_eui = '0025CA0A00015E62'") #hard coded for test
