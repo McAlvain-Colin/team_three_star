@@ -16,10 +16,10 @@ import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CanActivateFn, ActivatedRouteSnapshot, RouterModule, RouterState, RouterStateSnapshot } from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+import { FormBuilder } from '@angular/forms';
 // import { HttpClient, HttpResponse } from ' angular/common/http';                   
 import { Router } from '@angular/router';
 import { HttpClient,HttpInterceptor, HttpEvent, HttpHandler, HttpRequest, HTTP_INTERCEPTORS, HttpHeaders} from '@angular/common/http';
-
 
 import { Observable } from 'rxjs'; 
 
@@ -41,15 +41,15 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
 }
 
 
-@Injectable()
-export class appInterceptor implements HttpInterceptor {
+// @Injectable()
+// export class appInterceptor implements HttpInterceptor {
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const currToken = localStorage.getItem('token')
-    req = req.clone({ withCredentials: true, headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
-    return next.handle(req);
-  }
-}
+//   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+//     const currToken = localStorage.getItem('token')
+//     req = req.clone({ withCredentials: true, headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
+//     return next.handle(req);
+//   }
+// }
 
 
 ////interceptor for cookies 
@@ -94,7 +94,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  userForm!: FormGroup;
+  // userForm!: FormGroup;
   backendResponse!: any;
 
   base_url : string = 'http://localhost:5000';
@@ -125,9 +125,9 @@ export class LoginComponent {
       });
       alert(message);
     } 
-    else {
-      alert(message);
-    }
+    // else {
+    //   alert(message);
+    // }
 
     
     // console.log("the form is: ", {email  : this.emailField.getRawValue(),  password : this.password})
