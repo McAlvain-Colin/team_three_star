@@ -7,8 +7,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
-import { LoginComponent } from './login/login.component';
 import { UserHomeComponent } from './user-home/user-home.component';
+import { LoginComponent, authGuard } from './login/login.component';
 import { OrganizationPageComponent } from './organization-page/organization-page.component';
 import { DevicePageComponent } from './device-page/device-page.component';
 import { FilterPageComponent } from './filter-page/filter-page.component';
@@ -19,7 +19,7 @@ import { AddOrganizationComponent } from './add-organization/add-organization.co
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
   { path: 'about', component: AboutComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'login', component: LoginComponent },

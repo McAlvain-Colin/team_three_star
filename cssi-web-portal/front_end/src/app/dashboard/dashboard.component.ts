@@ -9,6 +9,8 @@ import { DeviceDataComponent } from '../device-data/device-data.component';
 import { DashboardNavComponent } from '../dashboard-nav/dashboard-nav.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { HttpClient,HttpInterceptor, HttpEvent, HttpHandler, HttpRequest, HTTP_INTERCEPTORS, HttpHeaders} from '@angular/common/http';
+import { Router } from '@angular/router';
 
 //mock data for device health
 const time: string[] = [
@@ -552,19 +554,45 @@ const STATISTIC_DATA: DataStats[] = [
 })
 export class DashboardComponent {
   private breakpointObserver = inject(BreakpointObserver);
+  base_url : string = 'http://localhost:5000';
 
-  constructor(breakpointObserver: BreakpointObserver) {
+
+  constructor(private http: HttpClient, breakpointObserver: BreakpointObserver, private router : Router) {
     this.breakpointObserver = breakpointObserver;
   }
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
+  // isHandset$: Observable<boolean> = this.breakpointObserver
+  //   .observe(Breakpoints.Handset)
+  //   .pipe(
+  //     map((result) => result.matches),
+  //     shareReplay()
+  //   );
 
   dataSource: DeviceElement[] = ELEMENT_DATA;
   data_input: DeviceData[] = DATA;
   stats_data: DataStats[] = STATISTIC_DATA;
+
+  logout()
+  {
+    console.log('in logout func')
+    this.http.delete(this.base_url + '/logout', {observe: 'response', responseType : 'json'}).subscribe(
+    {
+      next: (response) => 
+      {
+        const resp = {...response.body}
+
+        console.log('deleted message')
+        console.log(resp)
+
+        localStorage.clear()
+
+        this.router.navigate(['/login']);
+      },
+      error: (error) => 
+      {
+        console.error(error);
+      }
+    });
+  }
+
 }

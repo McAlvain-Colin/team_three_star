@@ -3,7 +3,6 @@
     #drawer
     class="sidenav"
     fixedInViewport="false"
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="'over'"
     [opened]="false"
   >
@@ -74,6 +73,61 @@
                 src="../../assets/placeholder_cat.jfif"
                 alt="Grey cat sitting on couch"
               />
+              <!--  Payload Table -->
+              <div class="table-container">
+                <p>Payload Table</p>
+                <table mat-table [dataSource]="records" class="mat-elevation-z8">
+                  <!-- Dev_eui Column -->
+                  <ng-container matColumnDef="Dev_eui" class="dev_eui">
+                    <th mat-header-cell *matHeaderCellDef> dev_eui </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dev_eui}} </td>
+                  </ng-container>
+
+                  <!-- Dev_time Column -->
+                  <ng-container matColumnDef="Dev_time" class="dev_time">
+                    <th mat-header-cell *matHeaderCellDef> dev_time </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dev_time}} </td>
+                  </ng-container>
+
+                  <!-- Payload Columns / Dynamic -->
+                  <ng-container *ngFor="let column of payloadColumns" [matColumnDef]="column" class="dynamic_column">
+                    <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.payload_dict[column] }} </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(payloadColumns)"></tr>
+                  <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(payloadColumns);"></tr>
+                </table>
+              </div>
+              
+
+              <!--  Metadata Table -->
+              <div class="table-container">
+                <p>Metadata Table</p>
+                <table mat-table [dataSource]="records" class="mat-elevation-z8">
+                  <!-- Dev_eui Column -->
+                  <ng-container matColumnDef="Dev_eui" class="dev_eui">
+                    <th mat-header-cell *matHeaderCellDef> dev_eui </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dev_eui}} </td>
+                  </ng-container>
+
+                  <!-- Dev_time Column -->
+                  <ng-container matColumnDef="Dev_time" class="dev_time">
+                    <th mat-header-cell *matHeaderCellDef> dev_time </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dev_time}} </td>
+                  </ng-container>
+
+                  <!-- Metadata Columns / Dynamic -->
+                  <ng-container *ngFor="let column of metadataColumns" [matColumnDef]="column" class="dynamic_column">
+                    <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.metadata_dict[column] }} </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(metadataColumns)"></tr>
+                  <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(metadataColumns);"></tr>
+                  
+                </table>
+              </div>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-card-content>

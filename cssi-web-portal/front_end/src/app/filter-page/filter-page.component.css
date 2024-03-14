@@ -3,6 +3,9 @@
   height: 90% !important;
   background-image: url("../../assets/Home-page-2.jpg") !important;
   background-size: cover !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 
   /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
   &:before {
@@ -39,6 +42,7 @@
 }
 
 .search-expansion-box {
+  position: absolute;
   width: 50%;
   left: 25%;
   top: 40%;
@@ -46,7 +50,74 @@
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.search-bar {
+.search-bar {  
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
+
+.mat-table {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* .table-container {
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+
+  max-height: 500px;
+  max-width: 80%;
+  overflow-y: auto;
+  overflow-x: scroll;
+
+  width: 80%;
+  left: 20%;
+  top: 40%;
+} */
+
+.payload-table {
+  position: absolute;
+
+  
+  top: 50%;
+
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+
+  max-height: 500px;
+  max-width: 80%;
+  overflow-y: auto;
+  overflow-x: scroll;
+
+  width: 80%;
+  left: 20%;
+  top: 40%;
+}
+
+.metadata-table {
+  position: absolute;
+  
+  top: 70%;
+
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+
+  max-height: 500px;
+  max-width: 80%;
+  overflow-y: auto;
+  overflow-x: scroll;
+
+  width: 80%;
+  left: 20%;
+  top: 40%;
+}
+

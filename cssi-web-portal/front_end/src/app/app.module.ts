@@ -34,6 +34,11 @@ import { UserHomeComponent } from './user-home/user-home.component';
 import { DevicePageComponent } from './device-page/device-page.component';
 import { FilterPageComponent } from './filter-page/filter-page.component';
 import { RemovalDialogComponent } from './removal-dialog/removal-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
@@ -70,6 +75,11 @@ import { RemovalDialogComponent } from './removal-dialog/removal-dialog.componen
     DevicePageComponent,
     FilterPageComponent,
     OrganizationPageComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    NgFor,
+    HttpClientModule,
   ],
   providers: [ChartService, DeviceDataService, DataStatsService],
   bootstrap: [AppComponent],

@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 
+
 @Component({
   selector: 'app-device-table',
   templateUrl: './device-table.component.html',
@@ -322,9 +323,7 @@ export class DeviceTableComponent implements OnInit {
 // added for visual acions, once a button is clicked, this function is called to added a loading spinner for effect of loading on the page for 250 milliseconds.
   loadSpinner() {
     this.showSpinner = true;
-    setTimeout(() => {
-      this.showSpinner = false;
-    }, 250);
+    setTimeout(() =>{this.showSpinner = false}, 250)
   }
 
 // getDownload will called once the user clicks on the export data button in the webpage, it will first create a anchor element assigned to a variable "link", the user will then use a chartJS method called toBase64Image, which will create a base 64 string which has the current chart visualization

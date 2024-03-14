@@ -1,5 +1,8 @@
 <!--Html is created by the team with the dashboard nav being placed by Huy, and the data and stats by Colin, and table and map by David-->
 <app-dashboard-nav>
+  
+  <button (click)="logout()">logout</button>
+  
   <div>
     <app-device-data [data]="data_input"></app-device-data>
     <mat-divider></mat-divider>

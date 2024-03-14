@@ -57,6 +57,18 @@ Metrics to Visualize/Export
 - Packet loss
 - Sensor health
 
+LoRa 
+- MetaData
+- - "snr": Signal-to-Noise Ratio, measuring the quality of the signal. 
+- - "rssi": Received Signal Strength Indicator, measuring how strong the signal is when received. 
+- - "location": Provides the geographical location where the data was received. It includes latitude, longitude, and altitude (in meters). 
+- - "source": Indicates how the location information was obtained. "SOURCE_REGISTRY" suggests it's from a registered or predefined source.
+- - "timestamp": The Unix timestamp when the data was received, representing the number of seconds since January 1, 1970 (the Unix epoch). 
+- - "gateway_ids": Contains identifiers for the gateway that received the message, including an eui (Extended Unique Identifier) and a more human-readable gateway_id.
+- - "received_at": The precise time when the data was received by the server, in ISO 8601 format. This provides another timestamp, but with higher precision including the date and time down to the nanosecond.
+- - "channel_rssi": This is another indication of the signal strength, similar to "rssi", but specific to the communication channel used. 
+- - "uplink_token": A token associated with the uplink message, possibly used for authentication, tracking, or routing the message through the network.
+
 ## Usage
 
 - Improve the understanding, prediction, and management of natural disasters such as wildfires, earthquakes, and floods
