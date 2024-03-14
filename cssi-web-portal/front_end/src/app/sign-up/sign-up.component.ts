@@ -164,11 +164,21 @@ export class SignUpComponent {
       this.passwordCode = this.hashPassword();
     }
 
+    // console.log('in signin ');
+    // this.http
+    //   .put(
+    //     this.base_url + '/createUser',
+    //     { email: this.emailField.getRawValue() },
+    //     { observe: 'response', responseType: 'json' }
+    //   )
+    //   .subscribe({
+    //     next: (response) => {
+    //       const res = JSON.stringify(response.body);
     console.log('in signin ');
     this.http
       .put(
         this.base_url + '/createUser',
-        { email: this.emailField.getRawValue() },
+        { email: this.emailField.getRawValue(), password: this.password },
         { observe: 'response', responseType: 'json' }
       )
       .subscribe({

@@ -50,6 +50,12 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
 //     return next.handle(req);
 //   }
 // }
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const currToken = localStorage.getItem('token')
+    req = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
+    return next.handle(req);
+  }
+}
 
 
 ////interceptor for cookies 
@@ -213,7 +219,7 @@ export class LoginComponent {
     // );
 
     const httpOptions = {
-          withCredentials: true,
+          // withCredentials: true,
           headers: new HttpHeaders({ 
             'Content-Type': 'application/json',
             'charset': 'UTF-8',
@@ -224,7 +230,7 @@ export class LoginComponent {
 
 
     //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC: 
-    this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, {withCredentials : true}).subscribe(
+    this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, httpOptions).subscribe(
       {
         next: (response) => 
         {
