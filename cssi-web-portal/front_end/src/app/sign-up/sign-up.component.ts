@@ -68,7 +68,7 @@ export class SignUpComponent {
     }
 
     console.log('in signin ')
-    this.http.put(this.base_url + '/createUser', {email  : this.emailField.getRawValue()}, {observe: 'response', responseType : 'json'}).subscribe(
+    this.http.put(this.base_url + '/createUser', {email  : this.emailField.getRawValue(), password: this.password}, {observe: 'response', responseType : 'json'}).subscribe(
       {
         next: (response) => 
         {
