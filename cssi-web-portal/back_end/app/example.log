@@ -233,3 +233,70 @@ INFO:werkzeug:127.0.0.1 - - [12/Mar/2024 15:01:42] "OPTIONS /data HTTP/1.1" 200 
 INFO:werkzeug:127.0.0.1 - - [12/Mar/2024 15:01:42] "[31m[1mGET /data HTTP/1.1[0m" 401 -
 INFO:werkzeug:127.0.0.1 - - [12/Mar/2024 15:04:39] "OPTIONS /data HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [12/Mar/2024 15:04:39] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [13/Mar/2024 21:50:17] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:14:23] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:14:28] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:14:32] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:14:51] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:14:55] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/__init__.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 668-679-063
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:15:17] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:15:52] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:16:02] "[31m[1mGET /data HTTP/1.1[0m" 401 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/__init__.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 668-679-063
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:16:25] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:16:27] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:16:30] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:16:57] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:29:10] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:30:19] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:31:22] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:31:36] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:32:44] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:40:04] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:45:11] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:45:27] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:50:08] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:50:10] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:50:12] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:50:14] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:50:27] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:50:30] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:50:36] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:51:01] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:51:22] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:59:44] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 10:59:50] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:02:40] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:02:42] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:02:49] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:02:50] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:03:00] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:05:25] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:05:41] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:05:43] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:10:27] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:13:57] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/__init__.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 668-679-063
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:30:13] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 668-679-063
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/__init__.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 668-679-063

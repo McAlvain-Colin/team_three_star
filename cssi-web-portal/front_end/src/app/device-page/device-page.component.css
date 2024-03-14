@@ -136,3 +136,44 @@
   height: 100%;
   overflow-y: scroll;
 }
+
+.payload-table {
+  /* position: absolute; */
+
+  
+  top: 50%;
+
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+
+  max-height: 500px;
+  max-width: 80%;
+  overflow-y: auto;
+  overflow-x: scroll;
+
+  width: 80%;
+  left: 20%;
+  top: 40%;
+}
+
+.metadata-table {
+  /* position: absolute; */
+  
+  top: 70%;
+
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+
+  max-height: 500px;
+  max-width: 80%;
+  overflow-y: auto;
+  overflow-x: scroll;
+
+  width: 80%;
+  left: 20%;
+  top: 40%;
+}

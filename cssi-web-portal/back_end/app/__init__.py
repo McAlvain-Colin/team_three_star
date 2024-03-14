@@ -36,7 +36,7 @@ app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 #added this line to specify where the JWT token is when requests with cookies are recieved
 app.config['JWT_SECRET_KEY'] = 'secret' # ALTERED FOR PRIVACY 
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 20)
-CORS(app, supports_credentials=True, resources={r'*' : {'origins' : 'http://localhost:4200'}})
+CORS(app) #, supports_credentials=True, resources={r'*' : {'origins' : 'http://localhost:4200'}})
 
 JWTManager(app)
 
@@ -133,7 +133,7 @@ def deleteUser():
     return jsonify(deleted_user =  True)
 
 @app.route('/data', methods=['GET'])
-@jwt_required()
+#@jwt_required()
 def get_data():
     try:
         records = read_records('lab_sensor_json', "dev_eui = '0025CA0A00015E62'") #hard coded for test
