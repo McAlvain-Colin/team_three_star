@@ -59,35 +59,121 @@
         <mat-tab-group [style.position]="'sticky'">
           <mat-tab label="Owned Organizations">
             <mat-nav-list>
+              <div class="make-flexbox">
+                <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
+                <button
+                  mat-raised-button
+                  color="accent"
+                  class="group-button"
+                  routerLink="/add-organization/{{ userName }}"
+                >
+                  Add
+                </button>
+                <span class="push-button-right"> </span>
+                <button
+                  mat-raised-button
+                  color="warn"
+                  class="group-button"
+                  (click)="removeOrgs = !removeOrgs"
+                >
+                  Remove
+                </button>
+              </div>
               <!--Note that the let parameter only creates a variable that lasts for the loop and has scope only in the loop.-->
               <a
                 mat-list-item
-                routerLink="/organization/{{ organization }}"
+                [routerLink]="
+                  removeOrgs ? null : '/organization/{{ organization }}'
+                "
                 *ngFor="let organization of ownedOrgs"
               >
-                {{ organization }}
+                <div class="make-flexbox">
+                  {{ organization }}
+                  <span class="push-button-right"></span>
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeOrgs"
+                    (click)="confirmRemoval(organization)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
               </a>
             </mat-nav-list>
           </mat-tab>
           <mat-tab label="Joined Organizations">
             <mat-nav-list>
+              <div class="make-flexbox">
+                <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
+                <button
+                  mat-raised-button
+                  color="accent"
+                  class="group-button"
+                  routerLink="/add-organization/{{ userName }}"
+                >
+                  Join
+                </button>
+                <!--For the join we might need a search organization page for public organizations-->
+                <span class="push-button-right"> </span>
+                <button
+                  mat-raised-button
+                  color="warn"
+                  class="group-button"
+                  (click)="removeOrgs = !removeOrgs"
+                >
+                  Leave
+                </button>
+              </div>
               <a
                 mat-list-item
-                routerLink="/organization/{{ organization }}"
+                [routerLink]="
+                  removeOrgs ? null : '/organization/{{ organization }}'
+                "
                 *ngFor="let organization of joinedOrgs"
               >
-                {{ organization }}
+                <div class="make-flexbox">
+                  {{ organization }}
+                  <span class="push-button-right"></span>
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeOrgs"
+                    (click)="confirmRemoval(organization)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
               </a>
             </mat-nav-list>
           </mat-tab>
           <mat-tab label="Favorite Devices">
             <mat-nav-list>
+              <div class="make-flexbox">
+                <span class="push-button-right"></span>
+                <button
+                  mat-raised-button
+                  color="warn"
+                  class="group-button"
+                  (click)="removeOrgs = !removeOrgs"
+                >
+                  Remove
+                </button>
+              </div>
               <a
                 mat-list-item
-                routerLink="/device/{{ device }}"
+                [routerLink]="removeOrgs ? null : '/device/{{ device }}'"
                 *ngFor="let device of favDevices"
               >
-                {{ device }}
+                <div class="make-flexbox">
+                  {{ device }}
+                  <span class="push-button-right"></span>
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeOrgs"
+                    (click)="confirmRemoval(device)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
               </a>
             </mat-nav-list>
           </mat-tab>

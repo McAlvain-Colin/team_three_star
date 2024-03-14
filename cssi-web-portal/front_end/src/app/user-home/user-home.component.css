@@ -90,6 +90,21 @@ body {
   overflow-y: scroll;
 }
 
+.push-button-right {
+  /* This just grows the span so that it takes up the entire flexbox */
+  flex-grow: 1;
+}
+
+.make-flexbox {
+  display: flex;
+  flex-direction: row;
+}
+
+.group-button {
+  position: relative;
+  margin: 2px;
+}
+
 .organization-box {
   display: flex;
   position: absolute;
@@ -107,4 +122,10 @@ body {
 .organization-content {
   height: 100%;
   overflow-y: scroll;
+}
+
+.remove-icon {
+  background-color: transparent;
+  z-index: 10000;
+  border-color: red;
 }

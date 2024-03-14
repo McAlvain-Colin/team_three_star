@@ -1,0 +1,38 @@
+<mat-toolbar color="primary" class="toolbar">
+  <a routerLink="/home/{{ userID }}" class="color-white"
+    >&#60; Return Home</a
+  ></mat-toolbar
+>
+<body class="main-body">
+  <mat-card class="add-org-form">
+    <h1 class="title">Add An Organization</h1>
+    <form class="container" (ngSubmit)="submitForm()" #addOrgForm="ngForm">
+      <mat-form-field color="primary" [style.width.px]="250">
+        <mat-label>Organization Name</mat-label>
+        <input
+          matInput
+          name="orgName"
+          [(ngModel)]="orgName"
+          #nameInput="ngModel"
+          required
+        />
+        <!--Only invalid if left empty, and has been clicked into-->
+        <mat-error *ngIf="nameInput.invalid && nameInput.touched"></mat-error>
+      </mat-form-field>
+      <mat-form-field color="primary" [style.width.px]="250">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          name="orgDescription"
+          [(ngModel)]="orgDescription"
+          #nameInput="ngModel"
+        />
+      </mat-form-field>
+      <!--Button will only be valid if all the required forms are filled out-->
+      <button mat-raised-button color="accent" [disabled]="addOrgForm.invalid">
+        Confirm
+      </button>
+    </form>
+  </mat-card>
+</body>
+<app-temp-nav-bar></app-temp-nav-bar>

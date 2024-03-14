@@ -1,5 +1,6 @@
 .toolbar {
   opacity: 0.9;
+  z-index: 10;
 }
 
 .absorb {

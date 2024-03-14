@@ -1,4 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -16,6 +22,9 @@ import { HomeValues } from '../data.config';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { RemovalDialogComponent } from '../removal-dialog/removal-dialog.component';
 
 @Component({
   selector: 'app-user-home',
@@ -35,6 +44,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTabsModule,
     MatTreeModule,
     MatCardModule,
+    MatSnackBarModule,
+    MatDialogModule,
     MatButtonModule,
     MatDividerModule,
     TempNavBarComponent,
@@ -64,6 +75,7 @@ export class UserHomeComponent implements OnInit {
   joinedOrgs: string[] = [];
   favDevices: string[] = [];
   menuItems = ['Organization', 'Devices'];
+  removeOrgs: boolean = false;
 
   result = JSON.stringify(this.data); //Example working with JSON
   info = JSON.parse(this.result);
@@ -73,10 +85,9 @@ export class UserHomeComponent implements OnInit {
   userName: string | null = '';
   routerLinkVariable = 'hi';
 
-  constructor(private route: ActivatedRoute) {} //makes an instance of the router
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) {} //makes an instance of the router
   ngOnInit(): void {
     this.userName = this.route.snapshot.paramMap.get('user'); //From the current route, get the route name, which should be the identifier for what you need to render.
-    console.log(this.userName);
     if (this.userName == null) {
       this.userName = 'John';
     }
@@ -91,6 +102,13 @@ export class UserHomeComponent implements OnInit {
       map((result) => result.matches),
       shareReplay()
     );
+
+  confirmRemoval(itemName: string) {
+    //SHould open a snackbar that asks if you want to remove the component, and then based on the action does the thing
+    const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+      data: { itemName: itemName }, //Can pass in more data if needed so that we can trigger the delete with orgID and userID
+    });
+  }
 
   setupExampleLists() {
     for (let i = 1; i <= 14; i++) {

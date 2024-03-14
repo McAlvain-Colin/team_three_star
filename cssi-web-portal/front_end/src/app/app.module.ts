@@ -33,6 +33,7 @@ import { DeviceDataComponent } from './device-data/device-data.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { DevicePageComponent } from './device-page/device-page.component';
 import { FilterPageComponent } from './filter-page/filter-page.component';
+import { RemovalDialogComponent } from './removal-dialog/removal-dialog.component';
 
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
@@ -65,6 +66,7 @@ import { FilterPageComponent } from './filter-page/filter-page.component';
     DatePicker,
     OrganizationPageComponent,
     UserHomeComponent,
+    RemovalDialogComponent,
     DevicePageComponent,
     FilterPageComponent,
     OrganizationPageComponent,

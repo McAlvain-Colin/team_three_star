@@ -8,7 +8,7 @@
         <form class="container" (ngSubmit)="submitForm()" #loginForm="ngForm">
           <mat-form-field color="primary" [style.width.px]="220">
             <mat-label>Email</mat-label>
-            <!--The email field input that's set up with a form control value from the angular library which checks for proper email inputs-->
+            <!--The email field input that's set up with a form control value from the angular library which checks for proper email inputs, send a post with a JSON, containing uid, orgId, and boolean active as false.-->
             <input
               matInput
               name="email"
