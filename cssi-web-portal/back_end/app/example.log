@@ -300,3 +300,7 @@ INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/
 INFO:werkzeug: * Restarting with stat
 WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 668-679-063
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:35:46] "OPTIONS /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:35:46] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:35:51] "OPTIONS /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Mar/2024 11:35:51] "GET /data HTTP/1.1" 200 -
