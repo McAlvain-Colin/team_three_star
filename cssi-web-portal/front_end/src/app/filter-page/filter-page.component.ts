@@ -15,9 +15,11 @@ import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { MatTableModule }  from '@angular/material/table';
 
-import {AfterViewInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
+import { AfterViewInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+
+import { DatePicker } from '../date-picker/date-picker.component';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
