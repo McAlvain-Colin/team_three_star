@@ -47,6 +47,10 @@
       <mat-label>Filter payload</mat-label>
       <input matInput [(ngModel)]="payloadFilter">
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyPayloadFilter($event)" placeholder="Dev_eui" #input>
+    </mat-form-field>    
 
     <!--  Payload Table -->
     <p>Payload Table</p>
@@ -71,6 +75,10 @@
 
       <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(payloadColumns)"></tr>
       <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(payloadColumns);"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
     </table>    
 
     <mat-paginator #payloadPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Payload Data"></mat-paginator>
@@ -83,6 +91,10 @@
       <mat-label>Filter metadata</mat-label>
       <input matInput [(ngModel)]="metadataFilter">
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyMetadataFilter($event)" placeholder="Dev_eui" #input>
+    </mat-form-field> 
     
     <!--  Metadata Table -->
     <p>Metadata Table</p>
@@ -107,6 +119,10 @@
 
       <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(metadataColumns)"></tr>
       <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(metadataColumns);"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
       
     </table>
 

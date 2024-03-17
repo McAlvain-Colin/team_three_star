@@ -120,6 +120,14 @@ export class FilterPageComponent implements AfterViewInit{
   }
 
   //filter function in order to allow users display only realivant data. 
+  //filters requested by pi
+  // -Date(start/end)
+  // -Time of day(start hour/end hour)(Across multiple days)
+  // -Data range of values (min/max)
+  // -Data type (temperature, moisture, pressure, etc)
+  // -Device ID
+  // -Functional Group/Application id
+  // -Device location/area
   filterData(data: any[], query: string): any[] {
     if (!query) {
       return data;
@@ -129,6 +137,14 @@ export class FilterPageComponent implements AfterViewInit{
         item[key].toString().toLowerCase().includes(query.toLowerCase())
       )
     );
+  }
+  applyPayloadFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.payloadDataSource.filter = filterValue.trim().toLowerCase();
+  }
+  applyMetadataFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.metadataSource.filter = filterValue.trim().toLowerCase();
   }
 }
 
