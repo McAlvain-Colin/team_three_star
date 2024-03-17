@@ -24,6 +24,14 @@ import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { MatTableModule }  from '@angular/material/table';
 
+import { AfterViewInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+
+import { DatePicker } from '../date-picker/date-picker.component';
+
+import { saveAs  } from 'file-saver';
+
 //using code from the filter page here since it is essentiall the same
 //I want to redo this code if theres time using the pageinate module. 
 //Requires data rework and I dont wanna break it yet.
@@ -32,8 +40,6 @@ export interface SensorData {
   dev_time: any; 
   payload_dict: any; 
   metadata_dict: any;
-  payloadColumns: any;
-  metadataColumns: any;
 }
 
 @Component({
@@ -59,11 +65,13 @@ export interface SensorData {
     MatInputModule,
     FormsModule,
     NgFor,
-    MatTableModule, 
+    MatTableModule,   
+    MatPaginatorModule,
+    DatePicker,
   ],
 })
-export class DevicePageComponent implements OnInit{
-  private breakpointObserver = inject(BreakpointObserver);
+export class DevicePageComponent implements AfterViewInit{
+  // private breakpointObserver = inject(BreakpointObserver);
 
   // I need to reimpliment this but the code seems to reject it will the onInit
   // isHandset$: Observable<boolean> = this.breakpointObserver
@@ -74,6 +82,8 @@ export class DevicePageComponent implements OnInit{
   //   );
 
   panelOpenState = false;
+  panelOpenStatePayload = false;
+  panelOpenStateMetadata = false;
 
   dev_eui: any[] = []; //Property to hold the device id
   dev_time: any[] = []; //Property to hold to hold the data time stamp
@@ -97,18 +107,18 @@ export class DevicePageComponent implements OnInit{
   ngOnInit(): void {
     this.apiService.getData().subscribe({
       next: (data: SensorData[]) => {
-        this.records = data.map((item: SensorData) => ({
+        const records = data.map((item: SensorData) => ({
           dev_eui: item.dev_eui,
           dev_time: item.dev_time,
           payload_dict: JSON.parse(item.payload_dict),
           metadata_dict: JSON.parse(item.metadata_dict)
         }));
-        if (this.records.length > 0) {        
-          //finding column values for all data types
-          this.payloadColumns = Object.keys(this.records[0].payload_dict);
-          this.metadataColumns = Object.keys(this.records[0].metadata_dict);
-          
-          //concating all columns together
+        this.payloadDataSource.data = records;
+        this.metadataSource.data = records;
+
+        if (records.length > 0) {        
+          this.payloadColumns = Object.keys(records[0].payload_dict);
+          this.metadataColumns = Object.keys(records[0].metadata_dict);
           this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(this.payloadColumns);
           this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(this.metadataColumns);
         }
@@ -118,8 +128,35 @@ export class DevicePageComponent implements OnInit{
       }
     });
   }
+
+  @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
+  @ViewChild('metadataPaginator') metadataPaginator!: MatPaginator;
+
+  payloadDataSource = new MatTableDataSource<SensorData>([]);
+  metadataSource = new MatTableDataSource<SensorData>([]);
+
+
+  ngAfterViewInit() {
+    this.payloadDataSource.paginator = this.payloadPaginator;
+    this.metadataSource.paginator = this.metadataPaginator;
+  }
+
+  add_device(): void {
+    this.apiService.getData().subscribe({
+      
+    })
   
+  }
+
   //filter function in order to allow users display only realivant data. 
+  //filters requested by pi
+  // -Date(start/end) :option there: 
+  // -Time of day(start hour/end hour)(Across multiple days)
+  // -Data range of values (min/max)
+  // -Data type (temperature, moisture, pressure, etc)
+  // -Device ID
+  // -Functional Group/Application id
+  // -Device location/area
   filterData(data: any[], query: string): any[] {
     if (!query) {
       return data;
@@ -129,5 +166,48 @@ export class DevicePageComponent implements OnInit{
         item[key].toString().toLowerCase().includes(query.toLowerCase())
       )
     );
+  }
+  applyPayloadFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.payloadDataSource.filter = filterValue.trim().toLowerCase();
+  }
+  applyMetadataFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.metadataSource.filter = filterValue.trim().toLowerCase();
+  }
+  exportToCSV(data: any[], filename: string = 'data.csv'): void {
+    if (!data || data.length === 0) {
+      alert('No data available for export');
+      return;
+    }
+  
+    // Validate data format
+    if (!data.every(item => typeof item === 'object' && item !== null)) {
+      console.error('Invalid data format for CSV export');
+      return;
+    }
+  
+    let csvData = this.convertToCSV(data);
+    let blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, filename);
+  }
+
+  private convertToCSV(data: any[]): string {
+    const array = [Object.keys(data[0])].concat(data); // header data for csv columns
+  
+    return array.map(row => {  //goes through each row of data
+      return Object.values(row).map(field => {
+        if (field === null || field === undefined) field = '';  //check for empty input
+        return '"' + String(field).replace(/"/g, '""') + '"';
+      }).join(',');
+    }).join('\r\n');
+  }
+  exportPayloadData(){
+    const payloadData = this.payloadDataSource.data.map(item=> item.payload_dict)
+    this.exportToCSV(payloadData, 'payload_data.csv')
+  }
+  exportMetadata(){
+    const payloadData = this.payloadDataSource.data.map(item=> item.metadata_dict)
+    this.exportToCSV(payloadData, 'metadata.csv')
   }
 }
