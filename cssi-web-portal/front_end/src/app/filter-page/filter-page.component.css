@@ -91,9 +91,9 @@
   margin-right: 5%;
   margin-bottom: 4%;
 
-  max-height: 500px;
-  max-width: 80%;
-  overflow-y: auto;
+  /* max-height: 500px;
+  max-width: 80%; */
+  /* overflow-y: auto; */
   overflow-x: scroll;
 
   width: 80%;
@@ -111,9 +111,9 @@
   margin-right: 5%;
   margin-bottom: 4%;
 
-  max-height: 500px;
-  max-width: 80%;
-  overflow-y: auto;
+  /* max-height: 500px;
+  max-width: 80%; */
+  /* overflow-y: auto; */
   overflow-x: scroll;
 
   width: 80%;

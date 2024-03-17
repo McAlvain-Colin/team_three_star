@@ -21,7 +21,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { DatePicker } from '../date-picker/date-picker.component';
 
-import { saveAs  } from "file-saver";
+import { saveAs  } from 'file-saver';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -173,9 +173,17 @@ export class FilterPageComponent implements AfterViewInit{
   
     return array.map(row => {  //goes through each row of data
       return Object.values(row).map(field => {
-        if (field === null || field === undefined) field = '';  //check for bad input
+        if (field === null || field === undefined) field = '';  //check for empty input
         return '"' + String(field).replace(/"/g, '""') + '"';
       }).join(',');
     }).join('\r\n');
+  }
+  exportPayloadData(){
+    const payloadData = this.payloadDataSource.data.map(item=> item.payload_dict)
+    this.exportToCSV(payloadData, 'payload_data.csv')
+  }
+  exportMetadata(){
+    const payloadData = this.payloadDataSource.data.map(item=> item.metadata_dict)
+    this.exportToCSV(payloadData, 'metadata.csv')
   }
 }

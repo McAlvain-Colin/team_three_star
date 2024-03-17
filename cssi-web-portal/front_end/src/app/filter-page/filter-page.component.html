@@ -31,7 +31,7 @@
       </mat-expansion-panel>
     </mat-card>
   </mat-accordion>
-  <!-- </mat-card> -->s
+  <!-- </mat-card> -->
 
   <mat-card class="payload-table">
     <!-- Filters need to be reintroduced into the tables when I can reliably display data -->
@@ -74,7 +74,7 @@
 
     <mat-paginator #payloadPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Payload Data"></mat-paginator>
 
-    <button (click)="exportToCSV(payloadDataSource.filteredData, 'payload_data.csv')">Export Payload Data</button>
+    <button (click)="exportPayloadData()">Export Payload Data</button>
     
   </mat-card>
 
@@ -117,9 +117,9 @@
 
     <mat-paginator #metadataPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Metadata Data"></mat-paginator>
 
-    <button (click)="exportToCSV(metadataSource.filteredData, 'metadata_data.csv')">Export Metadata Data</button>
+    <button (click)="exportMetadata()">Export Metadata Data</button>
 
   </mat-card>
 
-  <app-temp-nav-bar></app-temp-nav-bar>
+  <!-- <app-temp-nav-bar></app-temp-nav-bar> -->
 </body>
