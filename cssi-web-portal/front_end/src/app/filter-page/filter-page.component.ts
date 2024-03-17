@@ -15,14 +15,16 @@ import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { MatTableModule }  from '@angular/material/table';
 
+import {AfterViewInit, ViewChild} from '@angular/core';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
   dev_eui: any;
   dev_time: any; 
   payload_dict: any; 
   metadata_dict: any;
-  payloadColumns: any;
-  metadataColumns: any;
 }
 
 @Component({
@@ -44,12 +46,16 @@ export interface SensorData {
     CommonModule,
     NgFor,
     MatTableModule,  
+    MatPaginatorModule
   ],
 })
-export class FilterPageComponent implements OnInit{
+export class FilterPageComponent implements AfterViewInit{
 
   // Declared variables. Currently has duplicates until the better method is determined. 
   panelOpenState = false;
+  panelOpenStatePayload = false;
+  panelOpenStateMetadata = false;
+
   dev_eui: any[] = []; //Property to hold the device id
   dev_time: any[] = []; //Property to hold to hold the data time stamp
   records: any[] = []; //Property to hold the full JSON record
@@ -65,31 +71,25 @@ export class FilterPageComponent implements OnInit{
 
   constructor(private apiService: ApiService) { }
 
-  add_device(): void {
-    this.apiService.getData().subscribe({
-      
-    })
-  
-  }
-  
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
   //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
   //itterating code to try and get the data in a formate I can use.
+  
   ngOnInit(): void {
     this.apiService.getData().subscribe({
       next: (data: SensorData[]) => {
-        this.records = data.map((item: SensorData) => ({
+        const records = data.map((item: SensorData) => ({
           dev_eui: item.dev_eui,
           dev_time: item.dev_time,
           payload_dict: JSON.parse(item.payload_dict),
           metadata_dict: JSON.parse(item.metadata_dict)
         }));
-        if (this.records.length > 0) {        
-          //finding column values for all data types
-          this.payloadColumns = Object.keys(this.records[0].payload_dict);
-          this.metadataColumns = Object.keys(this.records[0].metadata_dict);
-          
-          //concating all columns together
+        this.payloadDataSource.data = records;
+        this.metadataSource.data = records;
+
+        if (records.length > 0) {        
+          this.payloadColumns = Object.keys(records[0].payload_dict);
+          this.metadataColumns = Object.keys(records[0].metadata_dict);
           this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(this.payloadColumns);
           this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(this.metadataColumns);
         }
@@ -99,7 +99,26 @@ export class FilterPageComponent implements OnInit{
       }
     });
   }
+
+  @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
+  @ViewChild('metadataPaginator') metadataPaginator!: MatPaginator;
+
+  payloadDataSource = new MatTableDataSource<SensorData>([]);
+  metadataSource = new MatTableDataSource<SensorData>([]);
+
+
+  ngAfterViewInit() {
+    this.payloadDataSource.paginator = this.payloadPaginator;
+    this.metadataSource.paginator = this.metadataPaginator;
+  }
+
+  add_device(): void {
+    this.apiService.getData().subscribe({
+      
+    })
   
+  }
+
   //filter function in order to allow users display only realivant data. 
   filterData(data: any[], query: string): any[] {
     if (!query) {
@@ -112,6 +131,8 @@ export class FilterPageComponent implements OnInit{
     );
   }
 }
+
+
 
 
 
