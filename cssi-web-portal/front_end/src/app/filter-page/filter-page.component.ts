@@ -21,6 +21,8 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { DatePicker } from '../date-picker/date-picker.component';
 
+import { saveAs  } from "file-saver";
+
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
   dev_eui: any;
@@ -48,7 +50,8 @@ export interface SensorData {
     CommonModule,
     NgFor,
     MatTableModule,  
-    MatPaginatorModule
+    MatPaginatorModule,
+    DatePicker,
   ],
 })
 export class FilterPageComponent implements AfterViewInit{
@@ -123,7 +126,7 @@ export class FilterPageComponent implements AfterViewInit{
 
   //filter function in order to allow users display only realivant data. 
   //filters requested by pi
-  // -Date(start/end)
+  // -Date(start/end) :option there: 
   // -Time of day(start hour/end hour)(Across multiple days)
   // -Data range of values (min/max)
   // -Data type (temperature, moisture, pressure, etc)
@@ -148,9 +151,31 @@ export class FilterPageComponent implements AfterViewInit{
     const filterValue = (event.target as HTMLInputElement).value;
     this.metadataSource.filter = filterValue.trim().toLowerCase();
   }
+  exportToCSV(data: any[], filename: string = 'data.csv'): void {
+    if (!data || data.length === 0) {
+      alert('No data available for export');
+      return;
+    }
+  
+    // Validate data format
+    if (!data.every(item => typeof item === 'object' && item !== null)) {
+      console.error('Invalid data format for CSV export');
+      return;
+    }
+  
+    let csvData = this.convertToCSV(data);
+    let blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, filename);
+  }
+
+  private convertToCSV(data: any[]): string {
+    const array = [Object.keys(data[0])].concat(data); // header data for csv columns
+  
+    return array.map(row => {  //goes through each row of data
+      return Object.values(row).map(field => {
+        if (field === null || field === undefined) field = '';  //check for bad input
+        return '"' + String(field).replace(/"/g, '""') + '"';
+      }).join(',');
+    }).join('\r\n');
+  }
 }
-
-
-
-
-

@@ -73,6 +73,8 @@
     </table>    
 
     <mat-paginator #payloadPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Payload Data"></mat-paginator>
+
+    <button (click)="exportToCSV(payloadDataSource.filteredData, 'payload_data.csv')">Export Payload Data</button>
     
   </mat-card>
 
@@ -114,6 +116,8 @@
     </table>
 
     <mat-paginator #metadataPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Metadata Data"></mat-paginator>
+
+    <button (click)="exportToCSV(metadataSource.filteredData, 'metadata_data.csv')">Export Metadata Data</button>
 
   </mat-card>
 
