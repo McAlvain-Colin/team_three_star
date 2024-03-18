@@ -6,6 +6,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  padding: 20px;
 
   /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
   &:before {
@@ -46,6 +47,8 @@
   width: 80%;
   left: 10%;
   top: 40%;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
@@ -145,3 +148,35 @@
   width: 100%;
 }
 
+.mat-card-actions {
+  margin-top: 5px;
+}
+
+.button-container {
+  display: flex;
+  /* justify-content: center; */
+  gap: 10px;
+}
+
+.mat-slider {
+  width: 100%; 
+  margin: 15px 0; 
+}
+
+.mat-accordion {
+  box-shadow: none; 
+}
+.mat-expansion-panel-header {
+  color: #333;
+}
+
+.filter {
+  padding: 20px;
+  background-color: white; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
+
+.filter .mat-form-field {
+  width: 100%; 
+  margin-bottom: 15px; 
+}

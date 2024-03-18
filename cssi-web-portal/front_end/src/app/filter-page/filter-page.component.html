@@ -23,11 +23,103 @@
             }}
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <img
+        <!-- <img
           src="../../assets/placeholder_cat.jfif"
           alt="Grey cat sitting on couch"
-        />
-        <app-date-picker> </app-date-picker>
+        /> -->
+        <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
+          <!-- date filter options -->
+          <mat-card class="date-filter">
+            <mat-form-field>
+              <app-date-picker> </app-date-picker>
+            </mat-form-field>
+          </mat-card>
+          <!-- time filter -->
+          <mat-card class="time-filter">
+            <mat-form-field>
+              <mat-label>Start Time</mat-label>
+              <input matInput [matDatepicker]="pickerStart" formControlName="startTime" required>
+              <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+              <mat-datepicker #pickerStart></mat-datepicker>
+              <mat-icon matSuffix>access_time</mat-icon>
+              <mat-hint>HH:MM</mat-hint>
+            </mat-form-field>
+          
+            <mat-form-field>
+              <mat-label>End Time</mat-label>
+              <input matInput [matDatepicker]="pickerEnd" formControlName="endTime" required>
+              <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+              <mat-datepicker #pickerEnd></mat-datepicker>
+              <mat-icon matSuffix>access_time</mat-icon>
+              <mat-hint>HH:MM</mat-hint>
+            </mat-form-field>
+          </mat-card>  
+          <!-- Data range of values -->
+          <mat-card class="range-filter" formGroupName="range">
+            <mat-form-field appearance="fill">
+              <mat-label>Start Value</mat-label>
+              <input matInput formControlName="startValue" readonly>
+            </mat-form-field>
+          
+            <mat-form-field appearance="fill">
+              <mat-label>End Value</mat-label>
+              <input matInput formControlName="endValue" readonly>
+            </mat-form-field>
+          
+            <!-- Slider to select range -->
+            <mat-slider
+              [thumbLabel]="true"
+              [tickInterval]="1"
+              [min]="minValue"
+              [max]="maxValue"
+              [step]="stepValue"
+              [value]="defaultValue"
+              [displayWith]="formatLabel"
+              (input)="onInput($event)"
+              dualThumb="true">
+            </mat-slider>
+          </mat-card>
+          
+          <!-- Data Type -->
+          <mat-card class="type-filter">
+            <mat-form-field>
+              <mat-label>Data Type</mat-label>
+              <input matInput formControlName="dataType" required>
+              <mat-icon matSuffix>text_fields</mat-icon>
+              <mat-hint>Enter Data Type</mat-hint>
+            </mat-form-field>
+          </mat-card>
+          
+          <!-- Device ID -->
+          <mat-card class="id-filter">
+            <mat-form-field>
+              <mat-label>Device ID</mat-label>
+              <input matInput formControlName="deviceId" required>
+              <mat-icon matSuffix>text_fields</mat-icon>
+              <mat-hint>Enter Device ID</mat-hint>
+            </mat-form-field>
+          </mat-card>
+          
+          <!-- Application ID -->
+          <mat-card class="application-filter">
+            <mat-form-field>
+              <mat-label>Application ID</mat-label>
+              <input matInput formControlName="applicationID" required>
+              <mat-icon matSuffix>text_fields</mat-icon>
+              <mat-hint>Enter Application ID</mat-hint>
+            </mat-form-field>
+          </mat-card>
+          <!-- Device Location -->
+          <mat-card class="location-filter">
+            <mat-form-field>
+              <mat-label>Location</mat-label>
+              <input matInput formControlName="location" required>
+              <mat-icon matSuffix>text_fields</mat-icon>
+              <mat-hint>Enter Location</mat-hint>
+            </mat-form-field>
+          </mat-card>
+          <button type="submit" mat-raised-button color="primary">Submit</button>
+        </form>
       </mat-expansion-panel>
     </mat-card>
   </mat-accordion>
@@ -74,7 +166,14 @@
 
     <mat-paginator #payloadPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Payload Data"></mat-paginator>
 
-    <button (click)="exportPayloadData()">Export Payload Data</button>
+    <mat-card-actions>
+      <div class="button-container">
+        <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="exportPayloadData()">Export Payload Data</button>
+        <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="addDevice()">Add Device</button>
+        <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="removeDevice()">Remove Device</button>
+        <mat-spinner *ngIf="showSpinner"></mat-spinner>
+      </div>
+    </mat-card-actions>
     
   </mat-card>
 
@@ -117,9 +216,16 @@
 
     <mat-paginator #metadataPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Metadata Data"></mat-paginator>
 
-    <button (click)="exportMetadata()">Export Metadata Data</button>
+    <mat-card-actions>
+      <div class="button-container">
+        <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="exportMetadata()">Export Metadata Data</button>
+        <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="add_device()">Add Device</button>
+        <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="removeDevice()">Remove Device</button>
+        <mat-spinner *ngIf="showSpinner"></mat-spinner>
+      </div>
+    </mat-card-actions>
 
   </mat-card>
 
-  <!-- <app-temp-nav-bar></app-temp-nav-bar> -->
+  <app-temp-nav-bar></app-temp-nav-bar>
 </body>

@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { OnInit } from '@angular/core';
+import { OnInit, Input } from '@angular/core';
 import { ApiService } from '../api.service'; 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -22,6 +22,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DatePicker } from '../date-picker/date-picker.component';
 
 import { saveAs  } from 'file-saver';
+
+import { Chart } from 'chart.js/auto';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgIf, PercentPipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -52,6 +59,13 @@ export interface SensorData {
     MatTableModule,  
     MatPaginatorModule,
     DatePicker,
+    MatButtonModule,
+    NgIf,
+    MatProgressSpinnerModule,
+    PercentPipe,
+    FormBuilder, 
+    FormGroup, 
+    Validators,
   ],
 })
 export class FilterPageComponent implements AfterViewInit{
@@ -74,7 +88,13 @@ export class FilterPageComponent implements AfterViewInit{
   displayedPayloadColumns: string[] = [];  // Property to hold the
   displayedMetadataColumns: string[] = [];  // Property to hold the
 
-  constructor(private apiService: ApiService) { }
+  filterForm!: FormGroup;
+  minValue: number = 0; // Minimum value for the range slider
+  maxValue: number = 100; // Maximum value for the range slider
+  stepValue: number = 1; // Step value for the range slider
+  defaultValue: [number, number] = [0, 1000]; // Default range values for the slider (need to make dynamic based on json values)
+
+  constructor(private apiService: ApiService, private fb: FormBuilder) { }
 
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
   //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
@@ -103,6 +123,19 @@ export class FilterPageComponent implements AfterViewInit{
         console.error('Error: ', error);
       }
     });
+    
+    this.filterForm = this.fb.group({
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required],
+      range: this.fb.group({
+        startValue: [{ value: this.defaultValue[0], disabled: true }],
+        endValue: [{ value: this.defaultValue[1], disabled: true }]
+      }),
+      dataType: ['', Validators.required],
+      deviceId: ['', Validators.required],
+      applicationID: ['', Validators.required],
+      location: ['', Validators.required]
+    });
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -116,23 +149,29 @@ export class FilterPageComponent implements AfterViewInit{
     this.payloadDataSource.paginator = this.payloadPaginator;
     this.metadataSource.paginator = this.metadataPaginator;
   }
-
+  
+  //device management
+  //----------------------------------------------------------------------------
   add_device(): void {
     this.apiService.getData().subscribe({
       
     })
   
   }
+  removeDevice() {}
 
+  //filter functions
+  //----------------------------------------------------------------------------
   //filter function in order to allow users display only realivant data. 
   //filters requested by pi
-  // -Date(start/end) :option there: 
+  // -Date(start/end) 
   // -Time of day(start hour/end hour)(Across multiple days)
   // -Data range of values (min/max)
   // -Data type (temperature, moisture, pressure, etc)
   // -Device ID
   // -Functional Group/Application id
   // -Device location/area
+  //----------------------------------------------------------------------------
   filterData(data: any[], query: string): any[] {
     if (!query) {
       return data;
@@ -143,6 +182,7 @@ export class FilterPageComponent implements AfterViewInit{
       )
     );
   }
+
   applyPayloadFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.payloadDataSource.filter = filterValue.trim().toLowerCase();
@@ -151,6 +191,24 @@ export class FilterPageComponent implements AfterViewInit{
     const filterValue = (event.target as HTMLInputElement).value;
     this.metadataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  onInput(event: any) {
+    // Update the range values in the form when the slider value changes
+    this.filterForm.patchValue({
+      range: {
+        startValue: event.value[0],
+        endValue: event.value[1]
+      }
+    });
+  }
+
+  formatLabel(value: number) {
+
+    return value;
+  }
+
+  //data export functions
+  //----------------------------------------------------------------------------
   exportToCSV(data: any[], filename: string = 'data.csv'): void {
     if (!data || data.length === 0) {
       alert('No data available for export');
@@ -186,4 +244,5 @@ export class FilterPageComponent implements AfterViewInit{
     const payloadData = this.payloadDataSource.data.map(item=> item.metadata_dict)
     this.exportToCSV(payloadData, 'metadata.csv')
   }
+  //----------------------------------------------------------------------------
 }
