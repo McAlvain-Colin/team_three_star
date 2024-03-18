@@ -39,6 +39,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { ApplicationPageComponent } from './application-page/application-page.component';
 
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
@@ -75,6 +76,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
     DevicePageComponent,
     FilterPageComponent,
     OrganizationPageComponent,
+    ApplicationPageComponent,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,

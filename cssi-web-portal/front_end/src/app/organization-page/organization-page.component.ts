@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { DataLayout } from '../data.config';
 import { RequestService } from '../request.service';
 import { MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
@@ -25,7 +24,6 @@ import { MatTabsModule } from '@angular/material/tabs';
     RouterModule,
     CommonModule,
     MatToolbarModule,
-    MatGridListModule,
     MatIconModule,
     MatSidenavModule,
     MatListModule,
@@ -68,7 +66,7 @@ export class OrganizationPageComponent {
   //   }
 
   routerLinkVariable = '/hi';
-  devices: string[] = [];
+  applications: string[] = [];
   orgName: string | null = 'Cat Chairs';
   orgDescription: string | null =
     'This cat is the sole representative of this company, he watches over the data. If there are any issues that you have with this CEO, please send a request at 1-420-MEOW-MEOW.';
@@ -95,7 +93,7 @@ export class OrganizationPageComponent {
 
   setupDevices() {
     for (let i = 1; i <= 10; i++) {
-      this.devices.push('Device ' + i);
+      this.applications.push('Application ' + i);
     }
   }
 }

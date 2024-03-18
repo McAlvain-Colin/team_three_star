@@ -29,12 +29,12 @@ export class AboutComponent {
   ];
   professor_images = [
     { url: '../../assets/DavidFeilSeifer.jpg', alt: 'Dr. David Feil-Seifer' },
-    { url: '../../assets/default.png', alt: 'Devrin Lee' },
+    { url: '../../assets/devrin-lee.jpg', alt: 'Devrin Lee' },
     { url: '../../assets/Sara-Davis.jpg', alt: 'Sara Davis' },
   ];
   advisor_images = [
-    { url: '../../assets/SergiuDascalu.jpg', alt: 'Dr.Sergui Dascalu ' },
+    { url: '../../assets/Jehren-Boehm.jpg', alt: 'Jehren Boehm' },
     { url: '../../assets/zach.png', alt: 'Zach Estreito' },
-    { url: '../../assets/default.png', alt: 'Vinh Le' },
+    { url: '../../assets/default.png', alt: 'Kaden N.' },
   ];
 }

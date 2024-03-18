@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ApplicationModule, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -13,13 +13,18 @@ import { OrganizationPageComponent } from './organization-page/organization-page
 import { DevicePageComponent } from './device-page/device-page.component';
 import { FilterPageComponent } from './filter-page/filter-page.component';
 import { AddOrganizationComponent } from './add-organization/add-organization.component';
+import { ApplicationPageComponent } from './application-page/application-page.component';
 
 // Huy and Colin created the paths and linked the respective components to in order to properly route with Angular's routing
 // Huy created the dynamic routing pathways
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+  },
   { path: 'about', component: AboutComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'login', component: LoginComponent },
@@ -28,9 +33,16 @@ const routes: Routes = [
   { path: 'tool-bar', component: ToolBarComponent },
   { path: 'home', component: UserHomeComponent },
   { path: 'home/:user', component: UserHomeComponent }, //:user is dynamic
-  { path: 'add-organization/:newOrg', component: AddOrganizationComponent }, //:newOrg is dynamic
+  { path: 'add-organization/:user', component: AddOrganizationComponent }, //:user is dynamic
   { path: 'organization', component: OrganizationPageComponent },
   { path: 'organization/:org', component: OrganizationPageComponent }, //:org is dynamic
+  { path: 'organization/:org/:user', component: OrganizationPageComponent }, //:org is dynamic
+  { path: 'application', component: ApplicationPageComponent },
+  { path: 'application/:app', component: ApplicationPageComponent },
+  {
+    path: 'application/:app/:org/:user',
+    component: ApplicationPageComponent,
+  },
   { path: 'device', component: DevicePageComponent },
   { path: 'device/:curDevice', component: DevicePageComponent }, //:curDevice is dynamic
   { path: 'filter', component: FilterPageComponent },

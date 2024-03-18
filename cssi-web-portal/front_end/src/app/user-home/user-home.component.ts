@@ -110,6 +110,17 @@ export class UserHomeComponent implements OnInit {
     });
   }
 
+  getRouteName(itemName: string, itemType: number) {
+    if (itemType == 0) {
+      let routeName: string = '/organization/' + itemName;
+      return routeName;
+    } else if (itemType == 1) {
+      let routeName: string = '/device/' + itemName;
+      return routeName;
+    }
+    return null;
+  }
+
   setupExampleLists() {
     for (let i = 1; i <= 14; i++) {
       this.notifications.push('Notification ' + i);

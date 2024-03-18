@@ -82,9 +82,7 @@
               <!--Note that the let parameter only creates a variable that lasts for the loop and has scope only in the loop.-->
               <a
                 mat-list-item
-                [routerLink]="
-                  removeOrgs ? null : '/organization/{{ organization }}'
-                "
+                [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
                 *ngFor="let organization of ownedOrgs"
               >
                 <div class="make-flexbox">
@@ -126,9 +124,7 @@
               </div>
               <a
                 mat-list-item
-                [routerLink]="
-                  removeOrgs ? null : '/organization/{{ organization }}'
-                "
+                [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
                 *ngFor="let organization of joinedOrgs"
               >
                 <div class="make-flexbox">
@@ -160,7 +156,7 @@
               </div>
               <a
                 mat-list-item
-                [routerLink]="removeOrgs ? null : '/device/{{ device }}'"
+                [routerLink]="removeOrgs ? null : getRouteName(device, 1)"
                 *ngFor="let device of favDevices"
               >
                 <div class="make-flexbox">

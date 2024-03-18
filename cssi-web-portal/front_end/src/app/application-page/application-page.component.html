@@ -28,37 +28,31 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
       ><a routerLink="/home" class="color-white">Home ></a>
-      Organization</mat-toolbar
+      <a routerLink="/organization" class="color-white"> Organization ></a>
+      Application</mat-toolbar
     >
-    <mat-card class="organization-box">
-      <mat-card-content class="organization-content">
-        <img
-          class="organization-image"
-          src="{{ '../../assets/' + imgName + '.jpg' }}"
-          alt="Grey cat sitting on couch"
-        />
-        <mat-card-content class="about-org-box">
-          <mat-card-header
-            ><h3 class="organization-title">About {{ orgName }}</h3>
-          </mat-card-header>
-          <mat-divider class="organization-divider"></mat-divider>
-          <p>
-            {{ orgDescription }}
-          </p>
-        </mat-card-content>
-      </mat-card-content>
+    <mat-card class="app-box">
+      <div class="app-content">
+        <mat-card-header
+          ><h3 class="app-title">{{ appName }}</h3>
+        </mat-card-header>
+        <mat-divider class="app-divider"></mat-divider>
+        <p>
+          {{ appDescription }}
+        </p>
+      </div>
     </mat-card>
     <mat-card class="devices-box">
       <mat-card-content class="devices-content">
         <mat-tab-group [style.position]="'sticky'">
-          <mat-tab label="{{ orgName }}'s Devices">
+          <mat-tab label="{{ appName }} Devices">
             <mat-nav-list>
               <a
                 mat-list-item
-                routerLink="/application/{{ application }}"
-                *ngFor="let application of applications"
+                routerLink="/device/{{ device }}"
+                *ngFor="let device of devices"
               >
-                {{ application }}
+                {{ device }}
               </a>
             </mat-nav-list>
           </mat-tab>

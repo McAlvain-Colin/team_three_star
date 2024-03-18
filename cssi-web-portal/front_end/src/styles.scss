@@ -1,37 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 /* Default light theme that our website uses */
 // Developed by Huy importing from the angular material library to make a light and dark theme to swap back and forth between palettes.
-@import "@angular/material/theming";
 
-@include mat-core();
+//Working item, but uses deprecated code, need to update to more new format
+// @import "@angular/material/theming";
 
-$light-theme-primary: mat-palette($mat-indigo);
-$light-theme-accent: mat-palette($mat-pink);
-$light-theme-warn: mat-palette($mat-red);
+// @include mat-core();
 
-$light-theme: mat-light-theme(
-  $light-theme-primary,
-  $light-theme-accent,
-  $light-theme-warn
-);
+// $light-theme-primary: mat-palette($mat-indigo);
+// $light-theme-accent: mat-palette($mat-pink);
+// $light-theme-warn: mat-palette($mat-red);
 
-@include angular-material-theme($light-theme);
+// $light-theme: mat-light-theme(
+//   $light-theme-primary,
+//   $light-theme-accent,
+//   $light-theme-warn
+// );
 
-/* This is for the dark theme */
-$dark-theme-primary: mat-palette($mat-grey);
-$dark-theme-accent: mat-palette($mat-blue-grey);
-$dark-theme-warn: mat-palette($mat-red);
+// @include angular-material-theme($light-theme);
 
-$dark-theme: mat-dark-theme(
-  $dark-theme-primary,
-  $dark-theme-accent,
-  $dark-theme-warn
-);
+// /* This is for the dark theme */
+// $dark-theme-primary: mat-palette($mat-grey);
+// $dark-theme-accent: mat-palette($mat-blue-grey);
+// $dark-theme-warn: mat-palette($mat-red);
 
-// Adds the dark theme created above into the angular material theme to be referenced later
-.dark-theme {
-  @include angular-material-theme($dark-theme);
-}
+// $dark-theme: mat-dark-theme(
+//   $dark-theme-primary,
+//   $dark-theme-accent,
+//   $dark-theme-warn
+// );
+
+// // Adds the dark theme created above into the angular material theme to be referenced later
+// .dark-theme {
+//   @include angular-material-theme($dark-theme);
+// }
 
 // Example Huy's Attempt for making a color theme library to address new angular version
 // @use "@angular/material" as mat;

@@ -1,0 +1,126 @@
+.toolbar {
+  opacity: 0.9;
+  z-index: 10;
+}
+
+.absorb {
+  height: 0;
+  position: absolute;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+  width: 300px;
+}
+
+.sidenav-title {
+  transform: translate(75%, 25%);
+  color: white;
+  font-size: 36px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  opacity: 0.95;
+}
+
+.sidenav-toolbar {
+  background-image: url("../../assets/Home-page-2.jpg") !important;
+  background-size: cover !important;
+  height: 200px !important;
+
+  /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, #000000, #000000);
+    opacity: 0.27;
+  }
+}
+
+.sidenav-button {
+  margin: 4px;
+  transform: translate(20%, 0%);
+}
+
+.sidenav-item {
+  text-align: center;
+}
+
+.background {
+  background-color: aliceblue;
+  height: 100%;
+  width: 100%;
+}
+
+.device-button {
+  position: inline;
+  left: 45%;
+  top: 100%;
+}
+
+.color-white {
+  text-decoration: none;
+  color: white;
+  padding-right: 6px;
+}
+
+.app-title {
+  color: rgba(63, 81, 181, 1);
+}
+
+.app-divider {
+  border-top-color: rgba(63, 81, 181, 0.6);
+  border-top-width: 3px;
+}
+
+.app-box {
+  display: flex;
+  position: absolute;
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+  height: 25%;
+  max-height: 32%;
+  width: 90%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.app-content {
+  position: absolute;
+  display: flex;
+  left: 2%;
+  width: 95%;
+  flex-flow: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.devices-box {
+  display: flex;
+  position: absolute;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 3%;
+  top: 34%;
+  height: 60%;
+  max-height: 60%;
+  width: 90%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.devices-content {
+  height: 100%;
+  overflow-y: scroll;
+}
