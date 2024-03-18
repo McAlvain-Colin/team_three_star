@@ -158,8 +158,11 @@
                 <mat-paginator #metadataPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Metadata Data"></mat-paginator>
             
                 <button (click)="exportMetadata()">Export Metadata Data</button>
-            
               </mat-card>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-card-content> 
+      </mat-card>
       <button
         mat-raised-button
         color="accent"
