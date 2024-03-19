@@ -2,9 +2,8 @@ import { Component, inject } from '@angular/core';
 import { DataLayout } from '../data.config';
 import { RequestService } from '../request.service';
 import { MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { DeviceMapComponent } from '../device-map/device-map.component';
@@ -15,6 +14,8 @@ import { MatListModule } from '@angular/material/list';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, shareReplay } from 'rxjs';
 import { MatTabsModule } from '@angular/material/tabs';
+import { RemovalDialogComponent } from '../removal-dialog/removal-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-organization-page',
@@ -25,7 +26,6 @@ import { MatTabsModule } from '@angular/material/tabs';
     RouterModule,
     CommonModule,
     MatToolbarModule,
-    MatGridListModule,
     MatIconModule,
     MatSidenavModule,
     MatListModule,
@@ -34,6 +34,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatButtonModule,
     TempNavBarComponent,
     DeviceMapComponent,
+    MatDialogModule,
+    RemovalDialogComponent,
   ],
 })
 export class OrganizationPageComponent {
@@ -67,9 +69,24 @@ export class OrganizationPageComponent {
   //     //this.requestService.sendData(newData); //Sends a newData variable to the sendData function to be processed
   //   }
 
-  routerLinkVariable = '/home';
-  links = ['link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7'];
-  orgName: string = 'Cat Chairs';
+  orgId: number = 0;
+  routerLinkVariable = '/hi';
+  applications: string[] = [];
+  orgName: string | null = 'Cat Chairs';
+  orgDescription: string | null =
+    'This cat is the sole representative of this company, he watches over the data. If there are any issues that you have with this CEO, please send a request at 1-420-MEOW-MEOW.';
+  imgName: string | null = 'placeholder_cat2';
+  removeApps: boolean = false;
+
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) {} //makes an instance of the router
+  ngOnInit(): void {
+    this.orgName = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    console.log(this.orgName);
+    if (this.orgName == null) {
+      this.orgName = 'Cat Chairs';
+    }
+    this.setupDevices();
+  }
 
   private breakpointObserver = inject(BreakpointObserver);
 
@@ -79,4 +96,22 @@ export class OrganizationPageComponent {
       map((result) => result.matches),
       shareReplay()
     );
+
+  confirmRemoval(itemName: string) {
+    //SHould open a snackbar that asks if you want to remove the component, and then based on the action does the thing
+    const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+      data: { itemName: itemName }, //Can pass in more data if needed so that we can trigger the delete with orgID and userID
+    });
+  }
+
+  getRouteName(itemName: string) {
+    let routeName: string = '/application/' + itemName;
+    return routeName;
+  }
+
+  setupDevices() {
+    for (let i = 1; i <= 10; i++) {
+      this.applications.push('Application ' + i);
+    }
+  }
 }

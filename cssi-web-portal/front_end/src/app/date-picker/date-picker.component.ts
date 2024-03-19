@@ -1,10 +1,15 @@
-//create by terminal and then added too 
-import {Component} from '@angular/core';
-import {FormGroup, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgIf, JsonPipe} from '@angular/common';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatNativeDateModule} from '@angular/material/core';
+//create by terminal and then added too
+import { Component } from '@angular/core';
+import {
+  FormGroup,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { NgIf, JsonPipe, CommonModule } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 
 /** @title Date range picker forms integration */
 @Component({
@@ -14,6 +19,7 @@ import {MatNativeDateModule} from '@angular/material/core';
   standalone: true,
   imports: [
     MatFormFieldModule,
+    CommonModule,
     MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,

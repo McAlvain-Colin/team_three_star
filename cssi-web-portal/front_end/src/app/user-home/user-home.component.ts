@@ -1,5 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
@@ -16,6 +22,9 @@ import { HomeValues } from '../data.config';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { RemovalDialogComponent } from '../removal-dialog/removal-dialog.component';
 
 @Component({
   selector: 'app-user-home',
@@ -35,16 +44,14 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTabsModule,
     MatTreeModule,
     MatCardModule,
+    MatSnackBarModule,
+    MatDialogModule,
     MatButtonModule,
     MatDividerModule,
     TempNavBarComponent,
   ],
 })
 export class UserHomeComponent implements OnInit {
-  private breakpointObserver = inject(BreakpointObserver);
-  constructor(public router: Router) {} //makes an instance of the router
-  ngOnInit() {}
-
   data: HomeValues[] = [
     {
       name: 'Item 1',
@@ -63,21 +70,64 @@ export class UserHomeComponent implements OnInit {
     },
   ];
 
-  links = ['link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7'];
+  notifications: string[] = [];
+  ownedOrgs: string[] = [];
+  joinedOrgs: string[] = [];
+  favDevices: string[] = [];
   menuItems = ['Organization', 'Devices'];
+  removeOrgs: boolean = false;
 
-  result = JSON.stringify(this.data);
+  result = JSON.stringify(this.data); //Example working with JSON
   info = JSON.parse(this.result);
 
   newData = this.info[0].name;
 
+  userName: string | null = '';
   routerLinkVariable = 'hi';
 
-  //For the toolbar examination
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) {} //makes an instance of the router
+  ngOnInit(): void {
+    this.userName = this.route.snapshot.paramMap.get('user'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    if (this.userName == null) {
+      this.userName = 'John';
+    }
+    this.setupExampleLists();
+  }
+
+  private breakpointObserver = inject(BreakpointObserver);
+
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
       map((result) => result.matches),
       shareReplay()
     );
+
+  //For removal, we use put in order to update the status of the org with a boolean.
+  confirmRemoval(itemName: string, orgID?: number, userID?: number) {
+    //SHould open a snackbar that asks if you want to remove the component, and then based on the action does the thing
+    const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+      data: { itemName: itemName }, //Can pass in more data if needed so that we can trigger the delete with orgID and userID
+    });
+  }
+
+  getRouteName(itemName: string, itemType: number) {
+    if (itemType == 0) {
+      let routeName: string = '/organization/' + itemName;
+      return routeName;
+    } else if (itemType == 1) {
+      let routeName: string = '/device/' + itemName;
+      return routeName;
+    }
+    return null;
+  }
+
+  setupExampleLists() {
+    for (let i = 1; i <= 14; i++) {
+      this.notifications.push('Notification ' + i);
+      this.ownedOrgs.push('Owned Organization ' + i);
+      this.joinedOrgs.push('Joined Organization ' + i);
+      this.favDevices.push('Favorite Device ' + i);
+    }
+  }
 }

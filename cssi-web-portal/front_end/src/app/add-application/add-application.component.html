@@ -1,0 +1,38 @@
+<mat-toolbar color="primary" class="toolbar">
+  <a routerLink="/home/{{ userID }}" class="color-white"
+    >&#60; Return Home</a
+  ></mat-toolbar
+>
+<body class="main-body">
+  <mat-card class="add-app-form">
+    <h1 class="title">Add An Application</h1>
+    <form class="container" (ngSubmit)="submitForm()" #addAppForm="ngForm">
+      <mat-form-field color="primary" [style.width.px]="250">
+        <mat-label>Application Name</mat-label>
+        <input
+          matInput
+          name="appName"
+          [(ngModel)]="appName"
+          #nameInput="ngModel"
+          required
+        />
+        <!--Only invalid if left empty, and has been clicked into-->
+        <mat-error *ngIf="nameInput.invalid && nameInput.touched"></mat-error>
+      </mat-form-field>
+      <mat-form-field color="primary" [style.width.px]="250">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          name="appDescription"
+          [(ngModel)]="appDescription"
+          #nameInput="ngModel"
+        />
+      </mat-form-field>
+      <!--Button will only be valid if all the required forms are filled out-->
+      <button mat-raised-button color="accent" [disabled]="addAppForm.invalid">
+        Confirm
+      </button>
+    </form>
+  </mat-card>
+</body>
+<app-temp-nav-bar></app-temp-nav-bar>

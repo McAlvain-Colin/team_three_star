@@ -86,7 +86,7 @@ html {
 .background {
   background-image: url("../../assets/home-background.jpg");
   /*Adjust height in order to keep contents within page without a nescessary scroll wheel*/
-  height: 90%;
+  height: 91.5%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

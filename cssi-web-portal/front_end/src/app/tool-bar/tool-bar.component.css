@@ -7,6 +7,12 @@
   background: inherit;
 }
 
+/* Absorb resolves a hover bug from angular side nav over property functionality */
+.absorb {
+  height: 0;
+  position: absolute;
+}
+
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;

@@ -34,40 +34,64 @@
       <mat-card-content class="organization-content">
         <img
           class="organization-image"
-          src="../../assets/placeholder_cat2.jpg"
+          src="{{ '../../assets/' + imgName + '.jpg' }}"
           alt="Grey cat sitting on couch"
         />
         <mat-card-content class="about-org-box">
           <mat-card-header
-            ><h3 class="organization-title">About Cat Chairs</h3>
+            ><h3 class="organization-title">About {{ orgName }}</h3>
           </mat-card-header>
           <mat-divider class="organization-divider"></mat-divider>
           <p>
-            This cat is the sole representative of this company, he watches over
-            the data. If there are any issues that you have with this CEO,
-            please send a request at 1-420-MEOW-MEOW.
+            {{ orgDescription }}
           </p>
         </mat-card-content>
       </mat-card-content>
     </mat-card>
-    <mat-card class="devices-box">
-      <mat-card-content class="devices-content">
+    <mat-card class="apps-box">
+      <mat-card-content class="apps-content">
         <mat-tab-group [style.position]="'sticky'">
-          <mat-tab label="{{ orgName }}'s Devices">
+          <mat-tab label="{{ orgName }}'s Applications">
             <mat-nav-list>
-              <a mat-list-item routerLink="/device"> Device 1</a>
-              <a mat-list-item routerLink="/device"> Device 2</a>
-              <a mat-list-item routerLink="/device"> Device 3</a>
-              <a mat-list-item routerLink="/device"> Device 4</a>
-              <a mat-list-item routerLink="/device"> Device 5</a>
+              <div class="make-flexbox">
+                <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
+                <button
+                  mat-raised-button
+                  color="accent"
+                  class="group-button"
+                  routerLink="/add-application/{{ orgId }}"
+                >
+                  Add
+                </button>
+                <span class="push-button-right"> </span>
+                <button
+                  mat-raised-button
+                  color="warn"
+                  class="group-button"
+                  (click)="removeApps = !removeApps"
+                >
+                  Remove
+                </button>
+              </div>
+              <a
+                mat-list-item
+                routerLink="/application/{{ application }}"
+                *ngFor="let application of applications"
+              >
+                {{ application }}
+                <button
+                  class="remove-icon"
+                  *ngIf="removeApps"
+                  (click)="confirmRemoval(application)"
+                >
+                  <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                </button>
+              </a>
             </mat-nav-list>
           </mat-tab>
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <button mat-raised-button color="accent" class="device-button">
-      Device Request
-    </button>
     <body class="background">
       <app-temp-nav-bar></app-temp-nav-bar>
     </body>

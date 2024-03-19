@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DataStats } from '../app.component';
 import { DataStatsService } from '../../charts/data-stats.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { NgIf, PercentPipe } from '@angular/common';
+import { CommonModule, NgIf, PercentPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
@@ -21,6 +21,7 @@ import { FormControl } from '@angular/forms';
   standalone: true,
   imports: [
     MatCardModule,
+    CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -40,11 +41,12 @@ export class DeviceStatsComponent implements OnInit {
   typeOfChart!: string;
   startTime!: string;
   endTime!: string;
+  startNumber: number = 0;
 
   constructor(private statsChart: DataStatsService) {}
 
   ngOnInit(): void {
-    this.statsChart.createStatsChart(this.stats[0]);
+    this.statsChart.createStatsChart(this.stats[this.startNumber]);
   }
 
   loadSpinner() {

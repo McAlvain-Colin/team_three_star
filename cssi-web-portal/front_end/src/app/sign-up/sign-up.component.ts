@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -27,6 +28,7 @@ import { Router } from '@angular/router';
   imports: [
     ToolBarComponent,
     MatFormFieldModule,
+    MatTooltipModule,
     MatInputModule,
     MatSelectModule,
     MatCardModule,
@@ -42,7 +44,11 @@ import { Router } from '@angular/router';
   ],
 })
 export class SignUpComponent {
-  constructor(private snackBar: MatSnackBar, private http: HttpClient, private router : Router) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private http: HttpClient,
+    private router: Router
+  ) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
   name: string = '';
@@ -50,8 +56,67 @@ export class SignUpComponent {
   emailConfirm: string = '';
   password: string = '';
   passwordConfirm: string = '';
-  base_url : string = 'http://localhost:5000';
+  toolTipText: string =
+    "Password must have: \n 1 Uppercase Letter \n 1 Lowercase Letter \n 1 Number \n 1 Special Character(i.e. ?,!,/,', etc.) \n More than 8 Letters";
+  passwordCode: unknown = 0; //Set as unknown for if debugging is needed, so we can cast the hash into a viewable string.
+  specialChars: string[] = [
+    '~',
+    '!',
+    '@',
+    '#',
+    '$',
+    '%',
+    '^',
+    '&',
+    '*',
+    '_',
+    '-',
+    '+',
+    '=',
+    '`',
+    '|',
+    '()',
+    '{}',
+    '[]',
+    ':',
+    ';',
+    "'",
+    '<>',
+    ',',
+    '.',
+    '?',
+    '/',
+  ];
 
+  hasNumber(checkWord: string) {
+    return /\d/.test(checkWord); //Checks through word for number and checks for metacharacter d = digit
+  }
+
+  hasProperCases(checkWord: string) {
+    if (checkWord === checkWord.toLowerCase()) {
+      alert('There is no uppercase');
+      return false;
+    } else if (checkWord === checkWord.toUpperCase()) {
+      alert('There is no lowercase');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  //Derived from https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript for basic hashing on front end for secure sending to the backend.
+  hashPassword() {
+    var hash = 0;
+    var i, chr;
+    if (this.password.length === 0) return hash;
+    for (i = 0; i < this.password.length; i++) {
+      chr = this.password.charCodeAt(i);
+      hash = hash * 31 + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  }
+  base_url: string = 'http://localhost:5000';
 
   // constructor(private http: HttpClient, private router : Router){}
 
@@ -74,6 +139,17 @@ export class SignUpComponent {
         horizontalPosition: 'center',
         verticalPosition: 'top',
       });
+    } else if (
+      this.password.length < 8 ||
+      !this.specialChars.some((char) => this.password.includes(char)) ||
+      !this.hasNumber(this.password) ||
+      !this.hasProperCases(this.password)
+    ) {
+      message = "Your password doesn't meet the proper requirements!";
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
     } else if (this.password != this.passwordConfirm) {
       message = "Passwords don't match!";
       this.snackBar.open(message, 'Close', {
@@ -85,48 +161,52 @@ export class SignUpComponent {
         horizontalPosition: 'center',
         verticalPosition: 'top',
       });
+      this.passwordCode = this.hashPassword();
     }
 
-    console.log('in signin ')
-    this.http.put(this.base_url + '/createUser', {email  : this.emailField.getRawValue()}, {observe: 'response', responseType : 'json'}).subscribe(
-      {
-        next: (response) => 
-        {
-          const res = JSON.stringify(response.body)
+    // console.log('in signin ');
+    // this.http
+    //   .put(
+    //     this.base_url + '/createUser',
+    //     { email: this.emailField.getRawValue() },
+    //     { observe: 'response', responseType: 'json' }
+    //   )
+    //   .subscribe({
+    //     next: (response) => {
+    //       const res = JSON.stringify(response.body);
+    console.log('in signin ');
+    this.http
+      .put(
+        this.base_url + '/createUser',
+        { email: this.emailField.getRawValue(), password: this.password },
+        { observe: 'response', responseType: 'json' }
+      )
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response.body);
 
-          let resp = JSON.parse(res)
+          let resp = JSON.parse(res);
 
-          console.log('sign in resp is ')
+          console.log('sign in resp is ');
 
-          console.log(resp)
+          console.log(resp);
 
-          console.log(resp.emailConfirmation)
+          console.log(resp.emailConfirmation);
 
-          this.checkEmailConfirmation(resp.emailConfirmation)
-
+          this.checkEmailConfirmation(resp.emailConfirmation);
         },
-        error: (error) => 
-        {
+        error: (error) => {
           console.error(error);
-        }
+        },
       });
-
-    
-
-
-
   }
 
-  checkEmailConfirmation(check:boolean)
-  {
-    if(check)
-    {
-      this.router.navigate(['/login'])
-    }
-    else
-    {
-      this.router.navigate(['/signin'])
-      alert('signup was unsuccessful')
+  checkEmailConfirmation(check: boolean) {
+    if (check) {
+      this.router.navigate(['/login']);
+    } else {
+      this.router.navigate(['/signin']);
+      alert('signup was unsuccessful');
     }
   }
 

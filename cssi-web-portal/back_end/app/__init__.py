@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, url_for, redirect
+from flask import Flask, request, jsonify, url_for, make_response
 from flask_cors import CORS
 import datetime
 from helperFunctions import * 
@@ -11,21 +11,45 @@ from flask_jwt_extended import (create_access_token, JWTManager,
                         
                                 )
 
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-# from flask_sqlalchemy import SQLAlchemy
+from itsdangerous import URLSafeTimedSerializer
+
+import bcrypt
+
+
+#db imports
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import String, types, text, LargeBinary
+
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry 
+from typing_extensions import Annotated
 
 
 
 
+#db things###########################
+str_320 = Annotated[str, 320]
+
+
+class Base(DeclarativeBase):
+    registry = registry(type_annotation_map={
+        str_320: String(320)
+
+    })
+    pass
+
+db = SQLAlchemy(model_class=Base)
+
+###############################
 mail = Mail()
 
 
 app = Flask(__name__)
 
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 
+db.init_app(app)
 
-# db = SQLAlchemy(app)
-# app.app_context().push()
+
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -41,8 +65,30 @@ CORS(app) #, supports_credentials=True, resources={r'*' : {'origins' : 'http://l
 JWTManager(app)
 
 mail.init_app(app)
-s = URLSafeTimedSerializer('email secret')
+s = URLSafeTimedSerializer()
 
+
+
+#models.py db things
+#REQUIRED#############################
+class Account(Base):
+    __tablename__ = "Account"
+
+    id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db 
+    email:Mapped[str] = mapped_column(unique= True)
+    password:Mapped[bytes] = mapped_column(types.LargeBinary(), unique= True)
+    # salt:Mapped[bytes] = mapped_column(types.LargeBinary(), unique= True)
+    verified: Mapped[bool] = mapped_column(unique= False)
+
+    def __init__(self, email, password, salt, verified):
+        self.email = email
+        self.password = password
+        self.salt = salt
+        self.verified = verified
+
+    def __repr__(self):
+        return f'(id = {self.id}), salt = {self.salt}, email = {self.email}'
+###############################
 
 @app.route('/')
 def index():
@@ -55,14 +101,16 @@ def login_user():
     data = request.get_json()
     email = data['email']
     password =  data['password']
-    if models.checkEmail(email) and password == 'secret': #database logic for searching goes here
-        resp = jsonify({'login' : True})
+
+    user = db.session.execute(db.select(Account).filter_by(email = email).scalar())
+
+    if bcrypt.checkpw(password.encode('utf-8'), user.password): #database logic for searching goes here
+        
         token = create_access_token(identity = email)
-        # set_access_cookies(resp, token)
-        return jsonify({'login': True, 'token': token})
+        return make_response(jsonify({'login': True, 'token': token}), 200)
 
     else:
-        return jsonify({'success': False})
+        return make_response(jsonify({'login': False}), 200)
 
 
 #used to test authorized routes, only authenticated users can get this info
@@ -78,9 +126,15 @@ def create_user():
 
     data = request.get_json()
     email = data['email']
-    # password =  data['password']
+    password =  data['password']
 
     emailtoken = s.dumps(email, salt='email-confirm')
+
+    # dbinteractions.createMember(email, password, False, bcrypt)
+    newUser = Account(email, password, False)
+    db.session.add(newUser)
+    db.session.commit()
+    
 
     msg = Message('Confirm Email', sender='davidadbdiel775@gmail.com', recipients= [email])
 
@@ -89,10 +143,6 @@ def create_user():
     msg.body = 'email confirmation link {}'.format(link)
 
     mail.send(msg)
-    #add user to database code
-
-
-    # models.createMember()
 
     return jsonify({'emailConfirmation': True})
 
@@ -100,11 +150,22 @@ def create_user():
 def confirm_email(token):
 
     try:
-        email = s.loads(token, salt='email-confirm', max_age = 3600)
+        email = s.loads(token, salt='email-confirm', max_age = 360)
     
-        models.createMember(str(email))
+        # dbinteractions.verifiyMember(email)
+        newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+        newUser.verified = True
+
+        db.session.commit()
+
         return '<h1>The email confirmation was succesful, please login</h1>'
     except SignatureExpired:
+        # dbinteractions.removeUnverifiedMember()
+        newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+       
+        db.session.delete(newUser)
+        db.session.commit()
+
         return '<h1>The email confirmation was unsuccesful, please try again</h1>'
 
 
@@ -113,8 +174,13 @@ def confirm_email(token):
 @app.route('/logout', methods = ['DELETE'])   
 @jwt_required()
 def logout_user():
-    # data = request.get_json()
+    data = request.get_json()
     #remove user to database code
+
+    token = data['token']
+
+    #must add code to add revoke list 
+
 
     #jwt token is removed from local storage on frontend
 
@@ -128,6 +194,8 @@ def logout_user():
 def deleteUser():
     data = request.get_json()
     #remove user to database code
+
+    #need to add revoked token to revoked list 
 
 
     return jsonify(deleted_user =  True)
@@ -146,6 +214,8 @@ def get_data():
 
 if __name__ == '__main__':
     app.run(debug = True)
+
+#
 
 
 #other implementations which can be useful later########################

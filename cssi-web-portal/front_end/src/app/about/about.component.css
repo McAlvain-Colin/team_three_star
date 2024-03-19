@@ -1,13 +1,11 @@
 /* about.component.css */
 
-.mat-card {
+.about-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
+  align-items: left;
+  width: 100%;
+  justify-content: left;
 }
 .mat-card-title {
   text-align: center;
@@ -42,15 +40,17 @@ mat-card-content {
   align-items: center;
 }
 
-.mat-grid-tile img {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 4px;
+.image-tile {
+  display: flex;
+  flex-direction: column;
+}
+
+.name-line {
+  font-size: xx-large;
 }
 
 body {
   /* This is the main control for the visuals on the background of the home page */
-  background-color: aliceblue;
   background-image: url("../../assets/unr.jpeg");
   background-repeat: no-repeat;
   background-size: cover;

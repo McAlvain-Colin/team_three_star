@@ -1,94 +1,137 @@
 <!-- /* artifact and will be replaced*/ -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About</title>
-  <link rel="stylesheet" href="about.component.css" />
-</head>
-<body>
-  <app-dashboard-nav>
-    <mat-card>
-      <mat-card-title>Team Three Star TO5: CSSI-Portal</mat-card-title>
-      <mat-card-header>Connecting Data and Scientists</mat-card-header>
-      <mat-card-content>
-        <p>The purpose of this web portal is to provide easier accessibility for
-          scientists, and the public to view and manage their LoRa devices
-          allowing quick access to climate information.</p>
-      </mat-card-content>
-    </mat-card>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title class="page-title">About</title>
+    <link rel="stylesheet" href="about.component.css" />
+  </head>
+  <app-tool-bar>
+    <body>
+      <mat-card class="about-content">
+        <mat-card-title>Team Three Star TO5: CSSI-Portal</mat-card-title>
+        <mat-card-header>Connecting Data and Scientists</mat-card-header>
+        <mat-card-content>
+          <p>
+            The purpose of this web portal is to provide easier accessibility
+            for scientists, and the public to view and manage their LoRa devices
+            allowing quick access to climate information.
+          </p>
+        </mat-card-content>
+      </mat-card>
 
-    <mat-card>
-      <mat-card-title>The Team</mat-card-title>
-      <mat-card-header>Students</mat-card-header>
-      <mat-grid-list cols="3" rowHeight="1:1">
-        <mat-grid-tile *ngFor="let image of team_images">
-          <img src = '{{ image.url }}' alt="{{ image.alt }}" style="width:100%">
-        </mat-grid-tile>
-      </mat-grid-list>
-      <mat-card-header>Instructors</mat-card-header>
-      <mat-grid-list cols="3" rowHeight="1:1">
-        <mat-grid-tile *ngFor="let image of professor_images">
-          <img src = '{{ image.url }}' alt="{{ image.alt }}" style="width:100%">
-        </mat-grid-tile>
-      </mat-grid-list>
-      <mat-card-header>Advisors</mat-card-header>
-      <mat-grid-list cols="3" rowHeight="1:1">
-        <mat-grid-tile *ngFor="let image of advisor_image">
-          <img src = '{{ image.url }}' alt="{{ image.alt }}" style="width:100%">
-        </mat-grid-tile>
-      </mat-grid-list> 
-    </mat-card>
+      <mat-card>
+        <mat-card-title>The Team</mat-card-title>
+        <mat-grid-list cols="3" rowHeight="1:1" gutterSize="4px">
+          <mat-grid-tile class="image-tile" *ngFor="let image of team_images">
+            <img
+              src="{{ image.url }}"
+              alt="{{ image.alt }}"
+              style="width: 100%"
+            />
+            <mat-grid-tile-footer class="name-line">{{
+              image.alt
+            }}</mat-grid-tile-footer>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <mat-card-title>Instructors</mat-card-title>
+        <mat-grid-list cols="3" rowHeight="1:1" gutterSize="4px">
+          <mat-grid-tile
+            class="image-tile"
+            *ngFor="let image of professor_images"
+          >
+            <img
+              src="{{ image.url }}"
+              alt="{{ image.alt }}"
+              style="width: 100%"
+            />
+            <mat-grid-tile-footer class="name-line">{{
+              image.alt
+            }}</mat-grid-tile-footer>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <mat-card-header>Advisors</mat-card-header>
+        <mat-grid-list cols="3" rowHeight="1:1" gutterSize="4px">
+          <mat-grid-tile
+            class="image-tile"
+            *ngFor="let image of advisor_images"
+          >
+            <img
+              src="{{ image.url }}"
+              alt="{{ image.alt }}"
+              style="width: 100%"
+            />
+            <mat-grid-tile-footer class="name-line">{{
+              image.alt
+            }}</mat-grid-tile-footer>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card>
 
+      <mat-card>
+        <mat-card-title>Description</mat-card-title>
+        <mat-card-header>CS426 Senior Project Computer Science</mat-card-header>
+        <mat-card-header>Spring 2024</mat-card-header>
+        <mat-card-header>University of Nevada, Reno</mat-card-header>
+        <mat-card-header
+          >Computer Science Engineering Department</mat-card-header
+        >
+        <mat-card-content>
+          <p>TODO: description</p>
+        </mat-card-content>
+      </mat-card>
 
+      <mat-card>
+        <mat-card-title>Resources</mat-card-title>
+        <mat-card-header>Resources #1</mat-card-header>
+        <mat-card-header>Resources #2</mat-card-header>
+        <mat-card-header>Resources #3</mat-card-header>
+        <mat-card-header>Resources #4</mat-card-header>
+      </mat-card>
 
-    
-    <mat-card>
-      <mat-card-title>Description</mat-card-title>
-      <mat-card-header>CS426 Senior Project Computer Science</mat-card-header>
-      <mat-card-header>Spring 2024</mat-card-header>
-      <mat-card-header>University of Nevada, Reno</mat-card-header>
-      <mat-card-header>Computer Science Engineering Department</mat-card-header>
-      <mat-card-content>
-        <p> The CSSI Web Portal is desiged to be a data portal for researchers, 
-          utilizing LoRa devices set up across the Greater Nevada Area to analyze climate data,
-          Initally created for researcher, the portal is planned to extend to the general populace, 
-          utilizing sensors for comuunity-wide alerts on threats  like wildfires, enhancing local saftey. 
-          The project utiliizes an Angular-based framework, HTML, CSS, and TypeScript to create its front-end 
-          design. The backend structure consists of Apache acting as a middleware, Python for the backend logic, 
-          PostgreSQL for database management, with a Linux operating system, and a planned nginx load balancing system. 
+      <mat-card>
+        <mat-card-title>Description</mat-card-title>
+        <mat-card-header>CS426 Senior Project Computer Science</mat-card-header>
+        <mat-card-header>Spring 2024</mat-card-header>
+        <mat-card-header>University of Nevada, Reno</mat-card-header>
+        <mat-card-header
+          >Computer Science Engineering Department</mat-card-header
+        >
+        <mat-card-content>
+          <p>
+            The CSSI Web Portal is desiged to be a data portal for researchers,
+            utilizing LoRa devices set up across the Greater Nevada Area to
+            analyze climate data, Initally created for researcher, the portal is
+            planned to extend to the general populace, utilizing sensors for
+            comuunity-wide alerts on threats like wildfires, enhancing local
+            saftey. The project utiliizes an Angular-based framework, HTML, CSS,
+            and TypeScript to create its front-end design. The backend structure
+            consists of Apache acting as a middleware, Python for the backend
+            logic, PostgreSQL for database management, with a Linux operating
+            system, and a planned nginx load balancing system.
+          </p>
+        </mat-card-content>
+      </mat-card>
 
-          
-        </p>
-      </mat-card-content>
-    </mat-card>
-    
-    
-    <mat-card>
-      <mat-card-title>Resources</mat-card-title>
-      <mat-card-header>Resources #1</mat-card-header>
-      <mat-card-header>Resources #2</mat-card-header>
-      <mat-card-header>Resources #3</mat-card-header>
-      <mat-card-header>Resources #4</mat-card-header>
-    </mat-card>
+      <mat-card>
+        <mat-card-title>Resources</mat-card-title>
+        <mat-card-header>Resources #1</mat-card-header>
+        <mat-card-header>Resources #2</mat-card-header>
+        <mat-card-header>Resources #3</mat-card-header>
+        <mat-card-header>Resources #4</mat-card-header>
+      </mat-card>
 
-    <mat-card>
-      <mat-card-title>Project Poster</mat-card-title>
-      <mat-card-header>TBD</mat-card-header>
-    </mat-card>
-    
-    <mat-card>
-      <mat-card-title>Project Video</mat-card-title>
-      <mat-card-header>TBD</mat-card-header>
-    </mat-card>
-    
-    <mat-card>
-      <mat-card-title>Contact Us</mat-card-title>
-      <mat-card-header>TBD</mat-card-header>
-    </mat-card>
-    
-  </app-dashboard-nav>
+      <mat-card>
+        <mat-card-title>Project Video</mat-card-title>
+        <mat-card-header>TBD</mat-card-header>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-title>Contact Us</mat-card-title>
+        <mat-card-header>TBD</mat-card-header>
+      </mat-card>
+    </body>
+  </app-tool-bar>
   <app-temp-nav-bar></app-temp-nav-bar>
-</body>
 </html>
