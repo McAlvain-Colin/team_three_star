@@ -1,0 +1,65 @@
+<mat-toolbar color="primary" class="toolbar">
+  <a routerLink="/application/{{ appID }}" class="color-white"
+    >&#60; Return to Application</a
+  ></mat-toolbar
+>
+<body class="main-body">
+  <mat-card class="add-device-form">
+    <h1 class="title">Add A Device</h1>
+    <form class="container" (ngSubmit)="submitForm()" #addDeviceForm="ngForm">
+      <mat-form-field color="primary" [style.width.px]="250">
+        <mat-label>Device Name</mat-label>
+        <input
+          matInput
+          name="deviceName"
+          [(ngModel)]="deviceName"
+          #nameInput="ngModel"
+          required
+        />
+        <mat-error *ngIf="nameInput.invalid && nameInput.touched"></mat-error>
+      </mat-form-field>
+      <mat-form-field color="primary" [style.width.px]="250">
+        <mat-label>Join EUI</mat-label>
+        <input
+          matInput
+          name="joinEUI"
+          [(ngModel)]="joinEUI"
+          #joinInput="ngModel"
+          required
+        />
+        <mat-error *ngIf="joinInput.invalid && joinInput.touched"></mat-error>
+      </mat-form-field>
+      <mat-form-field color="primary" [style.width.px]="250">
+        <mat-label>Dev EUI</mat-label>
+        <input
+          matInput
+          name="devEUI"
+          [(ngModel)]="devEUI"
+          #devInput="ngModel"
+          required
+        />
+        <mat-error *ngIf="devInput.invalid && devInput.touched"></mat-error>
+      </mat-form-field>
+      <mat-form-field color="primary" [style.width.px]="250">
+        <mat-label>App Key</mat-label>
+        <input
+          matInput
+          name="appKey"
+          [(ngModel)]="appKey"
+          #keyInput="ngModel"
+          required
+        />
+        <mat-error *ngIf="keyInput.invalid && keyInput.touched"></mat-error>
+      </mat-form-field>
+      <!--Button will only be valid if all the required forms are filled out-->
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="addDeviceForm.invalid"
+      >
+        Confirm
+      </button>
+    </form>
+  </mat-card>
+</body>
+<app-temp-nav-bar></app-temp-nav-bar>

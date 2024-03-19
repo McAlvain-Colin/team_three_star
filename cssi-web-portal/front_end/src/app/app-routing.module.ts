@@ -1,4 +1,4 @@
-import { ApplicationModule, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -14,6 +14,8 @@ import { DevicePageComponent } from './device-page/device-page.component';
 import { FilterPageComponent } from './filter-page/filter-page.component';
 import { AddOrganizationComponent } from './add-organization/add-organization.component';
 import { ApplicationPageComponent } from './application-page/application-page.component';
+import { AddApplicationComponent } from './add-application/add-application.component';
+import { AddDeviceComponent } from './add-device/add-device.component';
 
 // Huy and Colin created the paths and linked the respective components to in order to properly route with Angular's routing
 // Huy created the dynamic routing pathways
@@ -34,6 +36,11 @@ const routes: Routes = [
   { path: 'home', component: UserHomeComponent },
   { path: 'home/:user', component: UserHomeComponent }, //:user is dynamic
   { path: 'add-organization/:user', component: AddOrganizationComponent }, //:user is dynamic
+  {
+    path: 'add-application/:orgId/:userId',
+    component: AddApplicationComponent,
+  }, //:user is dynamic
+  { path: 'add-device/:appId/userId', component: AddDeviceComponent }, //:user is dynamic
   { path: 'organization', component: OrganizationPageComponent },
   { path: 'organization/:org', component: OrganizationPageComponent }, //:org is dynamic
   { path: 'organization/:org/:user', component: OrganizationPageComponent }, //:org is dynamic
@@ -46,6 +53,7 @@ const routes: Routes = [
   { path: 'device', component: DevicePageComponent },
   { path: 'device/:curDevice', component: DevicePageComponent }, //:curDevice is dynamic
   { path: 'filter', component: FilterPageComponent },
+  { path: '**', pathMatch: 'full', component: HomeComponent }, //Star route put at the end for if no path is found, routes back to landing.
 ];
 
 //NgModule was generated when creating the application's routing file by angular.

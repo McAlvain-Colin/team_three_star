@@ -14,6 +14,8 @@ import { MatListModule } from '@angular/material/list';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, shareReplay } from 'rxjs';
 import { MatTabsModule } from '@angular/material/tabs';
+import { RemovalDialogComponent } from '../removal-dialog/removal-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-organization-page',
@@ -32,6 +34,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatButtonModule,
     TempNavBarComponent,
     DeviceMapComponent,
+    MatDialogModule,
+    RemovalDialogComponent,
   ],
 })
 export class OrganizationPageComponent {
@@ -65,14 +69,16 @@ export class OrganizationPageComponent {
   //     //this.requestService.sendData(newData); //Sends a newData variable to the sendData function to be processed
   //   }
 
+  orgId: number = 0;
   routerLinkVariable = '/hi';
   applications: string[] = [];
   orgName: string | null = 'Cat Chairs';
   orgDescription: string | null =
     'This cat is the sole representative of this company, he watches over the data. If there are any issues that you have with this CEO, please send a request at 1-420-MEOW-MEOW.';
   imgName: string | null = 'placeholder_cat2';
+  removeApps: boolean = false;
 
-  constructor(private route: ActivatedRoute) {} //makes an instance of the router
+  constructor(private route: ActivatedRoute, public dialog: MatDialog) {} //makes an instance of the router
   ngOnInit(): void {
     this.orgName = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
     console.log(this.orgName);
@@ -90,6 +96,18 @@ export class OrganizationPageComponent {
       map((result) => result.matches),
       shareReplay()
     );
+
+  confirmRemoval(itemName: string) {
+    //SHould open a snackbar that asks if you want to remove the component, and then based on the action does the thing
+    const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+      data: { itemName: itemName }, //Can pass in more data if needed so that we can trigger the delete with orgID and userID
+    });
+  }
+
+  getRouteName(itemName: string) {
+    let routeName: string = '/application/' + itemName;
+    return routeName;
+  }
 
   setupDevices() {
     for (let i = 1; i <= 10; i++) {

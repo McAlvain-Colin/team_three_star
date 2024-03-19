@@ -103,7 +103,8 @@ export class UserHomeComponent implements OnInit {
       shareReplay()
     );
 
-  confirmRemoval(itemName: string) {
+  //For removal, we use put in order to update the status of the org with a boolean.
+  confirmRemoval(itemName: string, orgID?: number, userID?: number) {
     //SHould open a snackbar that asks if you want to remove the component, and then based on the action does the thing
     const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
       data: { itemName: itemName }, //Can pass in more data if needed so that we can trigger the delete with orgID and userID

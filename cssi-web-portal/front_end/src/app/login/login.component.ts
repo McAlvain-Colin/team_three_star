@@ -14,52 +14,72 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { CanActivateFn, ActivatedRouteSnapshot, RouterModule, RouterState, RouterStateSnapshot } from '@angular/router';
+import {
+  CanActivateFn,
+  ActivatedRouteSnapshot,
+  RouterModule,
+  RouterState,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { FormBuilder } from '@angular/forms';
-// import { HttpClient, HttpResponse } from ' angular/common/http';                   
+// import { HttpClient, HttpResponse } from ' angular/common/http';
 import { Router } from '@angular/router';
-import { HttpClient,HttpInterceptor, HttpEvent, HttpHandler, HttpRequest, HTTP_INTERCEPTORS, HttpHeaders} from '@angular/common/http';
+import {
+  HttpClient,
+  HttpInterceptor,
+  HttpEvent,
+  HttpHandler,
+  HttpRequest,
+  HTTP_INTERCEPTORS,
+  HttpHeaders,
+  HttpClientModule,
+} from '@angular/common/http';
 
-import { Observable } from 'rxjs'; 
+import { Observable } from 'rxjs';
 
 // import { CookieService } from 'ngx-cookie-service';
 import { Browser } from 'leaflet';
 
-
 // import { CanActivateFn, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 // added implementation for checking if there a token in the local storage, if ther is go to dashbaord, otherwise go to the homepage
-import { inject } from '@angular/core'
+import { inject } from '@angular/core';
 
-export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-  
-  const router: Router = inject(Router)
-  const protectedRoutes: string[] = ['/dashboard']
+export const authGuard: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
+  const router: Router = inject(Router);
+  const protectedRoutes: string[] = ['/dashboard'];
 
-  return protectedRoutes.includes(state.url) && !localStorage.getItem('token') ? router.navigate(['/']) : true
-}
+  return protectedRoutes.includes(state.url) && !localStorage.getItem('token')
+    ? router.navigate(['/'])
+    : true;
+};
 
-
-// @Injectable()
-// export class appInterceptor implements HttpInterceptor {
-
-//   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//     const currToken = localStorage.getItem('token')
-//     req = req.clone({ withCredentials: true, headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
-//     return next.handle(req);
-//   }
-// }
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const currToken = localStorage.getItem('token')
-    req = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
+//@Injectable()
+export class appInterceptor implements HttpInterceptor {
+  //   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  //     const currToken = localStorage.getItem('token')
+  //     req = req.clone({ withCredentials: true, headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
+  //     return next.handle(req);
+  //   }
+  // }
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    const currToken = localStorage.getItem('token');
+    req = req.clone({
+      headers: req.headers.set('Authorization', 'Bearer ' + currToken),
+    });
     return next.handle(req);
   }
 }
 
-
-////interceptor for cookies 
-// @Injectable() 
+////interceptor for cookies
+// @Injectable()
 // export class appInterceptor implements HttpInterceptor {
 
 //   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -69,7 +89,6 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
 //     return next.handle(req);
 //   }
 // }
-
 
 @Component({
   selector: 'app-login',
@@ -90,11 +109,16 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
     TempNavBarComponent,
     RouterModule,
     NgIf,
+    HttpClientModule,
   ],
-
 })
 export class LoginComponent {
-  constructor(private snackBar: MatSnackBar, private http : HttpClient, private formBuilder: FormBuilder, private router : Router) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private http: HttpClient,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
   email: string = '';
@@ -115,14 +139,13 @@ export class LoginComponent {
   }
 
   // userForm!: FormGroup;
-  backendResponse!: any;
+  //backendResponse!: any;
 
-  base_url : string = 'http://localhost:5000';
+  base_url: string = 'http://localhost:5000';
 
   // constructor(private cookieService: CookieService, private http : HttpClient, private formBuilder: FormBuilder, private router : Router)
   // {
-    
-  
+
   // }
 
   //use the `` to allow connections to the variable in the declaration.
@@ -146,23 +169,22 @@ export class LoginComponent {
         verticalPosition: 'top',
       });
       alert(message);
-    } 
+    }
     // else {
     //   alert(message);
     // }
 
-    
     // console.log("the form is: ", {email  : this.emailField.getRawValue(),  password : this.password})
 
     //this code for sending get requests and saving response in a variable
     // this.http.get(this.base_url,{responseType : 'text'}).subscribe(
     // {
-    //   next: (response) => 
+    //   next: (response) =>
     //   {
     //     this.backendResponse = response;
     //     console.log("this post is : " + this.backendResponse);
     //   },
-    //   error: (error) => 
+    //   error: (error) =>
     //   {
     //     console.error(error);
     //   },
@@ -170,11 +192,11 @@ export class LoginComponent {
 
     // )
 
-    //=================================================== 
+    //===================================================
     //send to the backend so to check if user is valid
     // this.http.post(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'text'}).subscribe(
     //   {
-    //     next: (response) => 
+    //     next: (response) =>
     //     {
     //       this.backendResponse = response;
     //       console.log("this post is :" + this.backendResponse + "space");
@@ -182,7 +204,7 @@ export class LoginComponent {
     //       this.checkResponse(this.backendResponse);
 
     //     },
-    //     error: (error) => 
+    //     error: (error) =>
     //     {
     //       console.error(error);
     //     },
@@ -192,12 +214,12 @@ export class LoginComponent {
     //new implementation returning json data saved to an TS interface instance
     // this.http.post<Resp>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
     //   {
-    //     next: (response) => 
+    //     next: (response) =>
     //     {
     //       this.checkResponse(response.success);
 
     //     },
-    //     error: (error) => 
+    //     error: (error) =>
     //     {
     //       console.error(error);
     //     },
@@ -206,12 +228,12 @@ export class LoginComponent {
     // ==================
     // this.http.post <httpResponse<Resp>>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
     //   {
-    //     next: (response) => 
+    //     next: (response) =>
     //     {
     //       this.checkResponse(response.success);
 
     //     },
-    //     error: (error) => 
+    //     error: (error) =>
     //     {
     //       console.error(error);
     //     },
@@ -219,94 +241,91 @@ export class LoginComponent {
     // );
 
     const httpOptions = {
-          // withCredentials: true,
-          headers: new HttpHeaders({ 
-            'Content-Type': 'application/json',
-            'charset': 'UTF-8',
-            observe: 'response', responseType : 'json'
-        
-            })
-        };
+      // withCredentials: true,
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        charset: 'UTF-8',
+        observe: 'response',
+        responseType: 'json',
+      }),
+    };
 
-
-    //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC: 
-    this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, httpOptions).subscribe(
-      {
-        next: (response) => 
-        {
-
+    //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC:
+    this.http
+      .post(
+        this.base_url + '/login',
+        { email: this.emailField.getRawValue(), password: this.password },
+        httpOptions
+      )
+      .subscribe({
+        next: (response) => {
           // this.cookieService.set('mine', 'test')
-          
-          const res = JSON.stringify(response)
 
-          let resp = JSON.parse(res)
+          const res = JSON.stringify(response);
 
-          console.log('resp is ')
+          let resp = JSON.parse(res);
 
-          console.log(resp)
+          console.log('resp is ');
+
+          console.log(resp);
 
           // console.log('cookie is ')
 
           // const cook = this.cookieService.get('access_token_cookie')
           // console.log(cook)
           // Browser.cookies.get
-          localStorage.setItem('token', resp.token)
+          localStorage.setItem('token', resp.token);
 
           this.checkResponse(resp.login);
         },
-        error: (error) => 
-        {
+        error: (error) => {
           console.error(error);
         },
-      }
-    );
-
+      });
   }
 
   //check value retunred from the backend response, not sure if else condition works
-  checkResponse(response: boolean)//, route: ActivatedRouteSnapshot, state : RouterStateSnapshot)
-  {
-    if(response)
-    {
-      console.log('in if cond')
-      this.http.get(this.base_url + '/protected', {observe: 'response', responseType : 'json'}).subscribe(
-        {
-          next: (response) => 
-          {
-            const resp = {...response.body}
+  checkResponse(
+    response: boolean //, route: ActivatedRouteSnapshot, state : RouterStateSnapshot)
+  ) {
+    if (response) {
+      console.log('in if cond');
+      this.http
+        .get(this.base_url + '/protected', {
+          observe: 'response',
+          responseType: 'json',
+        })
+        .subscribe({
+          next: (response) => {
+            const resp = { ...response.body };
 
-            console.log('protected message')
-            console.log(resp)
+            console.log('protected message');
+            console.log(resp);
           },
-          error: (error) => 
-          {
+          error: (error) => {
             console.error(error);
-          }
+          },
         });
 
       this.router.navigate(['/dashboard']);
-
-    }
-    else
-    {
-      this.getErrorMessage()
+    } else {
+      this.getErrorMessage();
     }
   }
 
-
   //   const httpOptions = {
   //     withCredentials: true,
-  //     headers: new HttpHeaders({ 
+  //     headers: new HttpHeaders({
   //       'Content-Type': 'application/json',
   //       'charset': 'UTF-8',
-    
+
   //       })
   //   };
 
-  //   //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC: 
+  //   //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC:
   //   this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, httpOptions).subscribe(
   //     {
-  //       next: (response) => 
+  //       next: (response) =>
   //       {
   //         const res = JSON.stringify(response)
 
@@ -314,19 +333,18 @@ export class LoginComponent {
 
   //         console.log('response is')
   //         console.log(resp)
-          
-          
+
   //         //localStorage.setItem('token', resp.token)
-          
+
   //         this.checkResponse(resp.login);
   //       },
-  //       error: (error) => 
+  //       error: (error) =>
   //       {
   //         console.error(error);
   //       },
   //     }
   //   );
-    
+
   // }
 
   // //check value retunred from the backend response, not sure if else condition works
@@ -338,22 +356,22 @@ export class LoginComponent {
 
   //     const httpOptions = {
   //       withCredentials: true,
-  //       headers: new HttpHeaders({ 
+  //       headers: new HttpHeaders({
   //         'Content-Type': 'application/json',
   //         'charset': 'UTF-8',
-      
+
   //         })
   //     };
 
   //     //this get request was used to ensure the user can access protected backend routes and working
   //     this.http.get(this.base_url + '/protected', httpOptions).subscribe(
   //       {
-  //         next: (response) => 
+  //         next: (response) =>
   //         {
   //           console.log('get request next is called')
   //           console.log(response)
   //         },
-  //         error: (error) => 
+  //         error: (error) =>
   //         {
   //           console.error(error);
   //         }
@@ -378,13 +396,7 @@ export class LoginComponent {
   }
 }
 
-
-
-
-
-
 ////////////////////////////////////////////////////////////////
-
 
 // import { Component, Injectable } from '@angular/core';
 // import {
@@ -405,12 +417,11 @@ export class LoginComponent {
 // import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 // import { ActivatedRouteSnapshot, RouterModule, RouterState, RouterStateSnapshot } from '@angular/router';
 // import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
-// // import { HttpClient, HttpResponse } from ' angular/common/http';                   
+// // import { HttpClient, HttpResponse } from ' angular/common/http';
 // import { Router } from '@angular/router';
 // import { HttpClient,HttpInterceptor, HttpEvent, HttpHandler, HttpRequest, HTTP_INTERCEPTORS} from '@angular/common/http';
 
-
-// import { Observable } from 'rxjs'; 
+// import { Observable } from 'rxjs';
 
 // @Injectable()
 // export class appInterceptor implements HttpInterceptor {
@@ -422,16 +433,10 @@ export class LoginComponent {
 //   }
 // }
 
-
-
 // export interface Resp{
 //   success: boolean
 //   token: any
 // }
-
-
-
-
 
 // @Component({
 //   selector: 'app-login',
@@ -454,7 +459,6 @@ export class LoginComponent {
 //   ],
 // })
 
-
 // export class LoginComponent {
 //   emailField = new FormControl('', [Validators.required, Validators.email]);
 //   hide: boolean = true;
@@ -468,7 +472,7 @@ export class LoginComponent {
 
 //   constructor(private http : HttpClient, private formBuilder: FormBuilder, private router : Router)
 //   {
-  
+
 //   }
 
 //   //use the `` to allow connections to the variable in the declaration.
@@ -481,23 +485,22 @@ export class LoginComponent {
 //     ) {
 //       message = 'Email incorrect!';
 //       alert(message);
-//     } 
+//     }
 //     else {
 //       alert(message);
 //     }
 
-    
 //     // console.log("the form is: ", {email  : this.emailField.getRawValue(),  password : this.password})
 
 //     //this code for seneding get requests and saving response in a variable
 //     // this.http.get(this.base_url,{responseType : 'text'}).subscribe(
 //     // {
-//     //   next: (response) => 
+//     //   next: (response) =>
 //     //   {
 //     //     this.backendResponse = response;
 //     //     console.log("this post is : " + this.backendResponse);
 //     //   },
-//     //   error: (error) => 
+//     //   error: (error) =>
 //     //   {
 //     //     console.error(error);
 //     //   },
@@ -505,11 +508,11 @@ export class LoginComponent {
 
 //     // )
 
-//     //=================================================== 
+//     //===================================================
 //     //send to the backend so to check if user is valid
 //     // this.http.post(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'text'}).subscribe(
 //     //   {
-//     //     next: (response) => 
+//     //     next: (response) =>
 //     //     {
 //     //       this.backendResponse = response;
 //     //       console.log("this post is :" + this.backendResponse + "space");
@@ -517,7 +520,7 @@ export class LoginComponent {
 //     //       this.checkResponse(this.backendResponse);
 
 //     //     },
-//     //     error: (error) => 
+//     //     error: (error) =>
 //     //     {
 //     //       console.error(error);
 //     //     },
@@ -527,12 +530,12 @@ export class LoginComponent {
 //     //new implementation returning json data saved to an TS interface instance
 //     // this.http.post<Resp>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
 //     //   {
-//     //     next: (response) => 
+//     //     next: (response) =>
 //     //     {
 //     //       this.checkResponse(response.success);
 
 //     //     },
-//     //     error: (error) => 
+//     //     error: (error) =>
 //     //     {
 //     //       console.error(error);
 //     //     },
@@ -541,40 +544,38 @@ export class LoginComponent {
 //     // ==================
 //     // this.http.post <httpResponse<Resp>>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
 //     //   {
-//     //     next: (response) => 
+//     //     next: (response) =>
 //     //     {
 //     //       this.checkResponse(response.success);
 
 //     //     },
-//     //     error: (error) => 
+//     //     error: (error) =>
 //     //     {
 //     //       console.error(error);
 //     //     },
 //     //   }
 //     // );
 
-
-//     //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC: 
+//     //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC:
 //     this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, {observe: 'response', responseType : 'json'}).subscribe(
 //       {
-//         next: (response) => 
+//         next: (response) =>
 //         {
 //           const res = JSON.stringify(response.body)
 
 //           let resp = JSON.parse(res)
-          
+
 //           localStorage.setItem('token', resp.token)
-          
+
 //           this.checkResponse(resp.success);
 //         },
-//         error: (error) => 
+//         error: (error) =>
 //         {
 //           console.error(error);
 //         },
 //       }
 //     );
 
-    
 //   }
 
 //   //check value retunred from the backend response, not sure if else condition works
@@ -584,11 +585,11 @@ export class LoginComponent {
 //     {
 //       this.http.get(this.base_url + '/protected', {observe: 'response', responseType : 'json'}).subscribe(
 //         {
-//           next: (response) => 
+//           next: (response) =>
 //           {
 //             const resp = {...response.body}
 //           },
-//           error: (error) => 
+//           error: (error) =>
 //           {
 //             console.error(error);
 //           }

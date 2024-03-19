@@ -62,9 +62,9 @@
 }
 
 .device-button {
-  position: inline;
+  position: relative;
   left: 45%;
-  top: 100%;
+  top: 95%;
 }
 
 .color-white {

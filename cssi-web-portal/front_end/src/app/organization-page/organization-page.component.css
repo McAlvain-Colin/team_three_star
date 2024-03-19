@@ -113,7 +113,22 @@
   height: 100%;
 }
 
-.devices-box {
+.push-button-right {
+  /* This just grows the span so that it takes up the entire flexbox */
+  flex-grow: 1;
+}
+
+.make-flexbox {
+  display: flex;
+  flex-direction: row;
+}
+
+.group-button {
+  position: relative;
+  margin: 2px;
+}
+
+.apps-box {
   display: flex;
   position: absolute;
   margin-left: 5%;
@@ -127,7 +142,7 @@
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.devices-content {
+.apps-content {
   height: 100%;
   overflow-y: scroll;
 }
