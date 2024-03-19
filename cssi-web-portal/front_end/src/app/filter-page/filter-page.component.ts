@@ -14,20 +14,15 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { MatTableModule }  from '@angular/material/table';
-
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-
 import { DatePicker } from '../date-picker/date-picker.component';
-
 import { saveAs  } from 'file-saver';
-
-import { Chart } from 'chart.js/auto';
+import { Chart, registerables } from 'chart.js/auto';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgIf, PercentPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-
 import { FormControl, FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider'
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -99,13 +94,16 @@ export class FilterPageComponent implements AfterViewInit{
   showTicks = false;
   step = 1;
   thumbLabel = false;
-  value = 0;
+  minValue = 0;
+  maxValue = 0;
 
   defaultValue: [number, number] = [1, 1000];
 
   showSpinner: boolean = false;
 
-  constructor(private apiService: ApiService, private fb: FormBuilder) { }
+  constructor(private apiService: ApiService, private fb: FormBuilder) { 
+    Chart.register(...registerables); // ...registerables is an array that contains all the components Chart.js offers
+  }
 
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
   //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
@@ -136,16 +134,38 @@ export class FilterPageComponent implements AfterViewInit{
     });
     
     this.filterForm = this.fb.group({
-      startTime: ['', Validators.required],
-      endTime: ['', Validators.required],
+      startTime: ['', Validators],
+      endTime: ['', Validators],
       range: this.fb.group({
         startValue: [{ value: this.defaultValue[0], disabled: true }],
         endValue: [{ value: this.defaultValue[1], disabled: true }]
       }),
-      dataType: ['', Validators.required],
-      deviceId: ['', Validators.required],
-      applicationID: ['', Validators.required],
-      location: ['', Validators.required]
+      dataType: ['', Validators.pattern('[a-zA-Z ]*')],
+      deviceId: ['', Validators.pattern('[a-zA-Z ]*')],
+      applicationID: ['', Validators.pattern('[a-zA-Z0-9]**')],
+      location: ['', Validators.pattern('[a-zA-Z ]*')]
+    });
+
+    this.apiService.getData().subscribe((data: any) => {
+      const ctx = document.getElementById('myChart') as HTMLCanvasElement;  //ctx is the canvas for the chart
+      const myChart = new Chart(ctx, {   //render chart
+        type: 'line',  //line chart 
+        data: {
+          labels: data.map(d => d.label),
+          datasets: [{
+            label: 'Your Data Label',
+            data: data.map(d => d.value), 
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
     });
   }
 
