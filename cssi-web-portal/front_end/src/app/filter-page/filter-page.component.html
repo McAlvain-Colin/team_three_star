@@ -5,8 +5,8 @@
 <body class="background">
   <!-- <mat-card class="filter"> -->
   <p class="header-text">Select Data</p>
-  <mat-accordion class="search-bar">
-    <mat-card class="filter">
+  <mat-card class="filter">
+    <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
         (opened)="panelOpenState = true"
@@ -29,11 +29,7 @@
         /> -->
         <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
           <!-- date filter options -->
-          <mat-card class="date-filter">
-            <mat-form-field>
-              <app-date-picker> </app-date-picker>
-            </mat-form-field>
-          </mat-card>
+          <app-date-picker> </app-date-picker>
           <!-- time filter -->
           <mat-card class="time-filter">
             <mat-form-field>
@@ -56,28 +52,61 @@
           </mat-card>  
           <!-- Data range of values -->
           <mat-card class="range-filter" formGroupName="range">
-            <mat-form-field appearance="fill">
-              <mat-label>Start Value</mat-label>
-              <input matInput formControlName="startValue" readonly>
-            </mat-form-field>
+            <mat-card-content>
+              <h2 class="example-h2">Slider configuration</h2>
           
-            <mat-form-field appearance="fill">
-              <mat-label>End Value</mat-label>
-              <input matInput formControlName="endValue" readonly>
-            </mat-form-field>
+              <section class="example-section">
+                <mat-form-field class="example-margin example-width">
+                  <mat-label>Value</mat-label>
+                  <input matInput type="number" [(ngModel)]="value">
+                </mat-form-field>
+                <mat-form-field class="example-margin example-width">
+                  <mat-label>Min value</mat-label>
+                  <input matInput type="number" [(ngModel)]="min">
+                </mat-form-field>
+                <mat-form-field class="example-margin example-width">
+                  <mat-label>Max value</mat-label>
+                  <input matInput type="number" [(ngModel)]="max">
+                </mat-form-field>
+                <mat-form-field class="example-margin example-width">
+                  <mat-label>Step size</mat-label>
+                  <input matInput type="number" [(ngModel)]="step">
+                </mat-form-field>
+              </section>
           
-            <!-- Slider to select range -->
-            <mat-slider
-              [thumbLabel]="true"
-              [tickInterval]="1"
-              [min]="minValue"
-              [max]="maxValue"
-              [step]="stepValue"
-              [value]="defaultValue"
-              [displayWith]="formatLabel"
-              (input)="onInput($event)"
-              dualThumb="true">
-            </mat-slider>
+              <section class="example-section">
+                <mat-checkbox [(ngModel)]="showTicks">Show ticks</mat-checkbox>
+              </section>
+          
+              <section class="example-section">
+                <mat-checkbox [(ngModel)]="thumbLabel">Show thumb label</mat-checkbox>
+              </section>
+          
+              <section class="example-section">
+                <mat-checkbox [(ngModel)]="disabled">Disabled</mat-checkbox>
+              </section>
+            </mat-card-content>
+          </mat-card>
+          
+          <mat-card class="example-result-card">
+            <mat-card-content>
+              <h2>Result</h2>
+          
+              <div class="example-label-container">
+                <label id="example-name-label" class="example-name-label">Value</label>
+                <label class="example-value-label">{{slider.value}}</label>
+              </div>
+              <mat-slider
+                  class="example-margin"
+                  [disabled]="disabled"
+                  [max]="max"
+                  [min]="min"
+                  [step]="step"
+                  [discrete]="thumbLabel"
+                  [showTickMarks]="showTicks">
+                <input matSliderThumb [(ngModel)]="value" #slider>
+              </mat-slider>
+            </mat-card-content>
           </mat-card>
           
           <!-- Data Type -->
@@ -121,9 +150,8 @@
           <button type="submit" mat-raised-button color="primary">Submit</button>
         </form>
       </mat-expansion-panel>
-    </mat-card>
-  </mat-accordion>
-  <!-- </mat-card> -->
+    </mat-accordion>
+  </mat-card>
 
   <mat-card class="payload-table">
     <!-- Filters need to be reintroduced into the tables when I can reliably display data -->
@@ -219,7 +247,7 @@
     <mat-card-actions>
       <div class="button-container">
         <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="exportMetadata()">Export Metadata Data</button>
-        <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="add_device()">Add Device</button>
+        <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="addDevice()">Add Device</button>
         <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="removeDevice()">Remove Device</button>
         <mat-spinner *ngIf="showSpinner"></mat-spinner>
       </div>

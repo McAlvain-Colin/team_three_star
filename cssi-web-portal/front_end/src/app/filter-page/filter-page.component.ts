@@ -28,7 +28,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgIf, PercentPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider'
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -63,9 +66,10 @@ export interface SensorData {
     NgIf,
     MatProgressSpinnerModule,
     PercentPipe,
-    FormBuilder, 
-    FormGroup, 
-    Validators,
+    ReactiveFormsModule,
+    MatSliderModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
   ],
 })
 export class FilterPageComponent implements AfterViewInit{
@@ -89,10 +93,17 @@ export class FilterPageComponent implements AfterViewInit{
   displayedMetadataColumns: string[] = [];  // Property to hold the
 
   filterForm!: FormGroup;
-  minValue: number = 0; // Minimum value for the range slider
-  maxValue: number = 100; // Maximum value for the range slider
-  stepValue: number = 1; // Step value for the range slider
-  defaultValue: [number, number] = [0, 1000]; // Default range values for the slider (need to make dynamic based on json values)
+  disabled = false;
+  max = 100;
+  min = 0;
+  showTicks = false;
+  step = 1;
+  thumbLabel = false;
+  value = 0;
+
+  defaultValue: [number, number] = [1, 1000];
+
+  showSpinner: boolean = false;
 
   constructor(private apiService: ApiService, private fb: FormBuilder) { }
 
@@ -152,7 +163,7 @@ export class FilterPageComponent implements AfterViewInit{
   
   //device management
   //----------------------------------------------------------------------------
-  add_device(): void {
+  addDevice(): void {
     this.apiService.getData().subscribe({
       
     })
@@ -245,4 +256,10 @@ export class FilterPageComponent implements AfterViewInit{
     this.exportToCSV(payloadData, 'metadata.csv')
   }
   //----------------------------------------------------------------------------
+  // added for visual acions, once a button is clicked, this function is called to added a loading spinner for effect of loading on the page for 250 milliseconds.
+  loadSpinner() {
+    this.showSpinner = true;
+    setTimeout(() =>{this.showSpinner = false}, 250)
+  }
+  onFormSubmit(){}
 }
