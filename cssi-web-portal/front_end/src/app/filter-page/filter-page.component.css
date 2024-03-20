@@ -148,11 +148,29 @@
   margin-right: 10px;
 }
 
-.example-section {
+.visual-section {
   display: flex;
   flex-wrap: wrap;
   align-content: center;
   align-items: center;
+}
+.visual-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+}
+.left-section-box{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: left
+}
+.right-section-box{
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  align-items: right
 }
 
 .example-margin {

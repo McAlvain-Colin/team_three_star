@@ -14,4 +14,7 @@ export class ApiService {
   getData(): Observable<any> {
     return this.http.get(`${this.BASE_URL}/data`);
   }
+  getAltData(): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/alt_data`);
+  }
 }

@@ -71,8 +71,12 @@ export class FilterPageComponent implements AfterViewInit{
 
   // Declared variables. Currently has duplicates until the better method is determined. 
   panelOpenState = false;
+  panelOpenStateDevEUI = false;
   panelOpenStatePayload = false;
   panelOpenStateMetadata = false;
+  panelOpenStatePayloadGraph = false;
+  panelOpenStateMetadataGraph = false;
+  panelOpenStateDeviceSelect = false;
 
   dev_eui: any[] = []; //Property to hold the device id
   dev_time: any[] = []; //Property to hold to hold the data time stamp
@@ -109,7 +113,7 @@ export class FilterPageComponent implements AfterViewInit{
   //itterating code to try and get the data in a formate I can use.
   
   ngOnInit(): void {
-    this.apiService.getData().subscribe({
+    this.apiService.getAltData().subscribe({
       next: (data: SensorData[]) => {
         const records = data.map((item: SensorData) => ({
           dev_eui: item.dev_eui,
@@ -136,16 +140,25 @@ export class FilterPageComponent implements AfterViewInit{
       startTime: [''],//, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
       endTime: [''],//, Validators],
       range: this.fb.group({
-        startValue: [{ value: this.defaultValue[0], disabled: true }],
-        endValue: [{ value: this.defaultValue[1], disabled: true }]
+        value: [this.value],
+        min: [this.min],
+        max: [this.max],
+        step: [this.step],
+        showTicks: [this.showTicks],
+        thumbLabel: [this.thumbLabel],
+        disabled: [this.disabled],
+        startValue: [{ value: this.defaultValue[0], disabled: true}],
+        endValue: [{ value: this.defaultValue[1], disable: true}]
       }),
       dataType: [''],//, Validators.pattern('[a-zA-Z ]*')],
       deviceId: [''],//, Validators.pattern('[a-zA-Z ]*')],
       applicationID: [''],//, Validators.pattern('[a-zA-Z0-9]**')],
-      location: ['']//, Validators.pattern('[a-zA-Z ]*')]
+      location: [''],//, Validators.pattern('[a-zA-Z ]*')]
+      metadataSelect: false,
+      payloadSelect: false
     });
 
-    // this.apiService.getData().subscribe((data: any) => {
+    // this.apiService.getAltData().subscribe((data: any) => {
     //   const ctx = document.getElementById('myChart') as HTMLCanvasElement;  //ctx is the canvas for the chart
     //   const myChart = new Chart(ctx, {   //render chart
     //     type: 'line',  //line chart 
@@ -178,29 +191,11 @@ export class FilterPageComponent implements AfterViewInit{
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
     this.metadataSource.paginator = this.metadataPaginator;
-
-    // this.filterForm = this.fb.group({
-    //   startTime: [''],// Validators],
-    //   endTime: [''],// Validators],
-    //   range: this.fb.group({
-    //     startValue: [{ value: this.defaultValue[0], disabled: true }],
-    //     endValue: [{ value: this.defaultValue[1], disabled: true }]
-    //   }),
-    //   dataType: [''],//, Validators.pattern('[a-zA-Z ]*')],
-    //   deviceId: [''],//, Validators.pattern('[a-zA-Z ]*')],
-    //   applicationID: [''],//, Validators.pattern('[a-zA-Z0-9]**')],
-    //   location: ['']//, Validators.pattern('[a-zA-Z ]*')]
-    // });
   }
   
   //device management
   //----------------------------------------------------------------------------
-  addDevice(): void {
-    this.apiService.getData().subscribe({
-      
-    })
-  
-  }
+  addDevice(): void {}
   removeDevice() {}
 
   //filter functions
@@ -235,6 +230,7 @@ export class FilterPageComponent implements AfterViewInit{
     this.metadataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  //for inline text filter
   onInput(event: any) {
     // Update the range values in the form when the slider value changes
     this.filterForm.patchValue({
@@ -245,9 +241,44 @@ export class FilterPageComponent implements AfterViewInit{
     });
   }
 
-  formatLabel(value: number) {
+  //for filter form
+  onFormSubmit(){
+    if (this.filterForm.valid) {
+      this.filterSensorData();
+    } 
+    else {
+      console.error('Error: ', Error);
+      
+    }
+  }
 
-    return value;
+  filterSensorData() {
+    const formValues = this.filterForm.value;
+
+    let filteredPayload = [];
+    let filteredMetadata = [];
+    
+    if(formValues.payloadSelect == true){
+      filteredPayload = this.payloadDataSource.data.filter(item => {
+        //add filter logic
+
+      });
+    }
+    else {
+      filteredPayload = this.payloadDataSource.data;
+    }
+    if(formValues.metadataSelect == true){
+      filteredMetadata = this.metadataSource.data.filter(item => {
+        //add filter logic
+        
+      });
+    }
+    else{
+      filteredMetadata = this.metadataSource.data;
+    }
+  
+    this.payloadDataSource.data = filteredPayload;
+    this.metadataSource.data = filteredMetadata;
   }
 
   //data export functions
@@ -293,5 +324,4 @@ export class FilterPageComponent implements AfterViewInit{
     this.showSpinner = true;
     setTimeout(() =>{this.showSpinner = false}, 250)
   }
-  onFormSubmit(){}
 }
