@@ -94,8 +94,7 @@ export class FilterPageComponent implements AfterViewInit{
   showTicks = false;
   step = 1;
   thumbLabel = false;
-  minValue = 0;
-  maxValue = 0;
+  value = 0;
 
   defaultValue: [number, number] = [1, 1000];
 
@@ -134,39 +133,39 @@ export class FilterPageComponent implements AfterViewInit{
     });
     
     this.filterForm = this.fb.group({
-      startTime: ['', Validators],
-      endTime: ['', Validators],
+      startTime: [''],//, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
+      endTime: [''],//, Validators],
       range: this.fb.group({
         startValue: [{ value: this.defaultValue[0], disabled: true }],
         endValue: [{ value: this.defaultValue[1], disabled: true }]
       }),
-      dataType: ['', Validators.pattern('[a-zA-Z ]*')],
-      deviceId: ['', Validators.pattern('[a-zA-Z ]*')],
-      applicationID: ['', Validators.pattern('[a-zA-Z0-9]**')],
-      location: ['', Validators.pattern('[a-zA-Z ]*')]
+      dataType: [''],//, Validators.pattern('[a-zA-Z ]*')],
+      deviceId: [''],//, Validators.pattern('[a-zA-Z ]*')],
+      applicationID: [''],//, Validators.pattern('[a-zA-Z0-9]**')],
+      location: ['']//, Validators.pattern('[a-zA-Z ]*')]
     });
 
-    this.apiService.getData().subscribe((data: any) => {
-      const ctx = document.getElementById('myChart') as HTMLCanvasElement;  //ctx is the canvas for the chart
-      const myChart = new Chart(ctx, {   //render chart
-        type: 'line',  //line chart 
-        data: {
-          labels: data.map(d => d.label),
-          datasets: [{
-            label: 'Your Data Label',
-            data: data.map(d => d.value), 
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-    });
+    // this.apiService.getData().subscribe((data: any) => {
+    //   const ctx = document.getElementById('myChart') as HTMLCanvasElement;  //ctx is the canvas for the chart
+    //   const myChart = new Chart(ctx, {   //render chart
+    //     type: 'line',  //line chart 
+    //     data: {
+    //       labels: data.map(d => d.label),
+    //       datasets: [{
+    //         label: 'Your Data Label',
+    //         data: data.map(d => d.value), 
+    //         borderWidth: 1
+    //       }]
+    //     },
+    //     options: {
+    //       scales: {
+    //         y: {
+    //           beginAtZero: true
+    //         }
+    //       }
+    //     }
+    //   });
+    // });
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -179,6 +178,19 @@ export class FilterPageComponent implements AfterViewInit{
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
     this.metadataSource.paginator = this.metadataPaginator;
+
+    // this.filterForm = this.fb.group({
+    //   startTime: [''],// Validators],
+    //   endTime: [''],// Validators],
+    //   range: this.fb.group({
+    //     startValue: [{ value: this.defaultValue[0], disabled: true }],
+    //     endValue: [{ value: this.defaultValue[1], disabled: true }]
+    //   }),
+    //   dataType: [''],//, Validators.pattern('[a-zA-Z ]*')],
+    //   deviceId: [''],//, Validators.pattern('[a-zA-Z ]*')],
+    //   applicationID: [''],//, Validators.pattern('[a-zA-Z0-9]**')],
+    //   location: ['']//, Validators.pattern('[a-zA-Z ]*')]
+    // });
   }
   
   //device management

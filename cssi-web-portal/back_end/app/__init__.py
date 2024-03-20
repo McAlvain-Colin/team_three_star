@@ -46,7 +46,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:cssiwebportal2024@0.0.0.0/postgres'
 db.init_app(app)
 
 
@@ -65,7 +65,7 @@ CORS(app) #, supports_credentials=True, resources={r'*' : {'origins' : 'http://l
 JWTManager(app)
 
 mail.init_app(app)
-s = URLSafeTimedSerializer()
+s = URLSafeTimedSerializer(app.config['JWT_SECRET_KEY'])
 
 
 
