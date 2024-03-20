@@ -58,32 +58,37 @@
       <mat-card-content class="organization-content">
         <mat-tab-group [style.position]="'sticky'">
           <mat-tab label="Owned Organizations">
+            <div class="make-flexbox">
+              <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
+              <button
+                mat-raised-button
+                color="accent"
+                class="group-button"
+                routerLink="/add-organization/{{ userName }}"
+              >
+                Add
+              </button>
+              <span class="push-button-right"> </span>
+              <button
+                mat-raised-button
+                color="warn"
+                class="group-button"
+                (click)="removeOrgs = !removeOrgs"
+              >
+                Remove
+              </button>
+            </div>
             <mat-nav-list>
-              <div class="make-flexbox">
-                <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
-                <button
-                  mat-raised-button
-                  color="accent"
-                  class="group-button"
-                  routerLink="/add-organization/{{ userName }}"
-                >
-                  Add
-                </button>
-                <span class="push-button-right"> </span>
-                <button
-                  mat-raised-button
-                  color="warn"
-                  class="group-button"
-                  (click)="removeOrgs = !removeOrgs"
-                >
-                  Remove
-                </button>
-              </div>
               <!--Note that the let parameter only creates a variable that lasts for the loop and has scope only in the loop.-->
               <a
                 mat-list-item
                 [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
-                *ngFor="let organization of ownedOrgs"
+                *ngFor="
+                  let organization of ownedOrgSource.data.slice(
+                    paginator.pageIndex * paginator.pageSize,
+                    (paginator.pageIndex + 1) * paginator.pageSize
+                  )
+                "
               >
                 <div class="make-flexbox">
                   {{ organization }}
@@ -98,34 +103,47 @@
                 </div>
               </a>
             </mat-nav-list>
+            <mat-paginator
+              #ownedOrgs
+              pageSize="5"
+              showFirstLastButtons="true"
+              [pageSizeOptions]="[5, 10, 20]"
+              [pageIndex]="currentPage"
+              (page)="handlePageEvent($event, 0)"
+            ></mat-paginator>
           </mat-tab>
           <mat-tab label="Joined Organizations">
+            <div class="make-flexbox">
+              <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
+              <button
+                mat-raised-button
+                color="accent"
+                class="group-button"
+                routerLink="/add-organization/{{ userName }}"
+              >
+                Join
+              </button>
+              <!--For the join we might need a search organization page for public organizations-->
+              <span class="push-button-right"> </span>
+              <button
+                mat-raised-button
+                color="warn"
+                class="group-button"
+                (click)="removeOrgs = !removeOrgs"
+              >
+                Leave
+              </button>
+            </div>
             <mat-nav-list>
-              <div class="make-flexbox">
-                <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
-                <button
-                  mat-raised-button
-                  color="accent"
-                  class="group-button"
-                  routerLink="/add-organization/{{ userName }}"
-                >
-                  Join
-                </button>
-                <!--For the join we might need a search organization page for public organizations-->
-                <span class="push-button-right"> </span>
-                <button
-                  mat-raised-button
-                  color="warn"
-                  class="group-button"
-                  (click)="removeOrgs = !removeOrgs"
-                >
-                  Leave
-                </button>
-              </div>
               <a
                 mat-list-item
                 [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
-                *ngFor="let organization of joinedOrgs"
+                *ngFor="
+                  let organization of joinedOrgSource.data.slice(
+                    paginator.pageIndex * paginator.pageSize,
+                    (paginator.pageIndex + 1) * paginator.pageSize
+                  )
+                "
               >
                 <div class="make-flexbox">
                   {{ organization }}
@@ -140,24 +158,37 @@
                 </div>
               </a>
             </mat-nav-list>
+            <mat-paginator
+              #joinedOrgs
+              pageSize="5"
+              showFirstLastButtons="true"
+              [pageSizeOptions]="[5, 10, 20]"
+              [pageIndex]="currentPage"
+              (page)="handlePageEvent($event, 0)"
+            ></mat-paginator>
           </mat-tab>
           <mat-tab label="Favorite Devices">
+            <div class="make-flexbox">
+              <span class="push-button-right"></span>
+              <button
+                mat-raised-button
+                color="warn"
+                class="group-button"
+                (click)="removeOrgs = !removeOrgs"
+              >
+                Remove
+              </button>
+            </div>
             <mat-nav-list>
-              <div class="make-flexbox">
-                <span class="push-button-right"></span>
-                <button
-                  mat-raised-button
-                  color="warn"
-                  class="group-button"
-                  (click)="removeOrgs = !removeOrgs"
-                >
-                  Remove
-                </button>
-              </div>
               <a
                 mat-list-item
                 [routerLink]="removeOrgs ? null : getRouteName(device, 1)"
-                *ngFor="let device of favDevices"
+                *ngFor="
+                  let device of favDeviceSource.data.slice(
+                    paginator.pageIndex * paginator.pageSize,
+                    (paginator.pageIndex + 1) * paginator.pageSize
+                  )
+                "
               >
                 <div class="make-flexbox">
                   {{ device }}
@@ -172,6 +203,14 @@
                 </div>
               </a>
             </mat-nav-list>
+            <mat-paginator
+              #favDevices
+              pageSize="5"
+              showFirstLastButtons="true"
+              [pageSizeOptions]="[5, 10, 20]"
+              [pageIndex]="currentPage"
+              (page)="handlePageEvent($event, 0)"
+            ></mat-paginator>
           </mat-tab>
         </mat-tab-group>
       </mat-card-content>

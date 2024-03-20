@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnInit,
@@ -16,7 +17,15 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable, map, shareReplay } from 'rxjs';
+import {
+  Observable,
+  map,
+  merge,
+  of,
+  shareReplay,
+  startWith,
+  switchMap,
+} from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 import { HomeValues } from '../data.config';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -25,6 +34,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RemovalDialogComponent } from '../removal-dialog/removal-dialog.component';
+import {
+  MatPaginator,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-user-home',
@@ -48,6 +64,7 @@ import { RemovalDialogComponent } from '../removal-dialog/removal-dialog.compone
     MatDialogModule,
     MatButtonModule,
     MatDividerModule,
+    MatPaginatorModule,
     TempNavBarComponent,
   ],
 })
@@ -76,6 +93,10 @@ export class UserHomeComponent implements OnInit {
   favDevices: string[] = [];
   menuItems = ['Organization', 'Devices'];
   removeOrgs: boolean = false;
+  currentPage: number = 0;
+  ownedOrgSource = new MatTableDataSource(this.ownedOrgs);
+  joinedOrgSource = new MatTableDataSource(this.joinedOrgs);
+  favDeviceSource = new MatTableDataSource(this.favDevices);
 
   result = JSON.stringify(this.data); //Example working with JSON
   info = JSON.parse(this.result);
@@ -85,6 +106,11 @@ export class UserHomeComponent implements OnInit {
   userName: string | null = '';
   routerLinkVariable = 'hi';
 
+  private breakpointObserver = inject(BreakpointObserver);
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
+    new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
+
   constructor(private route: ActivatedRoute, public dialog: MatDialog) {} //makes an instance of the router
   ngOnInit(): void {
     this.userName = this.route.snapshot.paramMap.get('user'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -92,9 +118,8 @@ export class UserHomeComponent implements OnInit {
       this.userName = 'John';
     }
     this.setupExampleLists();
+    this.ownedOrgSource.paginator = this.paginator;
   }
-
-  private breakpointObserver = inject(BreakpointObserver);
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -102,6 +127,10 @@ export class UserHomeComponent implements OnInit {
       map((result) => result.matches),
       shareReplay()
     );
+
+  handlePageEvent(pageEvent: PageEvent, pageType: number) {
+    //Make get request here that sends in pageEvent.pageIndex
+  }
 
   //For removal, we use put in order to update the status of the org with a boolean.
   confirmRemoval(itemName: string, orgID?: number, userID?: number) {
