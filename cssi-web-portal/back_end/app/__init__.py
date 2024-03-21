@@ -213,7 +213,7 @@ def get_data():
     
 @app.route('/alt_data', methods=['GET'])
 #@jwt_required()
-def get_data():
+def get_alt_data():
     try:
         records = read_records('lab_sensor_json') #hard coded for test
         data = parse_data(records)

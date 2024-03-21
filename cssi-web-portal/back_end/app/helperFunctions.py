@@ -62,6 +62,7 @@ def read_records(table, conditions=None):
             sql += " WHERE " + conditions + ' ORDER BY time DESC LIMIT 100' 
             cursor.execute(sql)
         else:
+            sql += ' ORDER BY time DESC LIMIT 100'
             cursor.execute(sql)
         records = cursor.fetchall()
         return records

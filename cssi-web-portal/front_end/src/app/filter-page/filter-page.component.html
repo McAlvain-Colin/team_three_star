@@ -166,7 +166,7 @@
   </mat-card>
 
   <!-- device select -->
-  <mat-card class="device_select">
+  <mat-card class="filter">
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -199,8 +199,8 @@
               <td mat-cell *matCellDef="let element"> {{element.dev_eui}} </td>
             </ng-container> 
 
-            <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(payloadColumns)"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(payloadColumns);"></tr>
+            <tr mat-header-row *matHeaderRowDef="['Dev_eui']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['Dev_eui'];"></tr>
 
             <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
@@ -208,22 +208,13 @@
           </table>   
 
           <mat-paginator #payloadPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Payload Data"></mat-paginator>
-
-          <mat-card-actions>
-            <div class="button-container">
-              <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="exportPayloadData()">Export Payload Data</button>
-              <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="addDevice()">Add Device</button>
-              <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="removeDevice()">Remove Device</button>
-              <mat-spinner *ngIf="showSpinner"></mat-spinner>
-            </div>
-          </mat-card-actions>
         </mat-card>
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card>
 
   <!-- device payload data tables -->
-  <mat-card class="payload_select">
+  <mat-card class="filter">
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -232,7 +223,7 @@
       >
         <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
         <mat-expansion-panel-header>
-          <mat-panel-title> Sort your data here! </mat-panel-title>
+          <mat-panel-title> Payload Data </mat-panel-title>
           <mat-panel-description>
             {{
               panelOpenState
@@ -285,8 +276,6 @@
           <mat-card-actions>
             <div class="button-container">
               <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="exportPayloadData()">Export Payload Data</button>
-              <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="addDevice()">Add Device</button>
-              <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="removeDevice()">Remove Device</button>
               <mat-spinner *ngIf="showSpinner"></mat-spinner>
             </div>
           </mat-card-actions>
@@ -296,7 +285,7 @@
   </mat-card>
 
   <!-- payload graph -->
-  <mat-card class="payload_graph">
+  <mat-card class="filter">
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -305,7 +294,7 @@
       >
         <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
         <mat-expansion-panel-header>
-          <mat-panel-title> Sort your data here! </mat-panel-title>
+          <mat-panel-title> Payload Graph! </mat-panel-title>
           <mat-panel-description>
             {{
               panelOpenState
@@ -320,7 +309,7 @@
   </mat-card>
 
   <!-- device metadata data tables -->
-  <mat-card class="metadata_select">
+  <mat-card class="filter">
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -329,7 +318,7 @@
       >
         <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
         <mat-expansion-panel-header>
-          <mat-panel-title> Sort your data here! </mat-panel-title>
+          <mat-panel-title> Metadata </mat-panel-title>
           <mat-panel-description>
             {{
               panelOpenState
@@ -380,8 +369,6 @@
           <mat-card-actions>
             <div class="button-container">
               <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="exportMetadata()">Export Metadata Data</button>
-              <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="addDevice()">Add Device</button>
-              <button mat-raised-button (click)="loadSpinner()" color="accent" (click)="removeDevice()">Remove Device</button>
               <mat-spinner *ngIf="showSpinner"></mat-spinner>
             </div>
           </mat-card-actions>
@@ -391,7 +378,7 @@
   </mat-card>
 
   <!-- metadata graph -->
-  <mat-card class="metadata_graph">
+  <mat-card class="filter">
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -400,7 +387,7 @@
       >
         <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
         <mat-expansion-panel-header>
-          <mat-panel-title> Sort your data here! </mat-panel-title>
+          <mat-panel-title> Metadata Graph </mat-panel-title>
           <mat-panel-description>
             {{
               panelOpenState

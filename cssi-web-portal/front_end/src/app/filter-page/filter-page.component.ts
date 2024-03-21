@@ -148,14 +148,22 @@ export class FilterPageComponent implements AfterViewInit{
         thumbLabel: [this.thumbLabel],
         disabled: [this.disabled],
         startValue: [{ value: this.defaultValue[0], disabled: true}],
-        endValue: [{ value: this.defaultValue[1], disable: true}]
+        endValue: [{ value: this.defaultValue[1], disable: true}],
+        metadataSelect: false,
+        payloadSelect: false,
       }),
       dataType: [''],//, Validators.pattern('[a-zA-Z ]*')],
       deviceId: [''],//, Validators.pattern('[a-zA-Z ]*')],
       applicationID: [''],//, Validators.pattern('[a-zA-Z0-9]**')],
       location: [''],//, Validators.pattern('[a-zA-Z ]*')]
-      metadataSelect: false,
-      payloadSelect: false
+      
+      panelOpenState: false,
+      panelOpenStateDevEUI: false,
+      panelOpenStatePayload: false,
+      panelOpenStateMetadata: false,
+      panelOpenStatePayloadGraph: false,
+      panelOpenStateMetadataGraph: false,
+      panelOpenStateDeviceSelect: false
     });
 
     // this.apiService.getAltData().subscribe((data: any) => {
