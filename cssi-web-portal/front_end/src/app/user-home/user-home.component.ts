@@ -108,8 +108,21 @@ export class UserHomeComponent implements OnInit {
 
   private breakpointObserver = inject(BreakpointObserver);
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
-    new MatPaginator(new MatPaginatorIntl(), ChangeDetectorRef.prototype);
+  @ViewChild('ownedOrgPaginator', { static: true })
+  ownedOrgPaginator: MatPaginator = new MatPaginator(
+    new MatPaginatorIntl(),
+    ChangeDetectorRef.prototype
+  );
+  @ViewChild('joinedOrgPaginator', { static: true })
+  joinedOrgPaginator: MatPaginator = new MatPaginator(
+    new MatPaginatorIntl(),
+    ChangeDetectorRef.prototype
+  );
+  @ViewChild('favDevicePaginator', { static: true })
+  favDevicePaginator: MatPaginator = new MatPaginator(
+    new MatPaginatorIntl(),
+    ChangeDetectorRef.prototype
+  );
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog) {} //makes an instance of the router
   ngOnInit(): void {
@@ -118,7 +131,9 @@ export class UserHomeComponent implements OnInit {
       this.userName = 'John';
     }
     this.setupExampleLists();
-    this.ownedOrgSource.paginator = this.paginator;
+    this.ownedOrgSource.paginator = this.ownedOrgPaginator;
+    this.joinedOrgSource.paginator = this.joinedOrgPaginator;
+    this.favDeviceSource.paginator = this.favDevicePaginator;
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver

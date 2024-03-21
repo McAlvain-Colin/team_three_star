@@ -85,8 +85,9 @@
                 [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
                 *ngFor="
                   let organization of ownedOrgSource.data.slice(
-                    paginator.pageIndex * paginator.pageSize,
-                    (paginator.pageIndex + 1) * paginator.pageSize
+                    ownedOrgPaginator.pageIndex * ownedOrgPaginator.pageSize,
+                    (ownedOrgPaginator.pageIndex + 1) *
+                      ownedOrgPaginator.pageSize
                   )
                 "
               >
@@ -104,7 +105,7 @@
               </a>
             </mat-nav-list>
             <mat-paginator
-              #ownedOrgs
+              #ownedOrgPaginator
               pageSize="5"
               showFirstLastButtons="true"
               [pageSizeOptions]="[5, 10, 20]"
@@ -140,8 +141,9 @@
                 [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
                 *ngFor="
                   let organization of joinedOrgSource.data.slice(
-                    paginator.pageIndex * paginator.pageSize,
-                    (paginator.pageIndex + 1) * paginator.pageSize
+                    joinedOrgPaginator.pageIndex * joinedOrgPaginator.pageSize,
+                    (joinedOrgPaginator.pageIndex + 1) *
+                      joinedOrgPaginator.pageSize
                   )
                 "
               >
@@ -159,7 +161,7 @@
               </a>
             </mat-nav-list>
             <mat-paginator
-              #joinedOrgs
+              #joinedOrgPaginator
               pageSize="5"
               showFirstLastButtons="true"
               [pageSizeOptions]="[5, 10, 20]"
@@ -185,8 +187,9 @@
                 [routerLink]="removeOrgs ? null : getRouteName(device, 1)"
                 *ngFor="
                   let device of favDeviceSource.data.slice(
-                    paginator.pageIndex * paginator.pageSize,
-                    (paginator.pageIndex + 1) * paginator.pageSize
+                    favDevicePaginator.pageIndex * favDevicePaginator.pageSize,
+                    (favDevicePaginator.pageIndex + 1) *
+                      favDevicePaginator.pageSize
                   )
                 "
               >
@@ -204,7 +207,7 @@
               </a>
             </mat-nav-list>
             <mat-paginator
-              #favDevices
+              #favDevicePaginator
               pageSize="5"
               showFirstLastButtons="true"
               [pageSizeOptions]="[5, 10, 20]"
