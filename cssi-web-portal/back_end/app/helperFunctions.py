@@ -58,7 +58,9 @@ def read_records(table, conditions=None):
             return  # Early return if the connection was not obtained
         cursor = conn.cursor()
         sql = f"SELECT * FROM {table}"
-        if conditions:
+        if conditions == 'distinct':
+            sql = f"SELECT DISTINCT dev_eui FROM {table}"
+        elif conditions:
             sql += " WHERE " + conditions + ' ORDER BY time DESC LIMIT 100' 
             cursor.execute(sql)
         else:
