@@ -51,7 +51,7 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = '5@gmail.com' # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = '' # ALTERED FOR PRIVACY
 app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
@@ -262,18 +262,24 @@ def createOrganization():
 
 
 
-@app.route('/userOrgList', methods = ['GET'])  
+@app.route('/userOrgList', methods = ['GET']) 
+@jwt_required() 
 def getOrgList():
 
     uid = get_jwt_identity()
     data = request.get_json()
     pageNum = data['pageNum']
     # currPage = data['currPage']
+    
+
+    o = db.session.execute(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = uid))
+
 
     if pageNum <= db.paginate(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = uid), per_page= 20).pages:
         try:
             page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = uid), page= pageNum, per_page= 20)
             res = {
+                'oid': o.id,
                 'currentPage': pageNum,
                 'pageTotal': page.pages,
                 'list': [
@@ -292,6 +298,33 @@ def getOrgList():
        
     else:
         return make_response({'error': "page doesn't exist"})
+
+@app.route('/createApp', methods = ['POST'])  
+@jwt_required()
+def createApplication():
+
+    data = request.get_json() #uid, org titel, org descritpion
+    userId = data['uid']
+    orgName = data['orgName']
+    descript = data['orgDescript']
+
+    #database code
+    newOrg = Organization(orgName, descript)
+
+    user = db.session.execute(db.select(Account).filter_by(id = userId)).scalar()
+
+
+    #link the account with the org
+    orgAcc = OrgAccount(account= user, org= newOrg)
+
+    db.session.add(newOrg)
+    db.session.commit()
+    db.session.add(orgAcc)
+    db.session.commit()
+   
+
+
+    return jsonify(orgCreated = True)
 
 
 if __name__ == '__main__':
