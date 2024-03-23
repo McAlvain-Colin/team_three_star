@@ -30,7 +30,6 @@ import { DatePicker } from './date-picker/date-picker.component';
 import { OrganizationPageComponent } from './organization-page/organization-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { DeviceDataComponent } from './device-data/device-data.component';
-import { UserHomeComponent } from './user-home/user-home.component';
 import { DevicePageComponent } from './device-page/device-page.component';
 import { FilterPageComponent } from './filter-page/filter-page.component';
 import { RemovalDialogComponent } from './removal-dialog/removal-dialog.component';
@@ -40,6 +39,7 @@ import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ApplicationPageComponent } from './application-page/application-page.component';
+import { UserHomeComponent } from './user-home/user-home.component';
 
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
@@ -71,12 +71,12 @@ import { ApplicationPageComponent } from './application-page/application-page.co
     TempNavBarComponent,
     DatePicker,
     OrganizationPageComponent,
-    UserHomeComponent,
     RemovalDialogComponent,
     DevicePageComponent,
     FilterPageComponent,
     OrganizationPageComponent,
     ApplicationPageComponent,
+    UserHomeComponent,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,

@@ -17,4 +17,7 @@ export class ApiService {
   getAltData(): Observable<any> {
     return this.http.get(`${this.BASE_URL}/alt_data`);
   }
+  getDevID(): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/dev_id`);
+  }
 }

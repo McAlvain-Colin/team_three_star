@@ -221,6 +221,17 @@ def get_alt_data():
     except Exception as e:
         print('error')
         return jsonify({'Error': str(e)}), 500 #500 shows server error
+    
+@app.route('/dev_id', methods=['GET'])
+#@jwt_required()
+def get_dev_id():
+    try:
+        records = read_records('lab_sensor_json', 'distinct') #hard coded for test
+        data = parse_data(records)
+        return jsonify(data), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
 
 
 if __name__ == '__main__':
