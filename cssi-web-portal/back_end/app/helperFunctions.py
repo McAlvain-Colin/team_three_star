@@ -49,7 +49,7 @@ def create_record(table, data):
             cursor.close()
         close_db_connection(conn)
 
-def read_records(table, conditions=None):
+def read_records(table, conditions=None, dev_eui=None):
     conn = None
     cursor = None
     try:
@@ -60,6 +60,12 @@ def read_records(table, conditions=None):
         sql = f"SELECT * FROM {table}"
         if conditions == 'distinct':
             sql = f"SELECT DISTINCT dev_eui FROM {table}"
+            cursor.execute(sql)
+        elif conditions == 'payload':
+            sql = f"SELECT payload FROM {table} WHERE dev_eui {dev_eui}"
+            cursor.execute(sql)
+        elif conditions == 'metadata':
+            sql = f"SELECT metadata FROM {table} WHERE dev_eui {dev_eui}"
             cursor.execute(sql)
         elif conditions:
             sql += " WHERE " + conditions + ' ORDER BY time DESC LIMIT 100' 

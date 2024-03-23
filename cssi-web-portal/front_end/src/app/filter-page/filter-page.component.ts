@@ -105,6 +105,9 @@ export class FilterPageComponent implements AfterViewInit{
 
   defaultValue: [number, number] = [1, 1000];
 
+  payloadRecord: string[] = [];
+  metadataRecord: string[] = [];
+
   //chart variables.
   @Input() Devicelist!: SensorData[];
 
@@ -192,47 +195,8 @@ export class FilterPageComponent implements AfterViewInit{
       panelOpenStateDeviceSelect: false
     });
 
-    //blank chart to get it to work. 
-    const ctx = document.getElementById('myChart')! as HTMLCanvasElement;
-    const myChart = new Chart(ctx, {
-        type: 'line',  // You can change the type to 'bar', 'pie', etc., based on your needs
-        data: {
-            labels: [],  // No labels since it's a blank chart
-            datasets: [{
-                data: [],  // No data
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    //blank chart to get it to work. 
-    const meta_ctx = document.getElementById('metadataChart')! as HTMLCanvasElement;
-    const metadataChart = new Chart(meta_ctx, {
-        type: 'line',  // You can change the type to 'bar', 'pie', etc., based on your needs
-        data: {
-            labels: [],  // No labels since it's a blank chart
-            datasets: [{
-                data: [],  // No data
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-
+    this.createPayloadChart();
+    this.createMetadataChart();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -655,5 +619,73 @@ export class FilterPageComponent implements AfterViewInit{
     link.href = this.chart.toBase64Image();
     link.download = 'chart.png';
     link.click();
+  }
+
+  createPayloadChart(){
+    this.apiService.getPayload().subscribe({
+      next: (data: string[][]) => {
+        this.payloadRecord = data.map((item: string[]) => item[0]);
+        this.initializePayloadChart();
+      },
+      error: (error) => {
+        console.error('Error fetching payload data:', error);
+      }
+    });
+  }
+  
+  createMetadataChart(){
+    this.apiService.getMetadata().subscribe({
+      next: (data: string[][]) => {
+        this.metadataRecord = data.map((item: string[]) => item[0]);
+        this.initializeMetadataChart();
+      },
+      error: (error) => {
+        console.error('Error fetching metadata:', error);
+      }
+    });
+  }
+  initializePayloadChart() {
+    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    if (ctx) {
+      const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Object.keys(this.payloadRecord), 
+          datasets: [{
+            data: Object.values(this.payloadRecord), 
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+  }
+  initializeMetadataChart() {
+    const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
+    if (meta_ctx) {
+      const metadataChart = new Chart(meta_ctx, {
+        type: 'line',
+        data: {
+          labels: Object.keys(this.metadataRecord), 
+          datasets: [{
+            data: Object.values(this.metadataRecord), 
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
   }
 }

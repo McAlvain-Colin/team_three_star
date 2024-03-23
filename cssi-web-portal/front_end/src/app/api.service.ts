@@ -20,4 +20,10 @@ export class ApiService {
   getDevID(): Observable<any> {
     return this.http.get(`${this.BASE_URL}/dev_id`);
   }
+  getMetadata(): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/metadata`);
+  }
+  getPayload(): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/payload`);
+  }
 }
