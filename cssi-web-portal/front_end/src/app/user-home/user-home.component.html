@@ -30,60 +30,42 @@
       </button>
       Welcome {{ userName }}</mat-toolbar
     >
-    <mat-card class="notifications-box">
-      <mat-card-content class="notifications-content">
-        <mat-card-header
-          ><h3
-            class="notifications-title"
-            matBadge="{{ notifications.length }}"
-          >
-            Notifications
-          </h3>
-        </mat-card-header>
-        <mat-divider class="notifications-divider"></mat-divider>
-        <mat-nav-list>
-          <!-- Activated just adjusts the colors of the individual links whether to be the primary angular color or black-->
-          <a
-            mat-list-item
-            routerLink="/organization/{{ routerLinkVariable }}"
-            *ngFor="let notification of notifications"
-            [activated]="false"
-          >
-            {{ notification }}
-          </a>
-        </mat-nav-list>
-      </mat-card-content>
-    </mat-card>
     <mat-card class="organization-box">
       <mat-card-content class="organization-content">
         <mat-tab-group [style.position]="'sticky'">
           <mat-tab label="Owned Organizations">
+            <div class="make-flexbox">
+              <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
+              <button
+                mat-raised-button
+                color="accent"
+                class="group-button"
+                routerLink="/add-organization/{{ userName }}"
+              >
+                Add
+              </button>
+              <span class="push-button-right"> </span>
+              <button
+                mat-raised-button
+                color="warn"
+                class="group-button"
+                (click)="removeOrgs = !removeOrgs"
+              >
+                Remove
+              </button>
+            </div>
             <mat-nav-list>
-              <div class="make-flexbox">
-                <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
-                <button
-                  mat-raised-button
-                  color="accent"
-                  class="group-button"
-                  routerLink="/add-organization/{{ userName }}"
-                >
-                  Add
-                </button>
-                <span class="push-button-right"> </span>
-                <button
-                  mat-raised-button
-                  color="warn"
-                  class="group-button"
-                  (click)="removeOrgs = !removeOrgs"
-                >
-                  Remove
-                </button>
-              </div>
               <!--Note that the let parameter only creates a variable that lasts for the loop and has scope only in the loop.-->
               <a
                 mat-list-item
                 [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
-                *ngFor="let organization of ownedOrgs"
+                *ngFor="
+                  let organization of ownedOrgSource.data.slice(
+                    ownedOrgPaginator.pageIndex * ownedOrgPaginator.pageSize,
+                    (ownedOrgPaginator.pageIndex + 1) *
+                      ownedOrgPaginator.pageSize
+                  )
+                "
               >
                 <div class="make-flexbox">
                   {{ organization }}
@@ -98,34 +80,39 @@
                 </div>
               </a>
             </mat-nav-list>
+            <mat-paginator
+              #ownedOrgPaginator
+              pageSize="5"
+              showFirstLastButtons="true"
+              [pageSizeOptions]="[5, 10, 20]"
+              [pageIndex]="currentPage"
+              (page)="handlePageEvent($event, 0)"
+            ></mat-paginator>
           </mat-tab>
           <mat-tab label="Joined Organizations">
+            <div class="make-flexbox">
+              <!--For the join we might need a search organization page for public organizations-->
+              <span class="push-button-right"> </span>
+              <button
+                mat-raised-button
+                color="warn"
+                class="group-button"
+                (click)="removeOrgs = !removeOrgs"
+              >
+                Leave
+              </button>
+            </div>
             <mat-nav-list>
-              <div class="make-flexbox">
-                <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
-                <button
-                  mat-raised-button
-                  color="accent"
-                  class="group-button"
-                  routerLink="/add-organization/{{ userName }}"
-                >
-                  Join
-                </button>
-                <!--For the join we might need a search organization page for public organizations-->
-                <span class="push-button-right"> </span>
-                <button
-                  mat-raised-button
-                  color="warn"
-                  class="group-button"
-                  (click)="removeOrgs = !removeOrgs"
-                >
-                  Leave
-                </button>
-              </div>
               <a
                 mat-list-item
                 [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
-                *ngFor="let organization of joinedOrgs"
+                *ngFor="
+                  let organization of joinedOrgSource.data.slice(
+                    joinedOrgPaginator.pageIndex * joinedOrgPaginator.pageSize,
+                    (joinedOrgPaginator.pageIndex + 1) *
+                      joinedOrgPaginator.pageSize
+                  )
+                "
               >
                 <div class="make-flexbox">
                   {{ organization }}
@@ -140,24 +127,38 @@
                 </div>
               </a>
             </mat-nav-list>
+            <mat-paginator
+              #joinedOrgPaginator
+              pageSize="5"
+              showFirstLastButtons="true"
+              [pageSizeOptions]="[5, 10, 20]"
+              [pageIndex]="currentPage"
+              (page)="handlePageEvent($event, 0)"
+            ></mat-paginator>
           </mat-tab>
           <mat-tab label="Favorite Devices">
+            <div class="make-flexbox">
+              <span class="push-button-right"></span>
+              <button
+                mat-raised-button
+                color="warn"
+                class="group-button"
+                (click)="removeOrgs = !removeOrgs"
+              >
+                Remove
+              </button>
+            </div>
             <mat-nav-list>
-              <div class="make-flexbox">
-                <span class="push-button-right"></span>
-                <button
-                  mat-raised-button
-                  color="warn"
-                  class="group-button"
-                  (click)="removeOrgs = !removeOrgs"
-                >
-                  Remove
-                </button>
-              </div>
               <a
                 mat-list-item
                 [routerLink]="removeOrgs ? null : getRouteName(device, 1)"
-                *ngFor="let device of favDevices"
+                *ngFor="
+                  let device of favDeviceSource.data.slice(
+                    favDevicePaginator.pageIndex * favDevicePaginator.pageSize,
+                    (favDevicePaginator.pageIndex + 1) *
+                      favDevicePaginator.pageSize
+                  )
+                "
               >
                 <div class="make-flexbox">
                   {{ device }}
@@ -172,11 +173,18 @@
                 </div>
               </a>
             </mat-nav-list>
+            <mat-paginator
+              #favDevicePaginator
+              pageSize="5"
+              showFirstLastButtons="true"
+              [pageSizeOptions]="[5, 10, 20]"
+              [pageIndex]="currentPage"
+              (page)="handlePageEvent($event, 0)"
+            ></mat-paginator>
           </mat-tab>
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <body class="background">
-      <app-temp-nav-bar></app-temp-nav-bar>
-    </body> </mat-sidenav-content
+    <body class="background"></body>
+    <app-temp-nav-bar></app-temp-nav-bar></mat-sidenav-content
 ></mat-sidenav-container>

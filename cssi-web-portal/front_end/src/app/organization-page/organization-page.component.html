@@ -76,7 +76,12 @@
               <a
                 mat-list-item
                 routerLink="/application/{{ application }}"
-                *ngFor="let application of applications"
+                *ngFor="
+                  let application of appsSource.data.slice(
+                    appsPaginator.pageIndex * appsPaginator.pageSize,
+                    (appsPaginator.pageIndex + 1) * appsPaginator.pageSize
+                  )
+                "
               >
                 {{ application }}
                 <button
@@ -88,12 +93,75 @@
                 </button>
               </a>
             </mat-nav-list>
+            <mat-paginator
+              #appsPaginator
+              pageSize="5"
+              showFirstLastButtons="true"
+              [pageSizeOptions]="[5, 10, 20]"
+              [pageIndex]="currentPage"
+              (page)="handlePageEvent($event, 0)"
+            ></mat-paginator>
           </mat-tab>
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <body class="background">
-      <app-temp-nav-bar></app-temp-nav-bar>
-    </body>
+    <mat-card class="member-box" *ngIf="isAdmin">
+      <mat-card-content class="member-content">
+        <mat-tab-group [style.position]="'sticky'">
+          <mat-tab label="{{ orgName }}'s Members">
+            <mat-nav-list>
+              <div class="make-flexbox">
+                <button
+                  mat-raised-button
+                  color="accent"
+                  class="group-button"
+                  routerLink="/invite-user/{{ orgId }}"
+                >
+                  Invite
+                </button>
+                <span class="push-button-right"> </span>
+                <button
+                  mat-raised-button
+                  color="warn"
+                  class="group-button"
+                  (click)="removeMembers = !removeMembers"
+                >
+                  Remove
+                </button>
+              </div>
+              <a
+                mat-list-item
+                [routerLink]="removeMembers ? null : getRouteName(member, 0)"
+                *ngFor="
+                  let member of membersSource.data.slice(
+                    membersPaginator.pageIndex * membersPaginator.pageSize,
+                    (membersPaginator.pageIndex + 1) * membersPaginator.pageSize
+                  )
+                "
+              >
+                {{ member }}
+                <button
+                  class="remove-icon"
+                  *ngIf="removeMembers"
+                  (click)="confirmRemoval(member)"
+                >
+                  <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                </button>
+              </a>
+            </mat-nav-list>
+            <mat-paginator
+              #membersPaginator
+              pageSize="5"
+              showFirstLastButtons="true"
+              [pageSizeOptions]="[5, 10, 20]"
+              [pageIndex]="currentPage"
+              (page)="handlePageEvent($event, 0)"
+            ></mat-paginator>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
+    <body class="background"></body>
+    <!--app-temp-nav-bar></app-temp-nav-bar-->
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,3 +1,17 @@
+html {
+  height: 100%;
+  background-color: aliceblue;
+}
+body {
+  min-height: 100%;
+  position: absolute;
+  background-color: aliceblue;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+}
+
 .toolbar {
   opacity: 0.9;
   z-index: 10;
@@ -55,12 +69,6 @@
   text-align: center;
 }
 
-.background {
-  background-color: aliceblue;
-  height: 100%;
-  width: 100%;
-}
-
 .device-button {
   position: inline;
   left: 45%;
@@ -89,16 +97,16 @@
 
 .organization-box {
   display: flex;
-  position: absolute;
+  position: relative;
   margin-top: 1%;
   margin-left: 5%;
   margin-right: 5%;
-  margin-bottom: 4%;
   height: 32%;
   max-height: 32%;
   width: 90%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
+  z-index: 2;
 }
 
 .organization-content {
@@ -130,19 +138,36 @@
 
 .apps-box {
   display: flex;
-  position: absolute;
+  position: relative;
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 3%;
-  top: 40%;
-  height: 60%;
-  max-height: 60%;
+  height: fit-content;
+  max-height: fit-content;
   width: 90%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
 .apps-content {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.member-box {
+  display: flex;
+  position: relative;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 3%;
+  height: fit-content;
+  max-height: fit-content;
+  width: 90%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.member-content {
   height: 100%;
   overflow-y: scroll;
 }

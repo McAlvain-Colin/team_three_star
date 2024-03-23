@@ -75,29 +75,11 @@
   left: 40%;
 }
 
-body,
-html {
-  /* This is the main control for the visuals on the background of the home page */
-  background-color: aliceblue;
-  width: 100%;
-  height: 100%;
-}
-
 .background {
   background-image: url("../../assets/home-background.jpg");
   /*Adjust height in order to keep contents within page without a nescessary scroll wheel*/
-  height: 91.5%;
+  min-height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-body {
-  /* This is the main control for the visuals on the background of the home page */
-  background-color: aliceblue;
-  background-image: url("../../assets/home_page_image.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
 }

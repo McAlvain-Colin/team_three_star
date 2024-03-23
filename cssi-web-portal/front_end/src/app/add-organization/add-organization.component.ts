@@ -67,7 +67,11 @@ export class AddOrganizationComponent {
     this.http
       .post(
         this.baseUrl + 'createOrg',
-        { user: this.userID, org: this.orgName, orgAbout: this.orgDescription },
+        {
+          uid: this.userID,
+          orgName: this.orgName,
+          orgDescript: this.orgDescription,
+        },
         httpOptions
       )
       .subscribe({
