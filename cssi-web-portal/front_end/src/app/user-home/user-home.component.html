@@ -30,30 +30,6 @@
       </button>
       Welcome {{ userName }}</mat-toolbar
     >
-    <mat-card class="notifications-box">
-      <mat-card-content class="notifications-content">
-        <mat-card-header
-          ><h3
-            class="notifications-title"
-            matBadge="{{ notifications.length }}"
-          >
-            Notifications
-          </h3>
-        </mat-card-header>
-        <mat-divider class="notifications-divider"></mat-divider>
-        <mat-nav-list>
-          <!-- Activated just adjusts the colors of the individual links whether to be the primary angular color or black-->
-          <a
-            mat-list-item
-            routerLink="/organization/{{ routerLinkVariable }}"
-            *ngFor="let notification of notifications"
-            [activated]="false"
-          >
-            {{ notification }}
-          </a>
-        </mat-nav-list>
-      </mat-card-content>
-    </mat-card>
     <mat-card class="organization-box">
       <mat-card-content class="organization-content">
         <mat-tab-group [style.position]="'sticky'">
@@ -115,15 +91,6 @@
           </mat-tab>
           <mat-tab label="Joined Organizations">
             <div class="make-flexbox">
-              <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
-              <button
-                mat-raised-button
-                color="accent"
-                class="group-button"
-                routerLink="/add-organization/{{ userName }}"
-              >
-                Join
-              </button>
               <!--For the join we might need a search organization page for public organizations-->
               <span class="push-button-right"> </span>
               <button
@@ -218,7 +185,6 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <body class="background">
-      <app-temp-nav-bar></app-temp-nav-bar>
-    </body> </mat-sidenav-content
+    <body class="background"></body>
+    <app-temp-nav-bar></app-temp-nav-bar></mat-sidenav-content
 ></mat-sidenav-container>
