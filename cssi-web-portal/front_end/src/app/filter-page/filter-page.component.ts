@@ -149,23 +149,14 @@ export class FilterPageComponent implements AfterViewInit{
     });
 
     this.apiService.getDevID().subscribe({
-      next: (data: SensorData[]) => {
-        const idRecord = data.map((item: SensorData) => ({
-          dev_eui: item.dev_eui,
-          dev_time: item.dev_time,
-          payload_dict: JSON.parse(item.payload_dict),
-          metadata_dict: JSON.parse(item.metadata_dict)
-        }));
-        this.payloadDataSource.data = idRecord;
-        this.metadataSource.data = idRecord;
+      next: (data: string[][]) => {
+        const idRecord = data.map((item: string[]) => item[0]);
 
-        if (idRecord.length > 0) {        
-          this.payloadColumns = Object.keys(idRecord[0].payload_dict);
-          this.metadataColumns = Object.keys(idRecord[0].metadata_dict);
-          this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(this.payloadColumns);
-          this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(this.metadataColumns);
-        }
+        this.devIDSource.data = idRecord;
+
+        this.displayedPayloadColumns = ['Dev_eui'];
       },
+
       error: (error) => {
         console.error('Error: ', error);
       }
@@ -221,6 +212,27 @@ export class FilterPageComponent implements AfterViewInit{
         }
     });
 
+    //blank chart to get it to work. 
+    const meta_ctx = document.getElementById('metadataChart')! as HTMLCanvasElement;
+    const metadataChart = new Chart(meta_ctx, {
+        type: 'line',  // You can change the type to 'bar', 'pie', etc., based on your needs
+        data: {
+            labels: [],  // No labels since it's a blank chart
+            datasets: [{
+                data: [],  // No data
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -229,7 +241,7 @@ export class FilterPageComponent implements AfterViewInit{
 
   payloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
-  devIDSource = new MatTableDataSource<SensorData>([]);
+  devIDSource = new MatTableDataSource<string>([]);
 
 
   ngAfterViewInit() {
@@ -368,27 +380,87 @@ export class FilterPageComponent implements AfterViewInit{
   //----------------------------------------------------------------------------
 
 
-  //createInitLineChart method was upon the intial loading of the dashboard, the chart would be initialized and would have the values retrieved from the first device within the devicelist 
-  //which was recieved using the input decorator. The chart consists from the Chart class from the Chart.JS library which was imported using "npm install chart.js", at the time of installation fro prototype, the newest
-  //version of ChartJS was 4.4.0, if no longer the newest version, use command "npm install chart.js@4.4.0". This function will create an line chart with the packet loss data present in the first device in our list.
-  //structure for initization was found in the Chart.JS documentation https://www.chartjs.org/docs/4.4.0/charts/line.html , and for chart white background, used in the plugin section, and examples were used from Chart.JS documentation 
-  //which can be found here: https://www.chartjs.org/docs/4.4.0/configuration/canvas-background.html in the options attribute of the chart object the maintainAspectRatio property is set to fasle to allow for the chart to change as the window size changes.
+  // createInitLineChart method was upon the intial loading of the dashboard, the chart would be initialized and would have the values retrieved from the first device within the devicelist 
+  // which was recieved using the input decorator. The chart consists from the Chart class from the Chart.JS library which was imported using "npm install chart.js", at the time of installation fro prototype, the newest
+  // version of ChartJS was 4.4.0, if no longer the newest version, use command "npm install chart.js@4.4.0". This function will create an line chart with the packet loss data present in the first device in our list.
+  // structure for initization was found in the Chart.JS documentation https://www.chartjs.org/docs/4.4.0/charts/line.html , and for chart white background, used in the plugin section, and examples were used from Chart.JS documentation 
+  // which can be found here: https://www.chartjs.org/docs/4.4.0/configuration/canvas-background.html in the options attribute of the chart object the maintainAspectRatio property is set to fasle to allow for the chart to change as the window size changes.
 
-  // createInitLineChart(device: SensorData) {
-  //   this.chartData = device.payload_dict;
-  //   console.log('inside create pkt ');
+  createInitLineChart(device: SensorData) {
+    this.chartData = device.payload_dict;
+    console.log('inside create pkt ');
+
+    this.chart = new Chart('myChart', {
+      type: 'line',
+      data: {
+        labels: device.dev_time,
+        datasets: [
+          {
+            label: 'Packet Loss',
+            data: [],
+          },
+        ],
+        //removing this line will result in the chart reamining at the lowest window size that was opened
+      },
+      options: {
+        maintainAspectRatio: false,
+      },
+      plugins: [
+        {
+          id: 'customCanvasBackgroundColor',
+          beforeDraw: (chart, args, options) => {
+            const { ctx } = chart;
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-over';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, chart.width, chart.height);
+            ctx.restore();
+          },
+        },
+      ],
+    });
+  }
+
+  // The updateChartData method will take in parameters the row of the table which was selected by the user, as well as the present type of chart the user has selected to visualize
+  // The method will be change data being presented to the user. this is done by checking the typeOfChart variable and chart data is altered to user selection, then the update method is called
+  // which is from the Chart.JS library. This method chart.update is in the Chart.JS documentation https://www.chartjs.org/docs/latest/developers/updates.html 
+  updateChartData(row: SensorData, typeOfChart: string) {
+    if (row !== undefined) {
+      // if (typeOfChart === 'packetLoss') {
+      //   this.chart.data.datasets[0].data = row.packetLoss;
+      // } else if (typeOfChart === 'batteryStat') {
+      //   this.chart.data.datasets[0].data = row.batteryStat;
+      // } else if (typeOfChart === 'rssi') {
+      //   this.chart.data.datasets[0].data = row.RSSI;
+      // } else if (typeOfChart === 'snr') {
+      //   this.chart.data.datasets[0].data = row.SNR;
+      // }
+      this.chart.update();
+    }
+  }
+
+  //creataBarChart method will create a bar chart using the data provided from the device sent in as a parameter, the initalization structure was found in the ChartJS documentation
+  // https://www.chartjs.org/docs/4.4.0/charts/bar.html Since a chart exist upon initialization, the current chart object will be deleted and any references to it will be destroyed befor ecreate the bar chart using the 
+  // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. again the color of the background is set to white implemented in the plugin portion of the
+  // initialization. 
+  createBarChart(device: SensorData) {
+  //   console.log('inside of createBarChart');
+  //   console.log(device);
+  //   // this.chartData = device.batteryStat;
+  //   console.log(this.chartData);
+
+  //   this.chart.destroy();
 
   //   this.chart = new Chart('myChart', {
-  //     type: 'line',
+  //     type: 'bar',
   //     data: {
-  //       labels: device.dev_time,
+  //       // labels: device.time,
   //       datasets: [
   //         {
-  //           label: 'Packet Loss',
-  //           data: [],
+  //           label: 'Battery',
+  //           // data: device.batteryStat,
   //         },
   //       ],
-  //       //removing this line will result in the chart reamining at the lowest window size that was opened
   //     },
   //     options: {
   //       maintainAspectRatio: false,
@@ -407,241 +479,181 @@ export class FilterPageComponent implements AfterViewInit{
   //       },
   //     ],
   //   });
-  // }
+  }
 
-//   // The updateChartData method will take in parameters the row of the table which was selected by the user, as well as the present type of chart the user has selected to visualize
-//   // The method will be change data being presented to the user. this is done by checking the typeOfChart variable and chart data is altered to user selection, then the update method is called
-//   // which is from the Chart.JS library. This method chart.update is in the Chart.JS documentation https://www.chartjs.org/docs/latest/developers/updates.html 
-//   updateChartData(row: SensorData, typeOfChart: string) {
-//     if (row !== undefined) {
-//       if (typeOfChart === 'packetLoss') {
-//         this.chart.data.datasets[0].data = row.packetLoss;
-//       } else if (typeOfChart === 'batteryStat') {
-//         this.chart.data.datasets[0].data = row.batteryStat;
-//       } else if (typeOfChart === 'rssi') {
-//         this.chart.data.datasets[0].data = row.RSSI;
-//       } else if (typeOfChart === 'snr') {
-//         this.chart.data.datasets[0].data = row.SNR;
-//       }
-//       this.chart.update();
-//     }
-//   }
+  // createScatterChart method will destroy the current chart object and any references to it will be destroyed before create the scatter chart, structure in ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/scatter.html using the 
+  // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. The method will create a object that will be a scatter plot chart with units of dBm, using the currently
+  // selected devices RSSI readings provided from the device element object. The maintainAspectRatio attribute is set to false again to allow the chart size to vary when window size changes. The plugins attribute is used in the 
+  // initizaltion structure to provide a white background to the new chart created and the data is using the RSSI values from the device of type SensorData sent in as a parameter. 
+  createScatterChart(device: SensorData) {
+    console.log('inside of createBarChart');
+    console.log(device);
+    // this.chartData = device.batteryStat;
+    console.log(this.chartData);
 
-//   //creataBarChart method will create a bar chart using the data provided from the device sent in as a parameter, the initalization structure was found in the ChartJS documentation
-//   // https://www.chartjs.org/docs/4.4.0/charts/bar.html Since a chart exist upon initialization, the current chart object will be deleted and any references to it will be destroyed befor ecreate the bar chart using the 
-//   // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. again the color of the background is set to white implemented in the plugin portion of the
-//   // initialization. 
-//   createBarChart(device: SensorData) {
-//     console.log('inside of createBarChart');
-//     console.log(device);
-//     this.chartData = device.batteryStat;
-//     console.log(this.chartData);
+    this.chart.destroy();
 
-//     this.chart.destroy();
+    this.chart = new Chart('myChart', {
+      type: 'scatter',
+      data: {
+        // labels: device.time,
+        datasets: [
+          // {
+          //   label: 'dBm',
+          //   data: device.RSSI,
+          // },
+        ],
+      },
+      options: {
+        maintainAspectRatio: false,
+      },
+      plugins: [
+        {
+          id: 'customCanvasBackgroundColor',
+          beforeDraw: (chart, args, options) => {
+            const { ctx } = chart;
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-over';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, chart.width, chart.height);
+            ctx.restore();
+          },
+        },
+      ],
+    });
+  }
 
-//     this.chart = new Chart('myChart', {
-//       type: 'bar',
-//       data: {
-//         labels: device.time,
-//         datasets: [
-//           {
-//             label: 'Battery',
-//             data: device.batteryStat,
-//           },
-//         ],
-//       },
-//       options: {
-//         maintainAspectRatio: false,
-//       },
-//       plugins: [
-//         {
-//           id: 'customCanvasBackgroundColor',
-//           beforeDraw: (chart, args, options) => {
-//             const { ctx } = chart;
-//             ctx.save();
-//             ctx.globalCompositeOperation = 'destination-over';
-//             ctx.fillStyle = '#ffffff';
-//             ctx.fillRect(0, 0, chart.width, chart.height);
-//             ctx.restore();
-//           },
-//         },
-//       ],
-//     });
-//   }
+  // createLineChart method will destroy the current chart object and any references to it will be destroyed before create the new line chart, structure in ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/scatter.html using the 
+  // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. The structure for creating the new line chart is from the ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/line.html, here
+  // the function creates a new line chart using the the device  time recording and packet loss information sent as a parameter to method once its called. The plugins are used to provide the newly created chart with a white background, the use of maintainAspectRatio is 
+  // used to allow the size of the chart to vary with the window size. 
+  createLineChart(devicePayload: SensorData) {
+    // device: any[];
+    // device:  = JSON.parse(devicePayload.payload_dict);
+    // console.log('inside of createBarChart');
+    // console.log(device.);
+    // this.chartData = device.metadata_dict.;
+    // console.log(this.chartData);
 
-//   // createScatterChart method will destroy the current chart object and any references to it will be destroyed before create the scatter chart, structure in ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/scatter.html using the 
-//   // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. The method will create a object that will be a scatter plot chart with units of dBm, using the currently
-//   // selected devices RSSI readings provided from the device element object. The maintainAspectRatio attribute is set to false again to allow the chart size to vary when window size changes. The plugins attribute is used in the 
-//   // initizaltion structure to provide a white background to the new chart created and the data is using the RSSI values from the device of type SensorData sent in as a parameter. 
-//   createScatterChart(device: SensorData) {
-//     console.log('inside of createBarChart');
-//     console.log(device);
-//     this.chartData = device.batteryStat;
-//     console.log(this.chartData);
+    // this.chart.destroy();
 
-//     this.chart.destroy();
+    // this.chart = new Chart('myChart', {
+    //   type: 'line',
+    //   data: {
+    //     labels: device.time,
+    //     datasets: [
+    //       {
+    //         label: 'Packet Loss',
+    //         data: device.packetLoss,
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     maintainAspectRatio: false,
+    //   },
+    //   plugins: [
+    //     {
+    //       id: 'customCanvasBackgroundColor',
+    //       beforeDraw: (chart, args, options) => {
+    //         const { ctx } = chart;
+    //         ctx.save();
+    //         ctx.globalCompositeOperation = 'destination-over';
+    //         ctx.fillStyle = '#ffffff';
+    //         ctx.fillRect(0, 0, chart.width, chart.height);
+    //         ctx.restore();
+    //       },
+    //     },
+    //   ],
+    // });
+  }
 
-//     this.chart = new Chart('myChart', {
-//       type: 'scatter',
-//       data: {
-//         labels: device.time,
-//         datasets: [
-//           {
-//             label: 'dBm',
-//             data: device.RSSI,
-//           },
-//         ],
-//       },
-//       options: {
-//         maintainAspectRatio: false,
-//       },
-//       plugins: [
-//         {
-//           id: 'customCanvasBackgroundColor',
-//           beforeDraw: (chart, args, options) => {
-//             const { ctx } = chart;
-//             ctx.save();
-//             ctx.globalCompositeOperation = 'destination-over';
-//             ctx.fillStyle = '#ffffff';
-//             ctx.fillRect(0, 0, chart.width, chart.height);
-//             ctx.restore();
-//           },
-//         },
-//       ],
-//     });
-//   }
+  // createSNRChart method will destroy the current chart object and any references to it will be destroyed before create the new line chart with SNR values from the device sent in as a parameter, structure in ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/scatter.html using the 
+  // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. The structure for creating the new line chart is from the ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/bar.html, here the chart will create scatter chart with SNR data retrieved
+  // from the device sent in as a parameter to the method, with the labels of each data value being the distance recorded. The plugins within the chart initialization allows for the chart to have a white background, the maintainAspectRatio variabel being set to false so that the cahrt size can change with 
+  // the window size. 
+  createSNRChart(device: SensorData) {
+    // console.log('inside of createBarChart');
+    // console.log(device);
+    // this.chartData = device.batteryStat;
+    // console.log(this.chartData);
 
-//   // createLineChart method will destroy the current chart object and any references to it will be destroyed before create the new line chart, structure in ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/scatter.html using the 
-//   // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. The structure for creating the new line chart is from the ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/line.html, here
-//   // the function creates a new line chart using the the device  time recording and packet loss information sent as a parameter to method once its called. The plugins are used to provide the newly created chart with a white background, the use of maintainAspectRatio is 
-//   // used to allow the size of the chart to vary with the window size. 
-//   createLineChart(devicePayload: SensorData) {
-//     device: any[];
-//     device:  = JSON.parse(devicePayload.payload_dict);
-//     console.log('inside of createBarChart');
-//     console.log(device.);
-//     this.chartData = device.metadata_dict.;
-//     console.log(this.chartData);
+    // this.chart.destroy();
 
-//     this.chart.destroy();
+    // this.chart = new Chart('myChart', {
+    //   type: 'line',
+    //   data: {
+    //     labels: device.distance,
+    //     datasets: [
+    //       {
+    //         label: 'dBm',
+    //         data: device.SNR, // add here
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     maintainAspectRatio: false,
+    //   },
+    //   plugins: [
+    //     {
+    //       id: 'customCanvasBackgroundColor',
+    //       beforeDraw: (chart, args, options) => {
+    //         const { ctx } = chart;
+    //         ctx.save();
+    //         ctx.globalCompositeOperation = 'destination-over';
+    //         ctx.fillStyle = '#ffffff';
+    //         ctx.fillRect(0, 0, chart.width, chart.height);
+    //         ctx.restore();
+    //       },
+    //     },
+    //   ],
+    // });
+  }//When a row in a table is clicked, updateChartData method will be called, updating the data on chart visualization, as well as indicating the type of chart with the current value in the typeOfChart variable which should be used for presenting the data.
+  viewDeviceHealth(row: SensorData) {
+    // console.log('inside of viewDeviceHealth');
+    // console.log(row);
+    // this.records = row;
+    // this.updateChartData(row, this.typeOfChart);
+  }
 
-//     this.chart = new Chart('myChart', {
-//       type: 'line',
-//       data: {
-//         labels: device.time,
-//         datasets: [
-//           {
-//             label: 'Packet Loss',
-//             data: device.packetLoss,
-//           },
-//         ],
-//       },
-//       options: {
-//         maintainAspectRatio: false,
-//       },
-//       plugins: [
-//         {
-//           id: 'customCanvasBackgroundColor',
-//           beforeDraw: (chart, args, options) => {
-//             const { ctx } = chart;
-//             ctx.save();
-//             ctx.globalCompositeOperation = 'destination-over';
-//             ctx.fillStyle = '#ffffff';
-//             ctx.fillRect(0, 0, chart.width, chart.height);
-//             ctx.restore();
-//           },
-//         },
-//       ],
-//     });
-//   }
+  // When viewDevicePktloss is called, the typeofChart will indicate the visualization should be displaying device packet loss data, keeping log of what visualization type altered to, and creatLineChart is called with the selected device from the user. 
+  viewDevicePktloss() {
+    // this.typeOfChart = 'packetLoss';
+    // //this.chart.updateChartData(this.records, this.typeOfChart);
+    // this.createLineChart(this.records);
+  }
 
-//   // createSNRChart method will destroy the current chart object and any references to it will be destroyed before create the new line chart with SNR values from the device sent in as a parameter, structure in ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/scatter.html using the 
-//   // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. The structure for creating the new line chart is from the ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/bar.html, here the chart will create scatter chart with SNR data retrieved
-//   // from the device sent in as a parameter to the method, with the labels of each data value being the distance recorded. The plugins within the chart initialization allows for the chart to have a white background, the maintainAspectRatio variabel being set to false so that the cahrt size can change with 
-//   // the window size. 
-//   createSNRChart(device: SensorData) {
-//     console.log('inside of createBarChart');
-//     console.log(device);
-//     this.chartData = device.batteryStat;
-//     console.log(this.chartData);
+  // When viewGatewayRSSI is called, the typeofChart will indicate the visualization should be displaying gateway RSSI values, keeping log of what visualization type altered to, and creatScatterChart is called with the selected device from the user. 
+  viewGatewayRSSI() {
+    // this.typeOfChart = 'rssi';
+    // //this.chart.updateChartData(this.records, this.typeOfChart);
+    // this.createScatterChart(this.records);
+  }
 
-//     this.chart.destroy();
+  // When viewGatewaySNR is called, the typeofChart will indicate the visualization should be displaying gateway SNR values, keeping log of what visualization type altered to, and createSNRChart is called with the selected device from the user. 
+  viewGatewaySNR() {
+    // this.typeOfChart = 'snr';
+    // this.createSNRChart(this.records);
+  }
 
-//     this.chart = new Chart('myChart', {
-//       type: 'line',
-//       data: {
-//         labels: device.distance,
-//         datasets: [
-//           {
-//             label: 'dBm',
-//             data: device.SNR, // add here
-//           },
-//         ],
-//       },
-//       options: {
-//         maintainAspectRatio: false,
-//       },
-//       plugins: [
-//         {
-//           id: 'customCanvasBackgroundColor',
-//           beforeDraw: (chart, args, options) => {
-//             const { ctx } = chart;
-//             ctx.save();
-//             ctx.globalCompositeOperation = 'destination-over';
-//             ctx.fillStyle = '#ffffff';
-//             ctx.fillRect(0, 0, chart.width, chart.height);
-//             ctx.restore();
-//           },
-//         },
-//       ],
-//     });
-//   }//When a row in a table is clicked, updateChartData method will be called, updating the data on chart visualization, as well as indicating the type of chart with the current value in the typeOfChart variable which should be used for presenting the data.
-//   viewDeviceHealth(row: SensorData) {
-//     console.log('inside of viewDeviceHealth');
-//     console.log(row);
-//     this.records = row;
-//     this.updateChartData(row, this.typeOfChart);
-//   }
+  // When viewDeviceBattery is called, the typeofChart will indicate the visualization should be displaying device battery values, keeping log of what visualization type altered to, and createBarChart is called with the selected device from the user. 
+  viewDeviceBattery() {
+    // this.createBarChart(this.records);
+    // this.typeOfChart = 'batteryStat';
+  }
 
-//   // When viewDevicePktloss is called, the typeofChart will indicate the visualization should be displaying device packet loss data, keeping log of what visualization type altered to, and creatLineChart is called with the selected device from the user. 
-//   viewDevicePktloss() {
-//     this.typeOfChart = 'packetLoss';
-//     //this.chart.updateChartData(this.records, this.typeOfChart);
-//     this.createLineChart(this.records);
-//   }
+  // added for visual acions, once a button is clicked, this function is called to added a loading spinner for effect of loading on the page for 250 milliseconds.
+  loadSpinner() {
+    this.showSpinner = true;
+    setTimeout(() =>{this.showSpinner = false}, 250)
+  }
 
-//   // When viewGatewayRSSI is called, the typeofChart will indicate the visualization should be displaying gateway RSSI values, keeping log of what visualization type altered to, and creatScatterChart is called with the selected device from the user. 
-//   viewGatewayRSSI() {
-//     this.typeOfChart = 'rssi';
-//     //this.chart.updateChartData(this.records, this.typeOfChart);
-//     this.createScatterChart(this.records);
-//   }
-
-//   // When viewGatewaySNR is called, the typeofChart will indicate the visualization should be displaying gateway SNR values, keeping log of what visualization type altered to, and createSNRChart is called with the selected device from the user. 
-//   viewGatewaySNR() {
-//     this.typeOfChart = 'snr';
-//     this.createSNRChart(this.records);
-//   }
-
-//   // When viewDeviceBattery is called, the typeofChart will indicate the visualization should be displaying device battery values, keeping log of what visualization type altered to, and createBarChart is called with the selected device from the user. 
-//   viewDeviceBattery() {
-//     this.createBarChart(this.records);
-//     this.typeOfChart = 'batteryStat';
-//   }
-
-//   // added for visual acions, once a button is clicked, this function is called to added a loading spinner for effect of loading on the page for 250 milliseconds.
-//   loadSpinner() {
-//     this.showSpinner = true;
-//     setTimeout(() =>{this.showSpinner = false}, 250)
-//   }
-
-//   // getDownload will called once the user clicks on the export data button in the webpage, it will first create a anchor element assigned to a variable "link", the user will then use a chartJS method called toBase64Image, which will create a base 64 string which has the current chart visualization
-//   // The download method from the anchor element is used to indicate that the element should be downloaded rather then displayed to the screen. the click method also indicates that the a simulation of a click so that the download of the chart visualization can begin. click method documentation is here: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click 
-//   // use of chart JS method toBase64Image is here: https://www.chartjs.org/docs/latest/developers/api.html http://www.java2s.com/example/javascript/chart.js/chartjs-to-update-and-exporting-chart-as-png.html, download method documentation: https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement/download.
-//   getDownload() {
-//     let link = document.createElement('a');
-//     link.href = this.chart.toBase64Image();
-//     link.download = 'chart.png';
-//     link.click();
-//   }
+  // getDownload will called once the user clicks on the export data button in the webpage, it will first create a anchor element assigned to a variable "link", the user will then use a chartJS method called toBase64Image, which will create a base 64 string which has the current chart visualization
+  // The download method from the anchor element is used to indicate that the element should be downloaded rather then displayed to the screen. the click method also indicates that the a simulation of a click so that the download of the chart visualization can begin. click method documentation is here: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click 
+  // use of chart JS method toBase64Image is here: https://www.chartjs.org/docs/latest/developers/api.html http://www.java2s.com/example/javascript/chart.js/chartjs-to-update-and-exporting-chart-as-png.html, download method documentation: https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement/download.
+  getDownload() {
+    let link = document.createElement('a');
+    link.href = this.chart.toBase64Image();
+    link.download = 'chart.png';
+    link.click();
+  }
 }

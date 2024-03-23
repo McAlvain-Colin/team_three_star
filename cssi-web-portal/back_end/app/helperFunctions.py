@@ -60,6 +60,7 @@ def read_records(table, conditions=None):
         sql = f"SELECT * FROM {table}"
         if conditions == 'distinct':
             sql = f"SELECT DISTINCT dev_eui FROM {table}"
+            cursor.execute(sql)
         elif conditions:
             sql += " WHERE " + conditions + ' ORDER BY time DESC LIMIT 100' 
             cursor.execute(sql)
