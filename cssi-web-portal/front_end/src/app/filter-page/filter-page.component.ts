@@ -35,6 +35,9 @@ export interface SensorData {
   payload_dict: any; 
   metadata_dict: any;
 }
+interface PayloadRecord {
+  [key: string]: number | string;
+}
 
 @Component({
   selector: 'app-filter-page',
@@ -105,8 +108,8 @@ export class FilterPageComponent implements AfterViewInit{
 
   defaultValue: [number, number] = [1, 1000];
 
-  payloadRecord: string[] = [];
-  payloadTimeRecord: string[] = [];
+  payloadRecord: PayloadRecord[] = [];
+  payloadTimeRecord: PayloadRecord[] = [];
   metadataRecord: string[] = [];
   metadataTimeRecord: string[] = [];
 
@@ -625,9 +628,9 @@ export class FilterPageComponent implements AfterViewInit{
 
   createPayloadChart(){
     this.apiService.getPayload().subscribe({
-      next: (data: string[][]) => {
-        this.payloadTimeRecord = data.map((item: string[]) => item[0]);
-        this.payloadRecord = data.map((item: string[]) => item[1]);
+      next: (data: PayloadRecord[][]) => {
+        this.payloadTimeRecord = data.map((item: PayloadRecord[]) => item[0] as PayloadRecord);
+        this.payloadRecord = data.map((item: PayloadRecord[]) => item[1] as PayloadRecord);
         this.initializePayloadChart();
       },
       error: (error) => {
@@ -648,25 +651,24 @@ export class FilterPageComponent implements AfterViewInit{
     });
   }
   initializePayloadChart() {
-    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-    if (ctx) {
-      const labels = Object.keys(this.payloadRecord[0]);
-      const values = Object.values(this.payloadRecord);
-
-      console.log(this.payloadTimeRecord);
-      console.log(this.payloadRecord);
-      console.log(labels);
-      console.log(values); 
-
-      const datasets = labels.map(label => {
-        return { 
-          label: label,
-          data: values,
-          borderWidth: 1
+    const ctx = document.getElementById('payloadChart') as HTMLCanvasElement;
+    if (ctx && this.payloadTimeRecord.length > 0 && this.payloadRecord.length > 0) {
+      const labels = this.payloadTimeRecord; 
+      const datasets = this.payloadColumns.map(col => {
+        return {
+          label: col,
+          data: this.payloadRecord.map(record => +record[col]),
+          fill: false,
+          borderColor: this.getRandomColor(),
+          tension: 0.1
         };
       });
-
-      const myChart = new Chart(ctx, {
+  
+      if (this.chart) {
+        this.chart.destroy(); 
+      }
+  
+      this.chart = new Chart(ctx, {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
@@ -674,7 +676,9 @@ export class FilterPageComponent implements AfterViewInit{
             y: {
               beginAtZero: true
             }
-          }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
         }
       });
     }
@@ -705,5 +709,13 @@ export class FilterPageComponent implements AfterViewInit{
         }
       });
     }
+  }
+  getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 }
