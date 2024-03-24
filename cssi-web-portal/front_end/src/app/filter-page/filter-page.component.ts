@@ -647,15 +647,19 @@ export class FilterPageComponent implements AfterViewInit{
   initializePayloadChart() {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
     if (ctx) {
+      const labels = Object.keys(this.payloadRecord[0])
+
+      const datasets = labels.map(label => {
+        return { 
+          label: label,
+          data: this.payloadRecord.map(item => item[label]),
+          borderWidth: 1
+        };
+      });
+
       const myChart = new Chart(ctx, {
         type: 'line',
-        data: {
-          labels: Object.keys(this.payloadRecord), 
-          datasets: [{
-            data: Object.values(this.payloadRecord), 
-            borderWidth: 1
-          }]
-        },
+        data: { labels: labels, datasets: datasets },
         options: {
           scales: {
             y: {
@@ -669,15 +673,19 @@ export class FilterPageComponent implements AfterViewInit{
   initializeMetadataChart() {
     const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
     if (meta_ctx) {
+      const labels = Object.keys(this.metadataRecord[0])
+
+      const datasets = labels.map(label => {
+        return { 
+          label: label,
+          data: this.metadataRecord.map(item => item[label]),
+          borderWidth: 1
+        };
+      });
+
       const metadataChart = new Chart(meta_ctx, {
         type: 'line',
-        data: {
-          labels: Object.keys(this.metadataRecord), 
-          datasets: [{
-            data: Object.values(this.metadataRecord), 
-            borderWidth: 1
-          }]
-        },
+        data: { labels: labels, datasets: datasets },
         options: {
           scales: {
             y: {
