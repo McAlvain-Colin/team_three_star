@@ -62,10 +62,12 @@ def read_records(table, conditions=None, dev_eui=None):
             sql = f"SELECT DISTINCT dev_eui FROM {table}"
             cursor.execute(sql)
         elif conditions == 'payload':
-            sql = f"SELECT payload FROM {table} WHERE dev_eui {dev_eui}"
+            print(f'in payload')
+            sql = f"SELECT time, payload FROM {table} WHERE dev_eui = '{dev_eui}'"
+            print(sql)
             cursor.execute(sql)
         elif conditions == 'metadata':
-            sql = f"SELECT metadata FROM {table} WHERE dev_eui {dev_eui}"
+            sql = f"SELECT metadata FROM {table} WHERE dev_eui = '{dev_eui}'"
             cursor.execute(sql)
         elif conditions:
             sql += " WHERE " + conditions + ' ORDER BY time DESC LIMIT 100' 

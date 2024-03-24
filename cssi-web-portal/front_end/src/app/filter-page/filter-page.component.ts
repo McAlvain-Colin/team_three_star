@@ -106,7 +106,9 @@ export class FilterPageComponent implements AfterViewInit{
   defaultValue: [number, number] = [1, 1000];
 
   payloadRecord: string[] = [];
+  payloadTimeRecord: string[] = [];
   metadataRecord: string[] = [];
+  metadataTimeRecord: string[] = [];
 
   //chart variables.
   @Input() Devicelist!: SensorData[];
@@ -624,7 +626,8 @@ export class FilterPageComponent implements AfterViewInit{
   createPayloadChart(){
     this.apiService.getPayload().subscribe({
       next: (data: string[][]) => {
-        this.payloadRecord = data.map((item: string[]) => item[0]);
+        this.payloadTimeRecord = data.map((item: string[]) => item[0]);
+        this.payloadRecord = data.map((item: string[]) => item[1]);
         this.initializePayloadChart();
       },
       error: (error) => {
@@ -647,12 +650,18 @@ export class FilterPageComponent implements AfterViewInit{
   initializePayloadChart() {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
     if (ctx) {
-      const labels = Object.keys(this.payloadRecord[0])
+      const labels = Object.keys(this.payloadRecord[0]);
+      const values = Object.values(this.payloadRecord);
+
+      console.log(this.payloadTimeRecord);
+      console.log(this.payloadRecord);
+      console.log(labels);
+      console.log(values); 
 
       const datasets = labels.map(label => {
         return { 
           label: label,
-          data: this.payloadRecord.map(item => item[label]),
+          data: values,
           borderWidth: 1
         };
       });
@@ -673,12 +682,13 @@ export class FilterPageComponent implements AfterViewInit{
   initializeMetadataChart() {
     const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
     if (meta_ctx) {
-      const labels = Object.keys(this.metadataRecord[0])
+      const labels = Object.keys(this.payloadRecord[0])
+      const values = Object.values(this.payloadRecord[1])
 
       const datasets = labels.map(label => {
         return { 
           label: label,
-          data: this.metadataRecord.map(item => item[label]),
+          data: values,
           borderWidth: 1
         };
       });

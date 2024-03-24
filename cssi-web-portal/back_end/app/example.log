@@ -865,3 +865,321 @@ INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 14:57:08] "GET /alt_data HTTP/1.1" 200 
 INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 14:57:08] "GET /dev_id HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 14:57:26] "GET /alt_data HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 14:57:26] "GET /dev_id HTTP/1.1" 200 -
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:04:13] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:04:13] "GET /metadata HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:04:13] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:04:13] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:06:45] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:06:45] "GET /payload HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:06:45] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:06:45] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:20] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:20] "GET /metadata HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:20] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:20] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:30] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:30] "GET /payload HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:30] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:30] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:33] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:33] "GET /payload HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:33] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:33] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:36] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:36] "GET /payload HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:36] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:07:36] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:08] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:08] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:08] "GET /dev_id HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:08] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:17] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:17] "GET /payload HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:17] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:17] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:56] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:57] "GET /dev_id HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:57] "GET /metadata HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:13:57] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:14:03] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:14:03] "GET /dev_id HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:14:03] "GET /payload HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:14:03] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:18:39] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:18:39] "GET /payload HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:18:39] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:18:39] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:18:47] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:18:47] "GET /payload HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: ...ELECT metadata FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                             ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:18:47] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:18:47] "GET /metadata HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:53:52] "GET /payload HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:54:27] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:56:56] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:58:12] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: syntax error at or near "0025"
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui 0025CA0A00...
+                                                          ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:58:26] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: type "dev_eui" does not exist
+LINE 1: SELECT payload FROM lab_sensor_json WHERE dev_eui '0025CA0A0...
+                                                  ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:58:56] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:59:36] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:59:59] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 19:59:59] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 20:00:01] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 20:00:02] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:11:30] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:11:30] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:11:33] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:11:34] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:11:57] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:11:57] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:11:59] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:11:59] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:12:19] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:12:19] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:12:21] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:12:23] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:12:30] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:12:30] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:12:32] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:12:32] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:08] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:08] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:10] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:11] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:16] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:16] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:17] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:18] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:26] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:26] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:28] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:29] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:50] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:50] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:52] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:13:53] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:14:00] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:14:00] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:14:02] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:14:03] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:22:32] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:22:32] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:22:34] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:22:35] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: argument of AND must be type boolean, not type timestamp with time zone
+LINE 1: SELECT time AND payload FROM lab_sensor_json WHERE dev_eui =...
+               ^
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:25:26] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:26:16] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:26:47] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:26:47] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:26:49] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:26:49] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:29:44] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:29:44] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:29:49] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:29:50] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:17] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:17] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:23] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:23] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:28] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:28] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:30] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:31] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:44] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:44] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:47] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:31:48] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:36:44] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:36:45] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:36:47] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:36:47] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:45:58] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:45:59] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:03] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:03] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:04] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:04] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:07] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:08] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:17] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:17] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:20] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:20] "GET /metadata HTTP/1.1" 200 -
