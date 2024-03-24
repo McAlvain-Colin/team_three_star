@@ -110,8 +110,8 @@ export class FilterPageComponent implements AfterViewInit{
 
   payloadRecord: PayloadRecord[] = [];
   payloadTimeRecord: PayloadRecord[] = [];
-  metadataRecord: string[] = [];
-  metadataTimeRecord: string[] = [];
+  metadataRecord: PayloadRecord[] = [];
+  metadataTimeRecord: PayloadRecord[] = [];
 
   //chart variables.
   @Input() Devicelist!: SensorData[];
@@ -641,8 +641,9 @@ export class FilterPageComponent implements AfterViewInit{
   
   createMetadataChart(){
     this.apiService.getMetadata().subscribe({
-      next: (data: string[][]) => {
-        this.metadataRecord = data.map((item: string[]) => item[0]);
+      next: (data: PayloadRecord[][]) => {
+        this.metadataTimeRecord = data.map((item: PayloadRecord[]) => item[0]as PayloadRecord);
+        this.metadataRecord = data.map((item: PayloadRecord[]) => item[1] as PayloadRecord);
         this.initializeMetadataChart();
       },
       error: (error) => {
@@ -685,19 +686,23 @@ export class FilterPageComponent implements AfterViewInit{
   }
   initializeMetadataChart() {
     const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
-    if (meta_ctx) {
-      const labels = Object.keys(this.payloadRecord[0])
-      const values = Object.values(this.payloadRecord[1])
-
-      const datasets = labels.map(label => {
-        return { 
-          label: label,
-          data: values,
-          borderWidth: 1
+    if (meta_ctx && this.metadataTimeRecord.length > 0 && this.metadataRecord.length > 0) {
+      const labels = Object.keys(this.metadataRecord[0])
+      const datasets = this.metadataColumns.map(col => {
+        return {
+          label: col,
+          data: this.metadataRecord.map(record => +record[col]),
+          fill: false,
+          borderColor: this.getRandomColor(),
+          tension: 0.1
         };
       });
-
-      const metadataChart = new Chart(meta_ctx, {
+  
+      if (this.chart) {
+        this.chart.destroy(); 
+      }
+  
+      this.chart = new Chart(meta_ctx, {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
@@ -705,7 +710,9 @@ export class FilterPageComponent implements AfterViewInit{
             y: {
               beginAtZero: true
             }
-          }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
         }
       });
     }

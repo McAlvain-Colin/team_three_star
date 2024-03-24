@@ -63,7 +63,7 @@ def read_records(table, conditions=None, dev_eui=None):
             cursor.execute(sql)
         elif conditions == 'payload':
             print(f'in payload')
-            sql = f"SELECT time, payload FROM {table} WHERE dev_eui = '{dev_eui}'"
+            sql = f"SELECT time, payload FROM {table} WHERE dev_eui = '{dev_eui}' + ' ORDER BY time DESC LIMIT 100'"
             print(sql)
             cursor.execute(sql)
         elif conditions == 'metadata':
