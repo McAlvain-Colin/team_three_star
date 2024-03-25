@@ -121,6 +121,8 @@ export class FilterPageComponent implements AfterViewInit{
   typeOfChart!: string;
 
   chart!: Chart;
+  payloadChart!: Chart;
+  metadataChart!: Chart;
 
   chartData!: number[];
 
@@ -359,7 +361,7 @@ export class FilterPageComponent implements AfterViewInit{
     this.chartData = device.payload_dict;
     console.log('inside create pkt ');
 
-    this.chart = new Chart('myChart', {
+    this.chart = new Chart('payloadChart', {
       type: 'line',
       data: {
         labels: device.dev_time,
@@ -420,7 +422,7 @@ export class FilterPageComponent implements AfterViewInit{
 
   //   this.chart.destroy();
 
-  //   this.chart = new Chart('myChart', {
+  //   this.chart = new Chart('payloadChart', {
   //     type: 'bar',
   //     data: {
   //       // labels: device.time,
@@ -462,7 +464,7 @@ export class FilterPageComponent implements AfterViewInit{
 
     this.chart.destroy();
 
-    this.chart = new Chart('myChart', {
+    this.chart = new Chart('payloadChart', {
       type: 'scatter',
       data: {
         // labels: device.time,
@@ -506,7 +508,7 @@ export class FilterPageComponent implements AfterViewInit{
 
     // this.chart.destroy();
 
-    // this.chart = new Chart('myChart', {
+    // this.chart = new Chart('payloadChart', {
     //   type: 'line',
     //   data: {
     //     labels: device.time,
@@ -548,7 +550,7 @@ export class FilterPageComponent implements AfterViewInit{
 
     // this.chart.destroy();
 
-    // this.chart = new Chart('myChart', {
+    // this.chart = new Chart('payloadChart', {
     //   type: 'line',
     //   data: {
     //     labels: device.distance,
@@ -665,11 +667,11 @@ export class FilterPageComponent implements AfterViewInit{
         };
       });
   
-      if (this.chart) {
-        this.chart.destroy(); 
+      if (this.payloadChart) {
+        this.payloadChart.destroy(); 
       }
   
-      this.chart = new Chart(ctx, {
+      this.payloadChart = new Chart(ctx, {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
@@ -687,7 +689,7 @@ export class FilterPageComponent implements AfterViewInit{
   initializeMetadataChart() {
     const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
     if (meta_ctx && this.metadataTimeRecord.length > 0 && this.metadataRecord.length > 0) {
-      const labels = Object.keys(this.metadataRecord[0])
+      const labels = this.metadataTimeRecord; 
       const datasets = this.metadataColumns.map(col => {
         return {
           label: col,
@@ -698,11 +700,11 @@ export class FilterPageComponent implements AfterViewInit{
         };
       });
   
-      if (this.chart) {
-        this.chart.destroy(); 
+      if (this.metadataChart) {
+        this.metadataChart.destroy(); 
       }
   
-      this.chart = new Chart(meta_ctx, {
+      this.metadataChart = new Chart(meta_ctx, {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {

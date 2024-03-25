@@ -1183,3 +1183,109 @@ INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:17] "GET /alt_data HTTP/1.1" 200 
 INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:17] "GET /dev_id HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:20] "GET /payload HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 21:46:20] "GET /metadata HTTP/1.1" 200 -
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:34:44] "GET /alt_data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: operator is not unique: unknown + unknown
+LINE 1: ...ab_sensor_json WHERE dev_eui = '0025CA0A00015E62' + ' ORDER ...
+                                                             ^
+HINT:  Could not choose a best candidate operator. You might need to add explicit type casts.
+
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:34:44] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:34:44] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:34:45] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:35:28] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:35:29] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:35:29] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:35:29] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:35:46] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:36:09] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:36:09] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:36:09] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:36:09] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:47:07] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:47:21] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:47:21] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:47:21] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:47:21] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:47:35] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:47:40] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:58:49] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:58:49] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:58:49] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 22:58:49] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:01:23] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:01:28] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:02:44] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:02:44] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:02:44] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:02:44] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:05:42] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:05:42] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:05:42] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:05:42] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:09:11] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:09:11] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:09:11] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:09:11] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:10:26] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:10:27] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:10:27] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:10:27] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:12:56] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:12:56] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:12:56] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:12:56] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:09] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:09] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:09] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:09] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:13] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:13] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:13] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:13] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:40] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:40] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:40] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:40] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:47] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:47] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:47] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:47] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:55] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:55] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:55] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:13:55] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:14:16] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:14:16] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:14:16] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:14:16] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:14:24] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:14:24] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:14:24] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 23:14:24] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [24/Mar/2024 00:16:39] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [24/Mar/2024 00:16:39] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [24/Mar/2024 00:16:39] "GET /payload HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [24/Mar/2024 00:16:39] "GET /dev_id HTTP/1.1" 200 -
