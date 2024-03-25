@@ -756,17 +756,14 @@ export class FilterPageComponent implements AfterViewInit{
     this.selection.select(...this.devIDSource.data);
   }
 
-  /** The label for the checkbox on the passed row */
   checkboxLabel(index?: number, row?: string): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    if (index !== undefined){ 
+    if (index !== undefined && row){ 
       return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row number ${index + 1}`;
     }
-    // else{
-    //   return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row';
-    // }
-    return 'undefined'
+    console.warn('checkboxLabel wa called without a row or index.');
+    return '';
   }
 }
