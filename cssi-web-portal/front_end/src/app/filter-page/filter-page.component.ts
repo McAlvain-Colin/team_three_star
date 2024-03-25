@@ -202,7 +202,7 @@ export class FilterPageComponent implements AfterViewInit{
       panelOpenStateDeviceSelect: false
     });
 
-    this.createPayloadChart();
+    // this.createPayloadChart();
     this.createMetadataChart();
   }
 
@@ -628,8 +628,8 @@ export class FilterPageComponent implements AfterViewInit{
     link.click();
   }
 
-  createPayloadChart(){
-    this.apiService.getPayload().subscribe({
+  createPayloadChart(devId: string){
+    this.apiService.getPayload(devId).subscribe({
       next: (data: PayloadRecord[][]) => {
         this.payloadTimeRecord = data.map((item: PayloadRecord[]) => item[0] as PayloadRecord);
         this.payloadRecord = data.map((item: PayloadRecord[]) => item[1] as PayloadRecord);
@@ -719,6 +719,8 @@ export class FilterPageComponent implements AfterViewInit{
       });
     }
   }
+
+  //since the jsons are dynamic we assin chart element colors randomly
   getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -726,5 +728,11 @@ export class FilterPageComponent implements AfterViewInit{
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+  }
+
+  createChart(devId: string){
+    this.loadSpinner();
+    this.createPayloadChart(devId);
+    this.createMetadataChart();
   }
 }

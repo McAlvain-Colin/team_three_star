@@ -23,7 +23,7 @@ export class ApiService {
   getMetadata(): Observable<any> {
     return this.http.get(`${this.BASE_URL}/metadata`);
   }
-  getPayload(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/payload`);
+  getPayload(devId: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/payload/${devId}`);
   }
 }
