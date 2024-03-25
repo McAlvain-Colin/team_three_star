@@ -27,6 +27,7 @@ import { FormControl, FormBuilder, FormGroup, Validators, ReactiveFormsModule} f
 import { MatSliderModule } from '@angular/material/slider'
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -112,6 +113,8 @@ export class FilterPageComponent implements AfterViewInit{
   payloadTimeRecord: PayloadRecord[] = [];
   metadataRecord: PayloadRecord[] = [];
   metadataTimeRecord: PayloadRecord[] = [];
+
+  selection = new SelectionModel<string>(true, []);
 
   //chart variables.
   @Input() Devicelist!: SensorData[];
@@ -202,7 +205,7 @@ export class FilterPageComponent implements AfterViewInit{
       panelOpenStateDeviceSelect: false
     });
 
-    // this.createPayloadChart();
+    this.createPayloadChart('0025CA0A00015E62');
     this.createMetadataChart();
   }
 
@@ -734,5 +737,36 @@ export class FilterPageComponent implements AfterViewInit{
     this.loadSpinner();
     this.createPayloadChart(devId);
     this.createMetadataChart();
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.devIDSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.devIDSource.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(index?: number, row?: string): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    if (index !== undefined){ 
+      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row number ${index + 1}`;
+    }
+    // else{
+    //   return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row';
+    // }
+    return 'undefined'
   }
 }

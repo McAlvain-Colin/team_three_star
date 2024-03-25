@@ -273,4 +273,6 @@
 
 .dev-eui-table{
   width: 100%;
+  overflow-y: auto;
+  overflow-x: scroll;
 }
