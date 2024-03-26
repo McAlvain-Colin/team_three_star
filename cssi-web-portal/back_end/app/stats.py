@@ -15,3 +15,6 @@ def get_median(data):
 
 def get_mode(data):
     return statistics.mode(data)
+
+def getStats(data):
+    return([get_mean(data),  get_variance(data), get_standard_deviation(data), get_median(data), get_mode(data)])

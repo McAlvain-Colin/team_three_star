@@ -30,4 +30,7 @@ export class ApiService {
     // console.log(this.http.get(`${this.BASE_URL}/location`));
     return this.http.get(`${this.BASE_URL}/location`);
   }
+  getStatisticsData(devId: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/stats`);
+  }
 }

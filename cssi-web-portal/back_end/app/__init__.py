@@ -4,6 +4,7 @@ import datetime
 from helperFunctions import * 
 from data_parser import *
 import models
+from stats import *
 from flask_mail import Mail, Message
 
 from flask_jwt_extended import (create_access_token, JWTManager, 
@@ -259,6 +260,16 @@ def get_location():
         records = read_records('device_location', 'location') #hard coded for test
         # data = parse_data(records)
         return jsonify(records), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/stats/<string:dev_id>', methods=['GET'])
+#@jwt_required()
+def get_location(dev_id):
+    try:
+        records = read_records('lab_sensor_json', 'paylaod', dev_id) #hard coded for test
+        data= getStats(records)
+        return jsonify(data), 200 #200 shows correct  http responses
     except Exception as e:
         print('error')
         return jsonify({'Error': str(e)}), 500 #500 shows server error

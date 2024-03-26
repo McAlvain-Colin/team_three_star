@@ -115,7 +115,6 @@ export class DeviceMapComponent implements AfterViewInit{
   ngOnInit(): void {
     this.apiService.getLocation().subscribe({
       next: (data: any[]) => {
-        console.log(data)
         const locationRecord = data.map((item: any) => ({
           dev_eui: item[0],
           latitude: item[1],
@@ -123,7 +122,6 @@ export class DeviceMapComponent implements AfterViewInit{
           altitude: item[3],
           type: item[4],
         }));
-        console.log(this.locationRecord[0])
 
         this.locationSource.data = locationRecord;
       },
@@ -132,14 +130,17 @@ export class DeviceMapComponent implements AfterViewInit{
         console.error('Error: ', error);
       }
     })
-    console.log(this.locationRecord)
-    console.log(this.locationSource.data)
-
 
     this.myMap = Leaflet.map('map').setView([39.1 , -120.05], 9);
       Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     },).addTo(this.myMap);
+
+    // for(let i = 0; i <  this.locationRecord.length; i++){
+    //   if(this.locationRecord[i].type === 'gateway'){
+    //     gateways.push
+    //   }
+    // }
 
     this.addMarkers();
   }
@@ -172,6 +173,7 @@ export class DeviceMapComponent implements AfterViewInit{
     {
       this.showSensors = true;
       //placing all sensor locations in an array to be used later to delete if view gateways is called as well as placing the sensors into the leaflet map
+      console.log(this.locationRecord.length)
       for(let i = 0; i < this.locationRecord.length; i++)
       {
         this.sensors[i] = Leaflet.marker(Leaflet.latLng(this.locationRecord[i].latitude, this.locationRecord[i].longitude), {icon: this.sensorIcon}).addTo(this.myMap).bindPopup("endDevice: " + (this.locationRecord[i].dev_eui.toString()));
