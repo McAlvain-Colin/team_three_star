@@ -59,13 +59,21 @@ def read_records(table, conditions=None, dev_eui=None):
             return  # Early return if the connection was not obtained
         cursor = conn.cursor()
         sql = f"SELECT * FROM {table}"
-        print(sql)
+        # print(sql)
         if conditions == 'distinct':
             sql = f"SELECT DISTINCT dev_eui FROM {table}"
             print(sql)
             cursor.execute(sql)
         elif conditions == 'payload':
             sql = f"SELECT time, payload FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT 100"
+            print(sql)
+            cursor.execute(sql)
+        elif conditions == 'payloadStats':
+            sql = f"SELECT payload FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT 100"
+            print(sql)
+            cursor.execute(sql)
+        elif conditions == 'metadataStats':
+            sql = f"SELECT metadata FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT 100"
             print(sql)
             cursor.execute(sql)
         elif conditions == 'metadata':
@@ -85,6 +93,7 @@ def read_records(table, conditions=None, dev_eui=None):
             print(sql)
             cursor.execute(sql)
         records = cursor.fetchall()
+        # print(records)
         return records
     except Exception as e:
         log.error(f'Failed to read records: {e}')

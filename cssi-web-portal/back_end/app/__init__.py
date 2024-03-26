@@ -263,11 +263,21 @@ def get_location():
     except Exception as e:
         print('error')
         return jsonify({'Error': str(e)}), 500 #500 shows server error
-@app.route('/stats/<string:dev_id>', methods=['GET'])
+@app.route('/payloadStats/<string:dev_id>', methods=['GET'])
 #@jwt_required()
-def get_location(dev_id):
+def get_payloadStats(dev_id):
     try:
-        records = read_records('lab_sensor_json', 'paylaod', dev_id) #hard coded for test
+        records = read_records('lab_sensor_json', 'payloadStats', dev_id) #hard coded for test
+        data= getStats(records)
+        return jsonify(data), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/metadataStats/<string:dev_id>', methods=['GET'])
+#@jwt_required()
+def get_metadataStats(dev_id):
+    try:
+        records = read_records('lab_sensor_json', 'metadataStats', dev_id) #hard coded for test
         data= getStats(records)
         return jsonify(data), 200 #200 shows correct  http responses
     except Exception as e:
