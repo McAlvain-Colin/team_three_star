@@ -40,6 +40,7 @@ interface PayloadRecord {
   [key: string]: number | string;
 }
 
+
 @Component({
   selector: 'app-filter-page',
   templateUrl: './filter-page.component.html',
@@ -166,15 +167,36 @@ export class FilterPageComponent implements AfterViewInit{
         const idRecord = data.map((item: string[]) => item[0]);
 
         this.devIDSource.data = idRecord;
-
-        this.displayedPayloadColumns = ['Dev_eui'];
       },
 
       error: (error) => {
         console.error('Error: ', error);
       }
     })
-    
+
+    this.apiService.getPayloadStatisticsData('0025CA0A00015E62').subscribe({
+      next: (data: any[]) => {
+        const payloadStatRecord = data.map((item: string[]) => item[0]);
+
+        this.paylaodStatSource.data = payloadStatRecord;
+      },
+
+      error: (error) => {
+        console.error('Error: ', error);
+      }
+    })
+    this.apiService.getMetadataStatisticsData('0025CA0A00015E62').subscribe({
+      next: (data: any[]) => {
+        const metadataStatRecord = data.map((item: string[]) => item[0]);
+
+        this.metadataStatSource.data = metadataStatRecord;
+      },
+
+      error: (error) => {
+        console.error('Error: ', error);
+      }
+    })
+
     this.filterForm = this.fb.group({
       startTime: [''],//, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
       endTime: [''],//, Validators],
@@ -213,16 +235,22 @@ export class FilterPageComponent implements AfterViewInit{
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
   @ViewChild('metadataPaginator') metadataPaginator!: MatPaginator;
   @ViewChild('devIDPaginator') devIDPaginator!: MatPaginator;
+  @ViewChild('payloadStatsPaginator' ) payloadStatsPaginator!: MatPaginator;
+  @ViewChild('metadataStatsPaginator' ) metadataStatsPaginator!: MatPaginator;
 
   payloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
+  paylaodStatSource = new MatTableDataSource<string>([]);
+  metadataStatSource = new MatTableDataSource<string>([]);
 
 
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
     this.metadataSource.paginator = this.metadataPaginator;
     this.devIDSource.paginator = this.devIDPaginator;
+    this.paylaodStatSource.paginator = this.payloadPaginator;
+    this.metadataStatSource.paginator = this.metadataPaginator;
   }
   
   //device management
