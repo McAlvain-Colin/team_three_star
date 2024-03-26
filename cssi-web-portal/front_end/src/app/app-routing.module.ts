@@ -16,6 +16,7 @@ import { AddOrganizationComponent } from './add-organization/add-organization.co
 import { ApplicationPageComponent } from './application-page/application-page.component';
 import { AddApplicationComponent } from './add-application/add-application.component';
 import { AddDeviceComponent } from './add-device/add-device.component';
+import { DeviceMapComponent } from './device-map/device-map.component';
 
 // Huy and Colin created the paths and linked the respective components to in order to properly route with Angular's routing
 // Huy created the dynamic routing pathways
@@ -54,6 +55,7 @@ const routes: Routes = [
   { path: 'device/:curDevice', component: DevicePageComponent }, //:curDevice is dynamic
   { path: 'filter', component: FilterPageComponent },
   { path: '**', pathMatch: 'full', component: HomeComponent }, //Star route put at the end for if no path is found, routes back to landing.
+  { path: 'map', component: DeviceMapComponent },
 ];
 
 //NgModule was generated when creating the application's routing file by angular.
