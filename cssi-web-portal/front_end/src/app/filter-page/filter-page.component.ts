@@ -191,6 +191,7 @@ export class FilterPageComponent implements AfterViewInit{
         metadataSelect: false,
         payloadSelect: false,
       }),
+      value: 0,
       dataType: [''],//, Validators.pattern('[a-zA-Z ]*')],
       deviceId: [''],//, Validators.pattern('[a-zA-Z ]*')],
       applicationID: [''],//, Validators.pattern('[a-zA-Z0-9]**')],
