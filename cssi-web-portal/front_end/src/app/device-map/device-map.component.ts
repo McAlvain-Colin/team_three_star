@@ -114,13 +114,14 @@ export class DeviceMapComponent implements AfterViewInit{
 // as well as understanding providing credit for usage of both Leaflet and OpenStreetMap https://leafletjs.com/examples/quick-start/. Upon initialization, markers of all the devices will be displayed. 
   ngOnInit(): void {
     this.apiService.getLocation().subscribe({
-      next: (data: DeviceLocation[]) => {
-        const locationRecord = data.map((item: DeviceLocation) => ({
-          dev_eui: item.dev_eui,
-          latitude: item.latitude,
-          longitude: item.longitude,
-          altitude: item.altitude,
-          type: item.type,
+      next: (data: any[]) => {
+        console.log(data)
+        const locationRecord = data.map((item: any) => ({
+          dev_eui: item[0],
+          latitude: item[1],
+          longitude: item[2],
+          altitude: item[3],
+          type: item[4],
         }));
         console.log(this.locationRecord[0])
 
