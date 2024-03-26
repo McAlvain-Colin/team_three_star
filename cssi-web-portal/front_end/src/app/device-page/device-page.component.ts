@@ -13,24 +13,28 @@ import { CommonModule } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, shareReplay } from 'rxjs';
 import { MatExpansionModule } from '@angular/material/expansion';
-
-
 import { MatRadioModule } from '@angular/material/radio';
-import { OnInit } from '@angular/core';
+import { OnInit, Input } from '@angular/core';
 import { ApiService } from '../api.service'; 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { MatTableModule }  from '@angular/material/table';
-
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-
 import { DatePicker } from '../date-picker/date-picker.component';
-
 import { saveAs  } from 'file-saver';
+
+import { Chart, registerables } from 'chart.js/auto';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgIf, PercentPipe } from '@angular/common';
+import { FormControl, FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider'
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
 
 //using code from the filter page here since it is essentiall the same
 //I want to redo this code if theres time using the pageinate module. 
@@ -40,6 +44,10 @@ export interface SensorData {
   dev_time: any; 
   payload_dict: any; 
   metadata_dict: any;
+}
+
+interface PayloadRecord {
+  [key: string]: number | string;
 }
 
 @Component({
@@ -68,6 +76,13 @@ export interface SensorData {
     MatTableModule,   
     MatPaginatorModule,
     DatePicker,
+    NgIf,
+    MatProgressSpinnerModule,
+    PercentPipe,
+    ReactiveFormsModule,
+    MatSliderModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
   ],
 })
 export class DevicePageComponent implements AfterViewInit{
@@ -84,6 +99,8 @@ export class DevicePageComponent implements AfterViewInit{
   panelOpenState = false;
   panelOpenStatePayload = false;
   panelOpenStateMetadata = false;
+  panelOpenStatePayloadGraph = false;
+  panelOpenStateMetadataGraph = false;
 
   dev_eui: any[] = []; //Property to hold the device id
   dev_time: any[] = []; //Property to hold to hold the data time stamp
@@ -98,7 +115,29 @@ export class DevicePageComponent implements AfterViewInit{
   displayedPayloadColumns: string[] = [];  // Property to hold the
   displayedMetadataColumns: string[] = [];  // Property to hold the
 
-  constructor(private apiService: ApiService) { }
+  payloadRecord: PayloadRecord[] = [];
+  payloadTimeRecord: PayloadRecord[] = [];
+  metadataRecord: PayloadRecord[] = [];
+  metadataTimeRecord: PayloadRecord[] = [];
+
+  selection = new SelectionModel<string>(true, []);
+
+  constructor(private apiService: ApiService, private fb: FormBuilder) { 
+    Chart.register(...registerables); // ...registerables is an array that contains all the components Chart.js offers
+  }
+
+  //chart variables.
+  @Input() Devicelist!: SensorData[];
+
+  showSpinner: boolean = false;
+  // records!: SensorData;
+  typeOfChart!: string;
+
+  chart!: Chart;
+  payloadChart!: Chart;
+  metadataChart!: Chart;
+
+  chartData!: number[];
   
 
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
@@ -127,26 +166,28 @@ export class DevicePageComponent implements AfterViewInit{
         console.error('Error: ', error);
       }
     });
+
+    this.createPayloadChart('0025CA0A00015E62');
+    this.createMetadataChart();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
   @ViewChild('metadataPaginator') metadataPaginator!: MatPaginator;
+  @ViewChild('devIDPaginator') devIDPaginator!: MatPaginator;
 
   payloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
+  devIDSource = new MatTableDataSource<string>([]);
 
 
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
     this.metadataSource.paginator = this.metadataPaginator;
+    this.devIDSource.paginator = this.devIDPaginator;
   }
 
-  add_device(): void {
-    this.apiService.getData().subscribe({
-      
-    })
-  
-  }
+  addDevice(): void {}
+  removeDevice(): void {}
 
   //filter function in order to allow users display only realivant data. 
   //filters requested by pi
@@ -209,5 +250,121 @@ export class DevicePageComponent implements AfterViewInit{
   exportMetadata(){
     const payloadData = this.payloadDataSource.data.map(item=> item.metadata_dict)
     this.exportToCSV(payloadData, 'metadata.csv')
+  }createPayloadChart(devId: string){
+    this.apiService.getPayload(devId).subscribe({
+      next: (data: PayloadRecord[][]) => {
+        this.payloadTimeRecord = data.map((item: PayloadRecord[]) => item[0] as PayloadRecord);
+        this.payloadRecord = data.map((item: PayloadRecord[]) => item[1] as PayloadRecord);
+        this.initializePayloadChart();
+      },
+      error: (error) => {
+        console.error('Error fetching payload data:', error);
+      }
+    });
+  }
+  
+  createMetadataChart(){
+    this.apiService.getMetadata().subscribe({
+      next: (data: PayloadRecord[][]) => {
+        this.metadataTimeRecord = data.map((item: PayloadRecord[]) => item[0]as PayloadRecord);
+        this.metadataRecord = data.map((item: PayloadRecord[]) => item[1] as PayloadRecord);
+        this.initializeMetadataChart();
+      },
+      error: (error) => {
+        console.error('Error fetching metadata:', error);
+      }
+    });
+  }
+  initializePayloadChart() {
+    const ctx = document.getElementById('payloadChart') as HTMLCanvasElement;
+    if (ctx && this.payloadTimeRecord.length > 0 && this.payloadRecord.length > 0) {
+      const labels = this.payloadTimeRecord; 
+      const datasets = this.payloadColumns.map(col => {
+        return {
+          label: col,
+          data: this.payloadRecord.map(record => +record[col]),
+          fill: false,
+          borderColor: this.getRandomColor(),
+          tension: 0.1
+        };
+      });
+  
+      if (this.payloadChart) {
+        this.payloadChart.destroy(); 
+      }
+  
+      this.payloadChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: labels, datasets: datasets },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      });
+    }
+  }
+  initializeMetadataChart() {
+    const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
+    if (meta_ctx && this.metadataTimeRecord.length > 0 && this.metadataRecord.length > 0) {
+      const labels = this.metadataTimeRecord; 
+      const datasets = this.metadataColumns.map(col => {
+        return {
+          label: col,
+          data: this.metadataRecord.map(record => +record[col]),
+          fill: false,
+          borderColor: this.getRandomColor(),
+          tension: 0.1
+        };
+      });
+  
+      if (this.metadataChart) {
+        this.metadataChart.destroy(); 
+      }
+  
+      this.metadataChart = new Chart(meta_ctx, {
+        type: 'line',
+        data: { labels: labels, datasets: datasets },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      });
+    }
+  }
+
+  //since the jsons are dynamic we assin chart element colors randomly
+  getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  createChart(devId: string){
+    this.loadSpinner();
+    this.createPayloadChart(devId);
+    this.createMetadataChart();
+  }
+  getDownload() {
+    let link = document.createElement('a');
+    link.href = this.chart.toBase64Image();
+    link.download = 'chart.png';
+    link.click();
+  }
+  loadSpinner() {
+    this.showSpinner = true;
+    setTimeout(() =>{this.showSpinner = false}, 250)
   }
 }

@@ -228,7 +228,7 @@ export class FilterPageComponent implements AfterViewInit{
   //device management
   //----------------------------------------------------------------------------
   addDevice(): void {}
-  removeDevice() {}
+  removeDevice(): void {}
 
   //filter functions
   //----------------------------------------------------------------------------

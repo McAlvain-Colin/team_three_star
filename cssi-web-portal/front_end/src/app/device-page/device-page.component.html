@@ -128,6 +128,33 @@
                 <button (click)="exportPayloadData()">Export Payload Data</button>
                 
               </mat-card>
+
+              <!-- payload graph -->
+              <mat-card class="graph">
+                <mat-accordion class="search-bar">
+                  <mat-expansion-panel
+                    class="search-expansion-box"
+                    (opened)="panelOpenStatePayloadGraph = true"
+                    (closed)="panelOpenStatePayloadGraph = false"
+                  >
+                    <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
+                    <mat-expansion-panel-header>
+                      <mat-panel-title> Payload Graph! </mat-panel-title>
+                      <mat-panel-description>
+                        {{
+                          panelOpenState
+                            ? "Choose the parameters you'd like to view"
+                            : "Click me!"
+                        }}
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <!-- code here -->
+                    <mat-card class="chart" >
+                      <canvas id="payloadChart"></canvas>
+                    </mat-card>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </mat-card>
             
               <mat-card class="metadata-table">
                 <!-- Filter for Metadata -->
@@ -180,6 +207,32 @@
             
                 <button (click)="exportMetadata()">Export Metadata Data</button>
               </mat-card>
+              <!-- metadata graph -->
+              <mat-card class="graph">
+                <mat-accordion class="search-bar">
+                  <mat-expansion-panel
+                    class="search-expansion-box"
+                    (opened)="panelOpenStateMetadataGraph = true"
+                    (closed)="panelOpenStateMetadataGraph = false"
+                  >
+                    <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
+                    <mat-expansion-panel-header>
+                      <mat-panel-title> Metadata Graph </mat-panel-title>
+                      <mat-panel-description>
+                        {{
+                          panelOpenState
+                            ? "Choose the parameters you'd like to view"
+                            : "Click me!"
+                        }}
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <!-- code here -->
+                    <mat-card class="chart" >
+                      <canvas id="metadataChart"></canvas>
+                    </mat-card>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </mat-card>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-card-content> 
@@ -191,7 +244,6 @@
         [routerLink]="['/filter']"
       >
         Filter Device Data
-        <!--Having a routerlink with the brackets allows for the button to link properly, and if needed, adding , after the link allows for dynamic linking-->
       </button>
       <app-temp-nav-bar></app-temp-nav-bar>
     </body>
