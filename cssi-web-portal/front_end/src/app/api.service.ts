@@ -31,9 +31,9 @@ export class ApiService {
     return this.http.get(`${this.BASE_URL}/location`);
   }
   getPayloadStatisticsData(devId: string) :Observable<any>{
-    return this.http.get(`${this.BASE_URL}/payloadStats`);
+    return this.http.get(`${this.BASE_URL}/payloadStats/${devId}`);
   }
   getMetadataStatisticsData(devId: string) :Observable<any>{
-    return this.http.get(`${this.BASE_URL}/metadataStats`);
+    return this.http.get(`${this.BASE_URL}/metadataStats/${devId}`);
   }
 }

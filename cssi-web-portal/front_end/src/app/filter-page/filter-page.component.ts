@@ -176,7 +176,14 @@ export class FilterPageComponent implements AfterViewInit{
 
     this.apiService.getPayloadStatisticsData('0025CA0A00015E62').subscribe({
       next: (data: any[]) => {
-        const payloadStatRecord = data.map((item: string[]) => item[0]);
+        const payloadStatRecord = [{
+          mean: data[0],
+          variance: data[0],
+          standard_deviation: data[0],
+          median: data[0],
+          mode: data[0]
+        }];
+        console.log(payloadStatRecord)
 
         this.paylaodStatSource.data = payloadStatRecord;
       },
@@ -187,7 +194,13 @@ export class FilterPageComponent implements AfterViewInit{
     })
     this.apiService.getMetadataStatisticsData('0025CA0A00015E62').subscribe({
       next: (data: any[]) => {
-        const metadataStatRecord = data.map((item: string[]) => item[0]);
+        const metadataStatRecord = [{
+          mean: data[0],
+          variance: data[0],
+          standard_deviation: data[0],
+          median: data[0],
+          mode: data[0]
+        }];
 
         this.metadataStatSource.data = metadataStatRecord;
       },
@@ -241,8 +254,8 @@ export class FilterPageComponent implements AfterViewInit{
   payloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
-  paylaodStatSource = new MatTableDataSource<string>([]);
-  metadataStatSource = new MatTableDataSource<string>([]);
+  paylaodStatSource = new MatTableDataSource<any>([]);
+  metadataStatSource = new MatTableDataSource<any>([]);
 
 
   ngAfterViewInit() {

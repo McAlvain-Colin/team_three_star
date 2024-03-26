@@ -328,32 +328,34 @@
         </mat-expansion-panel-header>
         <!-- code here -->
         <mat-card class="chart" >
-          <canvas id="payloadChart"></canvas>
+          <canvas id="payloadChart"></canvas>          
+        </mat-card>
+        <mat-card>
           <table mat-table [dataSource]="paylaodStatSource" class="mat-elevation-z8">
             <!-- Mean Column -->
             <ng-container matColumnDef="Mean" class="Mean">
               <th mat-header-cell *matHeaderCellDef> Mean </th>
-              <td mat-cell *matCellDef="let element"> {{element[0]}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.mean}} </td>
             </ng-container>
             <!-- Variance Column -->
             <ng-container matColumnDef="Variance" class="Variance">
               <th mat-header-cell *matHeaderCellDef> Variance </th>
-              <td mat-cell *matCellDef="let element"> {{element[1]}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.variance}} </td>
             </ng-container>
             <!-- Standard Deviation Column -->
             <ng-container matColumnDef="Standard_Deviation" class="Standard_Deviation">
               <th mat-header-cell *matHeaderCellDef> Standard Deviation </th>
-              <td mat-cell *matCellDef="let element"> {{element[2]}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.standard_deviation}} </td>
             </ng-container>
             <!-- Median Column -->
             <ng-container matColumnDef="Median" class="Median">
               <th mat-header-cell *matHeaderCellDef> Median </th>
-              <td mat-cell *matCellDef="let element"> {{element[3]}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.median}} </td>
             </ng-container>
             <!-- Mode Column -->
             <ng-container matColumnDef="Mode" class="Mode">
               <th mat-header-cell *matHeaderCellDef> Mode </th>
-              <td mat-cell *matCellDef="let element"> {{element[4]}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.mode}} </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="['Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode']"></tr>
@@ -361,6 +363,19 @@
 
           </table>
         </mat-card>
+        <mat-card-actions>
+          <div class="button-container">
+            <button
+              mat-raised-button
+              color="accent"
+              (click)="loadSpinner()"
+              (click)="getDownload()"
+            >
+              Export Data
+            </button>
+          </div>
+          <mat-spinner *ngIf="showSpinner"></mat-spinner>
+        </mat-card-actions>
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card>
@@ -457,44 +472,44 @@
         <mat-card class="chart" >
           <canvas id="metadataChart"></canvas>
         </mat-card>
+        <mat-card >
+          <table mat-table [dataSource]="metadataStatSource" class="mat-elevation-z8">
+            <!-- Mean Column -->
+            <ng-container matColumnDef="Mean" class="Mean">
+              <th mat-header-cell *matHeaderCellDef> Mean </th>
+              <td mat-cell *matCellDef="let element"> {{element.mean}} </td>
+            </ng-container>
+            <!-- Variance Column -->
+            <ng-container matColumnDef="Variance" class="Variance">
+              <th mat-header-cell *matHeaderCellDef> Variance </th>
+              <td mat-cell *matCellDef="let element"> {{element.variance}} </td>
+            </ng-container>
+            <!-- Standard Deviation Column -->
+            <ng-container matColumnDef="Standard_Deviation" class="Standard_Deviation">
+              <th mat-header-cell *matHeaderCellDef> Standard Deviation </th>
+              <td mat-cell *matCellDef="let element"> {{element.standard_deviation}} </td>
+            </ng-container>
+            <!-- Median Column -->
+            <ng-container matColumnDef="Median" class="Median">
+              <th mat-header-cell *matHeaderCellDef> Median </th>
+              <td mat-cell *matCellDef="let element"> {{element.median}} </td>
+            </ng-container>
+            <!-- Mode Column -->
+            <ng-container matColumnDef="Mode" class="Mode">
+              <th mat-header-cell *matHeaderCellDef> Mode </th>
+              <td mat-cell *matCellDef="let element"> {{element.mode}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode'];"></tr>
+
+          </table>
+        </mat-card>
         <!-- The mat card will also have buttons present to retrieve user input and specific what infromation the user would like to view with respect tot he device health. -->
         <!-- using event based binding which will use the correpsonding method and allow the user to view the selected information visuallized with the chart, here the chart is specified-->
         <!-- through canvas element "payloadChart" -->
         <mat-card-actions>
           <div class="button-container">
-            <!-- <button mat-raised-button (click)="loadSpinner()">Add Device</button> -->
-            <button
-              mat-raised-button
-              color="accent"
-              (click)="loadSpinner()"
-              (click)="viewDevicePktloss()"
-            >
-              Packet Loss
-            </button>
-            <button
-              mat-raised-button
-              color="accent"
-              (click)="loadSpinner()"
-              (click)="viewGatewayRSSI()"
-            >
-              Gateway RSSI
-            </button>
-            <button
-              mat-raised-button
-              color="accent"
-              (click)="loadSpinner()"
-              (click)="viewGatewaySNR()"
-            >
-              Gateway SNR
-            </button>
-            <button
-              mat-raised-button
-              color="accent"
-              (click)="loadSpinner()"
-              (click)="viewDeviceBattery()"
-            >
-              Battery
-            </button>
             <button
               mat-raised-button
               color="accent"
