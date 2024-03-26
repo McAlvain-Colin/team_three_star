@@ -52,14 +52,17 @@ def create_record(table, data):
 def read_records(table, conditions=None, dev_eui=None):
     conn = None
     cursor = None
+    print(table)
     try:
         conn = get_db_connection()
         if conn is None:
             return  # Early return if the connection was not obtained
         cursor = conn.cursor()
         sql = f"SELECT * FROM {table}"
+        print(sql)
         if conditions == 'distinct':
             sql = f"SELECT DISTINCT dev_eui FROM {table}"
+            print(sql)
             cursor.execute(sql)
         elif conditions == 'payload':
             sql = f"SELECT time, payload FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT 100"
@@ -67,12 +70,19 @@ def read_records(table, conditions=None, dev_eui=None):
             cursor.execute(sql)
         elif conditions == 'metadata':
             sql = f"SELECT time, metadata FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT 100"
+            print(sql)
+            cursor.execute(sql)
+        elif conditions == 'location':
+            sql = f"SELECT * FROM {table}"
+            print(sql)
             cursor.execute(sql)
         elif conditions:
             sql += " WHERE " + conditions + ' ORDER BY time DESC LIMIT 100' 
+            print(sql)
             cursor.execute(sql)
         else:
             sql += ' ORDER BY time DESC LIMIT 100'
+            print(sql)
             cursor.execute(sql)
         records = cursor.fetchall()
         return records

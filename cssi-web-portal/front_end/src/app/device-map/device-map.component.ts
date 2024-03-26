@@ -1,11 +1,44 @@
 
 import { Component, Input, OnInit } from '@angular/core';
-import { DeviceElement } from '../dashboard/dashboard.component';
+// import { locationRecord } from '../dashboard/dashboard.component';
 import { MatRippleModule } from '@angular/material/core';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import * as Leaflet from 'leaflet'; 
+import { ApiService } from '../api.service'; 
+import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
+import { AfterViewInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { NgFor } from '@angular/common';
+import { DatePicker } from '../date-picker/date-picker.component';
+import { saveAs  } from 'file-saver';
+import { Chart, registerables } from 'chart.js/auto';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgIf, PercentPipe } from '@angular/common';
+import { FormControl, FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider'
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
+
+export interface DeviceLocation {
+  dev_eui: any;
+  latitude: any;
+  longitude: any;
+  altitude: any;
+  type: any;
+}
 
 @Component({
     selector: 'app-device-map',
@@ -16,17 +49,47 @@ import * as Leaflet from 'leaflet';
         MatCardModule,
         MatTableModule,
         MatRippleModule,
-        MatButtonModule
+        MatButtonModule,
+        TempNavBarComponent,
+        MatPaginatorModule,
+
+        RouterModule,
+        MatToolbarModule,
+        MatGridListModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatRadioModule,
+        TempNavBarComponent,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        CommonModule,
+        NgFor,
+        MatTableModule,  
+        MatPaginatorModule,
+        DatePicker,
+        MatButtonModule,
+        NgIf,
+        MatProgressSpinnerModule,
+        PercentPipe,
+        ReactiveFormsModule,
+        MatSliderModule,
+        MatDatepickerModule,
+        MatCheckboxModule,
     ],
 })
-// the Device map component will recieve data from the dashboard component using the input decorator and will be placed in the
-// variable DeviceElement array, there is a declaration of the myMap object which will be used from the map class from the leaflet JS library
+
+// theDevice map component will recieve data from the dashboard component using the input decorator and will be placed in the
+// variable locationRecord array, there is a declaration of the myMap object which will be used from the map class from the leaflet JS library
 // There is the initialization of a sensorIcon object which has attributes which define the image which will be used, image pixel size, coordinates 
 // indicating the alignment of the location given for map coordinates, coordinates for the pop up icons which occur also with respect to the map coordinates,
 // and pixel size of the for the icon shadow. Boolean variables are also defined for logging what is currently being presented to the user. arrays of type Marker class objects 
 // and one for type of class Circle objects. Leaflet Documentation on Icons was found here https://leafletjs.com/examples/custom-icons/
-export class DeviceMapComponent implements OnInit{
-  @Input() deviceList!: DeviceElement[];
+export class DeviceMapComponent implements AfterViewInit{
+
+  constructor(private apiService: ApiService){};
+
+  // @Input() locationRecord!: DeviceLocation[];
 
   myMap!: Leaflet.Map;
   sensorIcon: Leaflet.Icon<Leaflet.IconOptions>= Leaflet.icon({
@@ -42,19 +105,50 @@ export class DeviceMapComponent implements OnInit{
 
   showSensors: boolean = false;
   showGateways: boolean = false;
+
+  locationRecord: DeviceLocation[] = [];
   
 // This is a lifecycle hook used by Angular, it allows for defining which properties should be initialized upon when the component is being used,documentation is found here https://angular.io/api/core/OnInit. Here the lifecycle will
 // initialize the map by creating a html element with the id = map, the set view method indicates the location coordinates should be displaying in the map. The map will be using OpenStreetMap tile layer which is a geographic database of map
 // user contributed tiles,using the URL template to the OpenStreetMap, the x, y indicate the tile coordinates to be used, z indicates the zoom level to be used, s indicates the sub domain to be used. The code was based on the Leaflet documentationfor initialization 
 // as well as understanding providing credit for usage of both Leaflet and OpenStreetMap https://leafletjs.com/examples/quick-start/. Upon initialization, markers of all the devices will be displayed. 
-  ngOnInit()
-  {
+  ngOnInit(): void {
+    this.apiService.getLocation().subscribe({
+      next: (data: DeviceLocation[]) => {
+        const locationRecord = data.map((item: DeviceLocation) => ({
+          dev_eui: item.dev_eui,
+          latitude: item.latitude,
+          longitude: item.longitude,
+          altitude: item.altitude,
+          type: item.type,
+        }));
+        console.log(this.locationRecord[0])
+
+        this.locationSource.data = locationRecord;
+      },
+
+      error: (error) => {
+        console.error('Error: ', error);
+      }
+    })
+    console.log(this.locationRecord)
+    console.log(this.locationSource.data)
+
+
     this.myMap = Leaflet.map('map').setView([39.1 , -120.05], 9);
       Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     },).addTo(this.myMap);
 
     this.addMarkers();
+  }
+
+  @ViewChild('locationPaginator') locationPaginator!: MatPaginator;
+
+  locationSource = new MatTableDataSource<DeviceLocation>([]);
+
+  ngAfterViewInit() {
+    this.locationSource.paginator = this.locationPaginator;
   }
   
 // addMarkers method will check if gateways are being displayed, if they are, the boolean value for checking gateway visibility is changed to false, the gateways icons previously added will be removed from the map and the array containing the gateway icons. 
@@ -77,9 +171,9 @@ export class DeviceMapComponent implements OnInit{
     {
       this.showSensors = true;
       //placing all sensor locations in an array to be used later to delete if view gateways is called as well as placing the sensors into the leaflet map
-      for(let i = 0; i < this.deviceList.length; i++)
+      for(let i = 0; i < this.locationRecord.length; i++)
       {
-        this.sensors[i] = Leaflet.marker(Leaflet.latLng(this.deviceList[i].endDeviceLocation[0], this.deviceList[i].endDeviceLocation[1]), {icon: this.sensorIcon}).addTo(this.myMap).bindPopup("endDevice: " + (this.deviceList[i].endDeviceId.toString()));
+        this.sensors[i] = Leaflet.marker(Leaflet.latLng(this.locationRecord[i].latitude, this.locationRecord[i].longitude), {icon: this.sensorIcon}).addTo(this.myMap).bindPopup("endDevice: " + (this.locationRecord[i].dev_eui.toString()));
       } 
     }
     
@@ -103,9 +197,9 @@ export class DeviceMapComponent implements OnInit{
     {
       this.showGateways = true;
 
-      for(let i = 0; i < this.deviceList.length; i++)
+      for(let i = 0; i < this.locationRecord.length; i++)
       {
-        this.gateways[i] = Leaflet.circle(Leaflet.latLng(this.deviceList[i].gatewayLocation[0], this.deviceList[i].gatewayLocation[1]), {radius: 3500}).addTo(this.myMap).bindPopup("gateway: " + (this.deviceList[i].appId.toString()));
+        this.gateways[i] = Leaflet.circle(Leaflet.latLng(this.locationRecord[i].latitude, this.locationRecord[i].longitude), {radius: 3500}).addTo(this.myMap).bindPopup("gateway: " + (this.locationRecord[i].dev_eui.toString()));
       }
     }
   }
@@ -118,18 +212,18 @@ export class DeviceMapComponent implements OnInit{
     {
       this.showSensors = true;
 
-      for(let i = 0; i < this.deviceList.length; i++)
+      for(let i = 0; i < this.locationRecord.length; i++)
       {
-        this.sensors[i] = Leaflet.marker(Leaflet.latLng(this.deviceList[i].endDeviceLocation[0], this.deviceList[i].endDeviceLocation[1]), {icon: this.sensorIcon}).addTo(this.myMap).bindPopup("endDevice: " + (this.deviceList[i].endDeviceId.toString()));
+        this.sensors[i] = Leaflet.marker(Leaflet.latLng(this.locationRecord[i].latitude, this.locationRecord[i].longitude), {icon: this.sensorIcon}).addTo(this.myMap).bindPopup("endDevice: " + (this.locationRecord[i].dev_eui.toString()));
       } 
     }
 
     if(this.showGateways === false)
     {
       this.showGateways = true;
-      for(let i = 0; i < this.deviceList.length; i++)
+      for(let i = 0; i < this.locationRecord.length; i++)
       {
-        this.gateways[i] = Leaflet.circle(Leaflet.latLng(this.deviceList[i].gatewayLocation[0], this.deviceList[i].gatewayLocation[1]), {radius: 3500}).addTo(this.myMap).bindPopup("gateway: " + (this.deviceList[i].appId.toString()));
+        this.gateways[i] = Leaflet.circle(Leaflet.latLng(this.locationRecord[i].latitude, this.locationRecord[i].longitude), {radius: 3500}).addTo(this.myMap).bindPopup("gateway: " + (this.locationRecord[i].dev_eui.toString()));
       }
     }
     
@@ -137,13 +231,13 @@ export class DeviceMapComponent implements OnInit{
   
 // Flyto method will use the flyto method from the leaflet JS library to indicate that if sensors or gateways are being displayed, then the map will center the map based on the location attributes from the device sent in as a parameter, this implementation was based off the Leaflet documetntation
 // here :https://leafletjs.com/reference.html#map-flyto
-  flyTo(row: DeviceElement)
+  flyTo(row: DeviceLocation)
   {
     if(this.showSensors === true){
-      this.myMap.flyTo(Leaflet.latLng(row.endDeviceLocation[0], row.endDeviceLocation[1]), 11);
+      this.myMap.flyTo(Leaflet.latLng(row.latitude, row.longitude), 11);
     }
     if(this.showGateways === true){
-      this.myMap.flyTo(Leaflet.latLng(row.gatewayLocation[0], row.gatewayLocation[1]), 11);
+      this.myMap.flyTo(Leaflet.latLng(row.latitude, row.longitude), 11);
     }
   }
 }

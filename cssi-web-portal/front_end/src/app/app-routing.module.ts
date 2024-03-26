@@ -51,11 +51,11 @@ const routes: Routes = [
     path: 'application/:app/:org/:user',
     component: ApplicationPageComponent,
   },
+  { path: 'map', component: DeviceMapComponent },
   { path: 'device', component: DevicePageComponent },
   { path: 'device/:curDevice', component: DevicePageComponent }, //:curDevice is dynamic
   { path: 'filter', component: FilterPageComponent },
   { path: '**', pathMatch: 'full', component: HomeComponent }, //Star route put at the end for if no path is found, routes back to landing.
-  { path: 'map', component: DeviceMapComponent },
 ];
 
 //NgModule was generated when creating the application's routing file by angular.

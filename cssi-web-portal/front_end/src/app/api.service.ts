@@ -26,4 +26,8 @@ export class ApiService {
   getPayload(devId: string): Observable<any> {
     return this.http.get(`${this.BASE_URL}/payload/${devId}`);
   }
+  getLocation(): Observable<any> {
+    // console.log(this.http.get(`${this.BASE_URL}/location`));
+    return this.http.get(`${this.BASE_URL}/location`);
+  }
 }

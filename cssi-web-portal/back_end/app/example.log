@@ -1885,3 +1885,267 @@ INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 18:38:30] "GET /alt_data HTTP/1.1" 200 
 INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 18:38:31] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 18:38:31] "GET /metadata HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 18:38:31] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 18:53:04] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:00:37] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:00:37] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:00:37] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:22:22] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:22:22] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:22:22] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:22:58] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:22:59] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:22:59] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:22:59] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:33:15] "[33mGET /dev_eui HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:33:56] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:34:08] "[33mGET /metadata/0025CA0A00015E62 HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:34:15] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 19:35:23] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 20:00:00] "[33mGET /devId HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 20:00:16] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/__init__.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/__init__.py', reloading
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:01:19] "[33mGET /get_location HTTP/1.1[0m" 404 -
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:01:33] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/__init__.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:03:03] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:04:10] "GET /location HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:04:17] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:04:42] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:05:06] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:05:21] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:06:27] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:07:11] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: column "time" does not exist
+LINE 1: SELECT * FROM device_location ORDER BY time DESC LIMIT 100
+                                               ^
+HINT:  Perhaps you meant to reference the column "device_location.type".
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:07:54] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/__init__.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+ERROR:helperFunctions:Failed to read records: syntax error at or near "DESC"
+LINE 1: SELECT * FROM device_location DESC LIMIT 100
+                                      ^
+
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:09:41] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 123-368-632
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:10:07] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:17:56] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:19:36] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 21:31:52] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:13:45] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:13:50] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:16:10] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:16:19] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:18:49] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:18:52] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:23:07] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:24:06] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:24:16] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:25:57] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:26:03] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:26:35] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:28:36] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:28:44] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:28:51] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:30:45] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:31:00] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:31:27] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:31:50] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:37:48] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:50:17] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:50:44] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:50:52] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:52:25] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:55:00] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:55:08] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:55:20] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:55:23] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:55:27] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:55:29] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:55:53] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:56:29] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:56:51] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:57:28] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:58:36] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:58:36] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 22:59:01] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:00:41] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:00:48] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:00:52] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:01:37] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:01:43] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:02:29] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:02:39] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:03:59] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:05:05] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:06:42] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:06:52] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:07:20] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [25/Mar/2024 23:07:35] "GET /location HTTP/1.1" 200 -
