@@ -252,7 +252,7 @@ def create_user():
     db.session.commit()
    
 
-    msg = Message('Confirm Email', sender='davidadbdiel775@gmail.com', recipients= [email])
+    msg = Message('Confirm Email', sender='ssiportalconfirmation@gmail.com', recipients= [email])
 
     link = url_for('confirm_email', token = emailtoken, _external = True)
 
