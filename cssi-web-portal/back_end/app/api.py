@@ -57,7 +57,7 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'm' # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = '@gmail.com' # ALTERED FOR PRIVACY
 app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
@@ -69,7 +69,7 @@ CORS(app, resources={r'*': {'origins': 'http://localhost:4200'}})
 JWTManager(app)
 
 mail.init_app(app)
-s = URLSafeTimedSerializer('')
+s = URLSafeTimedSerializer('') 
 
 
 
@@ -346,50 +346,59 @@ def createOrganization():
 
 
 
-@app.route('/userOrgList', methods = ['GET']) 
+@app.route('/userOwnedOrgList', methods = ['GET']) 
 @jwt_required() 
-def getOrgList():
+def getOwnedOrgList():
 
     uid = get_jwt_identity()
-    # data = request.get_json()
-    # pageNum = data['pageNum']
+  
+ 
+    try:
+        page = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where(OrgAccount.r_id == 1)).scalars()
 
-    pageNum = request.args.get('pageNum')
+        res = {
+        'list': [
+                {
+                    'o_id' : p.id,
+                    'name': p.name,
+                    'description': p.description
+                } for p in page.all()
+            ]
+        }
+        return make_response(res, 200)
+    
+    except Exception as e:
 
-
-    pageNum = int(pageNum)
-
-    print(pageNum)
-    print('paginates res',db.paginate(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid), per_page= 5).pages)
-    print('uid', uid)
-
-
-    # currPage = data['currPage']
+        return make_response({'error': str(e)}, 404)
+       
     
 
-    if pageNum <= db.paginate(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid), per_page= 5).pages:
-        try:
-            page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter(OrgAccount.a_id == uid), page= pageNum, per_page= 5)
+@app.route('/userJoinedOrgList', methods = ['GET']) 
+@jwt_required() 
+def getJoinedOrgList():
 
-            res = {
-                    'totalPages': page.pages,
-                    'list': [
-                            {
-                                'o_id' : p.id,
-                                'name': p.name,
-                                'description': p.description
-                            } for p in page.items
-                        ]
-            }
+    uid = get_jwt_identity()
+  
+ 
+    try:
+        page = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where(OrgAccount.r_id == 2)).scalars()
 
-            return make_response(res, 200)
+        res = {
+        'list': [
+                {
+                    'o_id' : p.id,
+                    'name': p.name,
+                    'description': p.description
+                } for p in page.all()
+            ]
+        }
+        return make_response(res, 200)
+    
+    except Exception as e:
+
+        return make_response({'error': str(e)}, 404)
        
-        except Exception as e:
-
-            return make_response({'error': str(e)}, 404)
-       
-    else:
-        return make_response({'error': "page doesn't exist"})
+    
 
 @app.route('/inviteUser', methods = ['PUT'])  
 def invite_user():
