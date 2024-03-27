@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -12,6 +12,13 @@ import { MatListModule } from '@angular/material/list';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, shareReplay } from 'rxjs';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableDataSource } from '@angular/material/table';
+import {
+  MatPaginator,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-application-page',
@@ -27,6 +34,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatListModule,
     MatCardModule,
     MatTabsModule,
+    MatPaginatorModule,
     MatButtonModule,
     TempNavBarComponent,
     DeviceMapComponent,
@@ -40,6 +48,14 @@ export class ApplicationPageComponent {
   appDescription: string | null =
     "These devices consists of the best possible devices made for cat patting, for the best of cats out there. Don't let your feline friend down, get them feline great with these devices below.";
   imgName: string | null = 'placeholder_cat2';
+  currentPage: number = 0;
+  deviceSource = new MatTableDataSource(this.devices);
+
+  @ViewChild('devicePaginator', { static: true })
+  devicePaginator: MatPaginator = new MatPaginator(
+    new MatPaginatorIntl(),
+    ChangeDetectorRef.prototype
+  );
 
   constructor(private route: ActivatedRoute) {} //makes an instance of the router
   ngOnInit(): void {
@@ -48,6 +64,7 @@ export class ApplicationPageComponent {
       this.appName = 'Cat Patting';
     }
     this.setupDevices();
+    this.deviceSource.paginator = this.devicePaginator;
   }
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -63,5 +80,9 @@ export class ApplicationPageComponent {
     for (let i = 1; i <= 10; i++) {
       this.devices.push('Device ' + i);
     }
+  }
+
+  handlePageEvent(pageEvent: PageEvent, pageType: number) {
+    //Make get request here that sends in pageEvent.pageIndex
   }
 }

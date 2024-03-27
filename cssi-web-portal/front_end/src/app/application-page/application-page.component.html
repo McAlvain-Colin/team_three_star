@@ -50,18 +50,28 @@
               <a
                 mat-list-item
                 routerLink="/device/{{ device }}"
-                *ngFor="let device of devices"
+                *ngFor="
+                  let device of deviceSource.data.slice(
+                    devicePaginator.pageIndex * devicePaginator.pageSize,
+                    (devicePaginator.pageIndex + 1) * devicePaginator.pageSize
+                  )
+                "
               >
                 {{ device }}
               </a>
             </mat-nav-list>
+            <mat-paginator
+              #devicePaginator
+              pageSize="5"
+              showFirstLastButtons="true"
+              [pageSizeOptions]="[5, 10, 20]"
+              [pageIndex]="currentPage"
+              (page)="handlePageEvent($event, 0)"
+            ></mat-paginator>
           </mat-tab>
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <button mat-raised-button color="accent" class="device-button">
-      Device Request
-    </button>
     <body class="background">
       <app-temp-nav-bar></app-temp-nav-bar>
     </body>

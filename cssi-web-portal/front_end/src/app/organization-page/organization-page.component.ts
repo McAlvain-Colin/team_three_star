@@ -63,7 +63,7 @@ export class OrganizationPageComponent {
   isAdmin: boolean = true;
   currentPage: number = 0;
   appsSource = new MatTableDataSource(this.applications);
-  membersSource = new MatTableDataSource(this.members);
+  memberSource = new MatTableDataSource(this.members);
 
   @ViewChild('appsPaginator', { static: true })
   appsPaginator: MatPaginator = new MatPaginator(
@@ -86,7 +86,7 @@ export class OrganizationPageComponent {
     }
     this.setupLists();
     this.appsSource.paginator = this.appsPaginator;
-    this.membersSource.paginator = this.membersPaginator;
+    this.memberSource.paginator = this.membersPaginator;
   }
 
   private breakpointObserver = inject(BreakpointObserver);

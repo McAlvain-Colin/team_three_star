@@ -50,7 +50,7 @@
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.search-bar {  
+.search-bar {
   margin-top: 1%;
   margin-left: 5%;
   margin-right: 5%;
@@ -83,7 +83,6 @@
 .payload-table {
   position: absolute;
 
-  
   top: 50%;
 
   margin-top: 1%;
@@ -103,7 +102,7 @@
 
 .metadata-table {
   position: absolute;
-  
+
   top: 70%;
 
   margin-top: 1%;
@@ -120,4 +119,3 @@
   left: 20%;
   top: 40%;
 }
-

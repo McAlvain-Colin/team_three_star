@@ -16,6 +16,7 @@ import { AddOrganizationComponent } from './add-organization/add-organization.co
 import { ApplicationPageComponent } from './application-page/application-page.component';
 import { AddApplicationComponent } from './add-application/add-application.component';
 import { AddDeviceComponent } from './add-device/add-device.component';
+import { InviteUserComponent } from './invite-user/invite-user.component';
 
 // Huy and Colin created the paths and linked the respective components to in order to properly route with Angular's routing
 // Huy created the dynamic routing pathways
@@ -37,10 +38,11 @@ const routes: Routes = [
   { path: 'home/:user', component: UserHomeComponent }, //:user is dynamic
   { path: 'add-organization/:user', component: AddOrganizationComponent }, //:user is dynamic
   {
-    path: 'add-application/:orgId/:userId',
+    path: 'add-application/:orgId',
     component: AddApplicationComponent,
-  }, //:user is dynamic
-  { path: 'add-device/:appId/userId', component: AddDeviceComponent }, //:user is dynamic
+  },
+  { path: 'add-device/:appId', component: AddDeviceComponent }, //:user is dynamic
+  { path: 'invite-user/:org', component: InviteUserComponent },
   { path: 'organization', component: OrganizationPageComponent },
   { path: 'organization/:org', component: OrganizationPageComponent }, //:org is dynamic
   { path: 'organization/:org/:user', component: OrganizationPageComponent }, //:org is dynamic

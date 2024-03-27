@@ -40,6 +40,7 @@ import { NgFor } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ApplicationPageComponent } from './application-page/application-page.component';
 import { UserHomeComponent } from './user-home/user-home.component';
+import { InviteUserComponent } from './invite-user/invite-user.component';
 
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
@@ -75,6 +76,7 @@ import { UserHomeComponent } from './user-home/user-home.component';
     DevicePageComponent,
     FilterPageComponent,
     OrganizationPageComponent,
+    InviteUserComponent,
     ApplicationPageComponent,
     UserHomeComponent,
     MatFormFieldModule,
