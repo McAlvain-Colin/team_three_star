@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import {
   FormControl,
   Validators,
@@ -58,7 +58,7 @@ export const authGuard: CanActivateFn = (
     : true;
 };
 
-//@Injectable()
+@Injectable()
 export class appInterceptor implements HttpInterceptor {
   //   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
   //     const currToken = localStorage.getItem('token')

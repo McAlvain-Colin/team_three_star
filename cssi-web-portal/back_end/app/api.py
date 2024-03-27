@@ -16,7 +16,7 @@ import bcrypt
 
 #db imports
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, types, text, LargeBinary, ForeignKey, update, create_engine, MetaData
+from sqlalchemy import String, types, text, LargeBinary, ForeignKey, update, create_engine, MetaData, select
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry, relationship
 from typing_extensions import Annotated
@@ -57,24 +57,25 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = '5@gmail.com' # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = 'm' # ALTERED FOR PRIVACY
 app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
 # app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
-app.config['JWT_SECRET_KEY'] = 'secret' # ALTERED FOR PRIVACY
+app.config['JWT_SECRET_KEY'] = '' # ALTERED FOR PRIVACY
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 20)
 CORS(app, resources={r'*': {'origins': 'http://localhost:4200'}})
 
 JWTManager(app)
 
 mail.init_app(app)
-s = URLSafeTimedSerializer('email secret')
+s = URLSafeTimedSerializer('')
 
 
 
 #models.py db things
 #REQUIRED#############################
+
 class Account(Base):
     __tablename__ = "Account"
 
@@ -82,35 +83,44 @@ class Account(Base):
     email:Mapped[str] = mapped_column(unique= True)
     password:Mapped[bytes] = mapped_column(types.LargeBinary())
     verified: Mapped[bool] = mapped_column(unique= False)
+    active: Mapped[bool] = mapped_column(unique= False)
 
     orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='account')
 
-    def __init__(self, email, password, verified):
+    def __init__(self, email, password, verified, active):
         self.email = email
         self.password = password
         self.verified = verified
+        self.active = active
 
     def __repr__(self):
-        return f'(id = {self.id}), salt = {self.salt}, email = {self.email}'
+        return f'id = {self.id}, email = {self.email}'
    
 
 class Organization(Base):
     __tablename__ = "Organization"
 
     id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db
-    name: Mapped[str] = mapped_column(nullable= False)
+    name: Mapped[str] = mapped_column(nullable= False, unique= True)
     description:Mapped[str] = mapped_column(nullable= True)
-    exists: Mapped[bool] = mapped_column(nullable=False)
+    active: Mapped[bool] = mapped_column(unique= False)
 
     orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='org')
 
+    orgApps: Mapped[List['OrgApplication']] = relationship(back_populates='org')
 
-    def __init__(self, name):
+
+    def __init__(self, name, desc, active):
         self.name = name
+        self.description = desc
+        self.active = active
 
     def __repr__(self):
         return f'organization: {self.name}'
    
+
+
+#   1- admin, 2- PI, 3 - basic user. 
 
 class OrgAccount(Base):
     __tablename__ = 'OrgAccount'
@@ -122,6 +132,72 @@ class OrgAccount(Base):
 
     o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
     org: Mapped['Organization'] = relationship(back_populates='orgAccounts')
+
+    #added line/column for roles
+    r_id:Mapped[int] = mapped_column()
+
+
+
+class Application(Base):
+    __tablename__ = 'Application'
+
+    id: Mapped[int] = mapped_column(primary_key= True)
+    name : Mapped[str] = mapped_column(nullable= True)
+    description: Mapped[str] = mapped_column(nullable= True)
+
+    orgs: Mapped[List['OrgApplication']] = relationship(back_populates='app')
+
+    appSensors: Mapped[List['AppSensors']] = relationship(back_populates='app')
+
+    def __repr__(self):
+        f'app: {self.id}, {self.name}'
+
+    
+class OrgApplication(Base):
+    __tablename__ = 'OrgApplication'
+
+    id: Mapped [int] = mapped_column(primary_key = True)
+    # appSensors: Mapped[List['AppSensors']] = relationship(back_populates='orgApp')
+
+    #apps
+    app_id: Mapped[int] = mapped_column(ForeignKey('Application.id'))
+    app: Mapped['Application'] = relationship(back_populates= 'orgs')
+
+    o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
+    org: Mapped['Organization'] = relationship(back_populates='orgApps') 
+
+    # dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
+    # device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
+    def __repr__(self):
+        return f'orgApp {self.id} {self.description}'
+
+    
+
+
+class AppSensors(Base):
+    __tablename__ = 'AppSensors'
+
+    app_id: Mapped[int] = mapped_column(ForeignKey('Application.id'))
+    app: Mapped['Application'] = relationship(back_populates= 'appSensors')
+
+    # dev_eui needs to have the table name as stored in postgreSQL
+    dev_eui: Mapped[str] = mapped_column(Text, ForeignKey("device.dev_eui"), primary_key= True)
+    devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
+
+   
+with app.app_context():
+    # for creating db 
+    db.reflect()
+    
+
+
+class Device(Base):
+    __table__ = db.metadata.tables['device']
+
+    appDevices: Mapped[List['AppSensors']] = relationship(back_populates= 'devices')
+
+
+   
 
    
 ###############################
@@ -140,6 +216,7 @@ def login_user():
     password =  data['password']
 
     user = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+
 
     if bcrypt.checkpw(password.encode('utf-8'), user.password): #database logic for searching goes here
        
@@ -176,7 +253,7 @@ def create_user():
     emailtoken = s.dumps(email, salt='email-confirm')
 
     # dbinteractions.createMember(email, password, False, bcrypt)
-    newUser = Account(email, hashed, False)
+    newUser = Account(email, hashed, False, True)
     db.session.add(newUser)
     db.session.commit()
    
@@ -250,13 +327,13 @@ def createOrganization():
     descript = data['orgDescript']
 
     #database code
-    newOrg = Organization(orgName, descript)
+    newOrg = Organization(name= orgName, description= descript, active= True)
 
     user = db.session.execute(db.select(Account).filter_by(id = userId)).scalar()
 
 
     #link the account with the org
-    orgAcc = OrgAccount(account= user, org= newOrg)
+    orgAcc = OrgAccount(account= user, org= newOrg, r_id = 1)
 
     db.session.add(newOrg)
     db.session.commit()
@@ -269,22 +346,36 @@ def createOrganization():
 
 
 
-@app.route('/userOrgList', methods = ['GET'])  
+@app.route('/userOrgList', methods = ['GET']) 
+@jwt_required() 
 def getOrgList():
 
     uid = get_jwt_identity()
-    data = request.get_json()
-    pageNum = data['pageNum']
-    # currPage = data['currPage']
+    # data = request.get_json()
+    # pageNum = data['pageNum']
 
-    if pageNum <= db.paginate(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = uid), per_page= 20).pages:
+    pageNum = request.args.get('pageNum')
+
+
+    pageNum = int(pageNum)
+
+    print(pageNum)
+    print('paginates res',db.paginate(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid), per_page= 5).pages)
+    print('uid', uid)
+
+
+    # currPage = data['currPage']
+    
+
+    if pageNum <= db.paginate(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid), per_page= 5).pages:
         try:
-            page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = uid), page= pageNum, per_page= 20)
+            page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter(OrgAccount.a_id == uid), page= pageNum, per_page= 5)
+
             res = {
-                'currentPage': pageNum,
-                'pageTotal': page.pages,
-                'list': [
+                    'totalPages': page.pages,
+                    'list': [
                             {
+                                'o_id' : p.id,
                                 'name': p.name,
                                 'description': p.description
                             } for p in page.items
@@ -356,9 +447,112 @@ def delete_org():
 	deleteOrg = deleteOrg.where(ORGS.c.id == 1) #Insert the id that would be given in the data
 	db.session.execute(deleteOrg)
 	db.session.commit()
+@app.route('/createOrgApp', methods = ['POST'])  
+@jwt_required()
+def createOrgApplication():
+
+    data = request.get_json() #uid, org titel, org descritpion
+    userId = data['uid']
+    orgid = data['orgid']
+    appName = data['appName']
+    descript = data['orgDescript']
+
+    #link the app with the org
+    newApp= Application(name= appName, descritpion= descript)
+
+    org = db.session.execute(db.select(Organization).where(Organization.id == orgid)).scalar()
+
+
+    orgApp = OrgApplication(app= newApp, org= org)
+
+    db.session.add(newApp)
+    db.session.commit()
+    db.session.add(orgApp)
+    db.session.commit()
+   
+
+
+    return jsonify(orgCreated = True)
+
+
+
+
+@app.route('/userOrgAppList', methods = ['GET']) 
+@jwt_required() 
+def getOrgAppList():
+
+    uid = get_jwt_identity()
+    data = request.get_json()
+    pageNum = data['pageNum']
+    oid = data['oid']
+    # currPage = data['currPage']
+    
+
+    if pageNum <= db.paginate(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == oid), page= pageNum, per_page= 5).pages:
+        try:
+            page = page = db.paginate(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == oid), page= pageNum, per_page= 5)
+
+
+            res = {
+                    'total': page.pages,
+                    'list': [
+                            {
+                                'o_id' : p.id,
+                                'name': p.name,
+                                'description': p.description
+                            } for p in page.items
+                        ]
+            }
+
+            return make_response(res, 200)
+       
+        except Exception as e:
+
+            return make_response({'error': str(e)}, 404)
+       
+    else:
+        return make_response({'error': "page doesn't exist"})
+    
+
+
+
+@app.route('/userOrgAppDeviceList', methods = ['GET']) 
+@jwt_required() 
+def getOrgAppDeviceList():
+
+    uid = get_jwt_identity()
+    data = request.get_json()
+    pageNum = data['pageNum']
+    appid = data['oid']
+
+
+    if pageNum <= db.paginate(db.select(AppSensors).where(AppSensors.app_id == appid), page= pageNum, per_page= 5).pages:
+
+        try:
+            page = db.paginate(db.select(AppSensors).where(AppSensors.app_id == appid), page= pageNum, per_page= 5)
+
+            res = {
+                    'totalPages': page.pages,
+                    'list': [
+                            {
+                                'app_id' : p.app_id,
+                                'name': p.dev_eui
+                            } for p in page.items
+                        ]
+            }
+
+            return make_response(res, 200)
+       
+        except Exception as e:
+
+            return make_response({'error': str(e)}, 404)
+       
+    else:
+        return make_response({'error': "page doesn't exist"})
+
+
 
 if __name__ == '__main__':
     app.run(debug = True)
 
-#
 
