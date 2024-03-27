@@ -9,14 +9,14 @@ from flask_jwt_extended import (create_access_token, JWTManager,
                                 set_access_cookies, unset_jwt_cookies
                                 )
 
-from itsdangerous import URLSafeTimedSerializer
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 import bcrypt
 
 
 #db imports
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, types, text, LargeBinary, ForeignKey
+from sqlalchemy import String, types, text, LargeBinary, ForeignKey, update, create_engine, MetaData
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry, relationship
 from typing_extensions import Annotated
@@ -41,6 +41,12 @@ mail = Mail()
 
 
 app = Flask(__name__)
+
+meta = MetaData()
+
+engine = create_engine('postgresql://postgres:BigFakey14?@localhost/postgres')
+
+meta.reflect(bind=engine)
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
@@ -94,6 +100,7 @@ class Organization(Base):
     id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db
     name: Mapped[str] = mapped_column(nullable= False)
     description:Mapped[str] = mapped_column(nullable= True)
+    exists: Mapped[bool] = mapped_column(nullable=False)
 
     orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='org')
 
@@ -293,6 +300,62 @@ def getOrgList():
     else:
         return make_response({'error': "page doesn't exist"})
 
+@app.route('/inviteUser', methods = ['PUT'])  
+def invite_user():
+
+    data = request.get_json()
+    sender = data['senderName']
+    email = data['email']
+    orgid = data['orgId']
+    orgName = data['orgName']
+   
+    emailtoken = s.dumps(email, salt='email-invite')
+
+    msg = Message("Organization Invite CSSI Web Portal", sender='davidadbdiel775@gmail.com', recipients= [email])
+
+    link = url_for('invite_email', token = emailtoken, _external = True)
+
+    msg.body = sender + ' has sent you a request to join their organization! Would you like to join ' + orgName + '?'
+    msg.body = msg.body + 'Join org link {}'.format(link)
+
+    mail.send(msg)
+
+    #Check if the email is clicked, if yes, then find the org and add user to it.
+
+    return jsonify({'emailConfirmation': True})
+
+@app.route('/invite_email/<token>')  
+def confirm_email(token):
+
+    try:
+        email = s.loads(token, salt='email-invite', max_age = 360)
+   
+        # dbinteractions.verifiyMember(email)
+        newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+        newUser.verified = True
+
+        db.session.commit()
+
+        return '<h1>The email confirmation was succesful, please login</h1>'
+    except SignatureExpired:
+        # dbinteractions.removeUnverifiedMember()
+        newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
+       
+        db.session.delete(newUser)
+        db.session.commit()
+
+        return '<h1>The email confirmation was unsuccesful, please try again</h1>'
+
+
+@app.route('/deleteOrg', methods = ['PUT'])
+def delete_org():
+	ORGS = meta.tables[Organization.__tablename__]
+
+	deleteOrg = update(ORGS)
+	deleteOrg = deleteOrg.values({"exists" : True})
+	deleteOrg = deleteOrg.where(ORGS.c.id == 1) #Insert the id that would be given in the data
+	db.session.execute(deleteOrg)
+	db.session.commit()
 
 if __name__ == '__main__':
     app.run(debug = True)
