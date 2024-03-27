@@ -443,7 +443,7 @@ def delete_org():
 	ORGS = meta.tables[Organization.__tablename__]
 
 	deleteOrg = update(ORGS)
-	deleteOrg = deleteOrg.values({"exists" : True})
+	deleteOrg = deleteOrg.values({"active" : False})
 	deleteOrg = deleteOrg.where(ORGS.c.id == 1) #Insert the id that would be given in the data
 	db.session.execute(deleteOrg)
 	db.session.commit()
