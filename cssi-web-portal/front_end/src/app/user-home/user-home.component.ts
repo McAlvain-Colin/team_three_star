@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
   inject,
+  AfterContentChecked
 } from '@angular/core';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -41,6 +42,8 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-user-home',
@@ -68,7 +71,10 @@ import { MatTableDataSource } from '@angular/material/table';
     TempNavBarComponent,
   ],
 })
-export class UserHomeComponent implements OnInit {
+export class UserHomeComponent implements OnInit, AfterContentChecked {
+
+  base_url: string = 'http://localhost:5000';
+
   data: HomeValues[] = [
     {
       name: 'Item 1',
@@ -124,17 +130,62 @@ export class UserHomeComponent implements OnInit {
     ChangeDetectorRef.prototype
   );
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) {} //makes an instance of the router
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private http: HttpClient, private changeDetector: ChangeDetectorRef) {} //makes an instance of the router alsoe creates aaa hhhttp object to use for Requests to backend
   ngOnInit(): void {
+
+    let param = new HttpParams().set("pageNum", 1)
+
+
+    this.http.get(this.base_url + '/userOrgList', {observe: 'response', responseType: 'json', params: param})
+    .subscribe({
+      next: (response) => {
+
+        const res = JSON.stringify(response);
+
+        let resp = JSON.parse(res);
+
+        console.log('resp is ');
+
+        console.log(resp);
+        console.log('body', resp.body.list)
+
+        // this.currentPage = 1
+
+        for(var i = 0; i  < resp.body.list.length; i++)
+        {
+          console.log('index: ', resp.body.list[i].name)
+          this.ownedOrgs.push(resp.body.list[i].name + ' Description: ' + resp.body.list[i].description);
+
+
+        }
+
+
+
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+    
+
+
+
     this.userName = this.route.snapshot.paramMap.get('user'); //From the current route, get the route name, which should be the identifier for what you need to render.
     if (this.userName == null) {
       this.userName = 'John';
     }
-    this.setupExampleLists();
+    // this.setupExampleLists();
     this.ownedOrgSource.paginator = this.ownedOrgPaginator;
     this.joinedOrgSource.paginator = this.joinedOrgPaginator;
     this.favDeviceSource.paginator = this.favDevicePaginator;
   }
+
+  ngAfterContentChecked(): void 
+  {
+    this.changeDetector.detectChanges()
+  }
+
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -145,6 +196,7 @@ export class UserHomeComponent implements OnInit {
 
   handlePageEvent(pageEvent: PageEvent, pageType: number) {
     //Make get request here that sends in pageEvent.pageIndex
+
   }
 
   //For removal, we use put in order to update the status of the org with a boolean.

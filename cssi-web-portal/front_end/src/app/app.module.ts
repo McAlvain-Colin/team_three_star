@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent, appInterceptor } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgottenPasswordComponent } from './forgotten-password/forgotten-password.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
@@ -83,7 +83,7 @@ import { UserHomeComponent } from './user-home/user-home.component';
     NgFor,
     HttpClientModule,
   ],
-  providers: [ChartService, DeviceDataService, DataStatsService],
+  providers: [ChartService, DeviceDataService, DataStatsService, {provide: HTTP_INTERCEPTORS, useClass: appInterceptor, multi: true}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
