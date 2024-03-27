@@ -9,14 +9,14 @@ from flask_jwt_extended import (create_access_token, JWTManager,
                                 set_access_cookies, unset_jwt_cookies
                                 )
 
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from itsdangerous import URLSafeTimedSerializer
 
 import bcrypt
 
 
 #db imports
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, types, text, LargeBinary, ForeignKey, update, create_engine, MetaData, select
+from sqlalchemy import String, types, Text, LargeBinary, ForeignKey, select
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry, relationship
 from typing_extensions import Annotated
@@ -41,12 +41,6 @@ mail = Mail()
 
 
 app = Flask(__name__)
-
-meta = MetaData()
-
-engine = create_engine('postgresql://postgres:BigFakey14?@localhost/postgres')
-
-meta.reflect(bind=engine)
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
@@ -110,9 +104,9 @@ class Organization(Base):
     orgApps: Mapped[List['OrgApplication']] = relationship(back_populates='org')
 
 
-    def __init__(self, name, desc, active):
+    def __init__(self, name, description, active):
         self.name = name
-        self.description = desc
+        self.description = description
         self.active = active
 
     def __repr__(self):
@@ -321,10 +315,12 @@ def deleteUser():
 @jwt_required()
 def createOrganization():
 
-    data = request.get_json() #uid, org titel, org descritpion
-    userId = data['uid']
+    data = request.get_json() #uid, org title, org descritpion
+    userId = get_jwt_identity()
     orgName = data['orgName']
     descript = data['orgDescript']
+
+    print(descript)
 
     #database code
     newOrg = Organization(name= orgName, description= descript, active= True)
@@ -400,62 +396,6 @@ def getJoinedOrgList():
        
     
 
-@app.route('/inviteUser', methods = ['PUT'])  
-def invite_user():
-
-    data = request.get_json()
-    sender = data['senderName']
-    email = data['email']
-    orgid = data['orgId']
-    orgName = data['orgName']
-   
-    emailtoken = s.dumps(email, salt='email-invite')
-
-    msg = Message("Organization Invite CSSI Web Portal", sender='davidadbdiel775@gmail.com', recipients= [email])
-
-    link = url_for('invite_email', token = emailtoken, _external = True)
-
-    msg.body = sender + ' has sent you a request to join their organization! Would you like to join ' + orgName + '?'
-    msg.body = msg.body + 'Join org link {}'.format(link)
-
-    mail.send(msg)
-
-    #Check if the email is clicked, if yes, then find the org and add user to it.
-
-    return jsonify({'emailConfirmation': True})
-
-@app.route('/invite_email/<token>')  
-def confirm_email(token):
-
-    try:
-        email = s.loads(token, salt='email-invite', max_age = 360)
-   
-        # dbinteractions.verifiyMember(email)
-        newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
-        newUser.verified = True
-
-        db.session.commit()
-
-        return '<h1>The email confirmation was succesful, please login</h1>'
-    except SignatureExpired:
-        # dbinteractions.removeUnverifiedMember()
-        newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
-       
-        db.session.delete(newUser)
-        db.session.commit()
-
-        return '<h1>The email confirmation was unsuccesful, please try again</h1>'
-
-
-@app.route('/deleteOrg', methods = ['PUT'])
-def delete_org():
-	ORGS = meta.tables[Organization.__tablename__]
-
-	deleteOrg = update(ORGS)
-	deleteOrg = deleteOrg.values({"active" : False})
-	deleteOrg = deleteOrg.where(ORGS.c.id == 1) #Insert the id that would be given in the data
-	db.session.execute(deleteOrg)
-	db.session.commit()
 @app.route('/createOrgApp', methods = ['POST'])  
 @jwt_required()
 def createOrgApplication():
