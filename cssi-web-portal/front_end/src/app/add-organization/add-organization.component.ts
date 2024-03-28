@@ -66,11 +66,10 @@ export class AddOrganizationComponent {
 
     this.http
       .post(
-        this.baseUrl + 'createOrg',
+        this.baseUrl + '/createOrg',
         {
-          uid: this.userID,
           orgName: this.orgName,
-          orgDescript: this.orgDescription,
+          orgDescript: this.orgDescription
         },
         httpOptions
       )
@@ -78,7 +77,9 @@ export class AddOrganizationComponent {
         next: (response) => {
           const responseString = JSON.stringify(response);
           let parsedRes = JSON.parse(responseString);
-          if (parsedRes.addSuccess) {
+
+          console.log(parsedRes)
+          if (parsedRes.orgCreated) {
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
