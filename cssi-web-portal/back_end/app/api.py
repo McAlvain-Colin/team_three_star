@@ -16,7 +16,7 @@ import bcrypt
 
 #db imports
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, types, Text, LargeBinary, ForeignKey, select
+from sqlalchemy import String, types, Text, LargeBinary, ForeignKey, select, update
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry, relationship
 from typing_extensions import Annotated
@@ -43,7 +43,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:BigFakey14?@localhost/postgres'
 db.init_app(app)
 
 
@@ -51,7 +51,7 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'ssiportalconfirmation@gmail.com' # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR PRIVACY
 app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
@@ -339,6 +339,16 @@ def createOrganization():
 
 
     return jsonify(orgCreated = True)
+
+@app.route('/deleteOrg', methods = ['PUT'])
+def deleteOrg():
+    ORGS = db.metadata.tables[Organization.__tablename__]
+
+    deleteOrg = update(ORGS)
+    deleteOrg = deleteOrg.values({"active" : False})
+    deleteOrg = deleteOrg.where(ORGS.c.id == 1)
+    db.session.execute(deleteOrg)
+    db.session.commit()
 
 
 

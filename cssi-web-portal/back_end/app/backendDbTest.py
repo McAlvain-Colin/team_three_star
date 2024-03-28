@@ -71,14 +71,14 @@ class Organization(Base):
 
 	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db 
 	name: Mapped[str] = mapped_column(nullable= False)
-	exists: Mapped[bool] = mapped_column(nullable=False)
+	active: Mapped[bool] = mapped_column(nullable=False)
 
 	orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='org')
 
 
 	def __init__(self, name):
 		self.name = name
-		self.exists = True
+		self.active = True
 
 	def __repr__(self):
 		return f'organization: {self.name}'
@@ -117,7 +117,7 @@ def func():
 
 	#for deleting an org, find the org and then alter the active bool value to be not active in org.
 	# deleteOrg = update(ORGS)
-	# deleteOrg = deleteOrg.values({"exists" : True})
+	# deleteOrg = deleteOrg.values({"active" : False})
 	# deleteOrg = deleteOrg.where(ORGS.c.id == 1)
 	# db.session.execute(deleteOrg)
 	# db.session.commit()
@@ -132,12 +132,10 @@ def func():
 
 	link = url_for('invite_email', token = emailtoken, _external = True)
 
-	msg.body = sender + ' has sent you a request to join their organization! Would you like to join ' + orgName + '?'
-	msg.body = msg.body + 'Join org link {}'.format(link)
+	msg.body = sender + ' has sent you a request to join their organization! \n Would you like to join ' + orgName + '?\n'
+	msg.body = msg.body + 'Join org link: {}'.format(link)
 
 	mail.send(msg)
-
-	print("hi")
 
 	# For adding to orgAccounts
 	#newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
@@ -153,24 +151,26 @@ def func():
 @app.route('/invite_email/<token>')  
 def invite_email(token):
 
-    try:
-        email = s.loads(token, salt='email-invite', max_age = 360)
-   
-        # dbinteractions.verifiyMember(email)
-        newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
-        newUser.verified = True
+	try:
+		email = s.loads(token, salt='email-invite', max_age = 360)
 
-        db.session.commit()
+		newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
 
-        return '<h1>The email confirmation was succesful, please login</h1>'
-    except SignatureExpired:
-        # dbinteractions.removeUnverifiedMember()
-        newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
-       
-        db.session.delete(newUser)
-        db.session.commit()
+		newOrg = db.session.execute(db.select(Organization).filter_by(name = 'myOrg')).scalar()
 
-        return '<h1>The email confirmation was unsuccesful, please try again</h1>'
+		orgacc = OrgAccount(account= newUser, org= newOrg)
+
+		db.session.add(orgacc)
+		db.session.commit()
+
+		return '<h1>The organization invite was successful, please check your oganizations.</h1>'
+	except SignatureExpired:
+		newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
+		
+		db.session.delete(newUser)
+		db.session.commit()
+
+		return '<h1>The email invitation has failed, please request another invite.</h1>'
 
 if __name__ == '__main__':
 	with app.app_context():
