@@ -2671,3 +2671,572 @@ INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 16:37:54] "GET /payload/0025CA0A00015E6
 INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 16:37:54] "GET /metadata HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 16:37:54] "GET /dev_id HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 16:37:55] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 16:50:34] "OPTIONS /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 16:50:34] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 16:50:52] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 16:50:52] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 16:50:52] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:00:24] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:00:24] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:00:24] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:01:07] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:01:07] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:01:07] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:01:07] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:01:07] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:01:07] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [26/Mar/2024 17:01:49] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Mar/2024 17:14:01] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Mar/2024 17:14:01] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Mar/2024 17:14:01] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Mar/2024 17:14:48] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Mar/2024 17:14:48] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Mar/2024 17:14:48] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Mar/2024 17:14:48] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Mar/2024 17:14:48] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [27/Mar/2024 17:14:48] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 09:56:46] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 09:57:17] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:04:58] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:06:44] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:07:15] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:07:37] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:09:41] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:09:51] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:11:48] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:12:23] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:13:20] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:14:06] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:24:52] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 215-536-426
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:33:30] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:51:04] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:51:04] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:51:04] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:51:04] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:51:04] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 10:51:04] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:13] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:13] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:13] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:13] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:13] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:13] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:32] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:32] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:32] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:32] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:32] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:32] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:46] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:46] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:46] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:46] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:46] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:46] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:57] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:57] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:57] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:57] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:57] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:05:57] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:12] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:12] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:12] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:12] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:12] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:12] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:24] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:24] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:24] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:24] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:24] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:14:24] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:23:19] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:23:19] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:23:19] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:23:19] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:23:19] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:23:19] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:30:53] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:30:53] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:30:53] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:30:53] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:30:53] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:30:53] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:31:05] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:31:05] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:31:05] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:31:05] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:31:05] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:31:05] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:11] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:11] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:11] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:11] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:11] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:11] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:18] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:18] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:18] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:18] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:18] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:18] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:36] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:36] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:36] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:36] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:36] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:36:36] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:42:15] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:42:15] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:42:15] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:42:15] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:42:16] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:42:16] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 326-851-013
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:45:57] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:45:57] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:45:57] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:45:57] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:45:57] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:45:58] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:48:14] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:48:15] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:48:15] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:48:15] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:48:15] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:48:15] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:28] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:28] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:28] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:28] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:28] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:28] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:35] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:35] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:35] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:35] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:35] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:35] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:48] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:48] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:48] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:48] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:48] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:48] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:57] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:58] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:58] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:58] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:58] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:53:58] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:02] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:02] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:02] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:02] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:03] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:03] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:10] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:10] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:10] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:10] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:10] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:10] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:22] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:22] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:22] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:22] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:22] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:22] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:46] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:46] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:46] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:46] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:46] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:54:46] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 326-851-013
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 326-851-013
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 326-851-013
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 326-851-013
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:56:31] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:56:31] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:56:31] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:56:31] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:56:31] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 12:56:31] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:00:50] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:00:50] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:00:50] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:00:50] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:00:50] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:00:50] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:19] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:19] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:19] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:19] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:20] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:20] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:24] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:24] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:24] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:24] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:24] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:01:24] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:06] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:06] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:06] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:06] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:06] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:06] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:20] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:20] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:20] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:20] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:20] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:32:20] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:34:20] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:35:17] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:35:59] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:35:59] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:35:59] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:35:59] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:35:59] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:35:59] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:15] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:15] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:15] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:15] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:15] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:15] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:36] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:36] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:36] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:36] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:36] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:36] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:40] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:40] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:40] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:41] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:41] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:41] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:49] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:49] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:49] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:49] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:49] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:49] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:56] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:56] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:56] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:56] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:56] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:38:56] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:00] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:00] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:00] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:00] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:00] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:00] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:38] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:38] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:38] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:38] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:38] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:38] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:50] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:50] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:50] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:50] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:50] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:39:50] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:40:11] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:40:11] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:40:11] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:40:11] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:40:11] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:40:11] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:30] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:30] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:30] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:30] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:30] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:30] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:50] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:50] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:50] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:50] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:50] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:42:50] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:43:08] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:43:08] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:43:08] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:43:08] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:43:08] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:43:08] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:44:26] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:44:26] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:44:26] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:44:26] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:44:26] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:44:26] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 326-851-013
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/stats.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 326-851-013
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:46:32] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:46:39] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:46:39] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:46:39] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:46:39] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:46:39] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:46:39] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:51:58] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:51:58] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:51:58] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:51:58] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:51:58] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:51:58] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:01] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:01] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:01] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:01] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:01] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:01] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:07] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:07] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:07] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:07] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:07] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:07] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /dev_id HTTP/1.1" 200 -

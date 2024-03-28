@@ -328,10 +328,15 @@
         </mat-expansion-panel-header>
         <!-- code here -->
         <mat-card class="chart" >
-          <canvas id="payloadChart"></canvas>          
+          <canvas id="payloadChart" height="500"></canvas>          
         </mat-card>
         <mat-card>
           <table mat-table [dataSource]="paylaodStatSource" class="mat-elevation-z8">
+            <!-- Data Column -->
+            <ng-container matColumnDef="Data" class="Data">
+              <th mat-header-cell *matHeaderCellDef> Data </th>
+              <td mat-cell *matCellDef="let element"> {{element.column}} </td>
+            </ng-container>
             <!-- Mean Column -->
             <ng-container matColumnDef="Mean" class="Mean">
               <th mat-header-cell *matHeaderCellDef> Mean </th>
@@ -358,8 +363,8 @@
               <td mat-cell *matCellDef="let element"> {{element.mode}} </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="['Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode'];"></tr>
+            <tr mat-header-row *matHeaderRowDef="['Data', 'Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['Data', 'Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode'];"></tr>
 
           </table>
         </mat-card>
@@ -470,10 +475,15 @@
         </mat-expansion-panel-header>
         <!-- code here -->
         <mat-card class="chart" >
-          <canvas id="metadataChart"></canvas>
+          <canvas id="metadataChart" height="500"></canvas>
         </mat-card>
         <mat-card >
           <table mat-table [dataSource]="metadataStatSource" class="mat-elevation-z8">
+            <!-- Data Column -->
+            <ng-container matColumnDef="Data" class="Data">
+              <th mat-header-cell *matHeaderCellDef> Data </th>
+              <td mat-cell *matCellDef="let element"> {{element.column}} </td>
+            </ng-container>
             <!-- Mean Column -->
             <ng-container matColumnDef="Mean" class="Mean">
               <th mat-header-cell *matHeaderCellDef> Mean </th>
@@ -500,8 +510,8 @@
               <td mat-cell *matCellDef="let element"> {{element.mode}} </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="['Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode'];"></tr>
+            <tr mat-header-row *matHeaderRowDef="['Data', 'Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['Data', 'Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode'];"></tr>
 
           </table>
         </mat-card>

@@ -28,6 +28,7 @@ import { MatSliderModule } from '@angular/material/slider'
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
+import { keyframes } from '@angular/animations';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -176,14 +177,20 @@ export class FilterPageComponent implements AfterViewInit{
 
     this.apiService.getPayloadStatisticsData('0025CA0A00015E62').subscribe({
       next: (data: any[]) => {
-        const payloadStatRecord = [{
-          mean: data[0],
-          variance: data[0],
-          standard_deviation: data[0],
-          median: data[0],
-          mode: data[0]
-        }];
-        console.log(payloadStatRecord)
+        // console.log(data)
+        const payloadStatRecord = Object.keys(data).map((key: any) => {
+          const stats = data[key];
+
+          return {
+            column: key,
+            mean: stats.mean,
+            variance: stats.variance,
+            standard_deviation: stats.standardDeviation,
+            median: stats.median,
+            mode: stats.mode
+          }
+        });
+        // console.log(payloadStatRecord)
 
         this.paylaodStatSource.data = payloadStatRecord;
       },
@@ -194,13 +201,20 @@ export class FilterPageComponent implements AfterViewInit{
     })
     this.apiService.getMetadataStatisticsData('0025CA0A00015E62').subscribe({
       next: (data: any[]) => {
-        const metadataStatRecord = [{
-          mean: data[0],
-          variance: data[0],
-          standard_deviation: data[0],
-          median: data[0],
-          mode: data[0]
-        }];
+        console.log(data)
+        const metadataStatRecord = Object.keys(data).map((key: any) => {
+          const stats = data[key];
+
+          return {
+            column: key,
+            mean: stats.mean,
+            variance: stats.variance,
+            standard_deviation: stats.standardDeviation,
+            median: stats.median,
+            mode: stats.mode
+          }
+        });
+        console.log(metadataStatRecord)
 
         this.metadataStatSource.data = metadataStatRecord;
       },
