@@ -9,7 +9,7 @@ from flask_jwt_extended import (create_access_token, JWTManager,
                                 set_access_cookies, unset_jwt_cookies
                                 )
 
-from itsdangerous import URLSafeTimedSerializer
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 
 import bcrypt
 
