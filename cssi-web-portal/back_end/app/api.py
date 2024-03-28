@@ -9,7 +9,7 @@ from flask_jwt_extended import (create_access_token, JWTManager,
                                 set_access_cookies, unset_jwt_cookies
                                 )
 
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from itsdangerous import URLSafeTimedSerializer
 
 import bcrypt
 
@@ -56,14 +56,14 @@ app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
 # app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
-app.config['JWT_SECRET_KEY'] = '' # ALTERED FOR PRIVACY
+app.config['JWT_SECRET_KEY'] = 'secret' # ALTERED FOR PRIVACY
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 20)
 CORS(app, resources={r'*': {'origins': 'http://localhost:4200'}})
 
 JWTManager(app)
 
 mail.init_app(app)
-s = URLSafeTimedSerializer('') 
+s = URLSafeTimedSerializer('email-secret') 
 
 
 
@@ -315,12 +315,10 @@ def deleteUser():
 @jwt_required()
 def createOrganization():
 
-    data = request.get_json() #uid, org title, org descritpion
-    userId = get_jwt_identity()
+    data = request.get_json() #uid, org titel, org descritpion
+    userId = data['uid']
     orgName = data['orgName']
     descript = data['orgDescript']
-
-    print(descript)
 
     #database code
     newOrg = Organization(name= orgName, description= descript, active= True)
@@ -513,5 +511,6 @@ def getOrgAppDeviceList():
 
 if __name__ == '__main__':
     app.run(debug = True)
+
 
 

@@ -133,10 +133,8 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
   constructor(private route: ActivatedRoute, public dialog: MatDialog, private http: HttpClient, private changeDetector: ChangeDetectorRef) {} //makes an instance of the router alsoe creates aaa hhhttp object to use for Requests to backend
   ngOnInit(): void {
 
-    let param = new HttpParams().set("pageNum", 1)
 
-
-    this.http.get(this.base_url + '/userOrgList', {observe: 'response', responseType: 'json', params: param})
+    this.http.get(this.base_url + '/userOwnedOrgList', {observe: 'response', responseType: 'json'})
     .subscribe({
       next: (response) => {
 
@@ -149,12 +147,43 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
         console.log(resp);
         console.log('body', resp.body.list)
 
-        // this.currentPage = 1
-
         for(var i = 0; i  < resp.body.list.length; i++)
         {
           console.log('index: ', resp.body.list[i].name)
           this.ownedOrgs.push(resp.body.list[i].name + ' Description: ' + resp.body.list[i].description);
+
+
+        }
+
+
+
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+
+
+
+
+    this.http.get(this.base_url + '/userJoinedOrgList', {observe: 'response', responseType: 'json'})
+    .subscribe({
+      next: (response) => {
+
+        const res = JSON.stringify(response);
+
+        let resp = JSON.parse(res);
+
+        console.log('resp is ');
+
+        console.log(resp);
+        console.log('body', resp.body.list)
+
+        for(var i = 0; i  < resp.body.list.length; i++)
+        {
+          console.log('index: ', resp.body.list[i].name)
+          this.joinedOrgs.push(resp.body.list[i].name + ' Description: ' + resp.body.list[i].description);
 
 
         }
