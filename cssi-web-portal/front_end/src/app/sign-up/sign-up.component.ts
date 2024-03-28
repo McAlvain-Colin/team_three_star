@@ -58,7 +58,8 @@ export class SignUpComponent {
   passwordConfirm: string = '';
   toolTipText: string =
     "Password must have: \n 1 Uppercase Letter \n 1 Lowercase Letter \n 1 Number \n 1 Special Character(i.e. ?,!,/,', etc.) \n More than 8 Letters";
-  passwordCode: unknown = 0; //Set as unknown for if debugging is needed, so we can cast the hash into a viewable string.
+  passwordCode: number = 0; //Set as unknown for if debugging is needed, so we can cast the hash into a viewable string.
+  sentPassword: string = '';
   specialChars: string[] = [
     '~',
     '!',
@@ -162,6 +163,32 @@ export class SignUpComponent {
         verticalPosition: 'top',
       });
       this.passwordCode = this.hashPassword();
+      this.sentPassword = this.passwordCode.toString();
+      console.log('in signin ');
+      this.http
+        .put(
+          this.base_url + '/createUser',
+          { email: this.emailField.getRawValue(), password: this.sentPassword },
+          { observe: 'response', responseType: 'json' }
+        )
+        .subscribe({
+          next: (response) => {
+            const res = JSON.stringify(response.body);
+
+            let resp = JSON.parse(res);
+
+            console.log('sign in resp is ');
+
+            console.log(resp);
+
+            console.log(resp.emailConfirmation);
+
+            this.checkEmailConfirmation(resp.emailConfirmation);
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
     }
 
     // console.log('in signin ');
@@ -174,31 +201,6 @@ export class SignUpComponent {
     //   .subscribe({
     //     next: (response) => {
     //       const res = JSON.stringify(response.body);
-    console.log('in signin ');
-    this.http
-      .put(
-        this.base_url + '/createUser',
-        { email: this.emailField.getRawValue(), password: this.password },
-        { observe: 'response', responseType: 'json' }
-      )
-      .subscribe({
-        next: (response) => {
-          const res = JSON.stringify(response.body);
-
-          let resp = JSON.parse(res);
-
-          console.log('sign in resp is ');
-
-          console.log(resp);
-
-          console.log(resp.emailConfirmation);
-
-          this.checkEmailConfirmation(resp.emailConfirmation);
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
   }
 
   checkEmailConfirmation(check: boolean) {

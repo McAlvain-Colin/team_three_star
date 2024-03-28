@@ -123,7 +123,8 @@ export class LoginComponent {
   hide: boolean = true;
   email: string = '';
   password: string = '';
-  passwordCode: unknown = 0; //Set as unknown for if debugging is needed, so we can cast the hash into a viewable string.
+  passwordCode: number = 0; //Set as unknown for if debugging is needed, so we can cast the hash into a viewable string.
+  sentPassword: string = '';
 
   //Derived from https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript for basic hashing on front end for secure sending to the backend.
   hashPassword() {
@@ -152,6 +153,16 @@ export class LoginComponent {
   //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
   submitForm() {
     var message: string = `Welcome ${this.email}`;
+
+    const httpOptions = {
+      // withCredentials: true,
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        charset: 'UTF-8',
+        observe: 'response',
+        responseType: 'json',
+      }),
+    };
     if (
       this.emailField.hasError('required') ||
       this.emailField.hasError('email')
@@ -161,14 +172,59 @@ export class LoginComponent {
         horizontalPosition: 'center',
         verticalPosition: 'top',
       });
-    } else {
-      //Check if password is correct then send confirmation message only if passed.
-      this.passwordCode = this.hashPassword();
+    } else if (this.password == '') {
+      message = 'Password Empty!';
       this.snackBar.open(message, 'Close', {
         horizontalPosition: 'center',
         verticalPosition: 'top',
       });
-      alert(message);
+    } else {
+      //Check if password is correct then send confirmation message only if passed.
+      this.passwordCode = this.hashPassword();
+      this.sentPassword = this.passwordCode.toString();
+      //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC:
+      this.http
+        .post(
+          this.base_url + '/login',
+          { email: this.emailField.getRawValue(), password: this.sentPassword },
+          httpOptions
+        )
+        .subscribe({
+          next: (response) => {
+            // this.cookieService.set('mine', 'test')
+
+            const res = JSON.stringify(response);
+
+            let resp = JSON.parse(res);
+
+            console.log('resp is ');
+
+            console.log(resp);
+
+            // console.log('cookie is ')
+
+            // const cook = this.cookieService.get('access_token_cookie')
+            // console.log(cook)
+            // Browser.cookies.get
+            localStorage.setItem('token', resp.token);
+
+            if (this.checkResponse(resp.login)) {
+              this.snackBar.open(message, 'Close', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            } else {
+              message = 'Password Incorrect!';
+              this.snackBar.open(message, 'Close', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            }
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
     }
     // else {
     //   alert(message);
@@ -239,55 +295,12 @@ export class LoginComponent {
     //     },
     //   }
     // );
-
-    const httpOptions = {
-      // withCredentials: true,
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        charset: 'UTF-8',
-        observe: 'response',
-        responseType: 'json',
-      }),
-    };
-
-    //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC:
-    this.http
-      .post(
-        this.base_url + '/login',
-        { email: this.emailField.getRawValue(), password: this.password },
-        httpOptions
-      )
-      .subscribe({
-        next: (response) => {
-          // this.cookieService.set('mine', 'test')
-
-          const res = JSON.stringify(response);
-
-          let resp = JSON.parse(res);
-
-          console.log('resp is ');
-
-          console.log(resp);
-
-          // console.log('cookie is ')
-
-          // const cook = this.cookieService.get('access_token_cookie')
-          // console.log(cook)
-          // Browser.cookies.get
-          localStorage.setItem('token', resp.token);
-
-          this.checkResponse(resp.login);
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
   }
 
   //check value retunred from the backend response, not sure if else condition works
   checkResponse(
     response: boolean //, route: ActivatedRouteSnapshot, state : RouterStateSnapshot)
-  ) {
+  ): boolean {
     if (response) {
       console.log('in if cond');
       this.http
@@ -307,9 +320,11 @@ export class LoginComponent {
           },
         });
 
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/home']);
+      return true;
     } else {
       this.getErrorMessage();
+      return false;
     }
   }
 
