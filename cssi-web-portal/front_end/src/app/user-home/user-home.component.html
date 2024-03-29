@@ -58,7 +58,7 @@
               <!--Note that the let parameter only creates a variable that lasts for the loop and has scope only in the loop.-->
               <a
                 mat-list-item
-                [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
+                [routerLink]="removeOrgs ? null : getRouteName(0, organization)"
                 *ngFor="
                   let organization of ownedOrgSource.data.slice(
                     ownedOrgPaginator.pageIndex * ownedOrgPaginator.pageSize,
@@ -68,7 +68,7 @@
                 "
               >
                 <div class="make-flexbox">
-                  {{ organization }}
+                  {{ organization.name }}
                   <span class="push-button-right"></span>
                   <button
                     class="remove-icon"
@@ -105,7 +105,7 @@
             <mat-nav-list>
               <a
                 mat-list-item
-                [routerLink]="removeOrgs ? null : getRouteName(organization, 0)"
+                [routerLink]="removeOrgs ? null : getRouteName(0, organization)"
                 *ngFor="
                   let organization of joinedOrgSource.data.slice(
                     joinedOrgPaginator.pageIndex * joinedOrgPaginator.pageSize,
@@ -115,7 +115,7 @@
                 "
               >
                 <div class="make-flexbox">
-                  {{ organization }}
+                  {{ organization.name }}
                   <span class="push-button-right"></span>
                   <button
                     class="remove-icon"
@@ -151,7 +151,7 @@
             <mat-nav-list>
               <a
                 mat-list-item
-                [routerLink]="removeOrgs ? null : getRouteName(device, 1)"
+                [routerLink]="removeOrgs ? null : getRouteName(1)"
                 *ngFor="
                   let device of favDeviceSource.data.slice(
                     favDevicePaginator.pageIndex * favDevicePaginator.pageSize,

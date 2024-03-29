@@ -29,18 +29,18 @@ app = Flask(__name__)
 
 meta = MetaData()
 
-engine = create_engine('postgresql://postgres:BigFakey14?@localhost/postgres')
+engine = create_engine('postgresql://postgres:localhost/postgres')
 
 meta.reflect(bind=engine)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:BigFakey14?@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
 db.init_app(app)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR PRIVACY
-app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = '' # ALTERED FOR PRIVACY
+app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 app.config['SERVER_NAME'] = '127.0.0.1:5000'
 
 s = URLSafeTimedSerializer('email secret')

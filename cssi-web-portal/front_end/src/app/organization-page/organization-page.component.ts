@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
-import { DataLayout } from '../data.config';
 import { RequestService } from '../request.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';

@@ -43,7 +43,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:BigFakey14?@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
 db.init_app(app)
 
 
@@ -51,8 +51,8 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR PRIVACY
-app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = '.com' # ALTERED FOR PRIVACY
+app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
 # app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
@@ -316,7 +316,7 @@ def deleteUser():
 def createOrganization():
 
     data = request.get_json() #uid, org titel, org descritpion
-    userId = data['uid']
+    userId = get_jwt_identity()
     orgName = data['orgName']
     descript = data['orgDescript']
 

@@ -69,7 +69,7 @@ export class AddOrganizationComponent {
         this.baseUrl + '/createOrg',
         {
           orgName: this.orgName,
-          orgDescript: this.orgDescription
+          orgDescript: this.orgDescription,
         },
         httpOptions
       )
@@ -78,7 +78,7 @@ export class AddOrganizationComponent {
           const responseString = JSON.stringify(response);
           let parsedRes = JSON.parse(responseString);
 
-          console.log(parsedRes)
+          console.log(parsedRes);
           if (parsedRes.orgCreated) {
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
@@ -93,7 +93,9 @@ export class AddOrganizationComponent {
           }
         },
         error: (error) => {
-          message = 'There was an error that occurred: \n' + error;
+          message =
+            this.orgName +
+            ' already exists, please add a different organization!';
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
