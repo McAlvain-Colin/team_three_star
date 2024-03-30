@@ -50,6 +50,7 @@ export class ApplicationPageComponent {
   appDescription: string | null =
     "These devices consists of the best possible devices made for cat patting, for the best of cats out there. Don't let your feline friend down, get them feline great with these devices below.";
   imgName: string | null = 'placeholder_cat2';
+  removeApps: boolean = false;
   currentPage: number = 0;
   deviceSource = new MatTableDataSource(this.devices);
 
@@ -67,49 +68,41 @@ export class ApplicationPageComponent {
     }
     // this.setupDevices();
 
-    // this is for getting the organizations's applications associated with it 
+    // this is for getting the organizations's applications associated with it
 
-    const params = new HttpParams().set('org', this.appName)
+    const params = new HttpParams().set('org', this.appName);
 
-    this.http.get(this.base_url + '/userOrgAppList', {observe: 'response', responseType: 'json'})
-    .subscribe({
-      next: (response) => {
+    this.http
+      .get(this.base_url + '/userOrgAppList', {
+        observe: 'response',
+        responseType: 'json',
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
 
-        const res = JSON.stringify(response);
+          let resp = JSON.parse(res);
 
-        let resp = JSON.parse(res);
+          console.log('resp is ');
 
-        console.log('resp is ');
+          console.log(resp);
+          console.log('body', resp.body.list);
 
-        console.log(resp);
-        console.log('body', resp.body.list)
-
-        for(var i = 0; i  < resp.body.list.length; i++)
-        {
-          console.log('index: ', resp.body.list[i].name)
-          this.devices.push(resp.body.list[i].name + ' Description: ' + resp.body.list[i].description);
-
-
-        }
-
-
-
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
-
-
-
+          for (var i = 0; i < resp.body.list.length; i++) {
+            console.log('index: ', resp.body.list[i].name);
+            this.devices.push(
+              resp.body.list[i].name +
+                ' Description: ' +
+                resp.body.list[i].description
+            );
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
 
     this.deviceSource.paginator = this.devicePaginator;
-
-
-
-
-
-
   }
 
   private breakpointObserver = inject(BreakpointObserver);

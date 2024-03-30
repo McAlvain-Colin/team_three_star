@@ -119,6 +119,21 @@
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
+.push-button-right {
+  /* This just grows the span so that it takes up the entire flexbox */
+  flex-grow: 1;
+}
+
+.make-flexbox {
+  display: flex;
+  flex-direction: row;
+}
+
+.group-button {
+  position: relative;
+  margin: 2px;
+}
+
 .devices-content {
   height: 100%;
   overflow-y: scroll;

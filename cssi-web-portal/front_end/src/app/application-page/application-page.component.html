@@ -46,6 +46,26 @@
       <mat-card-content class="devices-content">
         <mat-tab-group [style.position]="'sticky'">
           <mat-tab label="{{ appName }} Devices">
+            <div class="make-flexbox">
+              <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
+              <button
+                mat-raised-button
+                color="accent"
+                class="group-button"
+                routerLink="/add-device/{{ appName }}"
+              >
+                Add
+              </button>
+              <span class="push-button-right"> </span>
+              <button
+                mat-raised-button
+                color="warn"
+                class="group-button"
+                (click)="removeApps = !removeApps"
+              >
+                Remove
+              </button>
+            </div>
             <mat-nav-list>
               <a
                 mat-list-item
