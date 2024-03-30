@@ -56,7 +56,6 @@ export class AddOrganizationComponent {
       // withCredentials: true,
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        charset: 'UTF-8',
         observe: 'response',
         responseType: 'json',
       }),

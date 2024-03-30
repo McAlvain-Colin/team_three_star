@@ -150,7 +150,7 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
         for(var i = 0; i  < resp.body.list.length; i++)
         {
           console.log('index: ', resp.body.list[i].name)
-          this.ownedOrgs.push(resp.body.list[i].name + ' Description: ' + resp.body.list[i].description);
+          this.ownedOrgs.push(resp.body.list[i].name);
 
 
         }
