@@ -29,7 +29,7 @@ app = Flask(__name__)
 
 meta = MetaData()
 
-engine = create_engine('postgresql://postgres:localhost/postgres')
+engine = create_engine('postgresql://postgres:@localhost/postgres')
 
 meta.reflect(bind=engine)
 
@@ -39,7 +39,7 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = '' # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = '@gmail.com' # ALTERED FOR PRIVACY
 app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 app.config['SERVER_NAME'] = '127.0.0.1:5000'
 
@@ -50,50 +50,62 @@ mail = Mail(app)
 class Account(Base):
 	__tablename__ = "Account"
 
-	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db 
+	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db
 	email:Mapped[str] = mapped_column(unique= True)
-	password:Mapped[bytes] = mapped_column(types.LargeBinary(), unique= True)
+	password:Mapped[bytes] = mapped_column(types.LargeBinary())
 	verified: Mapped[bool] = mapped_column(unique= False)
+	active: Mapped[bool] = mapped_column(unique= False)
 
 	orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='account')
 
-	def __init__(self, email, password, verified):
+	def __init__(self, email, password, verified, active):
 		self.email = email
 		self.password = password
 		self.verified = verified
+		self.active = active
 
 	def __repr__(self):
-		return f'(id = {self.id}), salt = {self.salt}, email = {self.email}'
-
+		return f'id = {self.id}, email = {self.email}'
+   
 
 class Organization(Base):
 	__tablename__ = "Organization"
 
-	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db 
-	name: Mapped[str] = mapped_column(nullable= False)
-	active: Mapped[bool] = mapped_column(nullable=False)
+	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db
+	name: Mapped[str] = mapped_column(nullable= False, unique= True)
+	description:Mapped[str] = mapped_column(nullable= True)
+	active: Mapped[bool] = mapped_column(unique= False)
 
 	orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='org')
 
 
-	def __init__(self, name):
+	def __init__(self, name, description, active):
 		self.name = name
-		self.active = True
+		self.description = description
+		self.active = active
 
 	def __repr__(self):
 		return f'organization: {self.name}'
 
 
+
+#   1- admin, 2- PI, 3 - basic user. 
+
 class OrgAccount(Base):
 	__tablename__ = 'OrgAccount'
 
-	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db 
+	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres  db
 
 	a_id: Mapped[int] = mapped_column(ForeignKey('Account.id'))
 	account: Mapped['Account'] = relationship(back_populates='orgAccounts')
 
 	o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
 	org: Mapped['Organization'] = relationship(back_populates='orgAccounts')
+
+	#added line/column for roles
+	r_id:Mapped[int] = mapped_column()
+	active: Mapped[bool] = mapped_column()
+
 
 
 
@@ -113,29 +125,29 @@ def func():
 	# db.session.commit()
 	# orgName = 'myOrg'
 
-	#ORGS = meta.tables[Organization.__tablename__]
-
 	#for deleting an org, find the org and then alter the active bool value to be not active in org.
+	# ORGS = db.metadata.tables[Organization.__tablename__]
+
 	# deleteOrg = update(ORGS)
 	# deleteOrg = deleteOrg.values({"active" : False})
-	# deleteOrg = deleteOrg.where(ORGS.c.id == 1)
+	# deleteOrg = deleteOrg.where(ORGS.c.id == 2)
 	# db.session.execute(deleteOrg)
 	# db.session.commit()
 
-	email = 'huytran@nevada.unr.edu'
-	sender = "Huy"
-	orgName = "Totally Tahoe"
+	# email = 'manaj36551@storesr.com'
+	# sender = "Huy"
+	# orgName = "Totally Tahoe"
 
-	emailtoken = s.dumps(email, salt='email-invite')
+	# emailtoken = s.dumps(email, salt='email-invite')
 
-	msg = Message("Organization Invite CSSI Web Portal", sender='cssiportalconfirmation@gmail.com', recipients= [email])
+	# msg = Message("Organization Invite CSSI Web Portal", sender='cssiportalconfirmation@gmail.com', recipients= [email])
 
-	link = url_for('invite_email', token = emailtoken, _external = True)
+	# link = url_for('invite_email', token = emailtoken, _external = True)
 
-	msg.body = sender + ' has sent you a request to join their organization! \n Would you like to join ' + orgName + '?\n'
-	msg.body = msg.body + 'Join org link: {}'.format(link)
+	# msg.body = sender + ' has sent you a request to join their organization! \n Would you like to join ' + orgName + '?\n'
+	# msg.body = msg.body + 'Join org link: {}'.format(link)
 
-	mail.send(msg)
+	# mail.send(msg)
 
 	# For adding to orgAccounts
 	#newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
@@ -148,32 +160,33 @@ def func():
 	#db.session.commit()
 	pass
 
-@app.route('/invite_email/<token>')  
-def invite_email(token):
+# @app.route('/invite_email/<token>')  
+# def invite_email(token):
 
-	try:
-		email = s.loads(token, salt='email-invite', max_age = 360)
+# 	try:
+# 		email = s.loads(token, salt='email-invite', max_age = 360)
 
-		newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+# 		joinUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+# 		if joinUser is None:
+# 			return "<h1>User doesn't have an acccount!<h1>"
 
-		newOrg = db.session.execute(db.select(Organization).filter_by(name = 'myOrg')).scalar()
+# 		joinOrg = db.session.execute(db.select(Organization).filter_by(name = 'asdj')).scalar()
 
-		orgacc = OrgAccount(account= newUser, org= newOrg)
+# 		orgacc = OrgAccount(account= joinUser, org= joinOrg)
+# 		orgacc.r_id = 3
+# 		orgacc.active = True
 
-		db.session.add(orgacc)
-		db.session.commit()
+# 		db.session.add(orgacc)
+# 		db.session.commit()
 
-		return '<h1>The organization invite was successful, please check your oganizations.</h1>'
-	except SignatureExpired:
-		newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
-		
-		db.session.delete(newUser)
-		db.session.commit()
-
-		return '<h1>The email invitation has failed, please request another invite.</h1>'
+# 		return '<h1>The organization invite was successful, please check your organizations.</h1>'
+# 	except SignatureExpired:
+# 		return '<h1>The email invitation has expired, please request another invite.</h1>'
 
 if __name__ == '__main__':
 	with app.app_context():
 		#db.create_all()
 		#db.drop_all()
 		func()
+		app.run()
+		#OrgAccount.__table__.create(engine) #How to create and drop specific tables

@@ -51,7 +51,7 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = '.com' # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = '@gmail.com' # ALTERED FOR PRIVACY
 app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
@@ -129,6 +129,7 @@ class OrgAccount(Base):
 
     #added line/column for roles
     r_id:Mapped[int] = mapped_column()
+    active: Mapped[bool] = mapped_column()
 
 
 
@@ -327,7 +328,7 @@ def createOrganization():
 
 
     #link the account with the org
-    orgAcc = OrgAccount(account= user, org= newOrg, r_id = 1)
+    orgAcc = OrgAccount(account= user, org= newOrg, r_id = 1, active = True)
 
     db.session.add(newOrg)
     db.session.commit()
@@ -337,6 +338,47 @@ def createOrganization():
 
 
     return jsonify(orgCreated = True)
+@app.route('/inviteUser',  methods = ['PUT'])
+def inviteUser():
+	data = request.get_json()
+	email = data['email']
+	sender = data['senderName']
+	orgName = data['orgName']
+
+	emailtoken = s.dumps(email, salt='email-invite')
+
+	msg = Message("Organization Invite CSSI Web Portal", sender='cssiportalconfirmation@gmail.com', recipients= [email])
+
+	link = url_for('invite_email', token = emailtoken, _external = True)
+
+	msg.body = sender + ' has sent you a request to join their organization! \n Would you like to join ' + orgName + '?\n'
+	msg.body = msg.body + 'Join org link: {}'.format(link)
+
+	mail.send(msg)
+
+@app.route('/invite_email/<token>')  
+def invite_email(token):
+
+	try:
+		email = s.loads(token, salt='email-invite', max_age = 360)
+
+		joinUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+		if joinUser is None:
+			return "<h1>User doesn't have an acccount!<h1>"
+
+		joinOrg = db.session.execute(db.select(Organization).filter_by(name = 'asdj')).scalar()
+
+		orgacc = OrgAccount(account= joinUser, org= joinOrg)
+		orgacc.r_id = 3
+		orgacc.active = True
+
+		db.session.add(orgacc)
+		db.session.commit()
+
+		return '<h1>The organization invite was successful, please check your organizations.</h1>'
+	except SignatureExpired:
+		return '<h1>The email invitation has expired, please request another invite.</h1>'
+
 
 @app.route('/deleteOrg', methods = ['PUT'])
 def deleteOrg():
