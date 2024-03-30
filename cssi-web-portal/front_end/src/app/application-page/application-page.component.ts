@@ -19,6 +19,7 @@ import {
   MatPaginatorModule,
   PageEvent,
 } from '@angular/material/paginator';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-application-page',
@@ -41,6 +42,7 @@ import {
   ],
 })
 export class ApplicationPageComponent {
+  base_url: string = 'http://localhost:5000';
   routerLinkVariable = '/hi';
   devices: string[] = [];
   orgName: string | null = 'Cat Chairs';
@@ -57,14 +59,57 @@ export class ApplicationPageComponent {
     ChangeDetectorRef.prototype
   );
 
-  constructor(private route: ActivatedRoute) {} //makes an instance of the router
+  constructor(private route: ActivatedRoute, private http: HttpClient) {} //makes an instance of the router
   ngOnInit(): void {
     this.appName = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
     if (this.appName == null) {
       this.appName = 'Cat Patting';
     }
-    this.setupDevices();
+    // this.setupDevices();
+
+    // this is for getting the organizations's applications associated with it 
+
+    const params = new HttpParams().set('org', this.appName)
+
+    this.http.get(this.base_url + '/userOrgAppList', {observe: 'response', responseType: 'json'})
+    .subscribe({
+      next: (response) => {
+
+        const res = JSON.stringify(response);
+
+        let resp = JSON.parse(res);
+
+        console.log('resp is ');
+
+        console.log(resp);
+        console.log('body', resp.body.list)
+
+        for(var i = 0; i  < resp.body.list.length; i++)
+        {
+          console.log('index: ', resp.body.list[i].name)
+          this.devices.push(resp.body.list[i].name + ' Description: ' + resp.body.list[i].description);
+
+
+        }
+
+
+
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+
+
+
     this.deviceSource.paginator = this.devicePaginator;
+
+
+
+
+
+
   }
 
   private breakpointObserver = inject(BreakpointObserver);

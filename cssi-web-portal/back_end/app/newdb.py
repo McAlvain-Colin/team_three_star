@@ -1,11 +1,13 @@
+import json
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, types, Text, LargeBinary, ForeignKey, select
+from sqlalchemy import String, types, Text, LargeBinary, ForeignKey, select, ForeignKeyConstraint, UniqueConstraint
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry, relationship
 from typing_extensions import Annotated
 from typing import List
 
 from flask import Flask, jsonify, abort, Response, make_response
+import sqlalchemy as sa
 
 
 #db things###########################
@@ -25,24 +27,10 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
 db.init_app(app)
 
 
-# with app.app_context():
-# # db.create_all()
-# # db.drop_all()
-# db.reflect()
-
-
-# class Device(Base):
-# __table__ = db.metadata.tables['device']
-
-# dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
-
-# reading: Mapped[int] = mapped_column(unique= False)
-
-# appDevices: Mapped[List['AppSensors']] = relationship(back_populates= 'device')
 
 
 
@@ -111,7 +99,7 @@ class Application(Base):
     __tablename__ = 'Application'
 
     id: Mapped[int] = mapped_column(primary_key= True)
-    name : Mapped[str] = mapped_column(nullable= True)
+    name : Mapped[str] = mapped_column(nullable= False)
     description: Mapped[str] = mapped_column(nullable= True)
 
     orgs: Mapped[List['OrgApplication']] = relationship(back_populates='app')
@@ -137,30 +125,33 @@ class OrgApplication(Base):
     # dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
     # device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
     def __repr__(self):
-        return f'orgApp {self.id} {self.description}'
+        return f'orgApp: {self.id} {self.app_id} {self.o_id}'
 
 
 
 class AppSensors(Base):
     __tablename__ = 'AppSensors'
+    # __table_args__  = (ForeignKeyConstraint(['dev_eui'], ['lab_sensor_json.dev_eui']),)
 
     app_id: Mapped[int] = mapped_column(ForeignKey('Application.id'))
     app: Mapped['Application'] = relationship(back_populates= 'appSensors')
 
     # dev_eui needs to have the table name as stored in postgreSQL
-    dev_eui: Mapped[str] = mapped_column(Text, ForeignKey("device.dev_eui"), primary_key= True)
-    devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
+    dev_name: Mapped[str] = mapped_column(String, nullable= False)
+    dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
+#     devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
 
 with app.app_context():
 # for creating db
     db.reflect()
 
-
+# this table represent the lab sensor json provided by Zach
 class Device(Base):
-    __table__ = db.metadata.tables['device']
+    __tablename__ = db.metadata.tables['lab_sensor_json']
+    
+    dev_eui: Mapped[str] = mapped_column(Text, primary_key= True) 
 
-    appDevices: Mapped[List['AppSensors']] = relationship(back_populates= 'devices')
-
+            
 
 def func():
 
@@ -320,19 +311,46 @@ def func():
 
     ####################################################################
     # get org with id = 1
-    # org = db.session.execute(db.select(Organization).filter_by(id = 1)).scalar()
+    org = db.session.execute(db.select(Organization).where(Organization.id == 1)).scalar()
 
+    print(org.id)
 
+    # acc = db.session.execute(db.select(Account).where(Account.id == 1)).scalar()
+    # print(acc.email)
+
+    # orgAcc =OrgAccount(account= acc, org= org, r_id = 1)
+    # db.session.add(orgAcc)
+    # db.session.commit()
     # # # AppSensors()
     # oApp = OrgApplication(description='for mah testing', o_id= org.id)
 
     # db.session.add(oApp)
     # db.sesson.commit()
 
+    # app = Application(name= 'mwryjnszugtrbApp', description= 'idk')
+    # db.session.add(app)
+    # db.session.commit()
 
 
-    # print(res)
 
+
+
+
+    res = db.session.execute(db.select(Application).where(Application.id == 5)).scalar()
+
+    # print(res.name)
+
+    # orgApp = OrgApplication(app= res, org= org)
+    # db.session.add(orgApp) 
+    # db.session.commit()
+        
+        
+        
+        
+        
+        
+        
+        
     # json_data = json.dumps(res)
     # t = json.dumps(total)
 
@@ -503,29 +521,163 @@ def func():
     # print(i.dev_eui)
 
 
-    page = db.paginate(db.select(AppSensors).where(AppSensors.app_id == 1), page= 1, per_page= 5)
 
-    # print(page.items) #doesnt work if not specified the object attributes to expose
+    print('id', db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id ==1)).scalars())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # changed implmetation for making JSON responses
+
+
+
+    page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.app_id == 1)).scalars()
+
+    # # print(page.items) #doesnt work if not specified the object attributes to expose
     res = {
-    'totalPages': page.pages,
+    # 'totalPages': page.pages,
     'list': [
     {
-    'app_id' : p.app_id,
-    'name': p.dev_eui
-    } for p in page.items
+    'app_id' : p.id,
+    'name': p.name
+    } for p in page.all()
     ]
     }
 
-    print(res)
+    j = json.dumps(res)
+
+    print(j)
 
 
+
+
+    # app = db.session.execute(db.select(Application).where(Application.id == 1)).scalar()
+
+    # dev = AppSenseo()
 
 ##############################################################
 
+    # print(db.session.execute(db.select(Device.dev_eui)).scalars().all())
+
+    # creating a appliction independent of an org for testing 
+
+    # myApp = Application(name= 'myApp', description= 'idk wwhat to put here')
+    # db.session.add(myApp)
+    # db.session.commit()
 
 
 
 
+    # for adding devices to a application
+
+    # app = db.session.execute(db.select(Application).where(Application.id == 1)).scalar()
+
+    # appSensor = AppSensors(app_id = app.id, dev_name='myDevice', dev_eui= 'A1')
+    # db.session.add(appSensor)
+    # db.session.commit()
+
+
+
+
+
+
+    # check if a device is  in the  lab Snesor json 
+
+    # print(db.session.execute(db.select(Device).where(Device.dev_eui == 'A1')).scalar().dev_eui)
+
+    # if (db.session.execute(db.select(Device).where(Device.dev_eui == 'A2')).scalar() is not None ):
+        
+    #     app = db.session.execute(db.select(Application).where(Application.id == 1)).scalar()
+
+    #     appSensor = AppSensors(app_id = app.id, dev_name='myDevice', dev_eui= 'A2')
+    #     db.session.add(appSensor)
+    #     db.session.commit()
+
+
+
+
+    page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 1)).scalars()
+
+    # # print(page.items) #doesnt work if not specified the object attributes to expose
+    res = {
+    # 'totalPages': page.pages,
+    'list': [
+    {
+    'app_id' : p.app_id,
+    'name': p.dev_name,
+    'dev': p.dev_eui
+
+    } for p in page.all()
+    ]
+    }
+
+    j = json.dumps(res)
+
+    print(j)
+
+
+
+
+
+
+
+
+    # how to select distinct device availbe
+
+
+    # db.session.execute()
 
 
 
@@ -533,16 +685,18 @@ def func():
 
 
 # if __name__ == '__main__':
-# with app.app_context():
-# # for creating db
-# db.reflect()
-# # db.create_all()
+with app.app_context():
+# for creating db
+    # db.reflect()
+    # db.create_all()
+    # print(db.session.execute(db.select(Device.dev_eui)).scalars().all())
+
 
 # #fro deleting
-# # db.reflect()
-# # db.drop_all()
+    # db.reflect()
+    # db.drop_all()
 
-# # func()
+    func()
 # # pass
 
 
@@ -552,6 +706,6 @@ def func():
 # appDevices: Mapped[List['AppSensors']] = relationship(back_populates= 'devices')
 
 
-with app.app_context():
-    db.create_all()
-    #func()
+# with app.app_context():
+    # db.create_all()
+    # func()

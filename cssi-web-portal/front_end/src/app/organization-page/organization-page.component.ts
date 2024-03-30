@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { RequestService } from '../request.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -25,6 +31,7 @@ import {
   _MatTableDataSource,
   MatTableDataSource,
 } from '@angular/material/table';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-organization-page',
@@ -48,7 +55,9 @@ import {
     RemovalDialogComponent,
   ],
 })
-export class OrganizationPageComponent {
+export class OrganizationPageComponent implements OnInit {
+  base_url: string = 'http://localhost:5000';
+
   orgId: number = 0;
   routerLinkVariable = '/hi';
   applications: string[] = [];
@@ -76,14 +85,51 @@ export class OrganizationPageComponent {
     ChangeDetectorRef.prototype
   );
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) {} //makes an instance of the router
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private http: HttpClient
+  ) {} //makes an instance of the router
   ngOnInit(): void {
     this.orgName = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
     console.log(this.orgName);
     if (this.orgName == null) {
       this.orgName = 'Cat Chairs';
     }
-    this.setupLists();
+    // this.setupLists();
+
+    // this is to specify the orgNmae in the get request using query Parameters
+
+    const param = new HttpParams().set('org', decodeURI(this.orgName));
+
+    this.http
+      .get(this.base_url + '/userOrgAppList', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          console.log('resp is ');
+
+          console.log(resp);
+          console.log('body', resp.body.list);
+
+          for (var i = 0; i < resp.body.list.length; i++) {
+            console.log('index: ', resp.body.list[i].name);
+            this.applications.push(resp.body.list[i].name);
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
+    // this is for getting a org's applicatiiions
     this.appsSource.paginator = this.appsPaginator;
     this.memberSource.paginator = this.membersPaginator;
   }
