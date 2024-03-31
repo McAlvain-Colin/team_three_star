@@ -33,6 +33,13 @@ import {
 } from '@angular/material/table';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
+// an interfca foooooooooooor describing json data in request 
+export interface App{
+  name: string,
+  id: number,
+  description: string 
+}
+
 @Component({
   selector: 'app-organization-page',
   templateUrl: './organization-page.component.html',
@@ -57,6 +64,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class OrganizationPageComponent implements OnInit {
   base_url: string = 'http://localhost:5000';
+  appList: App[] = [];
+
+
 
   orgId: number = 0;
   routerLinkVariable = '/hi';
@@ -70,7 +80,7 @@ export class OrganizationPageComponent implements OnInit {
   removeMembers: boolean = false;
   isAdmin: boolean = true;
   currentPage: number = 0;
-  appsSource = new MatTableDataSource(this.applications);
+  appsSource = new MatTableDataSource(this.appList);
   memberSource = new MatTableDataSource(this.members);
 
   @ViewChild('appsPaginator', { static: true })
@@ -98,8 +108,36 @@ export class OrganizationPageComponent implements OnInit {
     }
     // this.setupLists();
 
-    // this is to specify the orgNmae in the get request using query Parameters
+    // this is to specify the orgName in the get request using query Parameters
 
+
+    const params = new HttpParams().set('org', this.orgName);
+
+    this.http
+      .get(this.base_url + '/userOrg', {
+        observe: 'response',
+        responseType: 'json',
+        params: params,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          console.log('resp body is ', resp.body);
+
+          this.orgName = resp.body.name
+          this.orgDescription = resp.body.description
+
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+
+    // for retrieving user org  applications 
     const param = new HttpParams().set('org', decodeURI(this.orgName));
 
     this.http
@@ -119,17 +157,21 @@ export class OrganizationPageComponent implements OnInit {
           console.log(resp);
           console.log('body', resp.body.list);
 
-          for (var i = 0; i < resp.body.list.length; i++) {
-            console.log('index: ', resp.body.list[i].name);
-            this.applications.push(resp.body.list[i].name);
-          }
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
+        for(var i = 0; i < resp.body.list.length; i++)
+        {
+          this.applications.push(resp.body.list[i].name);
+          this.appList.push({id: resp.body.list[i].app_id, name: resp.body.list[i].name, description: resp.body.list[i].description});
 
-    // this is for getting a org's applicatiiions
+        }
+
+
+
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
     this.appsSource.paginator = this.appsPaginator;
     this.memberSource.paginator = this.membersPaginator;
   }
