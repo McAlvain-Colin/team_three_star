@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { MatTableModule }  from '@angular/material/table';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -23,6 +24,12 @@ export interface SensorData {
   metadata_dict: any;
   payloadColumns: any;
   metadataColumns: any;
+}
+
+
+export interface Device{
+  name: string,
+  devEUI: string 
 }
 
 @Component({
@@ -47,6 +54,9 @@ export interface SensorData {
   ],
 })
 export class FilterPageComponent implements OnInit{
+  base_url: string = 'http://localhost:5000';
+  deviceList: Device[] = []
+
 
   // Declared variables. Currently has duplicates until the better method is determined. 
   panelOpenState = false;
@@ -63,7 +73,9 @@ export class FilterPageComponent implements OnInit{
   displayedPayloadColumns: string[] = [];  // Property to hold the
   displayedMetadataColumns: string[] = [];  // Property to hold the
 
-  constructor(private apiService: ApiService) { }
+  appId: string|null = '' //used to send appId to the db and retrieve all devEUIs associated with app
+
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private http: HttpClient)  { }
 
   add_device(): void {
     this.apiService.getData().subscribe({
@@ -76,6 +88,43 @@ export class FilterPageComponent implements OnInit{
   //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
   //itterating code to try and get the data in a formate I can use.
   ngOnInit(): void {
+
+
+
+    this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
+
+
+
+    const param = new HttpParams().set('app', this.appId != null ? this.appId : '-1');
+
+    this.http.get(this.base_url + '/userOrgAppDeviceList', {observe: 'response', responseType: 'json', params: param})
+    .subscribe({
+      next: (response) => {
+
+        const res = JSON.stringify(response);
+
+        let resp = JSON.parse(res);
+
+        for(var i = 0; i < resp.body.list.length; i++)
+        {
+          console.log('index: ', resp.body.list[i].name)
+          // this.devices.push(resp.body.list[i].name);
+          this.deviceList.push({name: resp.body.list[i].name, devEUI: resp.body.list[i].dev})
+        }
+
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+
+
+
+
+
+
+
     this.apiService.getData().subscribe({
       next: (data: SensorData[]) => {
         this.records = data.map((item: SensorData) => ({

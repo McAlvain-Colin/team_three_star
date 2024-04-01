@@ -45,7 +45,7 @@ const routes: Routes = [
   { path: 'invite-user/:org', component: InviteUserComponent },
   { path: 'organization', component: OrganizationPageComponent },
   { path: 'organization/:org', component: OrganizationPageComponent }, //:org is dynamic
-  { path: 'organization/:org/:user', component: OrganizationPageComponent }, //:org is dynamic
+  // { path: 'organization/:org/:user', component: OrganizationPageComponent }, //:org is dynamic
   { path: 'application', component: ApplicationPageComponent },
   { path: 'application/:app', component: ApplicationPageComponent },
   {
@@ -53,8 +53,9 @@ const routes: Routes = [
     component: ApplicationPageComponent,
   },
   { path: 'device', component: DevicePageComponent },
-  { path: 'device/:curDevice', component: DevicePageComponent }, //:curDevice is dynamic
-  { path: 'filter', component: FilterPageComponent },
+  { path: 'device/:app/:dev', component: DevicePageComponent },
+  // { path: 'device/:curDevice', component: DevicePageComponent }, //:curDevice is dynamic
+  { path: 'filter/:app', component: FilterPageComponent },
   { path: '**', pathMatch: 'full', component: HomeComponent }, //Star route put at the end for if no path is found, routes back to landing.
 ];
 
