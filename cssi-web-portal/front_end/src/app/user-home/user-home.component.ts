@@ -199,13 +199,27 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
   }
 
   //For removal, we use put in order to update the status of the org with a boolean.
-  confirmRemoval(removeOrg?: Organization) {
-    const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
-      data: {
-        itemName: removeOrg?.name,
-        itemId: removeOrg?.o_id || removeOrg?.description,
-      }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
-    });
+  confirmRemoval(
+    itemType: number,
+    removeOrg?: Organization,
+    removeFav?: string
+  ) {
+    if (itemType == 0) {
+      const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+        data: {
+          itemName: removeOrg?.name,
+          itemId: removeOrg?.o_id,
+          itemType: itemType,
+        }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+      });
+    } else if (itemType == 1) {
+      const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+        data: {
+          itemName: removeFav,
+          itemType: itemType,
+        }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+      });
+    }
   }
 
   getRouteName(itemType: number, org?: Organization) {

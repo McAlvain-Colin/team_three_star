@@ -8,7 +8,7 @@
       <form class="container" (ngSubmit)="submitForm()" #signupForm="ngForm">
         <!--"Banana in the box" [()], property binding, then event binding. Connects template to class and likewise-->
         <!--Using {{variable}} would show how the variable is now connected to the field-->
-        <mat-form-field color="primary" [style.width.px]="250">
+        <!--mat-form-field color="primary" [style.width.px]="250">
           <mat-label>Name</mat-label>
           <input
             matInput
@@ -17,10 +17,10 @@
             [(ngModel)]="name"
             #nameInput="ngModel"
             required
-          />
-          <!--Only invalid if left empty, and has been clicked into-->
-          <mat-error *ngIf="nameInput.invalid && nameInput.touched"></mat-error>
-        </mat-form-field>
+          /-->
+        <!--Only invalid if left empty, and has been clicked into-->
+        <!--mat-error *ngIf="nameInput.invalid && nameInput.touched"></mat-error>
+        </mat-form-field-->
         <!--The email field utilizes the angular framework to check for invalid email entries-->
         <mat-form-field color="primary" [style.width.px]="250">
           <mat-label>Email</mat-label>

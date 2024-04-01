@@ -28,7 +28,7 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      Welcome {{ userName }}</mat-toolbar
+      Welcome Home</mat-toolbar
     >
     <mat-card class="organization-box">
       <mat-card-content class="organization-content">
@@ -73,7 +73,7 @@
                   <button
                     class="remove-icon"
                     *ngIf="removeOrgs"
-                    (click)="confirmRemoval(organization)"
+                    (click)="confirmRemoval(0, organization)"
                   >
                     <mat-icon fontIcon="remove" color="warn"></mat-icon>
                   </button>
@@ -120,7 +120,7 @@
                   <button
                     class="remove-icon"
                     *ngIf="removeOrgs"
-                    (click)="confirmRemoval(organization)"
+                    (click)="confirmRemoval(0, organization)"
                   >
                     <mat-icon fontIcon="remove" color="warn"></mat-icon>
                   </button>
@@ -166,7 +166,7 @@
                   <button
                     class="remove-icon"
                     *ngIf="removeOrgs"
-                    (click)="confirmRemoval(device)"
+                    (click)="confirmRemoval(1, device)"
                   >
                     <mat-icon fontIcon="remove" color="warn"></mat-icon>
                   </button>
