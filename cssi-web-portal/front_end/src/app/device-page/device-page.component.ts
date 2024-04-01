@@ -112,7 +112,7 @@ export class DevicePageComponent implements OnInit{
 
 
 
-    // this is for giving the device EUI from the given dev name from the user.
+    // this is for giving one device EUI from the given dev name from the user.
     this.http.get(this.base_url + '/userOrgAppDevice', {observe: 'response', responseType: 'json', params: param})
     .subscribe({
       next: (response) => {

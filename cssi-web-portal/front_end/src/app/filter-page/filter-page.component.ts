@@ -107,7 +107,7 @@ export class FilterPageComponent implements OnInit{
 
         for(var i = 0; i < resp.body.list.length; i++)
         {
-          console.log('index: ', resp.body.list[i].name)
+          console.log('index on filter is : ', resp.body.list[i].name)
           // this.devices.push(resp.body.list[i].name);
           this.deviceList.push({name: resp.body.list[i].name, devEUI: resp.body.list[i].dev})
         }
