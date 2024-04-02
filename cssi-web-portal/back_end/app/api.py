@@ -7,7 +7,7 @@ from flask_mail import Mail, Message
 
 from flask_jwt_extended import (create_access_token, JWTManager,
 								jwt_required, get_jwt_identity,
-								set_access_cookies, unset_jwt_cookies
+								
 								)
 
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -47,7 +47,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
 db.init_app(app)
 
 
@@ -180,7 +180,7 @@ class AppSensors(Base):
 	app: Mapped['Application'] = relationship(back_populates= 'appSensors')
 
 	# dev_eui needs to have the table name as stored in postgreSQL
-	dev_name: Mapped[str] = mapped_column(String, nullable= False)
+	dev_name: Mapped[str] = mapped_column(String, nullable= False, unique= True)
 	dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
 #     devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
 
@@ -195,7 +195,6 @@ with app.app_context():
 #     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True) 
 
 			
-
 
 
 ###############################
@@ -407,9 +406,9 @@ def deleteOrg():
 	
 	removeOrg = update(ORGS).values(active = False).where(ORGS.c.id == orgId)
 	checkAdminAccount = select(ORGACCOUNTS).where(
-    ORGACCOUNTS.c.a_id == userId,
-    ORGACCOUNTS.c.o_id == orgId,
-    ORGACCOUNTS.c.r_id == 1
+	ORGACCOUNTS.c.a_id == userId,
+	ORGACCOUNTS.c.o_id == orgId,
+	ORGACCOUNTS.c.r_id == 1
 	)
 	checkOrgAccount = select(ORGACCOUNTS).where(
 		ORGACCOUNTS.c.a_id == userId,
@@ -436,6 +435,30 @@ def deleteOrg():
 			return jsonify(orgDeleteSuccess = False)
 
 
+@app.route('/userOrg', methods = ['GET']) 
+@jwt_required() 
+def getOrg():
+	
+	orgId = request.args['org']
+	orgId  = int(orgId)
+
+	try:
+		page = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
+		res  = {
+			'name': page.name,
+			'description': page.description
+		} 
+		return jsonify(res), 200
+
+	except exc.SQLAlchemyError:
+		return jsonify({'error': "couldn't get your org with name specified"}), 404
+
+
+		
+	
+
+
+
 @app.route('/userOwnedOrgList', methods = ['GET']) 
 @jwt_required() 
 def getOwnedOrgList():
@@ -455,7 +478,7 @@ def getOwnedOrgList():
 				} for p in page.all()
 			]
 		}
-		return make_response(res, 200)
+		return jsonify(res), 200
 	
 	except exc.SQLAlchemyError:
 
@@ -537,8 +560,6 @@ def createOrgApplication():
 	db.session.add(orgApp)
 	db.session.commit()
 
-
-
 	return jsonify(orgCreated = True)
 
 
@@ -548,24 +569,24 @@ def createOrgApplication():
 @jwt_required() 
 def getOrgApp():
 
-    app_id = request.args['app']
+	app_id = request.args['app']
 
-    app_id = int(app_id)
+	app_id = int(app_id)
 
-    try:
+	try:
 
-        app = db.session.execute(db.select(Application).where(Application.id == app_id)).scalar()
-        res = {
-                'app_id': app.id,
-                'name': app.name,
-                'description': app.description
-        }
-        return jsonify(res), 200
-    
-    except Exception as e:
+		app = db.session.execute(db.select(Application).where(Application.id == app_id)).scalar()
+		res = {
+				'app_id': app.id,
+				'name': app.name,
+				'description': app.description
+		}
+		return jsonify(res), 200
+	
+	except Exception as e:
 
-        return jsonify({'error': str(e)}), 404
-       
+		return jsonify({'error': str(e)}), 404
+	
 
 
 
@@ -575,12 +596,8 @@ def getOrgAppList():
 
 	uid = get_jwt_identity()
 	# data = request.get_json()
-	orgName = request.args['org']
-	print(orgName)
+	oid= request.args['org']
 
-	oid = db.session.execute(db.select(Organization.id).where(Organization.name == orgName)).scalar()
-	
-	# oid = int(data['oid'])
 	
 
 	try:
@@ -600,23 +617,61 @@ def getOrgAppList():
 		return jsonify(res), 200
 
 	except Exception as e:
-
 		return jsonify({'error': str(e)}), 404
 	
 	
 
-# @app.route('/addOrgAppDeviceList', methods = ['POST']) 
-# @jwt_required() 
-# def addDeviceList():
-#     if (db.session.execute(db.select(Device).where(Device.dev_eui == 'A2')).scalar() is not None ):
-		
-#         app = db.session.execute(db.select(Application).where(Application.id == 1)).scalar()
+@app.route('/addOrgAppDevice', methods = ['POST']) 
+@jwt_required() 
+def addAppDevice():
 
-#         appSensor = AppSensors(app_id = app.id, dev_name='myDevice', dev_eui= 'A2')
-#         db.session.add(appSensor)
-#         db.session.commit()
-#     else:
-#         jsonify({'DeviceAdded': False})
+	data = request.get_json()
+	appId = data['appId']
+	devEUI = data['devEUI']
+
+
+
+
+	if (db.session.execute(db.select(Device).where(Device.dev_eui == devEUI)).scalar() is not None ):
+		
+		app = db.session.execute(db.select(Application).where(Application.id == appId)).scalar()
+
+		appSensor = AppSensors(app_id = app.id, dev_name='myDevice', dev_eui= devEUI)
+		db.session.add(appSensor)
+		db.session.commit()
+		return jsonify({'DeviceAdded': True}), 200
+
+	else:
+		return jsonify({'DeviceAdded': False}), 200  
+
+
+
+
+
+@app.route('/userOrgAppDevice', methods = ['GET']) 
+@jwt_required() 
+def getOrgAppDevice():
+	appId = request.args['app']
+	devName = request.args['devName']
+
+	appId = int(appId)
+
+
+	try:
+		page = db.session.execute(db.select(AppSensors.dev_eui).where(AppSensors.app_id == appId).where(AppSensors.dev_name == devName)).scalar()
+
+		res = {
+			'dev_eui': page
+		}
+
+		return jsonify(res), 200
+	
+	except exc.SQLAlchemyError:
+
+		return jsonify({'error': "couldn't retieve the sensors of this application"}), 404
+	
+
+
 
 
 @app.route('/userOrgAppDeviceList', methods = ['GET']) 
@@ -645,9 +700,9 @@ def getOrgAppDeviceList():
 
 		return jsonify(res), 200
 	
-	except Exception as e:
+	except exc.SQLAlchemyError:
 
-		return make_response({'error': str(e)}, 404)
+		return jsonify({'error': "couldn't retieve the sensors of this application"}), 404
 	
 	
 

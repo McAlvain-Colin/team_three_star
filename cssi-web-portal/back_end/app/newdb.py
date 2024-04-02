@@ -35,6 +35,7 @@ db.init_app(app)
 
 
 
+
 class Account(Base):
     __tablename__ = "Account"
 
@@ -68,9 +69,9 @@ class Organization(Base):
     orgApps: Mapped[List['OrgApplication']] = relationship(back_populates='org')
 
 
-    def __init__(self, name, desc, active):
+    def __init__(self, name, description, active):
         self.name = name
-        self.description = desc
+        self.description = description
         self.active = active
 
     def __repr__(self):
@@ -92,6 +93,7 @@ class OrgAccount(Base):
 
     #added line/column for roles
     r_id:Mapped[int] = mapped_column()
+    active: Mapped[bool] = mapped_column()
 
 
 
@@ -137,7 +139,7 @@ class AppSensors(Base):
     app: Mapped['Application'] = relationship(back_populates= 'appSensors')
 
     # dev_eui needs to have the table name as stored in postgreSQL
-    dev_name: Mapped[str] = mapped_column(String, nullable= False)
+    dev_name: Mapped[str] = mapped_column(String, nullable= False, unique= True)
     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
 #     devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
 
@@ -152,6 +154,7 @@ class Device(Base):
     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True) 
 
             
+          
 
 def func():
 
@@ -664,7 +667,7 @@ def func():
 
 
 
-    page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 1)).scalars()
+    page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 10)).scalars()
 
     res = {
         'list': [
@@ -679,19 +682,34 @@ def func():
 
     j = json.dumps(res)
 
-    print('Devices areeeeee ', j)
+    print('Devices are, j')
 
 
 
 
+    # page = db.session.execute(db.select(Organization).where(Organization.id == 10)).scalar()
+
+    # print(page.name)
 
 
+
+    # print(  'dev test',  (db.session.execute(db.select(Device)).scalars()).all())
 
 
     # how to select distinct device availbe
 
 
     # db.session.execute()
+    page = db.session.execute(db.select(AppSensors.dev_eui).where(AppSensors.app_id == 10).where(AppSensors.dev_name == 'myDevice')).scalar()
+    print('deve eui', page)
+
+
+
+
+
+    # pull all user associated with an organization
+
+    page = db.session.execute(db.select(Account).join(Account.orgAccounts).where(OrgAccount.o_id == 10))
 
 
 
