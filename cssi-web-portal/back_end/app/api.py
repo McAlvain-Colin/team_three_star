@@ -457,9 +457,9 @@ def getOwnedOrgList():
 		}
 		return make_response(res, 200)
 	
-	except Exception as e:
+	except exc.SQLAlchemyError:
 
-		return make_response({'error': str(e)}, 404)
+		return jsonify({'error': "couldn't get your owned orgs"}), 404
 	
 	
 
@@ -469,7 +469,6 @@ def getJoinedOrgList():
 
 	uid = get_jwt_identity()
 
-	print(uid)
 	try:
 		page = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where(OrgAccount.r_id == 2).where(OrgAccount.r_id == 3).where(OrgAccount.active == True)).scalars()
 
@@ -485,9 +484,9 @@ def getJoinedOrgList():
 		res = json.dumps(res)
 		return make_response(res, 200)
 	
-	except Exception as e:
+	except exc.SQLAlchemyError:
 
-		return make_response({'error': str(e)}, 404)
+		return make_response({'error': "Couldn't get your Joined Orgs"}, 404)
 	
 @app.route('/getOrgInfo', methods = ['GET'])
 @jwt_required()
@@ -545,6 +544,31 @@ def createOrgApplication():
 
 
 
+@app.route('/userOrgApp', methods = ['GET']) 
+@jwt_required() 
+def getOrgApp():
+
+    app_id = request.args['app']
+
+    app_id = int(app_id)
+
+    try:
+
+        app = db.session.execute(db.select(Application).where(Application.id == app_id)).scalar()
+        res = {
+                'app_id': app.id,
+                'name': app.name,
+                'description': app.description
+        }
+        return jsonify(res), 200
+    
+    except Exception as e:
+
+        return jsonify({'error': str(e)}), 404
+       
+
+
+
 @app.route('/userOrgAppList', methods = ['GET']) 
 @jwt_required() 
 def getOrgAppList():
@@ -564,16 +588,17 @@ def getOrgAppList():
 
 		res = {
 		'list': [
-		{
-			'app_id' : p.id,
-			'name': p.name
-		} for p in page.all()
+			{
+				'app_id' : p.id,
+				'name': p.name,
+				'dev_eui': p.description
+			} for p in page.all()
 		]
 		}
 
 		# j = json.dumps(res)
 		return jsonify(res), 200
-	
+
 	except Exception as e:
 
 		return jsonify({'error': str(e)}), 404
@@ -599,31 +624,26 @@ def getOrgAppList():
 def getOrgAppDeviceList():
 
 	uid = get_jwt_identity()
-	data = request.get_json()
-	pageNum = data['pageNum']
-	appid = data['oid']
+	# data = request.get_json()
+	appId = request.args['app']
 
-
+	appId = int(appId)
 
 	try:
-		page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 1)).scalars()
+		page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == appId)).scalars()
 
-		# # print(page.items) #doesnt work if not specified the object attributes to expose
 		res = {
-		# 'totalPages': page.pages,
-		'list': [
-			{
-				'app_id': p.app_id,
-				'name': p.dev_name,
-				'dev': p.dev_eui
+			'list': [
+				{
+					'app_id': p.app_id,
+					'name': p.dev_name,
+					'dev': p.dev_eui
 
-			} for p in page.all()
-		]
+				} for p in page.all()
+			]
 		}
 
-		
-
-		return make_response(res, 200)
+		return jsonify(res), 200
 	
 	except Exception as e:
 

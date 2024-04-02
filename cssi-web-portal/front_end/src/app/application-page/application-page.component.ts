@@ -21,6 +21,15 @@ import {
 } from '@angular/material/paginator';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
+
+
+
+
+export interface Device{
+  name: string,
+  devEUI: string 
+}
+
 @Component({
   selector: 'app-application-page',
   templateUrl: './application-page.component.html',
@@ -43,16 +52,19 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class ApplicationPageComponent {
   base_url: string = 'http://localhost:5000';
+  deviceList: Device[] = []
+
+
   routerLinkVariable = '/hi';
   devices: string[] = [];
-  orgName: string | null = 'Cat Chairs';
-  appName: string | null = 'Cat Patting';
+  appName: string | null = 'Cat Chairs';
+  appId: string | null = '';
   appDescription: string | null =
     "These devices consists of the best possible devices made for cat patting, for the best of cats out there. Don't let your feline friend down, get them feline great with these devices below.";
   imgName: string | null = 'placeholder_cat2';
   removeApps: boolean = false;
   currentPage: number = 0;
-  deviceSource = new MatTableDataSource(this.devices);
+  deviceSource = new MatTableDataSource(this.deviceList);
 
   @ViewChild('devicePaginator', { static: true })
   devicePaginator: MatPaginator = new MatPaginator(
@@ -62,47 +74,62 @@ export class ApplicationPageComponent {
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {} //makes an instance of the router
   ngOnInit(): void {
-    this.appName = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
-    if (this.appName == null) {
+    this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    if (this.appId == null) {
       this.appName = 'Cat Patting';
     }
-    // this.setupDevices();
 
-    // this is for getting the organizations's applications associated with it
+    const param = new HttpParams().set('app', this.appId != null ? this.appId : '-1');
 
-    const params = new HttpParams().set('org', this.appName);
+    // this request is for getting application name, id, and description
+    this.http.get(this.base_url + '/userOrgApp', {observe: 'response', responseType: 'json', params: param})
+    .subscribe({
+      next: (response) => {
 
-    this.http
-      .get(this.base_url + '/userOrgAppList', {
-        observe: 'response',
-        responseType: 'json',
-      })
-      .subscribe({
-        next: (response) => {
-          const res = JSON.stringify(response);
+        const res = JSON.stringify(response);
 
-          let resp = JSON.parse(res);
+        let resp = JSON.parse(res);
 
-          console.log('resp is ');
+        console.log('resp is in app page', resp);
 
-          console.log(resp);
-          console.log('body', resp.body.list);
+        this.appName = resp.body.name;
 
-          for (var i = 0; i < resp.body.list.length; i++) {
-            console.log('index: ', resp.body.list[i].name);
-            this.devices.push(
-              resp.body.list[i].name +
-                ' Description: ' +
-                resp.body.list[i].description
-            );
-          }
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
+
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+
+    // this is for getting the organizations's applications associated with it 
+
+    this.http.get(this.base_url + '/userOrgAppDeviceList', {observe: 'response', responseType: 'json', params: param})
+    .subscribe({
+      next: (response) => {
+
+        const res = JSON.stringify(response);
+
+        let resp = JSON.parse(res);
+
+        for(var i = 0; i < resp.body.list.length; i++)
+        {
+          console.log('index: ', resp.body.list[i].name)
+          this.devices.push(resp.body.list[i].name);
+          this.deviceList.push({name: resp.body.list[i].name, devEUI: resp.body.list[i].dev})
+        }
+
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+          
 
     this.deviceSource.paginator = this.devicePaginator;
+
+
   }
 
   private breakpointObserver = inject(BreakpointObserver);

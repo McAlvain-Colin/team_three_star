@@ -34,6 +34,13 @@ import {
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Organization } from '../data.config';
 
+// an interfca foooooooooooor describing json data in request
+export interface App {
+  name: string;
+  id: number;
+  description: string;
+}
+
 @Component({
   selector: 'app-organization-page',
   templateUrl: './organization-page.component.html',
@@ -58,6 +65,7 @@ import { Organization } from '../data.config';
 })
 export class OrganizationPageComponent implements OnInit {
   base_url: string = 'http://localhost:5000';
+  appList: App[] = [];
 
   orgId: string | null = '';
   routerLinkVariable = '/hi';
@@ -71,7 +79,7 @@ export class OrganizationPageComponent implements OnInit {
   removeMembers: boolean = false;
   isAdmin: boolean = true;
   currentPage: number = 0;
-  appsSource = new MatTableDataSource(this.applications);
+  appsSource = new MatTableDataSource(this.appList);
   memberSource = new MatTableDataSource(this.members);
 
   @ViewChild('appsPaginator', { static: true })
@@ -121,8 +129,12 @@ export class OrganizationPageComponent implements OnInit {
           console.log('body', resp.body.list);
 
           for (var i = 0; i < resp.body.list.length; i++) {
-            console.log('index: ', resp.body.list[i].name);
             this.applications.push(resp.body.list[i].name);
+            this.appList.push({
+              id: resp.body.list[i].app_id,
+              name: resp.body.list[i].name,
+              description: resp.body.list[i].description,
+            });
           }
         },
         error: (error) => {

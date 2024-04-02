@@ -75,7 +75,7 @@
               </div>
               <a
                 mat-list-item
-                routerLink="/application/{{ application }}"
+                routerLink="/application/{{ application.id }}"
                 *ngFor="
                   let application of appsSource.data.slice(
                     appsPaginator.pageIndex * appsPaginator.pageSize,
@@ -83,11 +83,11 @@
                   )
                 "
               >
-                {{ application }}
+                {{ application.name }}
                 <button
                   class="remove-icon"
                   *ngIf="removeApps"
-                  (click)="confirmRemoval(application)"
+                  (click)="confirmRemoval(application.name)"
                 >
                   <mat-icon fontIcon="remove" color="warn"></mat-icon>
                 </button>

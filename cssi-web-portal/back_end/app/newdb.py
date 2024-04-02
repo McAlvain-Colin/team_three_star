@@ -522,9 +522,25 @@ def func():
 
 
 
-    print('id', db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id ==1)).scalars())
+    # print('id', db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id ==1)).scalars())
 
 
+    # page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 1)).scalars()
+
+    #     # # print(page.items) #doesnt work if not specified the object attributes to expose
+    # res = {
+    # # 'totalPages': page.pages,
+    # 'list': [
+    #     {
+    #         'app_id': p.app_id,
+    #         'name': p.dev_name,
+    #         'dev': p.dev_eui
+
+    #     } for p in page.all()
+    # ]
+    # }
+
+    # print(res)
 
 
 
@@ -598,7 +614,7 @@ def func():
 
     j = json.dumps(res)
 
-    print(j)
+    
 
 
 
@@ -650,22 +666,20 @@ def func():
 
     page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 1)).scalars()
 
-    # # print(page.items) #doesnt work if not specified the object attributes to expose
     res = {
-    # 'totalPages': page.pages,
-    'list': [
-    {
-    'app_id' : p.app_id,
-    'name': p.dev_name,
-    'dev': p.dev_eui
+        'list': [
+            {
+                'app_id': p.app_id,
+                'name': p.dev_name,
+                'dev': p.dev_eui
 
-    } for p in page.all()
-    ]
+            } for p in page.all()
+        ]
     }
 
     j = json.dumps(res)
 
-    print(j)
+    print('Devices areeeeee ', j)
 
 
 

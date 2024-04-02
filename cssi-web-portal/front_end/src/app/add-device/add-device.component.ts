@@ -13,7 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   HttpClient,
   HttpClientModule,
@@ -41,9 +41,9 @@ import {
   ],
 })
 export class AddDeviceComponent {
-  constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
+  constructor(private snackBar: MatSnackBar, private http: HttpClient, private route: ActivatedRoute,) {}
   deviceName: string = '';
-  appID: string = '';
+  appID: string | null= '';
   joinEUI: string = '';
   devEUI: string = '';
   appKey: string = '';
@@ -57,7 +57,7 @@ export class AddDeviceComponent {
       // withCredentials: true,
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        charset: 'UTF-8',
+        // charset: 'UTF-8',
         observe: 'response',
         responseType: 'json',
       }),
@@ -65,18 +65,22 @@ export class AddDeviceComponent {
     //Retrive user id from the link, and then Post message with orgData and userID to backend for adding to the table
     var message: string = `${this.deviceName} is added to your Organization!`;
 
+
+
+    this.appID = this.route.snapshot.paramMap.get('appId'); //From the current route, get the route name, which should be the identifier for what you need to render.
+
     //Post stuff cuz we're creating things
     this.http
       .post(
-        this.baseUrl + 'createDevice',
-        { appId: this.appID, joinEui: this.joinEUI, appKey: this.appKey },
+        this.baseUrl + '/addOrgAppDevice',
+        { appId: this.appID, devEUI: this.devEUI, joinEui: this.joinEUI, appKey: this.appKey },
         httpOptions
       )
       .subscribe({
         next: (response) => {
           const responseString = JSON.stringify(response);
           let parsedRes = JSON.parse(responseString);
-          if (parsedRes.addSuccess) {
+          if (parsedRes.body.DeviceAdded) {
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
