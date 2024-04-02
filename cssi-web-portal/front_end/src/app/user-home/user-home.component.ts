@@ -106,6 +106,7 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
 
   constructor(
     private route: ActivatedRoute,
+    public router: Router,
     public dialog: MatDialog,
     private http: HttpClient,
     private changeDetector: ChangeDetectorRef
@@ -232,6 +233,30 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
       return routeName;
     }
     return null;
+  }
+
+  logout() {
+    console.log('in logout func');
+    this.http
+      .delete(this.base_url + '/logout', {
+        observe: 'response',
+        responseType: 'json',
+      })
+      .subscribe({
+        next: (response) => {
+          const resp = { ...response.body };
+
+          console.log('deleted message');
+          console.log(resp);
+
+          localStorage.clear();
+
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
   }
 
   // setupExampleLists() {

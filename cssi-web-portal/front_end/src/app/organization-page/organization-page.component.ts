@@ -32,6 +32,7 @@ import {
   MatTableDataSource,
 } from '@angular/material/table';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Organization } from '../data.config';
 
 @Component({
   selector: 'app-organization-page',
@@ -58,7 +59,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class OrganizationPageComponent implements OnInit {
   base_url: string = 'http://localhost:5000';
 
-  orgId: number = 0;
+  orgId: string | null = '';
   routerLinkVariable = '/hi';
   applications: string[] = [];
   members: string[] = [];
@@ -91,16 +92,16 @@ export class OrganizationPageComponent implements OnInit {
     private http: HttpClient
   ) {} //makes an instance of the router
   ngOnInit(): void {
-    this.orgName = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
-    console.log(this.orgName);
-    if (this.orgName == null) {
-      this.orgName = 'Cat Chairs';
-    }
+    this.orgId = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    console.log(this.orgId);
+    // if (this.orgName == null) {
+    //   this.orgName = 'Cat Chairs';
+    // }
     // this.setupLists();
 
-    // this is to specify the orgNmae in the get request using query Parameters
+    // this is to specify the orgId in the get request using query Parameters
 
-    const param = new HttpParams().set('org', decodeURI(this.orgName));
+    const param = new HttpParams().set('org', decodeURI(String(this.orgId)));
 
     this.http
       .get(this.base_url + '/userOrgAppList', {
@@ -123,6 +124,31 @@ export class OrganizationPageComponent implements OnInit {
             console.log('index: ', resp.body.list[i].name);
             this.applications.push(resp.body.list[i].name);
           }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
+    this.http
+      .get<{ list: Organization }>(this.base_url + '/getOrgInfo', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          console.log('resp is ');
+
+          console.log(resp);
+          console.log('body', resp.body.list);
+
+          this.orgName = resp.body.list[0].name;
+          this.orgDescription = resp.body.list[0].description;
         },
         error: (error) => {
           console.error(error);

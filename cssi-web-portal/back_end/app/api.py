@@ -214,7 +214,8 @@ def login_user():
 	password =  data['password']
 
 	user = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
-
+	if(user == None):
+		return make_response(jsonify({'login': False}), 200)
 
 	if bcrypt.checkpw(password.encode('utf-8'), user.password): #database logic for searching goes here
 	
@@ -278,7 +279,7 @@ def confirm_email(token):
 
 		db.session.commit()
 
-		return '<h1>The email confirmation was succesful, please login</h1>'
+		return '<h1>The email confirmation was successful, please login</h1>'
 	except SignatureExpired:
 		# dbinteractions.removeUnverifiedMember()
 		newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
@@ -286,7 +287,7 @@ def confirm_email(token):
 		db.session.delete(newUser)
 		db.session.commit()
 
-		return '<h1>The email confirmation was unsuccesful, please try again</h1>'
+		return '<h1>The email confirmation was unsuccessful, please try again</h1>'
 
 
 
@@ -347,17 +348,28 @@ def createOrganization():
 def inviteUser():
 	data = request.get_json()
 	email = data['email']
-	sender = data['senderName']
+	orgId = data['orgId']
 	orgName = data['orgName']
 
-	emailtoken = s.dumps(email, salt='email-invite')
+	emailtoken = s.dumps(email + "|" + orgId , salt='email-invite')
 
 	msg = Message("Organization Invite CSSI Web Portal", sender='cssiportalconfirmation@gmail.com', recipients= [email])
 
 	link = url_for('invite_email', token = emailtoken, _external = True)
 
-	msg.body = sender + ' has sent you a request to join their organization! \n Would you like to join ' + orgName + '?\n'
+	msg.body = "You've been invited to join an organization! \n Would you like to join " + orgName + "?\n"
 	msg.body = msg.body + 'Join org link: {}'.format(link)
+
+	joinUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+	if joinUser is None:
+		return jsonify(inviteSent = False)
+
+	orgacc = OrgAccount(a_id= joinUser.id, o_id= orgId)
+	orgacc.r_id = 3
+	orgacc.active = False
+
+	db.session.execute(orgacc)
+	db.session.commit()
 
 	mail.send(msg)
 
@@ -365,19 +377,18 @@ def inviteUser():
 def invite_email(token):
 
 	try:
-		email = s.loads(token, salt='email-invite', max_age = 360)
+		infoLoaded = s.loads(token, salt='email-invite', max_age = 360)
+		infoLoaded = infoLoaded.split("|")
+		email = infoLoaded[0]
+		orgId = infoLoaded[1]
 
 		joinUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
 		if joinUser is None:
 			return "<h1>User doesn't have an acccount!<h1>"
 
-		joinOrg = db.session.execute(db.select(Organization).filter_by(name = 'asdj')).scalar()
-
-		orgacc = OrgAccount(account= joinUser, org= joinOrg)
-		orgacc.r_id = 3
-		orgacc.active = True
-
-		db.session.add(orgacc)
+		orgAccount = db.session.execute(db.select(OrgAccount).where(OrgAccount.a_id == joinUser.id).where(OrgAccount.o_id == orgId))
+		orgAccount.active = True
+		db.session.execute(orgAccount)
 		db.session.commit()
 
 		return '<h1>The organization invite was successful, please check your organizations.</h1>'
@@ -417,27 +428,12 @@ def deleteOrg():
 		db.session.commit()
 		return jsonify(orgDeleteSuccess = True)
 	else:
-		if db.session.query(removeAccount.exists()).scalar():
+		if db.session.query(checkOrgAccount.exists()).scalar():
 			db.session.execute(removeAccount)
 			db.session.commit()
 			return jsonify(orgDeleteSuccess = True)
 		else:
 			return jsonify(orgDeleteSuccess = False)
-
-	# deleteOrg = update(ORGS)
-	# removeOrgAccount = update(ORGACCOUNTS)
-	# removeOrgAccount = removeOrgAccount.where(ORGACCOUNTS.c.a_id == userId).where(ORGACCOUNTS.c.o_id == orgId)
-	# if ((removeOrgAccount.where(ORGACCOUNTS.c.a_id == userId).where(ORGACCOUNTS.c.o_id == orgId).where(ORGACCOUNTS.c.r_id == 1)) != None):
-	# 	deleteOrg = deleteOrg.values({"active" : False})
-	# 	deleteOrg = deleteOrg.where(ORGS.c.id == orgId)
-	# 	db.session.execute(deleteOrg)
-	# 	db.session.commit()
-		
-	# removeOrgAccount.values({"active" : False})
-	# db.session.execute(removeOrgAccount)
-	# db.session.commit()
-
-	#return jsonify(orgDeleteSuccess = True)
 
 
 @app.route('/userOwnedOrgList', methods = ['GET']) 
@@ -493,7 +489,32 @@ def getJoinedOrgList():
 
 		return make_response({'error': str(e)}, 404)
 	
+@app.route('/getOrgInfo', methods = ['GET'])
+@jwt_required()
+def getOrgInfo():
+	uid = get_jwt_identity()
+	orgId = request.args['org']
+
+	try:
+		userOrg = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where(OrgAccount.o_id == orgId)).scalar()
+
+		res = {
+		'list': [
+				{
+					'o_id' : orgId,
+					'name': userOrg.name,
+					'description': userOrg.description
+				}
+			]
+		}
+		res = json.dumps(res)
+		print(res)
+		return make_response(res, 200)
 	
+	except Exception as e:
+
+		return make_response({'error': str(e)}, 404)
+
 
 @app.route('/createOrgApp', methods = ['POST'])  
 @jwt_required()
