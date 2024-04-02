@@ -7,7 +7,7 @@ from flask_mail import Mail, Message
 
 from flask_jwt_extended import (create_access_token, JWTManager,
                                 jwt_required, get_jwt_identity,
-                                set_access_cookies, unset_jwt_cookies
+                                
                                 )
 
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -47,7 +47,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
 db.init_app(app)
 
 
@@ -180,7 +180,7 @@ class AppSensors(Base):
     app: Mapped['Application'] = relationship(back_populates= 'appSensors')
 
     # dev_eui needs to have the table name as stored in postgreSQL
-    dev_name: Mapped[str] = mapped_column(String, nullable= False)
+    dev_name: Mapped[str] = mapped_column(String, nullable= False, unique= True)
     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
 #     devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
 
@@ -195,9 +195,9 @@ class Device(Base):
     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True) 
 
             
-   
 
-   
+
+
 ###############################
 
 @app.route('/')
@@ -217,7 +217,7 @@ def login_user():
 
 
     if bcrypt.checkpw(password.encode('utf-8'), user.password): #database logic for searching goes here
-       
+    
         token = create_access_token(identity = user.id)
         return make_response(jsonify({'login': True, 'token': token}), 200)
 
@@ -232,7 +232,7 @@ def protected():
     # currentUser = get_jwt_identity()
     page = db.paginate(db.select(Account))
     j = [{'id': r.id,
-          'email': r.email
+        'email': r.email
             } for r in page.items
         ]
     return jsonify(j), 200
@@ -247,14 +247,14 @@ def create_user():
 
 
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-   
+
     emailtoken = s.dumps(email, salt='email-confirm')
 
     # dbinteractions.createMember(email, password, False, bcrypt)
     newUser = Account(email, hashed, False, True)
     db.session.add(newUser)
     db.session.commit()
-   
+
 
     msg = Message('Confirm Email', sender='ssiportalconfirmation@gmail.com', recipients= [email])
 
@@ -271,7 +271,7 @@ def confirm_email(token):
 
     try:
         email = s.loads(token, salt='email-confirm', max_age = 360)
-   
+
         # dbinteractions.verifiyMember(email)
         newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
         newUser.verified = True
@@ -282,7 +282,7 @@ def confirm_email(token):
     except SignatureExpired:
         # dbinteractions.removeUnverifiedMember()
         newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
-       
+    
         db.session.delete(newUser)
         db.session.commit()
 
@@ -319,70 +319,70 @@ def deleteUser():
 @jwt_required()
 def createOrganization():
 
-	data = request.get_json() #uid, org titel, org descritpion
-	userId = get_jwt_identity()
-	orgName = data['orgName']
-	descript = data['orgDescript']
+    data = request.get_json() #uid, org titel, org descritpion
+    userId = get_jwt_identity()
+    orgName = data['orgName']
+    descript = data['orgDescript']
 
-	#database code
-	try:
-		newOrg = Organization(name= orgName, description= descript, active= True)
-		user = db.session.execute(db.select(Account).filter_by(id = userId)).scalar()
+    #database code
+    try:
+        newOrg = Organization(name= orgName, description= descript, active= True)
+        user = db.session.execute(db.select(Account).filter_by(id = userId)).scalar()
 
 
-		#link the account with the org
-		orgAcc = OrgAccount(account= user, org= newOrg, r_id = 1, active = True)
+        #link the account with the org
+        orgAcc = OrgAccount(account= user, org= newOrg, r_id = 1, active = True)
 
-		db.session.add(newOrg)
-		db.session.commit()
-		db.session.add(orgAcc)
-		db.session.commit()
-		return jsonify(orgCreated = True)
-   
-	except exc.SQLAlchemyError:
-		
-		return jsonify(orgCreated = False)
+        db.session.add(newOrg)
+        db.session.commit()
+        db.session.add(orgAcc)
+        db.session.commit()
+        return jsonify(orgCreated = True)
+
+    except exc.SQLAlchemyError:
+        
+        return jsonify(orgCreated = False)
 
 @app.route('/inviteUser',  methods = ['PUT'])
 def inviteUser():
-	data = request.get_json()
-	email = data['email']
-	sender = data['senderName']
-	orgName = data['orgName']
+    data = request.get_json()
+    email = data['email']
+    sender = data['senderName']
+    orgName = data['orgName']
 
-	emailtoken = s.dumps(email, salt='email-invite')
+    emailtoken = s.dumps(email, salt='email-invite')
 
-	msg = Message("Organization Invite CSSI Web Portal", sender='cssiportalconfirmation@gmail.com', recipients= [email])
+    msg = Message("Organization Invite CSSI Web Portal", sender='cssiportalconfirmation@gmail.com', recipients= [email])
 
-	link = url_for('invite_email', token = emailtoken, _external = True)
+    link = url_for('invite_email', token = emailtoken, _external = True)
 
-	msg.body = sender + ' has sent you a request to join their organization! \n Would you like to join ' + orgName + '?\n'
-	msg.body = msg.body + 'Join org link: {}'.format(link)
+    msg.body = sender + ' has sent you a request to join their organization! \n Would you like to join ' + orgName + '?\n'
+    msg.body = msg.body + 'Join org link: {}'.format(link)
 
-	mail.send(msg)
+    mail.send(msg)
 
 @app.route('/invite_email/<token>')  
 def invite_email(token):
 
-	try:
-		email = s.loads(token, salt='email-invite', max_age = 360)
+    try:
+        email = s.loads(token, salt='email-invite', max_age = 360)
 
-		joinUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
-		if joinUser is None:
-			return "<h1>User doesn't have an acccount!<h1>"
+        joinUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+        if joinUser is None:
+            return "<h1>User doesn't have an acccount!<h1>"
 
-		joinOrg = db.session.execute(db.select(Organization).filter_by(name = 'asdj')).scalar()
+        joinOrg = db.session.execute(db.select(Organization).filter_by(name = 'asdj')).scalar()
 
-		orgacc = OrgAccount(account= joinUser, org= joinOrg)
-		orgacc.r_id = 3
-		orgacc.active = True
+        orgacc = OrgAccount(account= joinUser, org= joinOrg)
+        orgacc.r_id = 3
+        orgacc.active = True
 
-		db.session.add(orgacc)
-		db.session.commit()
+        db.session.add(orgacc)
+        db.session.commit()
 
-		return '<h1>The organization invite was successful, please check your organizations.</h1>'
-	except SignatureExpired:
-		return '<h1>The email invitation has expired, please request another invite.</h1>'
+        return '<h1>The organization invite was successful, please check your organizations.</h1>'
+    except SignatureExpired:
+        return '<h1>The email invitation has expired, please request another invite.</h1>'
 
 
 @app.route('/deleteOrg', methods = ['PUT'])
@@ -397,13 +397,37 @@ def deleteOrg():
 
 
 
+@app.route('/userOrg', methods = ['GET']) 
+@jwt_required() 
+def getOrg():
+    
+    orgId = request.args['org']
+    orgId  = int(orgId)
+
+    try:
+        page = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
+        res  = {
+            'name': page.name,
+            'description': page.description
+        } 
+        return jsonify(res), 200
+
+    except exc.SQLAlchemyError:
+        return jsonify({'error': "couldn't get your org with name specified"}), 404
+
+
+        
+    
+
+
+
 @app.route('/userOwnedOrgList', methods = ['GET']) 
 @jwt_required() 
 def getOwnedOrgList():
 
     uid = get_jwt_identity()
-  
- 
+
+
     try:
         page = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where(OrgAccount.r_id == 1)).scalars()
 
@@ -416,12 +440,12 @@ def getOwnedOrgList():
                 } for p in page.all()
             ]
         }
-        return make_response(res, 200)
+        return jsonify(res), 200
     
     except exc.SQLAlchemyError:
 
-        return make_response({'error': str(e)}, 404)
-       
+        return jsonify({'error': "couldn't get your owned orgs"}), 404
+    
     
 
 @app.route('/userJoinedOrgList', methods = ['GET']) 
@@ -429,8 +453,8 @@ def getOwnedOrgList():
 def getJoinedOrgList():
 
     uid = get_jwt_identity()
-  
- 
+
+
     try:
         page = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where(OrgAccount.r_id == 2)).scalars()
 
@@ -448,8 +472,8 @@ def getJoinedOrgList():
     
     except exc.SQLAlchemyError:
 
-        return make_response({'error': str(e)}, 404)
-       
+        return make_response({'error': "Couldn't get joiiine orgs"}, 404)
+    
     
 
 @app.route('/createOrgApp', methods = ['POST'])  
@@ -473,7 +497,7 @@ def createOrgApplication():
     db.session.commit()
     db.session.add(orgApp)
     db.session.commit()
-   
+
 
 
     return jsonify(orgCreated = True)
@@ -502,7 +526,7 @@ def getOrgApp():
     except Exception as e:
 
         return jsonify({'error': str(e)}), 404
-       
+    
 
 
 
@@ -512,12 +536,8 @@ def getOrgAppList():
 
     uid = get_jwt_identity()
     # data = request.get_json()
-    orgName = request.args['org']
-    print(orgName)
+    oid= request.args['org']
 
-    oid = db.session.execute(db.select(Organization.id).where(Organization.name == orgName)).scalar()
-    
-    # oid = int(data['oid'])
     
 
     try:
@@ -539,28 +559,60 @@ def getOrgAppList():
     except Exception as e:
 
         return jsonify({'error': str(e)}), 404
-       
+    
     
 
-@app.route('/addOrgAppDeviceList', methods = ['POST']) 
+@app.route('/addOrgAppDevice', methods = ['POST']) 
 @jwt_required() 
-def addDeviceList():
+def addAppDevice():
+
+    data = request.get_json()
+    appId = data['appId']
+    devEUI = data['devEUI']
 
 
-    
 
 
-
-
-    if (db.session.execute(db.select(Device).where(Device.dev_eui == 'A2')).scalar() is not None ):
+    if (db.session.execute(db.select(Device).where(Device.dev_eui == devEUI)).scalar() is not None ):
         
-        app = db.session.execute(db.select(Application).where(Application.id == 1)).scalar()
+        app = db.session.execute(db.select(Application).where(Application.id == appId)).scalar()
 
-        appSensor = AppSensors(app_id = app.id, dev_name='myDevice', dev_eui= 'A2')
+        appSensor = AppSensors(app_id = app.id, dev_name='myDevice', dev_eui= devEUI)
         db.session.add(appSensor)
         db.session.commit()
+        return jsonify({'DeviceAdded': True}), 200
+
     else:
-        jsonify({'DeviceAdded': False})
+        return jsonify({'DeviceAdded': False}), 200  
+
+
+
+
+
+@app.route('/userOrgAppDevice', methods = ['GET']) 
+@jwt_required() 
+def getOrgAppDevice():
+    appId = request.args['app']
+    devName = request.args['devName']
+
+    appId = int(appId)
+
+
+    try:
+        page = db.session.execute(db.select(AppSensors.dev_eui).where(AppSensors.app_id == appId).where(AppSensors.dev_name == devName)).scalar()
+
+        res = {
+            'dev_eui': page
+        }
+
+        return jsonify(res), 200
+    
+    except exc.SQLAlchemyError:
+
+        return jsonify({'error': "couldn't retieve the sensors of this application"}), 404
+    
+
+
 
 
 @app.route('/userOrgAppDeviceList', methods = ['GET']) 
@@ -589,10 +641,10 @@ def getOrgAppDeviceList():
 
         return jsonify(res), 200
     
-    except Exception as e:
+    except exc.SQLAlchemyError:
 
-        return make_response({'error': str(e)}, 404)
-       
+        return jsonify({'error': "couldn't retieve the sensors of this application"}), 404
+    
     
 
 
