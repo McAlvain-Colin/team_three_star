@@ -47,7 +47,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
 db.init_app(app)
 
 
@@ -543,14 +543,14 @@ def getOrgInfo():
 def createOrgApplication():
 
 	data = request.get_json() #uid, org titel, org descritpion
-	orgName = data['orgName']
+	orgId = data['orgId']
 	appName = data['appName']
 	appDescript = data['appDescript']
 
 	#link the app with the org
 	newApp= Application(name= appName, description= appDescript)
 
-	org = db.session.execute(db.select(Organization).where(Organization.name == orgName)).scalar()
+	org = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
 
 
 	orgApp = OrgApplication(app= newApp, org= org)
@@ -629,9 +629,6 @@ def addAppDevice():
 	appId = data['appId']
 	devEUI = data['devEUI']
 
-
-
-
 	if (db.session.execute(db.select(Device).where(Device.dev_eui == devEUI)).scalar() is not None ):
 		
 		app = db.session.execute(db.select(Application).where(Application.id == appId)).scalar()
@@ -708,6 +705,7 @@ def getOrgAppDeviceList():
 
 
 if __name__ == '__main__':
-	#db.drop_all()
-	#db.create_all()
-	app.run(debug = True)
+	with app.app_context():
+		#db.drop_all()
+		#db.create_all()
+		app.run(debug = True)

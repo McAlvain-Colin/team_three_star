@@ -65,7 +65,7 @@ export interface App {
 })
 export class OrganizationPageComponent implements OnInit {
   base_url: string = 'http://localhost:5000';
-  appList: App[] = [];
+  appList: Organization[] = [];
 
   orgId: string | null = '';
   routerLinkVariable = '/hi';
@@ -112,30 +112,32 @@ export class OrganizationPageComponent implements OnInit {
     const param = new HttpParams().set('org', decodeURI(String(this.orgId)));
 
     this.http
-      .get(this.base_url + '/userOrgAppList', {
+      .get<{ list: Organization[] }>(this.base_url + '/userOrgAppList', {
         observe: 'response',
         responseType: 'json',
         params: param,
       })
       .subscribe({
         next: (response) => {
-          const res = JSON.stringify(response);
+          // const res = JSON.stringify(response);
 
-          let resp = JSON.parse(res);
+          // let resp = JSON.parse(res);
 
-          console.log('resp is ');
+          // console.log('resp is ');
 
-          console.log(resp);
-          console.log('body', resp.body.list);
+          // console.log(resp);
+          // console.log('body', resp.body.list);
 
-          for (var i = 0; i < resp.body.list.length; i++) {
-            this.applications.push(resp.body.list[i].name);
-            this.appList.push({
-              id: resp.body.list[i].app_id,
-              name: resp.body.list[i].name,
-              description: resp.body.list[i].description,
-            });
-          }
+          // for (var i = 0; i < resp.body.list.length; i++) {
+          //   this.applications.push(resp.body.list[i].name);
+          //   this.appList.push({
+          //     id: resp.body.list[i].app_id,
+          //     name: resp.body.list[i].name,
+          //     description: resp.body.list[i].description,
+          //   });
+          // }
+          this.appsSource = new MatTableDataSource(response.body?.list);
+          this.appsSource.paginator = this.appsPaginator;
         },
         error: (error) => {
           console.error(error);
@@ -192,8 +194,8 @@ export class OrganizationPageComponent implements OnInit {
     });
   }
 
-  getRouteName(itemName: string, itemType: number) {
-    let routeName: string = '/application/' + itemName;
+  getRouteName(appId: Organization) {
+    let routeName: string = '/application/' + appId.o_id;
     return routeName;
   }
 

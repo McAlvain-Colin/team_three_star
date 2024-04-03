@@ -41,16 +41,17 @@ import {
   ],
 })
 export class AddApplicationComponent {
-  constructor(private snackBar: MatSnackBar, private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private http: HttpClient,
+    private route: ActivatedRoute
+  ) {}
   appName: string = '';
   appDescription: string = '';
   orgName: string | null = ''; //Set this from the link in order to navigate back home.
   userID: number = 0;
 
   baseUrl: string = 'http://localhost:5000';
-
-
-
 
   ngOnInit(): void {
     this.orgName = this.route.snapshot.paramMap.get('orgId');
@@ -75,7 +76,7 @@ export class AddApplicationComponent {
       .post(
         this.baseUrl + '/createOrgApp',
         {
-          orgName: this.orgName,
+          orgId: this.orgName,
           appName: this.appName,
           appDescript: this.appDescription,
         },

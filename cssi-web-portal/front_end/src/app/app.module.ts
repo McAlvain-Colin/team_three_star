@@ -41,6 +41,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ApplicationPageComponent } from './application-page/application-page.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { InviteUserComponent } from './invite-user/invite-user.component';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
@@ -85,7 +86,13 @@ import { InviteUserComponent } from './invite-user/invite-user.component';
     NgFor,
     HttpClientModule,
   ],
-  providers: [ChartService, DeviceDataService, DataStatsService, {provide: HTTP_INTERCEPTORS, useClass: appInterceptor, multi: true}],
+  providers: [
+    ChartService,
+    DeviceDataService,
+    DataStatsService,
+    { provide: HTTP_INTERCEPTORS, useClass: appInterceptor, multi: true },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

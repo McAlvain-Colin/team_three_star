@@ -59,7 +59,7 @@
                   mat-raised-button
                   color="accent"
                   class="group-button"
-                  routerLink="/add-application/{{ orgName }}"
+                  routerLink="/add-application/{{ orgId }}"
                 >
                   Add
                 </button>
@@ -75,7 +75,7 @@
               </div>
               <a
                 mat-list-item
-                routerLink="/application/{{ application.id }}"
+                [routerLink]="removeApps ? null : getRouteName(application)"
                 *ngFor="
                   let application of appsSource.data.slice(
                     appsPaginator.pageIndex * appsPaginator.pageSize,
