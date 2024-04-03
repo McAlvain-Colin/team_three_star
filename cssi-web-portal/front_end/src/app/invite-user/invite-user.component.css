@@ -1,3 +1,4 @@
+/* Huy developed the Css in order to move the elments into their respective spots and provide styling */
 .toolbar {
   opacity: 0.9;
 }
@@ -22,18 +23,19 @@
   transform: translate(0%, -60%);
 }
 
-.add-app-form {
+.invite-form {
   /* This aligns the div form, horizontally and vertically so it becomes the center of the page */
   display: flex;
   position: absolute;
-  top: 53%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 24%;
-  min-width: 400px;
+  width: 30%;
+  min-width: 440px;
+  max-width: 440px;
   height: fit-content;
   min-height: 50%;
-  max-height: 85%;
+  max-height: 70%;
   padding: 100px;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);

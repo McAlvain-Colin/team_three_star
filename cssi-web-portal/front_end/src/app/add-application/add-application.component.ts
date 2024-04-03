@@ -13,7 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   HttpClientModule,
   HttpClient,
@@ -41,13 +41,21 @@ import {
   ],
 })
 export class AddApplicationComponent {
-  constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private http: HttpClient,
+    private route: ActivatedRoute
+  ) {}
   appName: string = '';
   appDescription: string = '';
-  orgID: number = 0; //Set this from the link in order to navigate back home.
+  orgName: string | null = ''; //Set this from the link in order to navigate back home.
   userID: number = 0;
 
   baseUrl: string = 'http://localhost:5000';
+
+  ngOnInit(): void {
+    this.orgName = this.route.snapshot.paramMap.get('orgId');
+  }
 
   //use the `` to allow connections to the variable in the declaration.
   //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
@@ -56,7 +64,6 @@ export class AddApplicationComponent {
       // withCredentials: true,
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        charset: 'UTF-8',
         observe: 'response',
         responseType: 'json',
       }),
@@ -67,11 +74,10 @@ export class AddApplicationComponent {
 
     this.http
       .post(
-        this.baseUrl + 'createApp',
+        this.baseUrl + '/createOrgApp',
         {
-          user: this.userID,
-          org: this.orgID,
-          app: this.appName,
+          orgId: this.orgName,
+          appName: this.appName,
           appDescript: this.appDescription,
         },
         httpOptions
@@ -80,7 +86,7 @@ export class AddApplicationComponent {
         next: (response) => {
           const responseString = JSON.stringify(response);
           let parsedRes = JSON.parse(responseString);
-          if (parsedRes.addSuccess) {
+          if (parsedRes.orgCreated) {
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',

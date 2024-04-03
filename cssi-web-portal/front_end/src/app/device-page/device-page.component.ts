@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { DeviceMapComponent } from '../device-map/device-map.component';
@@ -15,34 +15,41 @@ import { Observable, map, shareReplay } from 'rxjs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
 import { OnInit, Input } from '@angular/core';
-import { ApiService } from '../api.service'; 
+import { ApiService } from '../api.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
-import { MatTableModule }  from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DatePicker } from '../date-picker/date-picker.component';
-import { saveAs  } from 'file-saver';
+import { saveAs } from 'file-saver';
 
 import { Chart, registerables } from 'chart.js/auto';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgIf, PercentPipe } from '@angular/common';
-import { FormControl, FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
-import { MatSliderModule } from '@angular/material/slider'
+import {
+  FormControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 //using code from the filter page here since it is essentiall the same
-//I want to redo this code if theres time using the pageinate module. 
+//I want to redo this code if theres time using the pageinate module.
 //Requires data rework and I dont wanna break it yet.
 export interface SensorData {
   dev_eui: any;
-  dev_time: any; 
-  payload_dict: any; 
+  dev_time: any;
+  payload_dict: any;
   metadata_dict: any;
 }
 
@@ -73,7 +80,7 @@ interface PayloadRecord {
     MatInputModule,
     FormsModule,
     NgFor,
-    MatTableModule,   
+    MatTableModule,
     MatPaginatorModule,
     DatePicker,
     NgIf,
@@ -85,7 +92,7 @@ interface PayloadRecord {
     MatCheckboxModule,
   ],
 })
-export class DevicePageComponent implements AfterViewInit{
+export class DevicePageComponent implements AfterViewInit {
   // private breakpointObserver = inject(BreakpointObserver);
 
   // I need to reimpliment this but the code seems to reject it will the onInit
@@ -110,10 +117,10 @@ export class DevicePageComponent implements AfterViewInit{
   recordsFilter: string = ''; // Property to hold the payload filter query
   payloadFilter: string = ''; // Property to hold the payload filter query
   metadataFilter: string = ''; // Property to hold the metadata filter query
-  payloadColumns: string[] = [];  // Property to hold the 
-  metadataColumns: string[] = [];  // Property to hold the
-  displayedPayloadColumns: string[] = [];  // Property to hold the
-  displayedMetadataColumns: string[] = [];  // Property to hold the
+  payloadColumns: string[] = []; // Property to hold the
+  metadataColumns: string[] = []; // Property to hold the
+  displayedPayloadColumns: string[] = []; // Property to hold the
+  displayedMetadataColumns: string[] = []; // Property to hold the
 
   payloadRecord: PayloadRecord[] = [];
   payloadTimeRecord: PayloadRecord[] = [];
@@ -122,7 +129,12 @@ export class DevicePageComponent implements AfterViewInit{
 
   selection = new SelectionModel<string>(true, []);
 
-  constructor(private apiService: ApiService, private fb: FormBuilder) { 
+  constructor(
+    private apiService: ApiService,
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private http: HttpClient
+  ) {
     Chart.register(...registerables); // ...registerables is an array that contains all the components Chart.js offers
   }
 
@@ -138,33 +150,69 @@ export class DevicePageComponent implements AfterViewInit{
   metadataChart!: Chart;
 
   chartData!: number[];
-  
+
+  appId: string | null = '';
+  devName: string | null = '';
+  base_url: string = 'http://localhost:5000';
+  deviceEUI: string = '';
 
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
   //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
   //itterating code to try and get the data in a formate I can use.
   ngOnInit(): void {
+    this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    this.devName = this.route.snapshot.paramMap.get('dev');
+
+    const param = new HttpParams()
+      .set('app', this.appId != null ? this.appId : '-1')
+      .set('devName', this.devName != null ? this.devName : 'none');
+
+    // this is for giving one device EUI from the given dev name from the user.
+    this.http
+      .get(this.base_url + '/userOrgAppDevice', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          console.log('resp is in app page', resp.body.dev_eui);
+          this.deviceEUI = resp.body.dev_eui;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
     this.apiService.getData().subscribe({
       next: (data: SensorData[]) => {
         const records = data.map((item: SensorData) => ({
           dev_eui: item.dev_eui,
           dev_time: item.dev_time,
           payload_dict: JSON.parse(item.payload_dict),
-          metadata_dict: JSON.parse(item.metadata_dict)
+          metadata_dict: JSON.parse(item.metadata_dict),
         }));
         this.payloadDataSource.data = records;
         this.metadataSource.data = records;
 
-        if (records.length > 0) {        
+        if (records.length > 0) {
           this.payloadColumns = Object.keys(records[0].payload_dict);
           this.metadataColumns = Object.keys(records[0].metadata_dict);
-          this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(this.payloadColumns);
-          this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(this.metadataColumns);
+          this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
+            this.payloadColumns
+          );
+          this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
+            this.metadataColumns
+          );
         }
       },
       error: (error) => {
         console.error('Error: ', error);
-      }
+      },
     });
 
     this.createPayloadChart('0025CA0A00015E62');
@@ -179,7 +227,6 @@ export class DevicePageComponent implements AfterViewInit{
   metadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
 
-
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
     this.metadataSource.paginator = this.metadataPaginator;
@@ -189,9 +236,9 @@ export class DevicePageComponent implements AfterViewInit{
   addDevice(): void {}
   removeDevice(): void {}
 
-  //filter function in order to allow users display only realivant data. 
+  //filter function in order to allow users display only realivant data.
   //filters requested by pi
-  // -Date(start/end) :option there: 
+  // -Date(start/end) :option there:
   // -Time of day(start hour/end hour)(Across multiple days)
   // -Data range of values (min/max)
   // -Data type (temperature, moisture, pressure, etc)
@@ -202,8 +249,8 @@ export class DevicePageComponent implements AfterViewInit{
     if (!query) {
       return data;
     }
-    return data.filter(item => 
-      Object.keys(item).some(key =>
+    return data.filter((item) =>
+      Object.keys(item).some((key) =>
         item[key].toString().toLowerCase().includes(query.toLowerCase())
       )
     );
@@ -221,13 +268,13 @@ export class DevicePageComponent implements AfterViewInit{
       alert('No data available for export');
       return;
     }
-  
+
     // Validate data format
-    if (!data.every(item => typeof item === 'object' && item !== null)) {
+    if (!data.every((item) => typeof item === 'object' && item !== null)) {
       console.error('Invalid data format for CSV export');
       return;
     }
-  
+
     let csvData = this.convertToCSV(data);
     let blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, filename);
@@ -235,109 +282,137 @@ export class DevicePageComponent implements AfterViewInit{
 
   private convertToCSV(data: any[]): string {
     const array = [Object.keys(data[0])].concat(data); // header data for csv columns
-  
-    return array.map(row => {  //goes through each row of data
-      return Object.values(row).map(field => {
-        if (field === null || field === undefined) field = '';  //check for empty input
-        return '"' + String(field).replace(/"/g, '""') + '"';
-      }).join(',');
-    }).join('\r\n');
+
+    return array
+      .map((row) => {
+        //goes through each row of data
+        return Object.values(row)
+          .map((field) => {
+            if (field === null || field === undefined) field = ''; //check for empty input
+            return '"' + String(field).replace(/"/g, '""') + '"';
+          })
+          .join(',');
+      })
+      .join('\r\n');
   }
-  exportPayloadData(){
-    const payloadData = this.payloadDataSource.data.map(item=> item.payload_dict)
-    this.exportToCSV(payloadData, 'payload_data.csv')
+  exportPayloadData() {
+    const payloadData = this.payloadDataSource.data.map(
+      (item) => item.payload_dict
+    );
+    this.exportToCSV(payloadData, 'payload_data.csv');
   }
-  exportMetadata(){
-    const payloadData = this.payloadDataSource.data.map(item=> item.metadata_dict)
-    this.exportToCSV(payloadData, 'metadata.csv')
-  }createPayloadChart(devId: string){
+  exportMetadata() {
+    const payloadData = this.payloadDataSource.data.map(
+      (item) => item.metadata_dict
+    );
+    this.exportToCSV(payloadData, 'metadata.csv');
+  }
+  createPayloadChart(devId: string) {
     this.apiService.getPayload(devId).subscribe({
       next: (data: PayloadRecord[][]) => {
-        this.payloadTimeRecord = data.map((item: PayloadRecord[]) => item[0] as PayloadRecord);
-        this.payloadRecord = data.map((item: PayloadRecord[]) => item[1] as PayloadRecord);
+        this.payloadTimeRecord = data.map(
+          (item: PayloadRecord[]) => item[0] as PayloadRecord
+        );
+        this.payloadRecord = data.map(
+          (item: PayloadRecord[]) => item[1] as PayloadRecord
+        );
         this.initializePayloadChart();
       },
       error: (error) => {
         console.error('Error fetching payload data:', error);
-      }
+      },
     });
   }
-  
-  createMetadataChart(){
+
+  createMetadataChart() {
     this.apiService.getMetadata().subscribe({
       next: (data: PayloadRecord[][]) => {
-        this.metadataTimeRecord = data.map((item: PayloadRecord[]) => item[0]as PayloadRecord);
-        this.metadataRecord = data.map((item: PayloadRecord[]) => item[1] as PayloadRecord);
+        this.metadataTimeRecord = data.map(
+          (item: PayloadRecord[]) => item[0] as PayloadRecord
+        );
+        this.metadataRecord = data.map(
+          (item: PayloadRecord[]) => item[1] as PayloadRecord
+        );
         this.initializeMetadataChart();
       },
       error: (error) => {
         console.error('Error fetching metadata:', error);
-      }
+      },
     });
   }
   initializePayloadChart() {
     const ctx = document.getElementById('payloadChart') as HTMLCanvasElement;
-    if (ctx && this.payloadTimeRecord.length > 0 && this.payloadRecord.length > 0) {
-      const labels = this.payloadTimeRecord; 
-      const datasets = this.payloadColumns.map(col => {
+    if (
+      ctx &&
+      this.payloadTimeRecord.length > 0 &&
+      this.payloadRecord.length > 0
+    ) {
+      const labels = this.payloadTimeRecord;
+      const datasets = this.payloadColumns.map((col) => {
         return {
           label: col,
-          data: this.payloadRecord.map(record => +record[col]),
+          data: this.payloadRecord.map((record) => +record[col]),
           fill: false,
           borderColor: this.getRandomColor(),
-          tension: 0.1
+          tension: 0.1,
         };
       });
-  
+
       if (this.payloadChart) {
-        this.payloadChart.destroy(); 
+        this.payloadChart.destroy();
       }
-  
+
       this.payloadChart = new Chart(ctx, {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
           scales: {
             y: {
-              beginAtZero: true
-            }
+              beginAtZero: true,
+            },
           },
           responsive: true,
           maintainAspectRatio: false,
-        }
+        },
       });
     }
   }
   initializeMetadataChart() {
-    const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
-    if (meta_ctx && this.metadataTimeRecord.length > 0 && this.metadataRecord.length > 0) {
-      const labels = this.metadataTimeRecord; 
-      const datasets = this.metadataColumns.map(col => {
+    const meta_ctx = document.getElementById(
+      'metadataChart'
+    ) as HTMLCanvasElement;
+    if (
+      meta_ctx &&
+      this.metadataTimeRecord.length > 0 &&
+      this.metadataRecord.length > 0
+    ) {
+      const labels = this.metadataTimeRecord;
+      const datasets = this.metadataColumns.map((col) => {
         return {
           label: col,
-          data: this.metadataRecord.map(record => +record[col]),
+          data: this.metadataRecord.map((record) => +record[col]),
           fill: false,
           borderColor: this.getRandomColor(),
-          tension: 0.1
+          tension: 0.1,
         };
       });
-  
+
       if (this.metadataChart) {
-        this.metadataChart.destroy(); 
+        this.metadataChart.destroy();
       }
-  
+
       this.metadataChart = new Chart(meta_ctx, {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
           scales: {
             y: {
-              beginAtZero: true
-            }
+              beginAtZero: true,
+            },
           },
           responsive: true,
           maintainAspectRatio: false,
-        }
+        },
       });
     }
   }
@@ -352,7 +427,7 @@ export class DevicePageComponent implements AfterViewInit{
     return color;
   }
 
-  createChart(devId: string){
+  createChart(devId: string) {
     this.loadSpinner();
     this.createPayloadChart(devId);
     this.createMetadataChart();
@@ -365,6 +440,8 @@ export class DevicePageComponent implements AfterViewInit{
   }
   loadSpinner() {
     this.showSpinner = true;
-    setTimeout(() =>{this.showSpinner = false}, 250)
+    setTimeout(() => {
+      this.showSpinner = false;
+    }, 250);
   }
 }
