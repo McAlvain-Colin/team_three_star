@@ -49,7 +49,7 @@ const routes: Routes = [
   { path: 'application', component: ApplicationPageComponent },
   { path: 'application/:app', component: ApplicationPageComponent },
   {
-    path: 'application/:app/:org/:user',
+    path: 'application/:app/:org',
     component: ApplicationPageComponent,
   },
   { path: 'device', component: DevicePageComponent },

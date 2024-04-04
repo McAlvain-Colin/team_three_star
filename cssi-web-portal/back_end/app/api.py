@@ -165,6 +165,7 @@ class OrgApplication(Base):
 	o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
 	org: Mapped['Organization'] = relationship(back_populates='orgApps')
 
+	active: Mapped[bool] = mapped_column(unique= False)
 	# dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
 	# device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
 	def __repr__(self):
@@ -482,7 +483,7 @@ def getOwnedOrgList():
 	
 	except exc.SQLAlchemyError:
 
-		return jsonify({'error': "couldn't get your owned orgs"}), 404
+		return jsonify({'error': "Couldn't get your owned orgs"}), 404
 	
 	
 
@@ -554,6 +555,7 @@ def createOrgApplication():
 
 
 	orgApp = OrgApplication(app= newApp, org= org)
+	orgApp.active = True
 
 	db.session.add(newApp)
 	db.session.commit()
@@ -562,6 +564,21 @@ def createOrgApplication():
 
 	return jsonify(orgCreated = True)
 
+@app.route('/deleteOrgApp', methods = ['PUT'])
+@jwt_required()
+def deleteOrgApp():
+	data = request.get_json()
+	orgId = data['orgId']
+	appId = data['appId']
+	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__]
+	
+	removeApp = update(ORGAPPS).values(active = False).where(
+		ORGAPPS.c.app_id == appId,
+		ORGAPPS.c.o_id == orgId
+	)
+
+	db.session.execute(removeApp)
+	db.session.commit()
 
 
 
@@ -601,7 +618,7 @@ def getOrgAppList():
 	
 
 	try:
-		page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == oid)).scalars()
+		page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == oid).where(OrgApplication.active == True)).scalars()
 
 		res = {
 		'list': [
@@ -708,4 +725,7 @@ if __name__ == '__main__':
 	with app.app_context():
 		#db.drop_all()
 		#db.create_all()
+		#AppSensors.__table__.drop(db.engine)
+		#OrgApplication.__table__.drop(db.engine)
+		#Application.__table__.drop(db.engine)
 		app.run(debug = True)
