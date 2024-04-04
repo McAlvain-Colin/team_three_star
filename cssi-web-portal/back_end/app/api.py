@@ -7,7 +7,6 @@ from flask_mail import Mail, Message
 
 from flask_jwt_extended import (create_access_token, JWTManager,
 								jwt_required, get_jwt_identity,
-								
 								)
 
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -55,7 +54,7 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = '@gmail.com' # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = '' # ALTERED FOR PRIVACY
 app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
@@ -83,14 +82,16 @@ class Account(Base):
 	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
 	email:Mapped[str] = mapped_column(unique= True)
 	password:Mapped[bytes] = mapped_column(types.LargeBinary())
+	name: Mapped[str] = mapped_column()
 	verified: Mapped[bool] = mapped_column(unique= False)
 	active: Mapped[bool] = mapped_column(unique= False)
 
 	orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='account')
 
-	def __init__(self, email, password, verified, active):
+	def __init__(self, email, password, name, verified, active):
 		self.email = email
 		self.password = password
+		self.name = name
 		self.verified = verified
 		self.active = active
 
@@ -245,19 +246,18 @@ def create_user():
 	data = request.get_json()
 	email = data['email']
 	password =  data['password']
-
+	name = data['name']
 
 	hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 	emailtoken = s.dumps(email, salt='email-confirm')
 
-	# dbinteractions.createMember(email, password, False, bcrypt)
-	newUser = Account(email, hashed, False, True)
+	newUser = Account(email, hashed, name,  False, True)
 	db.session.add(newUser)
 	db.session.commit()
 
 
-	msg = Message('Confirm Email', sender='ssiportalconfirmation@gmail.com', recipients= [email])
+	msg = Message('Confirm Email', sender='cssiportalconfirmation@gmail.com', recipients= [email])
 
 	link = url_for('confirm_email', token = emailtoken, _external = True)
 
@@ -456,7 +456,29 @@ def getOrg():
 
 
 		
+@app.route('/OrgMembers', methods = ['GET']) 
+@jwt_required() 
+def getOrgMembers():
+
+	orgId = request.args['org']
+
+	try:
+		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(Account.verified  == True).where(Account.active == True)).scalars()
+
+		res = {
+			'list': [
+				{
+				'a_id' : p.id,
+				'name': p.name
+
+				} for p in page.all()
+			]
+		}
+		return jsonify(res), 200
 	
+	except exc.SQLAlchemyError:
+		return jsonify({'error': "couldn't get your org members"}), 404
+
 
 
 
@@ -625,7 +647,7 @@ def getOrgAppList():
 			{
 				'app_id' : p.id,
 				'name': p.name,
-				'dev_eui': p.description
+				'description': p.description
 			} for p in page.all()
 		]
 		}

@@ -36,25 +36,29 @@ db.init_app(app)
 
 
 
+
 class Account(Base):
-    __tablename__ = "Account"
+	__tablename__ = "Account"
 
-    id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
-    email:Mapped[str] = mapped_column(unique= True)
-    password:Mapped[bytes] = mapped_column(types.LargeBinary())
-    verified: Mapped[bool] = mapped_column(unique= False)
-    active: Mapped[bool] = mapped_column(unique= False)
+	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
+	email:Mapped[str] = mapped_column(unique= True)
+	password:Mapped[bytes] = mapped_column(types.LargeBinary())
+	name: Mapped[str] = mapped_column()
+	verified: Mapped[bool] = mapped_column(unique= False)
+	active: Mapped[bool] = mapped_column(unique= False)
 
-    orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='account')
+	orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='account')
 
-    def __init__(self, email, password, verified, active):
-        self.email = email
-        self.password = password
-        self.verified = verified
-        self.active = active
+	def __init__(self, email, password, name, verified, active):
+		self.email = email
+		self.password = password
+		self.name = name
+		self.verified = verified
+		self.active = active
 
-    def __repr__(self):
-        return f'id = {self.id}, email = {self.email}'
+	def __repr__(self):
+		return f'id = {self.id}, email = {self.email}'
+
 
 class Organization(Base):
     __tablename__ = "Organization"
@@ -163,14 +167,14 @@ def func():
 
     # print(o)
     # for creating a account
-    # email ='hasd@gmail.com'
-    # hashed = 'lol'
+    # email ='hasasds1234dfg2143d@gmail.com'
+    # hashed = 'lol1'
     # hashed = hashed.encode('utf-8')
-    # newUser = Account(email, hashed, False, True )
+    # newUser = Account(email, hashed,'me', False, True )
     # db.session.add(newUser)
     # db.session.commit()
 
-    # # # for creating a org
+    # # # # for creating a org
     # org = Organization('5org', 'this is my first org', True)
     # db.session.add(org)
     # db.session.commit()
@@ -197,16 +201,16 @@ def func():
 
 
     # For adding to orgAccounts
-    # newUser = db.session.execute(db.select(Account).filter_by(id = 1)).scalar()
-    # newOrg = db.session.execute(db.select(Organization).filter_by(id = 3)).scalar()
+    # newUser = db.session.execute(db.select(Account).filter_by(id = 5)).scalar()
+    # newOrg = db.session.execute(db.select(Organization).filter_by(id = 1)).scalar()
 
-    # # # newOrg = Organization('lol', 'testintg')
+    # # # # newOrg = Organization('lol', 'testintg')
 
-    # # # #link the account with the org
-    # for i in range(1,7):
-    # orgAcc = OrgAccount(a_id= 1, o_id= i, r_id = i % 4)
+    # # # # #link the account with the org
+    # # for i in range(1,7):
+    # # orgAcc = OrgAccount(a_id= 1, o_id= i, r_id = i % 4)
 
-    # # # orgAcc = OrgAccount(a_id= newUser.id, o_id= newOrg.id, r_id = 2)
+    # orgAcc = OrgAccount(a_id= newUser.id, o_id= newOrg.id, r_id = 3, active=True)
 
 
     # db.session.add(orgAcc)
@@ -314,9 +318,9 @@ def func():
 
     ####################################################################
     # get org with id = 1
-    org = db.session.execute(db.select(Organization).where(Organization.id == 1)).scalar()
+    # org = db.session.execute(db.select(Organization).where(Organization.id == 1)).scalar()
 
-    print(org.id)
+    # print(org.id)
 
     # acc = db.session.execute(db.select(Account).where(Account.id == 1)).scalar()
     # print(acc.email)
@@ -339,7 +343,7 @@ def func():
 
 
 
-    res = db.session.execute(db.select(Application).where(Application.id == 5)).scalar()
+    # res = db.session.execute(db.select(Application).where(Application.id == 5)).scalar()
 
     # print(res.name)
 
@@ -587,6 +591,23 @@ def func():
 
 
 
+    page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3))).scalars()
+
+    # # print(page.items) #doesnt work if not specified the object attributes to expose
+    res = {
+    # 'totalPages': page.pages,
+    'list': [
+    {
+    'a_id' : p.id,
+    'name': p.name
+
+    } for p in page.all()
+    ]
+    }
+
+    j = json.dumps(res)
+
+    print(j)
 
 
 
@@ -602,20 +623,20 @@ def func():
 
 
 
-    page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.app_id == 1)).scalars()
+    # page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.app_id == 1)).scalars()
 
-    # # print(page.items) #doesnt work if not specified the object attributes to expose
-    res = {
-    # 'totalPages': page.pages,
-    'list': [
-    {
-    'app_id' : p.id,
-    'name': p.name
-    } for p in page.all()
-    ]
-    }
+    # # # print(page.items) #doesnt work if not specified the object attributes to expose
+    # res = {
+    # # 'totalPages': page.pages,
+    # 'list': [
+    # {
+    # 'app_id' : p.id,
+    # 'name': p.name
+    # } for p in page.all()
+    # ]
+    # }
 
-    j = json.dumps(res)
+    # j = json.dumps(res)
 
     
 
@@ -667,22 +688,22 @@ def func():
 
 
 
-    page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 10)).scalars()
+    # page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 10)).scalars()
 
-    res = {
-        'list': [
-            {
-                'app_id': p.app_id,
-                'name': p.dev_name,
-                'dev': p.dev_eui
+    # res = {
+    #     'list': [
+    #         {
+    #             'app_id': p.app_id,
+    #             'name': p.dev_name,
+    #             'dev': p.dev_eui
 
-            } for p in page.all()
-        ]
-    }
+    #         } for p in page.all()
+    #     ]
+    # }
 
-    j = json.dumps(res)
+    # j = json.dumps(res)
 
-    print('Devices are, j')
+    # print('Devices are, j')
 
 
 
@@ -699,17 +720,17 @@ def func():
     # how to select distinct device availbe
 
 
-    # db.session.execute()
-    page = db.session.execute(db.select(AppSensors.dev_eui).where(AppSensors.app_id == 10).where(AppSensors.dev_name == 'myDevice')).scalar()
-    print('deve eui', page)
+    # # db.session.execute()
+    # page = db.session.execute(db.select(AppSensors.dev_eui).where(AppSensors.app_id == 10).where(AppSensors.dev_name == 'myDevice')).scalar()
+    # print('deve eui', page)
 
 
 
 
 
-    # pull all user associated with an organization
+    # # pull all user associated with an organization
 
-    page = db.session.execute(db.select(Account).join(Account.orgAccounts).where(OrgAccount.o_id == 10))
+    # page = db.session.execute(db.select(Account).join(Account.orgAccounts).where(OrgAccount.o_id == 10))
 
 
 
@@ -723,6 +744,17 @@ with app.app_context():
     # db.create_all()
     # print(db.session.execute(db.select(Device.dev_eui)).scalars().all())
 
+    # OrgAccount.__table__.drop(db.engine)
+
+    # Account.__table__.drop(db.engine)
+
+    # AppSensors.__table__.drop(db.engine)
+
+    # OrgApplication.__table__.drop(db.engine)
+
+    # Application.__table__.drop(db.engine)
+
+    # Organization.__table__.drop(db.engine)
 
 # #fro deleting
     # db.reflect()
