@@ -459,8 +459,10 @@ def getOrg():
 @jwt_required() 
 def getOrgMembers():
 
+	orgId = request.args['org']
+
 	try:
-		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == 1).where(Account.verified  == True).where(Account.active == True)).scalars()
+		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(Account.verified  == True).where(Account.active == True)).scalars()
 
 		res = {
 			'list': [
