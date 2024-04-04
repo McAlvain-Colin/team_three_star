@@ -41,6 +41,12 @@ export interface App {
   description: string;
 }
 
+export interface Member{
+  name: string,
+  id: number
+
+}
+
 @Component({
   selector: 'app-organization-page',
   templateUrl: './organization-page.component.html',
@@ -65,7 +71,8 @@ export interface App {
 })
 export class OrganizationPageComponent implements OnInit {
   base_url: string = 'http://localhost:5000';
-  appList: Organization[] = [];
+  appList: App[] = [];
+  memberList: Member[] = [];
 
   orgId: string | null = '';
   routerLinkVariable = '/hi';
@@ -80,7 +87,7 @@ export class OrganizationPageComponent implements OnInit {
   isAdmin: boolean = true;
   currentPage: number = 0;
   appsSource = new MatTableDataSource(this.appList);
-  memberSource = new MatTableDataSource(this.members);
+  memberSource = new MatTableDataSource(this.memberList);
 
   @ViewChild('appsPaginator', { static: true })
   appsPaginator: MatPaginator = new MatPaginator(
@@ -112,31 +119,32 @@ export class OrganizationPageComponent implements OnInit {
     const param = new HttpParams().set('org', decodeURI(String(this.orgId)));
 
     this.http
-      .get<{ list: Organization[] }>(this.base_url + '/userOrgAppList', {
+      .get(this.base_url + '/userOrgAppList', {
         observe: 'response',
         responseType: 'json',
         params: param,
       })
       .subscribe({
         next: (response) => {
-          // const res = JSON.stringify(response);
+          const res = JSON.stringify(response);
 
-          // let resp = JSON.parse(res);
+          let resp = JSON.parse(res);
 
           // console.log('resp is ');
 
           // console.log(resp);
           // console.log('body', resp.body.list);
 
-          // for (var i = 0; i < resp.body.list.length; i++) {
-          //   this.applications.push(resp.body.list[i].name);
-          //   this.appList.push({
-          //     id: resp.body.list[i].app_id,
-          //     name: resp.body.list[i].name,
-          //     description: resp.body.list[i].description,
-          //   });
-          // }
-          this.appsSource = new MatTableDataSource(response.body?.list);
+          for (var i = 0; i < resp.body.list.length; i++) {
+            // this.applications.push(resp.body.list[i].name);
+            this.appList.push({
+              id: resp.body.list[i].app_id,
+              name: resp.body.list[i].name,
+              description: resp.body.list[i].description,
+            });
+          }
+          // console.log('in the app list ')
+          // this.appsSource = new MatTableDataSource(response.body?.list);
           this.appsSource.paginator = this.appsPaginator;
         },
         error: (error) => {
@@ -169,6 +177,40 @@ export class OrganizationPageComponent implements OnInit {
         },
       });
 
+
+      // this for getting org members 
+      this.http
+      .get(this.base_url + '/OrgMembers', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          console.log('resp is ');
+
+          console.log(resp);
+          console.log('body', resp.body.list);
+
+          for (var i = 0; i < resp.body.list.length; i++) {
+            this.memberList.push({
+              id: resp.body.list[i].id,
+              name: resp.body.list[i].name
+            });
+
+          // add members to the member list 
+        }},
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
+
+
     // this is for getting a org's applicatiiions
     this.appsSource.paginator = this.appsPaginator;
     this.memberSource.paginator = this.membersPaginator;
@@ -194,8 +236,8 @@ export class OrganizationPageComponent implements OnInit {
     });
   }
 
-  getRouteName(appId: Organization) {
-    let routeName: string = '/application/' + appId.o_id;
+  getRouteName(app: App) {
+    let routeName: string = '/application/' + app.id;
     return routeName;
   }
 

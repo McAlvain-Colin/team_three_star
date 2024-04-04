@@ -46,7 +46,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
 db.init_app(app)
 
 
@@ -54,8 +54,8 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = '' # ALTERED FOR PRIVACY
-app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR PRIVACY
+app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
 # app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
@@ -273,7 +273,6 @@ def confirm_email(token):
 	try:
 		email = s.loads(token, salt='email-confirm', max_age = 360)
 
-		# dbinteractions.verifiyMember(email)
 		newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
 		newUser.verified = True
 
@@ -281,7 +280,6 @@ def confirm_email(token):
 
 		return '<h1>The email confirmation was successful, please login</h1>'
 	except SignatureExpired:
-		# dbinteractions.removeUnverifiedMember()
 		newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
 	
 		db.session.delete(newUser)
@@ -461,6 +459,9 @@ def getOrg():
 def getOrgMembers():
 
 	orgId = request.args['org']
+
+	orgId = int(orgId)
+	print(orgId)
 
 	try:
 		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(Account.verified  == True).where(Account.active == True)).scalars()

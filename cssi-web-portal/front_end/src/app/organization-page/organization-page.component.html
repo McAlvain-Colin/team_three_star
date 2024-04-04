@@ -140,11 +140,11 @@
                   )
                 "
               >
-                {{ member }}
+                {{ member.name }}
                 <button
                   class="remove-icon"
                   *ngIf="removeMembers"
-                  (click)="confirmRemoval(member)"
+                  (click)="confirmRemoval(member.name)"
                 >
                   <mat-icon fontIcon="remove" color="warn"></mat-icon>
                 </button>

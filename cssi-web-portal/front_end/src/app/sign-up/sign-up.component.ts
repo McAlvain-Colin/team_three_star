@@ -168,7 +168,7 @@ export class SignUpComponent {
       this.http
         .put(
           this.base_url + '/createUser',
-          { email: this.emailField.getRawValue(), password: this.sentPassword },
+          { email: this.emailField.getRawValue(), password: this.sentPassword, name: this.name },
           { observe: 'response', responseType: 'json' }
         )
         .subscribe({
