@@ -83,14 +83,17 @@
                   )
                 "
               >
-                {{ application.name }}
-                <button
-                  class="remove-icon"
-                  *ngIf="removeApps"
-                  (click)="confirmRemoval(application.name)"
-                >
-                  <mat-icon fontIcon="remove" color="warn"></mat-icon>
-                </button>
+                <div class="make-flexbox">
+                  {{ application.name }}
+                  <span class="push-button-right"></span>
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeApps"
+                    (click)="confirmRemoval(3, application)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
               </a>
             </mat-nav-list>
             <mat-paginator
@@ -140,11 +143,11 @@
                   )
                 "
               >
-                {{ member }}
+                {{ member.name }}
                 <button
                   class="remove-icon"
                   *ngIf="removeMembers"
-                  (click)="confirmRemoval(member)"
+                  (click)="confirmRemoval(4, undefined, member)"
                 >
                   <mat-icon fontIcon="remove" color="warn"></mat-icon>
                 </button>

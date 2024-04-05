@@ -7,7 +7,6 @@ from flask_mail import Mail, Message
 
 from flask_jwt_extended import (create_access_token, JWTManager,
 								jwt_required, get_jwt_identity,
-								
 								)
 
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -83,14 +82,16 @@ class Account(Base):
 	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
 	email:Mapped[str] = mapped_column(unique= True)
 	password:Mapped[bytes] = mapped_column(types.LargeBinary())
+	name: Mapped[str] = mapped_column()
 	verified: Mapped[bool] = mapped_column(unique= False)
 	active: Mapped[bool] = mapped_column(unique= False)
 
 	orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='account')
 
-	def __init__(self, email, password, verified, active):
+	def __init__(self, email, password, name, verified, active):
 		self.email = email
 		self.password = password
+		self.name = name
 		self.verified = verified
 		self.active = active
 
@@ -165,6 +166,7 @@ class OrgApplication(Base):
 	o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
 	org: Mapped['Organization'] = relationship(back_populates='orgApps')
 
+	active: Mapped[bool] = mapped_column(unique= False)
 	# dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
 	# device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
 	def __repr__(self):
@@ -244,19 +246,18 @@ def create_user():
 	data = request.get_json()
 	email = data['email']
 	password =  data['password']
-
+	name = data['name']
 
 	hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 	emailtoken = s.dumps(email, salt='email-confirm')
 
-	# dbinteractions.createMember(email, password, False, bcrypt)
-	newUser = Account(email, hashed, False, True)
+	newUser = Account(email, hashed, name,  False, True)
 	db.session.add(newUser)
 	db.session.commit()
 
 
-	msg = Message('Confirm Email', sender='ssiportalconfirmation@gmail.com', recipients= [email])
+	msg = Message('Confirm Email', sender='cssiportalconfirmation@gmail.com', recipients= [email])
 
 	link = url_for('confirm_email', token = emailtoken, _external = True)
 
@@ -272,7 +273,6 @@ def confirm_email(token):
 	try:
 		email = s.loads(token, salt='email-confirm', max_age = 360)
 
-		# dbinteractions.verifiyMember(email)
 		newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
 		newUser.verified = True
 
@@ -280,7 +280,6 @@ def confirm_email(token):
 
 		return '<h1>The email confirmation was successful, please login</h1>'
 	except SignatureExpired:
-		# dbinteractions.removeUnverifiedMember()
 		newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
 	
 		db.session.delete(newUser)
@@ -367,10 +366,11 @@ def inviteUser():
 	orgacc.r_id = 3
 	orgacc.active = False
 
-	db.session.execute(orgacc)
+	db.session.add(orgacc)
 	db.session.commit()
 
 	mail.send(msg)
+	return jsonify(inviteSent = True)
 
 @app.route('/invite_email/<token>')  
 def invite_email(token):
@@ -381,13 +381,14 @@ def invite_email(token):
 		email = infoLoaded[0]
 		orgId = infoLoaded[1]
 
+		ORGACCOUNTS = db.metadata.tables[OrgAccount.__tablename__]
+
 		joinUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
 		if joinUser is None:
 			return "<h1>User doesn't have an acccount!<h1>"
 
-		orgAccount = db.session.execute(db.select(OrgAccount).where(OrgAccount.a_id == joinUser.id).where(OrgAccount.o_id == orgId))
-		orgAccount.active = True
-		db.session.execute(orgAccount)
+		userActivate = update(ORGACCOUNTS).values(active = True).where(ORGACCOUNTS.c.a_id == joinUser.id).where(ORGACCOUNTS.c.o_id == orgId)
+		db.session.execute(userActivate)
 		db.session.commit()
 
 		return '<h1>The organization invite was successful, please check your organizations.</h1>'
@@ -455,8 +456,48 @@ def getOrg():
 
 
 		
-	
+@app.route('/OrgMembers', methods = ['GET']) 
+@jwt_required() 
+def getOrgMembers():
 
+	orgId = request.args['org']
+
+	orgId = int(orgId)
+	print(orgId)
+
+	try:
+		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(Account.verified  == True).where(Account.active == True)).scalars()
+
+		res = {
+			'list': [
+				{
+				'a_id' : p.id,
+				'name': p.name
+
+				} for p in page.all()
+			]
+		}
+		return jsonify(res), 200
+	
+	except exc.SQLAlchemyError:
+		return jsonify({'error': "couldn't get your org members"}), 404
+
+@app.route('/deleteMember', methods = ['PUT'])
+@jwt_required()
+def deleteMember():
+	data = request.get_json()
+	orgId = data['orgId']
+	memberId = data['memberId']
+	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__] #Needsto adjust for members
+	
+	removeApp = update(ORGAPPS).values(active = False).where(
+		ORGAPPS.c.app_id == memberId,
+		ORGAPPS.c.o_id == orgId
+	)
+
+	db.session.execute(removeApp)
+	db.session.commit()
+	return jsonify(memberDeleteSuccess = True)
 
 
 @app.route('/userOwnedOrgList', methods = ['GET']) 
@@ -482,7 +523,7 @@ def getOwnedOrgList():
 	
 	except exc.SQLAlchemyError:
 
-		return jsonify({'error': "couldn't get your owned orgs"}), 404
+		return jsonify({'error': "Couldn't get your owned orgs"}), 404
 	
 	
 
@@ -493,7 +534,7 @@ def getJoinedOrgList():
 	uid = get_jwt_identity()
 
 	try:
-		page = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where(OrgAccount.r_id == 2).where(OrgAccount.r_id == 3).where(OrgAccount.active == True)).scalars()
+		page = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.active == True)).scalars()
 
 		res = {
 		'list': [
@@ -504,6 +545,7 @@ def getJoinedOrgList():
 				} for p in page.all()
 			]
 		}
+		print(res)
 		res = json.dumps(res)
 		return make_response(res, 200)
 	
@@ -554,6 +596,7 @@ def createOrgApplication():
 
 
 	orgApp = OrgApplication(app= newApp, org= org)
+	orgApp.active = True
 
 	db.session.add(newApp)
 	db.session.commit()
@@ -561,6 +604,23 @@ def createOrgApplication():
 	db.session.commit()
 
 	return jsonify(orgCreated = True)
+
+@app.route('/deleteOrgApp', methods = ['PUT'])
+@jwt_required()
+def deleteOrgApp():
+	data = request.get_json()
+	orgId = data['orgId']
+	appId = data['appId']
+	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__]
+	
+	removeApp = update(ORGAPPS).values(active = False).where(
+		ORGAPPS.c.app_id == appId,
+		ORGAPPS.c.o_id == orgId
+	)
+
+	db.session.execute(removeApp)
+	db.session.commit()
+	return jsonify(appDeleteSuccess = True)
 
 
 
@@ -601,14 +661,14 @@ def getOrgAppList():
 	
 
 	try:
-		page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == oid)).scalars()
+		page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == oid).where(OrgApplication.active == True)).scalars()
 
 		res = {
 		'list': [
 			{
 				'app_id' : p.id,
 				'name': p.name,
-				'dev_eui': p.description
+				'description': p.description
 			} for p in page.all()
 		]
 		}
@@ -708,4 +768,9 @@ if __name__ == '__main__':
 	with app.app_context():
 		#db.drop_all()
 		#db.create_all()
+		#OrgAccount.__table__.drop(db.engine)
+		#Account.__table__.drop(db.engine)
+		#AppSensors.__table__.drop(db.engine)
+		#OrgApplication.__table__.drop(db.engine)
+		#Application.__table__.drop(db.engine)
 		app.run(debug = True)

@@ -42,7 +42,7 @@ const routes: Routes = [
     path: 'add-application/:orgId',
     component: AddApplicationComponent,
   },
-  { path: 'add-device/:appId', component: AddDeviceComponent }, //:user is dynamic
+  { path: 'add-device/:appId/:orgId', component: AddDeviceComponent }, //:user is dynamic
   { path: 'invite-user/:org', component: InviteUserComponent },
   { path: 'organization', component: OrganizationPageComponent },
   { path: 'organization/:org', component: OrganizationPageComponent }, //:org is dynamic
@@ -50,7 +50,7 @@ const routes: Routes = [
   { path: 'application', component: ApplicationPageComponent },
   { path: 'application/:app', component: ApplicationPageComponent },
   {
-    path: 'application/:app/:org/:user',
+    path: 'application/:app/:org',
     component: ApplicationPageComponent,
   },
   { path: 'map', component: DeviceMapComponent },
