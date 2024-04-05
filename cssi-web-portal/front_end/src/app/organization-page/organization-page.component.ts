@@ -32,20 +32,8 @@ import {
   MatTableDataSource,
 } from '@angular/material/table';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Organization } from '../data.config';
-
-// an interfca foooooooooooor describing json data in request
-export interface App {
-  name: string;
-  id: number;
-  description: string;
-}
-
-export interface Member{
-  name: string,
-  id: number
-
-}
+import { Organization, App, Member } from '../data.config';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-organization-page',
@@ -63,6 +51,7 @@ export interface Member{
     MatCardModule,
     MatTabsModule,
     MatButtonModule,
+    MatDividerModule,
     TempNavBarComponent,
     DeviceMapComponent,
     MatDialogModule,
@@ -177,9 +166,8 @@ export class OrganizationPageComponent implements OnInit {
         },
       });
 
-
-      // this for getting org members 
-      this.http
+    // this for getting org members
+    this.http
       .get(this.base_url + '/OrgMembers', {
         observe: 'response',
         responseType: 'json',
@@ -199,17 +187,16 @@ export class OrganizationPageComponent implements OnInit {
           for (var i = 0; i < resp.body.list.length; i++) {
             this.memberList.push({
               id: resp.body.list[i].id,
-              name: resp.body.list[i].name
+              name: resp.body.list[i].name,
             });
 
-          // add members to the member list 
-        }},
+            // add members to the member list
+          }
+        },
         error: (error) => {
           console.error(error);
         },
       });
-
-
 
     // this is for getting a org's applicatiiions
     this.appsSource.paginator = this.appsPaginator;
@@ -229,15 +216,30 @@ export class OrganizationPageComponent implements OnInit {
     //Make get request here that sends in pageEvent.pageIndex
   }
 
-  confirmRemoval(itemName: string) {
-    //SHould open a snackbar that asks if you want to remove the component, and then based on the action does the thing
-    const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
-      data: { itemName: itemName }, //Can pass in more data if needed so that we can trigger the delete with orgID and userID
-    });
+  confirmRemoval(itemType: number, removeApp?: App, removeMember?: Member) {
+    if (itemType == 3) {
+      const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+        data: {
+          orgId: this.orgId,
+          itemName: removeApp?.name,
+          itemId: removeApp?.id,
+          itemType: itemType,
+        }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+      });
+    } else if (itemType == 4) {
+      const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+        data: {
+          orgId: this.orgId,
+          itemName: removeMember?.name,
+          itemId: removeMember?.id,
+          itemType: itemType,
+        }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+      });
+    }
   }
 
   getRouteName(app: App) {
-    let routeName: string = '/application/' + app.id;
+    let routeName: string = '/application/' + app.id + '/' + String(this.orgId);
     return routeName;
   }
 

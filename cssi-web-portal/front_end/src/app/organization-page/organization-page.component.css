@@ -136,6 +136,12 @@ body {
   margin: 2px;
 }
 
+.remove-icon {
+  background-color: transparent;
+  z-index: 10000;
+  border-color: red;
+}
+
 .apps-box {
   display: flex;
   position: relative;

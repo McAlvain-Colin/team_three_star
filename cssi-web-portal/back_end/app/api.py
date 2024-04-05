@@ -46,7 +46,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
 db.init_app(app)
 
 
@@ -54,8 +54,8 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR PRIVACY
-app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = '@gmail.com' # ALTERED FOR PRIVACY
+app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
 # app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
@@ -370,6 +370,7 @@ def inviteUser():
 	db.session.commit()
 
 	mail.send(msg)
+	return jsonify(inviteSent = True)
 
 @app.route('/invite_email/<token>')  
 def invite_email(token):
@@ -480,7 +481,22 @@ def getOrgMembers():
 	except exc.SQLAlchemyError:
 		return jsonify({'error': "couldn't get your org members"}), 404
 
+@app.route('/deleteMember', methods = ['PUT'])
+@jwt_required()
+def deleteMember():
+	data = request.get_json()
+	orgId = data['orgId']
+	memberId = data['memberId']
+	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__]
+	
+	removeApp = update(ORGAPPS).values(active = False).where(
+		ORGAPPS.c.app_id == appId,
+		ORGAPPS.c.o_id == orgId
+	)
 
+	db.session.execute(removeApp)
+	db.session.commit()
+	return jsonify(memberDeleteSuccess = True)
 
 
 @app.route('/userOwnedOrgList', methods = ['GET']) 
@@ -602,6 +618,8 @@ def deleteOrgApp():
 
 	db.session.execute(removeApp)
 	db.session.commit()
+	return jsonify(appDeleteSuccess = True)
+
 
 
 
@@ -748,6 +766,8 @@ if __name__ == '__main__':
 	with app.app_context():
 		#db.drop_all()
 		#db.create_all()
+		#OrgAccount.__table__.drop(db.engine)
+		#Account.__table__.drop(db.engine)
 		#AppSensors.__table__.drop(db.engine)
 		#OrgApplication.__table__.drop(db.engine)
 		#Application.__table__.drop(db.engine)
