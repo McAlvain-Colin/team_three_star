@@ -366,7 +366,7 @@ def inviteUser():
 	orgacc.r_id = 3
 	orgacc.active = False
 
-	db.session.execute(orgacc)
+	db.session.add(orgacc)
 	db.session.commit()
 
 	mail.send(msg)
@@ -381,13 +381,14 @@ def invite_email(token):
 		email = infoLoaded[0]
 		orgId = infoLoaded[1]
 
+		ORGACCOUNTS = db.metadata.tables[OrgAccount.__tablename__]
+
 		joinUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
 		if joinUser is None:
 			return "<h1>User doesn't have an acccount!<h1>"
 
-		orgAccount = db.session.execute(db.select(OrgAccount).where(OrgAccount.a_id == joinUser.id).where(OrgAccount.o_id == orgId))
-		orgAccount.active = True
-		db.session.execute(orgAccount)
+		userActivate = update(ORGACCOUNTS).values(active = True).where(ORGACCOUNTS.c.a_id == joinUser.id).where(ORGACCOUNTS.c.o_id == orgId)
+		db.session.execute(userActivate)
 		db.session.commit()
 
 		return '<h1>The organization invite was successful, please check your organizations.</h1>'
@@ -487,10 +488,10 @@ def deleteMember():
 	data = request.get_json()
 	orgId = data['orgId']
 	memberId = data['memberId']
-	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__]
+	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__] #Needsto adjust for members
 	
 	removeApp = update(ORGAPPS).values(active = False).where(
-		ORGAPPS.c.app_id == appId,
+		ORGAPPS.c.app_id == memberId,
 		ORGAPPS.c.o_id == orgId
 	)
 
@@ -533,7 +534,7 @@ def getJoinedOrgList():
 	uid = get_jwt_identity()
 
 	try:
-		page = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where(OrgAccount.r_id == 2).where(OrgAccount.r_id == 3).where(OrgAccount.active == True)).scalars()
+		page = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.active == True)).scalars()
 
 		res = {
 		'list': [
@@ -544,6 +545,7 @@ def getJoinedOrgList():
 				} for p in page.all()
 			]
 		}
+		print(res)
 		res = json.dumps(res)
 		return make_response(res, 200)
 	
