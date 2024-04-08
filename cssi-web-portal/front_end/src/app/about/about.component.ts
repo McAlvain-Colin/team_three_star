@@ -35,6 +35,6 @@ export class AboutComponent {
   advisor_images = [
     { url: '../../assets/Jehren-Boehm.jpg', alt: 'Jehren Boehm' },
     { url: '../../assets/zach.png', alt: 'Zach Estreito' },
-    { url: '../../assets/default.png', alt: 'Kaden N.' },
+    { url: '../../assets/kaden.png', alt: 'Kaden N.' },
   ];
 }
