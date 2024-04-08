@@ -2,6 +2,10 @@ import json
 from flask import Flask, request, jsonify, url_for, make_response
 from flask_cors import CORS
 import datetime
+from helperFunctions import * 
+from data_parser import *
+import models
+from stats import *
 # import dbinteractions
 from flask_mail import Mail, Message
 
@@ -46,7 +50,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:cssiwebportal2024@localhost/postgres'
 db.init_app(app)
 
 
@@ -54,13 +58,13 @@ db.init_app(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = '@gmail.com' # ALTERED FOR PRIVACY
-app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR PRIVACY
+app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
 # app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
 app.config['JWT_SECRET_KEY'] = 'secret' # ALTERED FOR PRIVACY
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 20)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 60)
 CORS(app, resources={r'*': {'origins': 'http://localhost:4200'}})
 
 JWTManager(app)
@@ -166,7 +170,8 @@ class OrgApplication(Base):
 	o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
 	org: Mapped['Organization'] = relationship(back_populates='orgApps')
 
-	active: Mapped[bool] = mapped_column(unique= False)
+	active: Mapped[bool] = mapped_column(unique=False)
+
 	# dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
 	# device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
 	def __repr__(self):
@@ -191,10 +196,10 @@ with app.app_context():
 	db.reflect()
 
 # this table represent the lab sensor json provided by Zach
-# class Device(Base):
-#     __tablename__ = db.metadata.tables['lab_sensor_json']
+class Device(Base):
+    __tablename__ = db.metadata.tables['lab_sensor_json']
 	
-#     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True) 
+    dev_eui: Mapped[str] = mapped_column(Text, primary_key= True) 
 
 			
 
@@ -595,7 +600,7 @@ def createOrgApplication():
 	org = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
 
 
-	orgApp = OrgApplication(app= newApp, org= org)
+	orgApp = OrgApplication(app= newApp, org= org, active= True)
 	orgApp.active = True
 
 	db.session.add(newApp)
@@ -763,6 +768,94 @@ def getOrgAppDeviceList():
 	
 	
 
+#Colins works from __init__ file###################################################################################################
+
+
+@app.route('/data', methods=['GET'])
+#@jwt_required()
+def get_data():
+    try:
+        records = read_records('lab_sensor_json', "dev_eui = '0025CA0A00015E62'") #hard coded for test
+        data = parse_data(records)
+        return jsonify(data), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+    
+@app.route('/alt_data', methods=['GET'])
+#@jwt_required()
+def get_alt_data():
+    try:
+        records = read_records('lab_sensor_json') #hard coded for test
+        data = parse_data(records)
+        return jsonify(data), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+    
+@app.route('/dev_id', methods=['GET'])
+#@jwt_required()
+def get_dev_id():
+    try:
+        records = read_records('lab_sensor_json', 'distinct') #hard coded for test
+        # data = parse_data(records
+        return jsonify(records), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/metadata', methods=['GET'])
+#@jwt_required()
+def get_metadata():
+    try:
+        records = read_records('lab_sensor_json', 'metadata', '0025CA0A00015E62') #hard coded for test
+        # data = parse_data(records)
+        return jsonify(records), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/payload/<string:dev_id>', methods=['GET'])
+#@jwt_required()
+def get_payload(dev_id):
+    try:
+        records = read_records('lab_sensor_json', 'payload', dev_id) #hard coded for test
+        # data = parse_data(records)
+        return jsonify(records), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/location', methods=['GET'])
+#@jwt_required()
+def get_location():
+    try:
+        records = read_records('device_location', 'location') #hard coded for test
+        # data = parse_data(records)
+        return jsonify(records), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/payloadStats/<string:dev_id>', methods=['GET'])
+#@jwt_required()
+def get_payloadStats(dev_id):
+    try:
+        records = read_records('lab_sensor_json', 'payloadStats', dev_id) #hard coded for test
+        data= getStats(records)
+        return jsonify(data), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/metadataStats/<string:dev_id>', methods=['GET'])
+#@jwt_required()
+def get_metadataStats(dev_id):
+    try:
+        records = read_records('lab_sensor_json', 'metadataStats', dev_id) #hard coded for test
+        data= getStats(records)
+        return jsonify(data), 200 #200 shows correct  http responses
+    except Exception as e:
+        print('error')
+        return jsonify({'Error': str(e)}), 500 #500 shows server error
+
+
+##################################################################################################################
 
 if __name__ == '__main__':
 	with app.app_context():

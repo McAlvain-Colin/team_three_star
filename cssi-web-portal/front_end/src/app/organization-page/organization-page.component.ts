@@ -119,20 +119,19 @@ export class OrganizationPageComponent implements OnInit {
 
           let resp = JSON.parse(res);
 
-          // console.log('resp is ');
+          console.log('resp is ');
 
-          // console.log(resp);
-          // console.log('body', resp.body.list);
+          console.log(resp);
+          console.log('body', resp.body.list);
 
           for (var i = 0; i < resp.body.list.length; i++) {
-            // this.applications.push(resp.body.list[i].name);
+            this.applications.push(resp.body.list[i].name);
             this.appList.push({
               id: resp.body.list[i].app_id,
               name: resp.body.list[i].name,
               description: resp.body.list[i].description,
             });
           }
-          // console.log('in the app list ')
           // this.appsSource = new MatTableDataSource(response.body?.list);
           this.appsSource.paginator = this.appsPaginator;
         },
@@ -239,7 +238,7 @@ export class OrganizationPageComponent implements OnInit {
   }
 
   getRouteName(app: App) {
-    let routeName: string = '/application/' + app.id + '/' + String(this.orgId);
+    let routeName: string = '/application/' + app.id;
     return routeName;
   }
 

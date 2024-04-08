@@ -3240,3 +3240,214 @@ INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /metadata HTTP/1.1" 200 
 INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [28/Mar/2024 13:52:45] "GET /dev_id HTTP/1.1" 200 -
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 326-851-013
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 326-851-013
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:26:52] "OPTIONS /logout HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:26:52] "[31m[1mDELETE /logout HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:26:57] "[33mOPTIONS /userOwnedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:26:57] "[33mOPTIONS /userJoinedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:27:05] "[33mOPTIONS /userOrgAppList?org=null HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:27:05] "[33mOPTIONS /getOrgInfo?org=null HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:27:11] "[33mOPTIONS /userOwnedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:27:11] "[33mOPTIONS /userJoinedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:27:16] "OPTIONS /logout HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:27:16] "[31m[1mDELETE /logout HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:27:30] "OPTIONS /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:27:30] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:27:34] "[35m[1mPOST /login HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:39:57] "OPTIONS /createUser HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:39:57] "[35m[1mPUT /createUser HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:46:53] "OPTIONS /createUser HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 10:46:53] "[35m[1mPUT /createUser HTTP/1.1[0m" 500 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 539-302-037
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 17:00:57] "[33mOPTIONS /userOwnedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 17:00:57] "[33mOPTIONS /userJoinedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 17:01:02] "[33mOPTIONS /userOrgAppDevice?app=-1&devName=none HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 17:01:02] "OPTIONS /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 17:01:02] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 17:01:02] "OPTIONS /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 17:01:02] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 17:01:02] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 17:01:02] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:32] "[33mOPTIONS /userOrgAppDevice?app=-1&devName=none HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:32] "OPTIONS /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:32] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:32] "OPTIONS /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:32] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:32] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:33] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:36] "[33mOPTIONS /userOrgAppDevice?app=-1&devName=none HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:36] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:36] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:36] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "OPTIONS /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "OPTIONS /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "OPTIONS /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "OPTIONS /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:32:37] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:38:35] "OPTIONS /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 17:38:35] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 18:01:26] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 18:02:39] "[33mGET /altData HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 18:02:43] "[33mGET /altdata HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [05/Apr/2024 18:02:52] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 00:19:43] "[33mOPTIONS /userOwnedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 00:19:43] "[33mOPTIONS /userJoinedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 00:20:06] "[33mOPTIONS /userOrgAppList?org=null HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 00:20:06] "[33mOPTIONS /getOrgInfo?org=null HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:19] "[33mOPTIONS /userOwnedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:19] "[33mOPTIONS /userJoinedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:27] "OPTIONS /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:27] "GET /location HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:36] "[33mOPTIONS /userOrgAppDevice?app=-1&devName=none HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:36] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:36] "OPTIONS /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:36] "OPTIONS /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:36] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:36] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:36] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "OPTIONS /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "OPTIONS /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "OPTIONS /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "OPTIONS /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:06:38] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:20:31] "[33mOPTIONS /userOwnedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:20:31] "[33mOPTIONS /userJoinedOrgList HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:42:43] "OPTIONS /createUser HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:42:43] "[35m[1mPUT /createUser HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 539-302-037
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 539-302-037
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/newdb.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 539-302-037
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:47:57] "OPTIONS /createUser HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 12:47:57] "[35m[1mPUT /createUser HTTP/1.1[0m" 500 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 101-173-819
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 101-173-819
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 654-001-161
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:32] "OPTIONS /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:32] "POST /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:32] "OPTIONS /protected HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:32] "GET /protected HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:32] "OPTIONS /userOwnedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:32] "OPTIONS /userJoinedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:32] "GET /userOwnedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:32] "GET /userJoinedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:36] "OPTIONS /userOrgAppList?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:36] "OPTIONS /getOrgInfo?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:36] "GET /userOrgAppList?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:36] "GET /getOrgInfo?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:38] "OPTIONS /userOrgApp?app=3 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:38] "OPTIONS /userOrgAppDeviceList?app=3 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:38] "GET /userOrgApp?app=3 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:38] "GET /userOrgAppDeviceList?app=3 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:40] "OPTIONS /userOrgAppDevice?app=3&devName=myDevice HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:40] "OPTIONS /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:40] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:40] "OPTIONS /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:40] "GET /userOrgAppDevice?app=3&devName=myDevice HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:40] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:40] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:40] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "OPTIONS /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "OPTIONS /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "OPTIONS /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "OPTIONS /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:00:42] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 654-001-161
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:02:26] "OPTIONS /userOrgAppDevice?app=3&devName=myDevice HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:02:26] "OPTIONS /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:02:26] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:02:26] "OPTIONS /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:02:26] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:02:26] "GET /userOrgAppDevice?app=3&devName=myDevice HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:02:26] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:02:26] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:02] "OPTIONS /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:02] "POST /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:29] "OPTIONS /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:29] "POST /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:29] "OPTIONS /protected HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:29] "GET /protected HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:29] "OPTIONS /userOwnedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:29] "OPTIONS /userJoinedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:29] "GET /userOwnedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:03:29] "GET /userJoinedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:13] "OPTIONS /userOrgAppList?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:13] "OPTIONS /getOrgInfo?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:13] "GET /userOrgAppList?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:13] "GET /getOrgInfo?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:35] "OPTIONS /userOrgApp?app=3 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:35] "OPTIONS /userOrgAppDeviceList?app=3 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:35] "GET /userOrgApp?app=3 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:35] "GET /userOrgAppDeviceList?app=3 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:53] "OPTIONS /userOrgAppDevice?app=3&devName=myDevice HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:53] "OPTIONS /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:53] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:53] "OPTIONS /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:53] "GET /userOrgAppDevice?app=3&devName=myDevice HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:53] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:53] "GET /data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:04:53] "GET /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "OPTIONS /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "OPTIONS /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "OPTIONS /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "OPTIONS /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "OPTIONS /metadata HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "GET /alt_data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "GET /payloadStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "GET /metadataStats/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "GET /dev_id HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [08/Apr/2024 14:55:54] "GET /metadata HTTP/1.1" 200 -
