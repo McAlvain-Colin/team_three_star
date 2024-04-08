@@ -1,0 +1,25 @@
+FROM node:18.18.2 as build-stage
+
+# Install required packages
+RUN apt-get update && \
+    apt-get install -y \
+    build-essential \
+    git \
+    curl \
+    gnupg \
+    wget \
+    nginx \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Angular CLI
+RUN npm install -g @angular/cli
+
+# Copy your project files
+COPY /team_three_star/ /cssi-web-portal/
+
+# Set working directory
+WORKDIR /cssi-web-portal
+
+# Start command
+CMD ["node", "cssi-web-portal.js"] # Replace with your start command
