@@ -29,6 +29,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { keyframes } from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatIconModule} from '@angular/material/icon';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -36,6 +38,8 @@ export interface SensorData {
   dev_time: any; 
   payload_dict: any; 
   metadata_dict: any;
+  payloadDescription: any;
+  metadataDescription: any;
 }
 interface PayloadRecord {
   [key: string]: number | string;
@@ -45,6 +49,13 @@ interface PayloadRecord {
 @Component({
   selector: 'app-filter-page',
   templateUrl: './filter-page.component.html',
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
   styleUrls: ['./filter-page.component.css'],
   standalone: true,
   imports: [
@@ -71,6 +82,7 @@ interface PayloadRecord {
     MatSliderModule,
     MatDatepickerModule,
     MatCheckboxModule,
+    MatIconModule
   ],
 })
 export class FilterPageComponent implements AfterViewInit{
@@ -146,10 +158,15 @@ export class FilterPageComponent implements AfterViewInit{
           dev_eui: item.dev_eui,
           dev_time: item.dev_time,
           payload_dict: JSON.parse(item.payload_dict),
-          metadata_dict: JSON.parse(item.metadata_dict)
+          metadata_dict: JSON.parse(item.metadata_dict),
+          payloadDescription: "",
+          metadataDescription: ""
         }));
         this.payloadDataSource.data = records;
         this.metadataSource.data = records;
+
+        console.log(this.payloadDataSource.data)
+        console.log(this.metadataSource.data)
 
         if (records.length > 0) {        
           this.payloadColumns = Object.keys(records[0].payload_dict);
@@ -201,7 +218,7 @@ export class FilterPageComponent implements AfterViewInit{
     })
     this.apiService.getMetadataStatisticsData('0025CA0A00015E62').subscribe({
       next: (data: any[]) => {
-        console.log(data)
+        // console.log(data)
         const metadataStatRecord = Object.keys(data).map((key: any) => {
           const stats = data[key];
 
@@ -214,7 +231,7 @@ export class FilterPageComponent implements AfterViewInit{
             mode: stats.mode
           }
         });
-        console.log(metadataStatRecord)
+        // console.log(metadataStatRecord)
 
         this.metadataStatSource.data = metadataStatRecord;
       },
@@ -342,6 +359,8 @@ export class FilterPageComponent implements AfterViewInit{
   filterSensorData() {
     const formValues = this.filterForm.value;
 
+    console.log(formValues);
+
     let filteredPayload = [];
     let filteredMetadata = [];
     
@@ -418,7 +437,7 @@ export class FilterPageComponent implements AfterViewInit{
 
   createInitLineChart(device: SensorData) {
     this.chartData = device.payload_dict;
-    console.log('inside create pkt ');
+    // console.log('inside create pkt ');
 
     this.chart = new Chart('payloadChart', {
       type: 'line',
@@ -430,7 +449,6 @@ export class FilterPageComponent implements AfterViewInit{
             data: [],
           },
         ],
-        //removing this line will result in the chart reamining at the lowest window size that was opened
       },
       options: {
         maintainAspectRatio: false,
