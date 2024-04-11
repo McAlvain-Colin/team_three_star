@@ -34,118 +34,146 @@
           <mat-card class="time-filter">
             <mat-form-field>
               <mat-label>Start Time</mat-label>
-              <input matInput [matDatepicker]="pickerStart" formControlName="startTime" required>
-              <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+              <input
+                matInput
+                [matDatepicker]="pickerStart"
+                formControlName="startTime"
+                required
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="pickerStart"
+              ></mat-datepicker-toggle>
               <mat-datepicker #pickerStart></mat-datepicker>
               <mat-icon matSuffix>access_time</mat-icon>
               <mat-hint>HH:MM</mat-hint>
             </mat-form-field>
-          
+
             <mat-form-field>
               <mat-label>End Time</mat-label>
-              <input matInput [matDatepicker]="pickerEnd" formControlName="endTime" required>
-              <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+              <input
+                matInput
+                [matDatepicker]="pickerEnd"
+                formControlName="endTime"
+                required
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="pickerEnd"
+              ></mat-datepicker-toggle>
               <mat-datepicker #pickerEnd></mat-datepicker>
               <mat-icon matSuffix>access_time</mat-icon>
               <mat-hint>HH:MM</mat-hint>
             </mat-form-field>
-          </mat-card>  
+          </mat-card>
           <!-- Data range of values -->
           <mat-card class="range-filter" formGroupName="range">
             <mat-card-content>
               <h2 class="example-h2">Slider configuration</h2>
-          
+
               <section class="example-section">
                 <mat-form-field class="example-margin example-width">
                   <mat-label>Value</mat-label>
-                  <input matInput type="number" formControlName="value">
+                  <input matInput type="number" formControlName="value" />
                 </mat-form-field>
                 <mat-form-field class="example-margin example-width">
                   <mat-label>Min value</mat-label>
-                  <input matInput type="number" formControlName="min">
+                  <input matInput type="number" formControlName="min" />
                 </mat-form-field>
                 <mat-form-field class="example-margin example-width">
                   <mat-label>Max value</mat-label>
-                  <input matInput type="number" formControlName="max">
+                  <input matInput type="number" formControlName="max" />
                 </mat-form-field>
                 <mat-form-field class="example-margin example-width">
                   <mat-label>Step size</mat-label>
-                  <input matInput type="number" formControlName="step">
+                  <input matInput type="number" formControlName="step" />
                 </mat-form-field>
               </section>
-              
-              <mat-card class='left-section-box'>
+
+              <mat-card class="left-section-box">
                 <section class="visual-section">
-                  <mat-checkbox formControlName="showTicks">Show ticks</mat-checkbox>
-                </section>
-            
-                <section class="visual-section">
-                  <mat-checkbox formControlName="thumbLabel">Show thumb label</mat-checkbox>
+                  <mat-checkbox formControlName="showTicks"
+                    >Show ticks</mat-checkbox
+                  >
                 </section>
 
                 <section class="visual-section">
-                  <mat-checkbox formControlName="disabled">Disabled</mat-checkbox>
+                  <mat-checkbox formControlName="thumbLabel"
+                    >Show thumb label</mat-checkbox
+                  >
+                </section>
+
+                <section class="visual-section">
+                  <mat-checkbox formControlName="disabled"
+                    >Disabled</mat-checkbox
+                  >
                 </section>
               </mat-card>
-              <mat-card class='left-section-box'>
+              <mat-card class="left-section-box">
                 <section class="filter-select">
-                  <mat-checkbox formControlName="payloadSelect">Apply to Payload Data</mat-checkbox>
+                  <mat-checkbox formControlName="payloadSelect"
+                    >Apply to Payload Data</mat-checkbox
+                  >
                 </section>
 
                 <section class="filter-select">
-                  <mat-checkbox formControlName="metadataSelect">Apply to Metadata</mat-checkbox>
+                  <mat-checkbox formControlName="metadataSelect"
+                    >Apply to Metadata</mat-checkbox
+                  >
                 </section>
               </mat-card>
-
             </mat-card-content>
           </mat-card>
-        
-        <mat-card class="example-result-card">
-          <mat-card-content>
-            <h2>Result</h2>
-        
-            <div class="example-label-container">
-              <label id="example-name-label" class="example-name-label">Value</label>
-              <label class="example-value-label">{{slider.value}}</label>
-            </div>
-            <mat-slider
+
+          <mat-card class="example-result-card">
+            <mat-card-content>
+              <h2>Result</h2>
+
+              <div class="example-label-container">
+                <label id="example-name-label" class="example-name-label"
+                  >Value</label
+                >
+                <label class="example-value-label">{{ slider.value }}</label>
+              </div>
+              <mat-slider
                 class="example-margin"
                 [disabled]="disabled"
                 [max]="max"
                 [min]="min"
                 [step]="step"
                 [discrete]="thumbLabel"
-                [showTickMarks]="showTicks">
-              <input matSliderThumb formControlName="value" #slider>
-            </mat-slider>
-          </mat-card-content>
-        </mat-card>
-          
+                [showTickMarks]="showTicks"
+              >
+                <input matSliderThumb formControlName="value" #slider />
+              </mat-slider>
+            </mat-card-content>
+          </mat-card>
+
           <!-- Data Type -->
           <mat-card class="type-filter">
             <mat-form-field>
               <mat-label>Data Type</mat-label>
-              <input matInput formControlName="dataType" required>
+              <input matInput formControlName="dataType" required />
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Data Type</mat-hint>
             </mat-form-field>
           </mat-card>
-          
+
           <!-- Device ID -->
           <mat-card class="id-filter">
             <mat-form-field>
               <mat-label>Device ID</mat-label>
-              <input matInput formControlName="deviceId" required>
+              <input matInput formControlName="deviceId" required />
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Device ID</mat-hint>
             </mat-form-field>
           </mat-card>
-          
+
           <!-- Application ID -->
           <mat-card class="application-filter">
             <mat-form-field>
               <mat-label>Application ID</mat-label>
-              <input matInput formControlName="applicationID" required>
+              <input matInput formControlName="applicationID" required />
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Application ID</mat-hint>
             </mat-form-field>
@@ -154,12 +182,14 @@
           <mat-card class="location-filter">
             <mat-form-field>
               <mat-label>Location</mat-label>
-              <input matInput formControlName="location" required>
+              <input matInput formControlName="location" required />
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Location</mat-hint>
             </mat-form-field>
           </mat-card>
-          <button type="submit" mat-raised-button color="primary">Submit</button>
+          <button type="submit" mat-raised-button color="primary">
+            Submit
+          </button>
         </form>
       </mat-expansion-panel>
     </mat-accordion>
@@ -175,7 +205,9 @@
       >
         <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
         <mat-expansion-panel-header>
-          <mat-panel-title> Select Devices you would like to view </mat-panel-title>
+          <mat-panel-title>
+            Select Devices you would like to view
+          </mat-panel-title>
           <mat-panel-description>
             {{
               panelOpenState
@@ -188,8 +220,13 @@
         <mat-card class="dev-eui-table">
           <mat-form-field>
             <mat-label>Filter</mat-label>
-            <input matInput (keyup)="applyPayloadFilter($event)" placeholder="Dev_eui" #input>
-          </mat-form-field>   
+            <input
+              matInput
+              (keyup)="applyPayloadFilter($event)"
+              placeholder="Dev_eui"
+              #input
+            />
+          </mat-form-field>
           <!--  Dev_EUI Table -->
           <p>Device Table</p>
           <table mat-table [dataSource]="devIDSource" class="mat-elevation-z8">
@@ -197,40 +234,54 @@
             <ng-container matColumnDef="select">
               <th mat-header-cell *matHeaderCellDef>
                 <section>
-                  <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                                [checked]="selection.hasValue() && isAllSelected()"
-                                [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                [aria-label]="checkboxLabel()">
+                  <mat-checkbox
+                    (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    [aria-label]="checkboxLabel()"
+                  >
                   </mat-checkbox>
                 </section>
               </th>
-              <td mat-cell *matCellDef="let row; let i = index"> {{i+1}}
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{ i + 1 }}
                 <section>
-                  <mat-checkbox (click)="$event.stopPropagation()"
-                                (change)="$event ? selection.toggle(row) : null"
-                                [checked]="selection.isSelected(row)"
-                                [aria-label]="checkboxLabel(i, row)">
+                  <mat-checkbox
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)"
+                    [aria-label]="checkboxLabel(i, row)"
+                  >
                   </mat-checkbox>
                 </section>
               </td>
             </ng-container>
             <!-- Dev_eui Column -->
             <ng-container matColumnDef="Dev_eui" class="dev_eui">
-              <th mat-header-cell *matHeaderCellDef> dev_eui </th>
-              <td mat-cell *matCellDef="let element"> {{element}} </td>
-            </ng-container> 
+              <th mat-header-cell *matHeaderCellDef>dev_eui</th>
+              <td mat-cell *matCellDef="let element">{{ element }}</td>
+            </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="['select', 'Dev_eui']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['select', 'Dev_eui'];"
-                (click)="selection.toggle(row)">
-            </tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['select', 'Dev_eui']"
+              (click)="selection.toggle(row)"
+            ></tr>
 
             <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+              <td class="mat-cell" colspan="4">
+                No data matching the filter "{{ input.value }}"
+              </td>
             </tr>
-          </table>   
+          </table>
 
-          <mat-paginator #payloadPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Payload Data"></mat-paginator>
+          <mat-paginator
+            #payloadPaginator
+            [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons
+            aria-label="Select page of Payload Data"
+          ></mat-paginator>
         </mat-card>
       </mat-expansion-panel>
     </mat-accordion>
@@ -262,43 +313,78 @@
           <!-- Filter for Payload -->
           <mat-form-field>
             <mat-label>Filter</mat-label>
-            <input matInput (keyup)="applyPayloadFilter($event)" placeholder="Dev_eui" #input>
-          </mat-form-field>    
+            <input
+              matInput
+              (keyup)="applyPayloadFilter($event)"
+              placeholder="Dev_eui"
+              #input
+            />
+          </mat-form-field>
 
           <!--  Payload Table -->
           <p>Payload Table</p>
-          <table mat-table [dataSource]="payloadDataSource" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="payloadDataSource"
+            class="mat-elevation-z8"
+          >
             <!-- Dev_eui Column -->
             <ng-container matColumnDef="Dev_eui" class="dev_eui">
-              <th mat-header-cell *matHeaderCellDef> dev_eui </th>
-              <td mat-cell *matCellDef="let element"> {{element.dev_eui}} </td>
+              <th mat-header-cell *matHeaderCellDef>dev_eui</th>
+              <td mat-cell *matCellDef="let element">{{ element.dev_eui }}</td>
             </ng-container>
 
             <!-- Dev_time Column -->
             <ng-container matColumnDef="Dev_time" class="dev_time">
-              <th mat-header-cell *matHeaderCellDef> dev_time </th>
-              <td mat-cell *matCellDef="let element"> {{element.dev_time}} </td>
+              <th mat-header-cell *matHeaderCellDef>dev_time</th>
+              <td mat-cell *matCellDef="let element">{{ element.dev_time }}</td>
             </ng-container>
 
             <!-- Payload Columns / Dynamic -->
-            <ng-container *ngFor="let column of payloadColumns" [matColumnDef]="column" class="dynamic_column">
-              <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
-              <td mat-cell *matCellDef="let element"> {{ element.payload_dict[column] }} </td>
+            <ng-container
+              *ngFor="let column of payloadColumns"
+              [matColumnDef]="column"
+              class="dynamic_column"
+            >
+              <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.payload_dict[column] }}
+              </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(payloadColumns)"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(payloadColumns);"></tr>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(payloadColumns)"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="
+                let row;
+                columns: ['Dev_eui', 'Dev_time'].concat(payloadColumns)
+              "
+            ></tr>
 
             <!-- <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
             </tr> -->
-          </table>    
+          </table>
 
-          <mat-paginator #payloadPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Payload Data"></mat-paginator>
+          <mat-paginator
+            #payloadPaginator
+            [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons
+            aria-label="Select page of Payload Data"
+          ></mat-paginator>
 
           <mat-card-actions>
             <div class="button-container">
-              <button mat-raised-button color="accent" (click)="loadSpinner(); exportPayloadData()">Export Payload Data</button>
+              <button
+                mat-raised-button
+                color="accent"
+                (click)="loadSpinner(); exportPayloadData()"
+              >
+                Export Payload Data
+              </button>
               <mat-spinner *ngIf="showSpinner"></mat-spinner>
             </div>
           </mat-card-actions>
@@ -327,45 +413,76 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- code here -->
-        <mat-card class="chart" >
-          <canvas id="payloadChart" height="500"></canvas>          
+        <mat-card class="chart">
+          <canvas id="payloadChart" height="500"></canvas>
         </mat-card>
         <mat-card>
-          <table mat-table [dataSource]="paylaodStatSource" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="paylaodStatSource"
+            class="mat-elevation-z8"
+          >
             <!-- Data Column -->
             <ng-container matColumnDef="Data" class="Data">
-              <th mat-header-cell *matHeaderCellDef> Data </th>
-              <td mat-cell *matCellDef="let element"> {{element.column}} </td>
+              <th mat-header-cell *matHeaderCellDef>Data</th>
+              <td mat-cell *matCellDef="let element">{{ element.column }}</td>
             </ng-container>
             <!-- Mean Column -->
             <ng-container matColumnDef="Mean" class="Mean">
-              <th mat-header-cell *matHeaderCellDef> Mean </th>
-              <td mat-cell *matCellDef="let element"> {{element.mean}} </td>
+              <th mat-header-cell *matHeaderCellDef>Mean</th>
+              <td mat-cell *matCellDef="let element">{{ element.mean }}</td>
             </ng-container>
             <!-- Variance Column -->
             <ng-container matColumnDef="Variance" class="Variance">
-              <th mat-header-cell *matHeaderCellDef> Variance </th>
-              <td mat-cell *matCellDef="let element"> {{element.variance}} </td>
+              <th mat-header-cell *matHeaderCellDef>Variance</th>
+              <td mat-cell *matCellDef="let element">{{ element.variance }}</td>
             </ng-container>
             <!-- Standard Deviation Column -->
-            <ng-container matColumnDef="Standard_Deviation" class="Standard_Deviation">
-              <th mat-header-cell *matHeaderCellDef> Standard Deviation </th>
-              <td mat-cell *matCellDef="let element"> {{element.standard_deviation}} </td>
+            <ng-container
+              matColumnDef="Standard_Deviation"
+              class="Standard_Deviation"
+            >
+              <th mat-header-cell *matHeaderCellDef>Standard Deviation</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.standard_deviation }}
+              </td>
             </ng-container>
             <!-- Median Column -->
             <ng-container matColumnDef="Median" class="Median">
-              <th mat-header-cell *matHeaderCellDef> Median </th>
-              <td mat-cell *matCellDef="let element"> {{element.median}} </td>
+              <th mat-header-cell *matHeaderCellDef>Median</th>
+              <td mat-cell *matCellDef="let element">{{ element.median }}</td>
             </ng-container>
             <!-- Mode Column -->
             <ng-container matColumnDef="Mode" class="Mode">
-              <th mat-header-cell *matHeaderCellDef> Mode </th>
-              <td mat-cell *matCellDef="let element"> {{element.mode}} </td>
+              <th mat-header-cell *matHeaderCellDef>Mode</th>
+              <td mat-cell *matCellDef="let element">{{ element.mode }}</td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="['Data', 'Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['Data', 'Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode'];"></tr>
-
+            <tr
+              mat-header-row
+              *matHeaderRowDef="[
+                'Data',
+                'Mean',
+                'Variance',
+                'Standard_Deviation',
+                'Median',
+                'Mode'
+              ]"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="
+                let row;
+                columns: [
+                  'Data',
+                  'Mean',
+                  'Variance',
+                  'Standard_Deviation',
+                  'Median',
+                  'Mode'
+                ]
+              "
+            ></tr>
           </table>
         </mat-card>
         <mat-card-actions>
@@ -408,44 +525,78 @@
           <!-- Filter for Metadata -->
           <mat-form-field>
             <mat-label>Filter</mat-label>
-            <input matInput (keyup)="applyMetadataFilter($event)" placeholder="Dev_eui" #input>
-          </mat-form-field> 
-          
+            <input
+              matInput
+              (keyup)="applyMetadataFilter($event)"
+              placeholder="Dev_eui"
+              #input
+            />
+          </mat-form-field>
+
           <!--  Metadata Table -->
           <p>Metadata Table</p>
-          <table mat-table [dataSource]="metadataSource" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="metadataSource"
+            class="mat-elevation-z8"
+          >
             <!-- Dev_eui Column -->
             <ng-container matColumnDef="Dev_eui" class="dev_eui">
-              <th mat-header-cell *matHeaderCellDef> dev_eui </th>
-              <td mat-cell *matCellDef="let element"> {{element.dev_eui}} </td>
+              <th mat-header-cell *matHeaderCellDef>dev_eui</th>
+              <td mat-cell *matCellDef="let element">{{ element.dev_eui }}</td>
             </ng-container>
 
             <!-- Dev_time Column -->
             <ng-container matColumnDef="Dev_time" class="dev_time">
-              <th mat-header-cell *matHeaderCellDef> dev_time </th>
-              <td mat-cell *matCellDef="let element"> {{element.dev_time}} </td>
+              <th mat-header-cell *matHeaderCellDef>dev_time</th>
+              <td mat-cell *matCellDef="let element">{{ element.dev_time }}</td>
             </ng-container>
 
             <!-- Metadata Columns / Dynamic -->
-            <ng-container *ngFor="let column of metadataColumns" [matColumnDef]="column" class="dynamic_column">
-              <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
-              <td mat-cell *matCellDef="let element"> {{ element.metadata_dict[column] }} </td>
+            <ng-container
+              *ngFor="let column of metadataColumns"
+              [matColumnDef]="column"
+              class="dynamic_column"
+            >
+              <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.metadata_dict[column] }}
+              </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(metadataColumns)"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(metadataColumns);"></tr>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(metadataColumns)"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="
+                let row;
+                columns: ['Dev_eui', 'Dev_time'].concat(metadataColumns)
+              "
+            ></tr>
 
             <!-- <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
             </tr> -->
-            
           </table>
 
-          <mat-paginator #metadataPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Metadata Data"></mat-paginator>
+          <mat-paginator
+            #metadataPaginator
+            [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons
+            aria-label="Select page of Metadata Data"
+          ></mat-paginator>
 
           <mat-card-actions>
             <div class="button-container">
-              <button mat-raised-button color="accent" (click)="loadSpinner(); exportMetadata()">Export Metadata Data</button>
+              <button
+                mat-raised-button
+                color="accent"
+                (click)="loadSpinner(); exportMetadata()"
+              >
+                Export Metadata Data
+              </button>
               <mat-spinner *ngIf="showSpinner"></mat-spinner>
             </div>
           </mat-card-actions>
@@ -474,45 +625,76 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- code here -->
-        <mat-card class="chart" >
+        <mat-card class="chart">
           <canvas id="metadataChart" height="500"></canvas>
         </mat-card>
-        <mat-card >
-          <table mat-table [dataSource]="metadataStatSource" class="mat-elevation-z8">
+        <mat-card>
+          <table
+            mat-table
+            [dataSource]="metadataStatSource"
+            class="mat-elevation-z8"
+          >
             <!-- Data Column -->
             <ng-container matColumnDef="Data" class="Data">
-              <th mat-header-cell *matHeaderCellDef> Data </th>
-              <td mat-cell *matCellDef="let element"> {{element.column}} </td>
+              <th mat-header-cell *matHeaderCellDef>Data</th>
+              <td mat-cell *matCellDef="let element">{{ element.column }}</td>
             </ng-container>
             <!-- Mean Column -->
             <ng-container matColumnDef="Mean" class="Mean">
-              <th mat-header-cell *matHeaderCellDef> Mean </th>
-              <td mat-cell *matCellDef="let element"> {{element.mean}} </td>
+              <th mat-header-cell *matHeaderCellDef>Mean</th>
+              <td mat-cell *matCellDef="let element">{{ element.mean }}</td>
             </ng-container>
             <!-- Variance Column -->
             <ng-container matColumnDef="Variance" class="Variance">
-              <th mat-header-cell *matHeaderCellDef> Variance </th>
-              <td mat-cell *matCellDef="let element"> {{element.variance}} </td>
+              <th mat-header-cell *matHeaderCellDef>Variance</th>
+              <td mat-cell *matCellDef="let element">{{ element.variance }}</td>
             </ng-container>
             <!-- Standard Deviation Column -->
-            <ng-container matColumnDef="Standard_Deviation" class="Standard_Deviation">
-              <th mat-header-cell *matHeaderCellDef> Standard Deviation </th>
-              <td mat-cell *matCellDef="let element"> {{element.standard_deviation}} </td>
+            <ng-container
+              matColumnDef="Standard_Deviation"
+              class="Standard_Deviation"
+            >
+              <th mat-header-cell *matHeaderCellDef>Standard Deviation</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.standard_deviation }}
+              </td>
             </ng-container>
             <!-- Median Column -->
             <ng-container matColumnDef="Median" class="Median">
-              <th mat-header-cell *matHeaderCellDef> Median </th>
-              <td mat-cell *matCellDef="let element"> {{element.median}} </td>
+              <th mat-header-cell *matHeaderCellDef>Median</th>
+              <td mat-cell *matCellDef="let element">{{ element.median }}</td>
             </ng-container>
             <!-- Mode Column -->
             <ng-container matColumnDef="Mode" class="Mode">
-              <th mat-header-cell *matHeaderCellDef> Mode </th>
-              <td mat-cell *matCellDef="let element"> {{element.mode}} </td>
+              <th mat-header-cell *matHeaderCellDef>Mode</th>
+              <td mat-cell *matCellDef="let element">{{ element.mode }}</td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="['Data', 'Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['Data', 'Mean', 'Variance', 'Standard_Deviation', 'Median', 'Mode'];"></tr>
-
+            <tr
+              mat-header-row
+              *matHeaderRowDef="[
+                'Data',
+                'Mean',
+                'Variance',
+                'Standard_Deviation',
+                'Median',
+                'Mode'
+              ]"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="
+                let row;
+                columns: [
+                  'Data',
+                  'Mean',
+                  'Variance',
+                  'Standard_Deviation',
+                  'Median',
+                  'Mode'
+                ]
+              "
+            ></tr>
           </table>
         </mat-card>
         <!-- The mat card will also have buttons present to retrieve user input and specific what infromation the user would like to view with respect tot he device health. -->
@@ -534,6 +716,4 @@
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card>
-
-  <app-temp-nav-bar></app-temp-nav-bar>
 </body>

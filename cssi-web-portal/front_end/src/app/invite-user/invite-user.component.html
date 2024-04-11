@@ -1,0 +1,55 @@
+<mat-toolbar color="primary" class="toolbar">
+  <a routerLink="/organization/{{ orgID }}" class="color-white"
+    >&#60; Back to Organization</a
+  ></mat-toolbar
+>
+<body class="main-body">
+  <mat-card class="invite-form">
+    <mat-card-content>
+      <h1 class="title">Invite User</h1>
+      <!--Sets up the main form, and binds the button to the function in the typescript-->
+      <form class="container" (ngSubmit)="submitForm()" #inviteForm="ngForm">
+        <mat-form-field color="primary" [style.width.px]="220">
+          <mat-label>Email</mat-label>
+          <!--The email field input that's set up with a form control value from the angular library which checks for proper email inputs, send a post with a JSON, containing uid, orgId, and boolean active as false.-->
+          <input
+            matInput
+            name="email"
+            placeholder="good@example.com"
+            [(ngModel)]="email"
+            [formControl]="emailField"
+            required
+          />
+          <!--Prints ou the error if the email field is wrong in any aspect-->
+          <mat-error *ngIf="emailField.invalid">{{
+            getErrorMessage()
+          }}</mat-error>
+        </mat-form-field>
+        <mat-form-field color="primary" [style.width.px]="220">
+          <mat-label>Confirm Email</mat-label>
+          <input
+            matInput
+            name="emailConfirm"
+            placeholder="good@example.com"
+            [(ngModel)]="emailConfirm"
+            [formControl]="emailField"
+            required
+          />
+          <mat-error *ngIf="emailField.invalid">{{
+            getErrorMessage()
+          }}</mat-error>
+        </mat-form-field>
+        <!--Button will only be valid if all the required forms are filled out and submit the form when pressed-->
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="inviteForm.invalid || emailField.invalid"
+          type="submit"
+          (keyup.enter)="submitForm()"
+        >
+          Send Invite
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</body>

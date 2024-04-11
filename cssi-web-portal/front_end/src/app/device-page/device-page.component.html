@@ -77,16 +77,25 @@
               <mat-card class="payload-table">
                 <!-- Filters need to be reintroduced into the tables when I can reliably display data -->
                 <!-- Filters need to be refined further -->
-            
+
                 <!-- Filter for Payload -->
                 <mat-form-field>
                   <mat-label>Filter</mat-label>
-                  <input matInput (keyup)="applyPayloadFilter($event)" placeholder="Dev_eui" #input>
-                </mat-form-field>    
-            
+                  <input
+                    matInput
+                    (keyup)="applyPayloadFilter($event)"
+                    placeholder="Dev_eui"
+                    #input
+                  />
+                </mat-form-field>
+
                 <!--  Payload Table -->
                 <p>Payload Table</p>
-                <table mat-table [dataSource]="payloadDataSource" class="mat-elevation-z8">
+                <table
+                  mat-table
+                  [dataSource]="payloadDataSource"
+                  class="mat-elevation-z8"
+                >
                   <!-- Dev_eui Column -->
                   <ng-container matColumnDef="Dev_eui" class="dev_eui">
                     <th mat-header-cell *matHeaderCellDef>dev_eui</th>
@@ -94,7 +103,7 @@
                       {{ element.dev_eui }}
                     </td>
                   </ng-container>
-            
+
                   <!-- Dev_time Column -->
                   <ng-container matColumnDef="Dev_time" class="dev_time">
                     <th mat-header-cell *matHeaderCellDef>dev_time</th>
@@ -102,7 +111,7 @@
                       {{ element.dev_time }}
                     </td>
                   </ng-container>
-            
+
                   <!-- Payload Columns / Dynamic -->
                   <ng-container
                     *ngFor="let column of payloadColumns"
@@ -114,19 +123,38 @@
                       {{ element.payload_dict[column] }}
                     </td>
                   </ng-container>
-            
-                  <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(payloadColumns)"></tr>
-                  <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(payloadColumns);"></tr>
-            
+
+                  <tr
+                    mat-header-row
+                    *matHeaderRowDef="
+                      ['Dev_eui', 'Dev_time'].concat(payloadColumns)
+                    "
+                  ></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="
+                      let row;
+                      columns: ['Dev_eui', 'Dev_time'].concat(payloadColumns)
+                    "
+                  ></tr>
+
                   <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    <td class="mat-cell" colspan="4">
+                      No data matching the filter "{{ input.value }}"
+                    </td>
                   </tr>
-                </table>    
-            
-                <mat-paginator #payloadPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Payload Data"></mat-paginator>
-            
-                <button (click)="exportPayloadData()">Export Payload Data</button>
-                
+                </table>
+
+                <mat-paginator
+                  #payloadPaginator
+                  [pageSizeOptions]="[5, 10, 20]"
+                  showFirstLastButtons
+                  aria-label="Select page of Payload Data"
+                ></mat-paginator>
+
+                <button (click)="exportPayloadData()">
+                  Export Payload Data
+                </button>
               </mat-card>
 
               <!-- payload graph -->
@@ -149,23 +177,32 @@
                       </mat-panel-description>
                     </mat-expansion-panel-header>
                     <!-- code here -->
-                    <mat-card class="chart" >
+                    <mat-card class="chart">
                       <canvas id="payloadChart"></canvas>
                     </mat-card>
                   </mat-expansion-panel>
                 </mat-accordion>
               </mat-card>
-            
+
               <mat-card class="metadata-table">
                 <!-- Filter for Metadata -->
                 <mat-form-field>
                   <mat-label>Filter</mat-label>
-                  <input matInput (keyup)="applyMetadataFilter($event)" placeholder="Dev_eui" #input>
-                </mat-form-field> 
-                
+                  <input
+                    matInput
+                    (keyup)="applyMetadataFilter($event)"
+                    placeholder="Dev_eui"
+                    #input
+                  />
+                </mat-form-field>
+
                 <!--  Metadata Table -->
                 <p>Metadata Table</p>
-                <table mat-table [dataSource]="metadataSource" class="mat-elevation-z8">
+                <table
+                  mat-table
+                  [dataSource]="metadataSource"
+                  class="mat-elevation-z8"
+                >
                   <!-- Dev_eui Column -->
                   <ng-container matColumnDef="Dev_eui" class="dev_eui">
                     <th mat-header-cell *matHeaderCellDef>dev_eui</th>
@@ -173,7 +210,7 @@
                       {{ element.dev_eui }}
                     </td>
                   </ng-container>
-            
+
                   <!-- Dev_time Column -->
                   <ng-container matColumnDef="Dev_time" class="dev_time">
                     <th mat-header-cell *matHeaderCellDef>dev_time</th>
@@ -181,7 +218,7 @@
                       {{ element.dev_time }}
                     </td>
                   </ng-container>
-            
+
                   <!-- Metadata Columns / Dynamic -->
                   <ng-container
                     *ngFor="let column of metadataColumns"
@@ -193,18 +230,35 @@
                       {{ element.metadata_dict[column] }}
                     </td>
                   </ng-container>
-            
-                  <tr mat-header-row *matHeaderRowDef="['Dev_eui', 'Dev_time'].concat(metadataColumns)"></tr>
-                  <tr mat-row *matRowDef="let row; columns: ['Dev_eui', 'Dev_time'].concat(metadataColumns);"></tr>
-            
+
+                  <tr
+                    mat-header-row
+                    *matHeaderRowDef="
+                      ['Dev_eui', 'Dev_time'].concat(metadataColumns)
+                    "
+                  ></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="
+                      let row;
+                      columns: ['Dev_eui', 'Dev_time'].concat(metadataColumns)
+                    "
+                  ></tr>
+
                   <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    <td class="mat-cell" colspan="4">
+                      No data matching the filter "{{ input.value }}"
+                    </td>
                   </tr>
-                  
                 </table>
-            
-                <mat-paginator #metadataPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of Metadata Data"></mat-paginator>
-            
+
+                <mat-paginator
+                  #metadataPaginator
+                  [pageSizeOptions]="[5, 10, 20]"
+                  showFirstLastButtons
+                  aria-label="Select page of Metadata Data"
+                ></mat-paginator>
+
                 <button (click)="exportMetadata()">Export Metadata Data</button>
               </mat-card>
               <!-- metadata graph -->
@@ -227,7 +281,7 @@
                       </mat-panel-description>
                     </mat-expansion-panel-header>
                     <!-- code here -->
-                    <mat-card class="chart" >
+                    <mat-card class="chart">
                       <canvas id="metadataChart"></canvas>
                     </mat-card>
                   </mat-expansion-panel>
@@ -235,17 +289,16 @@
               </mat-card>
             </mat-expansion-panel>
           </mat-accordion>
-        </mat-card-content> 
+        </mat-card-content>
       </mat-card>
       <button
         mat-raised-button
         color="accent"
         class="data-button"
-        [routerLink]="['/filter']"
+        [routerLink]="['/filter', appId]"
       >
         Filter Device Data
       </button>
-      <app-temp-nav-bar></app-temp-nav-bar>
     </body>
   </mat-sidenav-content>
 </mat-sidenav-container>

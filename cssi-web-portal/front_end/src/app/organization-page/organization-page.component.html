@@ -75,7 +75,7 @@
               </div>
               <a
                 mat-list-item
-                routerLink="/application/{{ application }}"
+                [routerLink]="removeApps ? null : getRouteName(application)"
                 *ngFor="
                   let application of appsSource.data.slice(
                     appsPaginator.pageIndex * appsPaginator.pageSize,
@@ -83,14 +83,17 @@
                   )
                 "
               >
-                {{ application }}
-                <button
-                  class="remove-icon"
-                  *ngIf="removeApps"
-                  (click)="confirmRemoval(application)"
-                >
-                  <mat-icon fontIcon="remove" color="warn"></mat-icon>
-                </button>
+                <div class="make-flexbox">
+                  {{ application.name }}
+                  <span class="push-button-right"></span>
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeApps"
+                    (click)="confirmRemoval(3, application)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
               </a>
             </mat-nav-list>
             <mat-paginator
@@ -105,7 +108,8 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <mat-card class="member-box" *ngIf="isAdmin">
+    <mat-card class="member-box" [hidden]="!isAdmin">
+      <!--Created hidden instead of ngIF because of some weird properties of Angular that causes it not initialize the paginator, and thus no items are registered-->
       <mat-card-content class="member-content">
         <mat-tab-group [style.position]="'sticky'">
           <mat-tab label="{{ orgName }}'s Members">
@@ -131,19 +135,19 @@
               </div>
               <a
                 mat-list-item
-                [routerLink]="removeMembers ? null : getRouteName(member, 0)"
+                [routerLink]="removeMembers ? null : null"
                 *ngFor="
-                  let member of membersSource.data.slice(
+                  let member of memberSource.data.slice(
                     membersPaginator.pageIndex * membersPaginator.pageSize,
                     (membersPaginator.pageIndex + 1) * membersPaginator.pageSize
                   )
                 "
               >
-                {{ member }}
+                {{ member.name }}
                 <button
                   class="remove-icon"
                   *ngIf="removeMembers"
-                  (click)="confirmRemoval(member)"
+                  (click)="confirmRemoval(4, undefined, member)"
                 >
                   <mat-icon fontIcon="remove" color="warn"></mat-icon>
                 </button>
@@ -154,7 +158,7 @@
               pageSize="5"
               showFirstLastButtons="true"
               [pageSizeOptions]="[5, 10, 20]"
-              [pageIndex]="currentPage"
+              [pageIndex]="0"
               (page)="handlePageEvent($event, 0)"
             ></mat-paginator>
           </mat-tab>

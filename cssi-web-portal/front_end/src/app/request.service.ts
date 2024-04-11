@@ -4,7 +4,6 @@ import {
   HttpErrorResponse,
   HttpResponse,
 } from '@angular/common/http';
-import { DataLayout, SentData } from './data.config';
 import { Observable, catchError, throwError } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 
@@ -25,17 +24,17 @@ export class RequestService {
   constructor(private http: HttpClient) {}
 
   connectionUrl = 'assets/connection.json';
-  //Config is a generic, meaning it's kind of a place holder that doesn't need to explicitly define the types it uses. Basically a template
-  getJson() {
-    return this.http.get<DataLayout>(this.connectionUrl);
-  }
+  // //Config is a generic, meaning it's kind of a place holder that doesn't need to explicitly define the types it uses. Basically a template
+  // getJson() {
+  //   return this.http.get<DataLayout>(this.connectionUrl);
+  // }
 
-  //Using an observable to watch for event,s we're now specifying that the http request will now observe the respose and return the response instead.
-  getResponse(): Observable<HttpResponse<DataLayout>> {
-    return this.http.get<DataLayout>(this.connectionUrl, {
-      observe: 'response',
-    });
-  }
+  // //Using an observable to watch for event,s we're now specifying that the http request will now observe the respose and return the response instead.
+  // getResponse(): Observable<HttpResponse<DataLayout>> {
+  //   return this.http.get<DataLayout>(this.connectionUrl, {
+  //     observe: 'response',
+  //   });
+  // }
 
   //Handling Errors, currently utilizing code from angular.io/guide/http-handle-request-errors#error-details for handling
   handleError(errorFunction: string, error: HttpErrorResponse) {
@@ -57,10 +56,10 @@ export class RequestService {
     );
   }
 
-  //A function that will use HTTP to send data and then using an Observable, it will get avalue back with the SentData value type, http post to send the data
-  addData(data: SentData): Observable<SentData> {
-    //THis method in HTTP will send the data to the server, and has 3 parameters, the url, the data, and the options which could specify the headers needed
-    return this.http.post<SentData>(this.connectionUrl, data, httpOptions);
-    //write something with pipe to catch errors and handle them with the above handle error function
-  }
+  //   //A function that will use HTTP to send data and then using an Observable, it will get avalue back with the SentData value type, http post to send the data
+  //   addData(data: SentData): Observable<SentData> {
+  //     //THis method in HTTP will send the data to the server, and has 3 parameters, the url, the data, and the options which could specify the headers needed
+  //     return this.http.post<SentData>(this.connectionUrl, data, httpOptions);
+  //     //write something with pipe to catch errors and handle them with the above handle error function
+  //   }
 }

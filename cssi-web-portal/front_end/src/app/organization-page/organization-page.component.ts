@@ -1,5 +1,10 @@
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
-import { DataLayout } from '../data.config';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { RequestService } from '../request.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -26,6 +31,9 @@ import {
   _MatTableDataSource,
   MatTableDataSource,
 } from '@angular/material/table';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Organization, App, Member } from '../data.config';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-organization-page',
@@ -43,14 +51,19 @@ import {
     MatCardModule,
     MatTabsModule,
     MatButtonModule,
+    MatDividerModule,
     TempNavBarComponent,
     DeviceMapComponent,
     MatDialogModule,
     RemovalDialogComponent,
   ],
 })
-export class OrganizationPageComponent {
-  orgId: number = 0;
+export class OrganizationPageComponent implements OnInit {
+  base_url: string = 'http://localhost:5000';
+  appList: App[] = [];
+  memberList: Member[] = [];
+
+  orgId: string | null = '';
   routerLinkVariable = '/hi';
   applications: string[] = [];
   members: string[] = [];
@@ -62,8 +75,8 @@ export class OrganizationPageComponent {
   removeMembers: boolean = false;
   isAdmin: boolean = true;
   currentPage: number = 0;
-  appsSource = new MatTableDataSource(this.applications);
-  membersSource = new MatTableDataSource(this.members);
+  appsSource = new MatTableDataSource(this.appList);
+  memberSource = new MatTableDataSource(this.memberList);
 
   @ViewChild('appsPaginator', { static: true })
   appsPaginator: MatPaginator = new MatPaginator(
@@ -77,16 +90,116 @@ export class OrganizationPageComponent {
     ChangeDetectorRef.prototype
   );
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) {} //makes an instance of the router
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private http: HttpClient
+  ) {} //makes an instance of the router
   ngOnInit(): void {
-    this.orgName = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
-    console.log(this.orgName);
-    if (this.orgName == null) {
-      this.orgName = 'Cat Chairs';
-    }
-    this.setupLists();
+    this.orgId = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    console.log(this.orgId);
+    // if (this.orgName == null) {
+    //   this.orgName = 'Cat Chairs';
+    // }
+    // this.setupLists();
+
+    // this is to specify the orgId in the get request using query Parameters
+
+    const param = new HttpParams().set('org', decodeURI(String(this.orgId)));
+
+    this.http
+      .get(this.base_url + '/userOrgAppList', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          console.log('resp is ');
+
+          console.log(resp);
+          console.log('body', resp.body.list);
+
+          for (var i = 0; i < resp.body.list.length; i++) {
+            this.applications.push(resp.body.list[i].name);
+            this.appList.push({
+              id: resp.body.list[i].app_id,
+              name: resp.body.list[i].name,
+              description: resp.body.list[i].description,
+            });
+          }
+          // this.appsSource = new MatTableDataSource(response.body?.list);
+          this.appsSource.paginator = this.appsPaginator;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
+    this.http
+      .get<{ list: Organization }>(this.base_url + '/getOrgInfo', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          console.log('resp is ');
+
+          console.log(resp);
+          console.log('body', resp.body.list);
+
+          this.orgName = resp.body.list[0].name;
+          this.orgDescription = resp.body.list[0].description;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
+    // this for getting org members
+    this.http
+      .get(this.base_url + '/OrgMembers', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          console.log('resp is ');
+
+          console.log(resp);
+          console.log('body', resp.body.list);
+
+          for (var i = 0; i < resp.body.list.length; i++) {
+            this.memberList.push({
+              id: resp.body.list[i].id,
+              name: resp.body.list[i].name,
+            });
+
+            // add members to the member list
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
+    // this is for getting a org's applicatiiions
     this.appsSource.paginator = this.appsPaginator;
-    this.membersSource.paginator = this.membersPaginator;
+    this.memberSource.paginator = this.membersPaginator;
   }
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -102,15 +215,30 @@ export class OrganizationPageComponent {
     //Make get request here that sends in pageEvent.pageIndex
   }
 
-  confirmRemoval(itemName: string) {
-    //SHould open a snackbar that asks if you want to remove the component, and then based on the action does the thing
-    const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
-      data: { itemName: itemName }, //Can pass in more data if needed so that we can trigger the delete with orgID and userID
-    });
+  confirmRemoval(itemType: number, removeApp?: App, removeMember?: Member) {
+    if (itemType == 3) {
+      const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+        data: {
+          orgId: this.orgId,
+          itemName: removeApp?.name,
+          itemId: removeApp?.id,
+          itemType: itemType,
+        }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+      });
+    } else if (itemType == 4) {
+      const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+        data: {
+          orgId: this.orgId,
+          itemName: removeMember?.name,
+          itemId: removeMember?.id,
+          itemType: itemType,
+        }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+      });
+    }
   }
 
-  getRouteName(itemName: string, itemType: number) {
-    let routeName: string = '/application/' + itemName;
+  getRouteName(app: App) {
+    let routeName: string = '/application/' + app.id;
     return routeName;
   }
 
