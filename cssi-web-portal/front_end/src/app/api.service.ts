@@ -11,8 +11,9 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getData(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/data`);
+  getData(devId: string): Observable<any> {
+    console.log(devId)
+    return this.http.get(`${this.BASE_URL}/data/${devId}`);
   }
   getAltData(): Observable<any> {
     return this.http.get(`${this.BASE_URL}/alt_data`);

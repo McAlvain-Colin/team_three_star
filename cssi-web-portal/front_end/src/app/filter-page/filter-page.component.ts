@@ -274,7 +274,7 @@ export class FilterPageComponent implements AfterViewInit {
       panelOpenStateDeviceSelect: false,
     });
 
-    this.createPayloadChart('0025CA0A00015E62');
+    this.createPayloadChart("0025ca0A00015E62");
     this.createMetadataChart();
   }
 

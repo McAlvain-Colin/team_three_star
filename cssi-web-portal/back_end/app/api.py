@@ -65,7 +65,7 @@ app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
 # app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
 app.config['JWT_SECRET_KEY'] = 'secret' # ALTERED FOR PRIVACY
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 60)
-CORS(app, resources={r'*': {'origins': 'http://localhost:4200'}})
+CORS(app, resources={r'/*': {'origins': ['http://localhost:4200', 'http://localhost:5000']}})
 
 JWTManager(app)
 
@@ -471,7 +471,7 @@ def getOrgMembers():
 	print(orgId)
 
 	try:
-		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(Account.verified  == True).where(Account.active == True)).scalars()
+		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(Account.verified  == True).where(OrgAccount.active == True)).scalars()
 
 		res = {
 			'list': [
@@ -493,14 +493,14 @@ def deleteMember():
 	data = request.get_json()
 	orgId = data['orgId']
 	memberId = data['memberId']
-	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__] #Needsto adjust for members
+	ORGACCOUNTS = db.metadata.tables[OrgAccount.__tablename__] #Needsto adjust for members
 	
-	removeApp = update(ORGAPPS).values(active = False).where(
-		ORGAPPS.c.app_id == memberId,
-		ORGAPPS.c.o_id == orgId
+	removeMember = update(ORGACCOUNTS).values(active = False).where(
+		ORGACCOUNTS.c.a_id == memberId,
+		ORGACCOUNTS.c.o_id == orgId
 	)
 
-	db.session.execute(removeApp)
+	db.session.execute(removeMember)
 	db.session.commit()
 	return jsonify(memberDeleteSuccess = True)
 
@@ -771,19 +771,20 @@ def getOrgAppDeviceList():
 #Colins works from __init__ file###################################################################################################
 
 
-@app.route('/data', methods=['GET'])
-#@jwt_required()
-def get_data():
-    try:
-        records = read_records('lab_sensor_json', "dev_eui = '0025CA0A00015E62'") #hard coded for test
-        data = parse_data(records)
-        return jsonify(data), 200 #200 shows correct  http responses
-    except Exception as e:
-        print('error')
-        return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/data/<string:dev_id>', methods=['GET'])
+@jwt_required()
+def get_data(dev_id):
+	print(f'dev_id: "{dev_id}"')
+	try:
+		records = read_records('lab_sensor_json', f"dev_eui = '{dev_id}'") #hard coded for test
+		data = parse_data(records)
+		return jsonify(data), 200 #200 shows correct  http responses
+	except Exception as e:
+		print('error')
+		return jsonify({'Error': str(e)}), 500 #500 shows server error
     
 @app.route('/alt_data', methods=['GET'])
-#@jwt_required()
+@jwt_required()
 def get_alt_data():
     try:
         records = read_records('lab_sensor_json') #hard coded for test
@@ -794,7 +795,7 @@ def get_alt_data():
         return jsonify({'Error': str(e)}), 500 #500 shows server error
     
 @app.route('/dev_id', methods=['GET'])
-#@jwt_required()
+@jwt_required()
 def get_dev_id():
     try:
         records = read_records('lab_sensor_json', 'distinct') #hard coded for test
@@ -804,7 +805,7 @@ def get_dev_id():
         print('error')
         return jsonify({'Error': str(e)}), 500 #500 shows server error
 @app.route('/metadata', methods=['GET'])
-#@jwt_required()
+@jwt_required()
 def get_metadata():
     try:
         records = read_records('lab_sensor_json', 'metadata', '0025CA0A00015E62') #hard coded for test
@@ -814,7 +815,7 @@ def get_metadata():
         print('error')
         return jsonify({'Error': str(e)}), 500 #500 shows server error
 @app.route('/payload/<string:dev_id>', methods=['GET'])
-#@jwt_required()
+@jwt_required()
 def get_payload(dev_id):
     try:
         records = read_records('lab_sensor_json', 'payload', dev_id) #hard coded for test
@@ -824,7 +825,7 @@ def get_payload(dev_id):
         print('error')
         return jsonify({'Error': str(e)}), 500 #500 shows server error
 @app.route('/location', methods=['GET'])
-#@jwt_required()
+@jwt_required()
 def get_location():
     try:
         records = read_records('device_location', 'location') #hard coded for test
@@ -834,7 +835,7 @@ def get_location():
         print('error')
         return jsonify({'Error': str(e)}), 500 #500 shows server error
 @app.route('/payloadStats/<string:dev_id>', methods=['GET'])
-#@jwt_required()
+@jwt_required()
 def get_payloadStats(dev_id):
     try:
         records = read_records('lab_sensor_json', 'payloadStats', dev_id) #hard coded for test
@@ -844,7 +845,7 @@ def get_payloadStats(dev_id):
         print('error')
         return jsonify({'Error': str(e)}), 500 #500 shows server error
 @app.route('/metadataStats/<string:dev_id>', methods=['GET'])
-#@jwt_required()
+@jwt_required()
 def get_metadataStats(dev_id):
     try:
         records = read_records('lab_sensor_json', 'metadataStats', dev_id) #hard coded for test

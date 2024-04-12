@@ -27,7 +27,7 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:cssiwebportal2024@localhost/postgres'
 db.init_app(app)
 
 
@@ -127,6 +127,8 @@ class OrgApplication(Base):
 
     o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
     org: Mapped['Organization'] = relationship(back_populates='orgApps')
+
+    active: Mapped[bool] = mapped_column(unique=False)
 
     # dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
     # device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
