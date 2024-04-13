@@ -201,11 +201,11 @@ def deleteUser():
 
     return jsonify(deleted_user =  True)
 
-@app.route('/data', methods=['GET'])
+@app.route('/data/<string:dev_id>', methods=['GET'])
 #@jwt_required()
-def get_data():
+def get_data(dev_id):
     try:
-        records = read_records('lab_sensor_json', "dev_eui = '0025CA0A00015E62'") #hard coded for test
+        records = read_records('lab_sensor_json', 'dev_eui = {dev_id}') #hard coded for test
         data = parse_data(records)
         return jsonify(data), 200 #200 shows correct  http responses
     except Exception as e:

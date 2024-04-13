@@ -182,41 +182,44 @@ export class DevicePageComponent implements AfterViewInit {
 
           console.log('resp is in app page', resp.body.dev_eui);
           this.deviceEUI = resp.body.dev_eui;
+          console.log('DEV_EUI', this.deviceEUI);
+          this.getDataSetup();
         },
         error: (error) => {
           console.error(error);
         },
       });
 
-    this.apiService.getData().subscribe({
-      next: (data: SensorData[]) => {
-        const records = data.map((item: SensorData) => ({
-          dev_eui: item.dev_eui,
-          dev_time: item.dev_time,
-          payload_dict: JSON.parse(item.payload_dict),
-          metadata_dict: JSON.parse(item.metadata_dict),
-        }));
-        this.payloadDataSource.data = records;
-        this.metadataSource.data = records;
+    // this.apiService.getData(this.deviceEUI).subscribe({
+    //   next: (data: SensorData[]) => {
+    //     const records = data.map((item: SensorData) => ({
+    //       dev_eui: item.dev_eui,
+    //       dev_time: item.dev_time,
+    //       payload_dict: JSON.parse(item.payload_dict),
+    //       metadata_dict: JSON.parse(item.metadata_dict),
+    //     }));
+    //     this.payloadDataSource.data = records;
+    //     this.metadataSource.data = records;
 
-        if (records.length > 0) {
-          this.payloadColumns = Object.keys(records[0].payload_dict);
-          this.metadataColumns = Object.keys(records[0].metadata_dict);
-          this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
-            this.payloadColumns
-          );
-          this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
-            this.metadataColumns
-          );
-        }
-      },
-      error: (error) => {
-        console.error('Error: ', error);
-      },
-    });
+    //     if (records.length > 0) {
+    //       this.payloadColumns = Object.keys(records[0].payload_dict);
+    //       this.metadataColumns = Object.keys(records[0].metadata_dict);
+    //       this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
+    //         this.payloadColumns
+    //       );
+    //       this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
+    //         this.metadataColumns
+    //       );
+    //     }
+    //   },
+    //   error: (error) => {
+    //     console.error('Error: ', error);
+    //   },
+  // // });
+  //   console.log('DEV_EUI_2', this.deviceEUI);
 
-    this.createPayloadChart('0025CA0A00015E62');
-    this.createMetadataChart();
+  //   this.createPayloadChart(this.deviceEUI);
+  //   this.createMetadataChart();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -235,6 +238,41 @@ export class DevicePageComponent implements AfterViewInit {
 
   addDevice(): void {}
   removeDevice(): void {}
+
+  private getDataSetup(): void {
+    if(this.deviceEUI) {
+      this.apiService.getData(this.deviceEUI).subscribe({
+        next: (data: SensorData[]) => {
+          const records = data.map((item: SensorData) => ({
+            dev_eui: item.dev_eui,
+            dev_time: item.dev_time,
+            payload_dict: JSON.parse(item.payload_dict),
+            metadata_dict: JSON.parse(item.metadata_dict),
+          }));
+          this.payloadDataSource.data = records;
+          this.metadataSource.data = records;
+  
+          if (records.length > 0) {
+            this.payloadColumns = Object.keys(records[0].payload_dict);
+            this.metadataColumns = Object.keys(records[0].metadata_dict);
+            this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
+              this.payloadColumns
+            );
+            this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
+              this.metadataColumns
+            );
+          }
+        },
+        error: (error) => {
+          console.error('Error: ', error);
+        },
+      });
+      console.log('DEV_EUI_2', this.deviceEUI);
+  
+      this.createPayloadChart(this.deviceEUI);
+      this.createMetadataChart();
+    }
+  }
 
   //filter function in order to allow users display only realivant data.
   //filters requested by pi

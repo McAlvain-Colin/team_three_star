@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -13,10 +13,15 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
+import { MatTableModule, _MatTableDataSource } from '@angular/material/table';
 import { AfterViewInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import {
+  MatPaginator,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';import { MatTableDataSource } from '@angular/material/table';
 import { DatePicker } from '../date-picker/date-picker.component';
 import { saveAs } from 'file-saver';
 import { Chart, registerables } from 'chart.js/auto';
@@ -93,7 +98,14 @@ export interface Device {
     MatSliderModule,
     MatDatepickerModule,
     MatCheckboxModule,
-    MatIconModule
+    RouterModule,
+    CommonModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    TempNavBarComponent,
+    MatListModule
   ],
 })
 export class FilterPageComponent implements AfterViewInit {
@@ -130,6 +142,8 @@ export class FilterPageComponent implements AfterViewInit {
   step = 1;
   thumbLabel = false;
   value = 0;
+  startTime = 0;
+  endTime = 0;
 
   defaultValue: [number, number] = [1, 1000];
 
@@ -152,6 +166,22 @@ export class FilterPageComponent implements AfterViewInit {
   metadataChart!: Chart;
 
   chartData!: number[];
+  deviceList: Device[] = [];
+
+  routerLinkVariable = '/hi';
+  devices: string[] = [];
+  appName: string | null = 'Cat Chairs';
+  orgId: string | null = '';
+  appDescription: string | null =
+    "These devices consists of the best possible devices made for cat patting, for the best of cats out there. Don't let your feline friend down, get them feline great with these devices below.";
+  imgName: string | null = 'placeholder_cat2';
+  removeApps: boolean = false;
+  currentPage: number = 0;
+
+  appId: string | null = '';
+  devName: string | null = '';
+  base_url: string = 'http://localhost:5000';
+  deviceEUI: string = '';
 
   constructor(
     private apiService: ApiService,
@@ -167,6 +197,71 @@ export class FilterPageComponent implements AfterViewInit {
   //itterating code to try and get the data in a formate I can use.
 
   ngOnInit(): void {
+    this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    this.devName = this.route.snapshot.paramMap.get('dev');
+
+    const param = new HttpParams()
+      .set('app', this.appId != null ? this.appId : '-1')
+      .set('devName', this.devName != null ? this.devName : 'none');
+
+    // this is for giving one device EUI from the given dev name from the user.
+    this.http
+      .get(this.base_url + '/userOrgAppDevice', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          // console.log('resp is in app page', resp.body.dev_eui);
+          this.deviceEUI = resp.body.dev_eui;
+          console.log('DEV_EUI', this.deviceEUI);
+          console.log('AppId', this.appId);
+          // this.getDataSetup();
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
+      // this is for getting the organizations's applications associated with it
+
+      this.http
+      .get(this.base_url + '/userOrgAppDeviceList', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          for (var i = 0; i < resp.body.list.length; i++) {
+            console.log('index: ', resp.body.list[i].name);
+            this.devices.push(resp.body.list[i].name);
+            this.deviceList.push({
+              name: resp.body.list[i].name,
+              devEUI: resp.body.list[i].dev,
+            });
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
+      this.deviceSource.paginator = this.devicePaginator;
+      console.log('Device Source: ', this.deviceSource.data)
+
+
+
+
     this.apiService.getAltData().subscribe({
       next: (data: SensorData[]) => {
         const records = data.map((item: SensorData) => ({
@@ -199,6 +294,7 @@ export class FilterPageComponent implements AfterViewInit {
       },
     });
 
+
     this.apiService.getDevID().subscribe({
       next: (data: string[][]) => {
         const idRecord = data.map((item: string[]) => item[0]);
@@ -211,7 +307,7 @@ export class FilterPageComponent implements AfterViewInit {
       },
     });
 
-    this.apiService.getPayloadStatisticsData('0025CA0A00015E62').subscribe({
+    this.apiService.getPayloadStatisticsData(this.deviceEUI).subscribe({
       next: (data: any[]) => {
         // console.log(data)
         const payloadStatRecord = Object.keys(data).map((key: any) => {
@@ -275,6 +371,8 @@ export class FilterPageComponent implements AfterViewInit {
         endValue: [{ value: this.defaultValue[1], disable: true }],
         metadataSelect: false,
         payloadSelect: false,
+        startTime: 0,
+        endTime: 0,
       }),
       value: 0,
       dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
@@ -291,7 +389,7 @@ export class FilterPageComponent implements AfterViewInit {
       panelOpenStateDeviceSelect: false,
     });
 
-    this.createPayloadChart('0025CA0A00015E62');
+    this.createPayloadChart("0025ca0A00015E62");
     this.createMetadataChart();
   }
 
@@ -300,12 +398,18 @@ export class FilterPageComponent implements AfterViewInit {
   @ViewChild('devIDPaginator') devIDPaginator!: MatPaginator;
   @ViewChild('payloadStatsPaginator') payloadStatsPaginator!: MatPaginator;
   @ViewChild('metadataStatsPaginator') metadataStatsPaginator!: MatPaginator;
+  @ViewChild('devicePaginator', { static: true })
+  devicePaginator: MatPaginator = new MatPaginator(
+    new MatPaginatorIntl(),
+    ChangeDetectorRef.prototype
+  );
 
   payloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
   paylaodStatSource = new MatTableDataSource<any>([]);
   metadataStatSource = new MatTableDataSource<any>([]);
+  deviceSource = new _MatTableDataSource(this.deviceList)
 
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
@@ -313,6 +417,14 @@ export class FilterPageComponent implements AfterViewInit {
     this.devIDSource.paginator = this.devIDPaginator;
     this.paylaodStatSource.paginator = this.payloadPaginator;
     this.metadataStatSource.paginator = this.metadataPaginator;
+    this.deviceSource.paginator = this.devicePaginator;
+
+    console.log('Payload Source: ', this.payloadDataSource.data)
+    console.log('Metadata Source: ', this.metadataSource.data)
+    console.log('devID Source: ', this.devIDSource.data)
+    console.log('PayStats Source: ', this.paylaodStatSource.data)
+    console.log('MetaSatas Source: ', this.metadataStatSource.data)
+    console.log('Device Source: ', this.deviceSource.data)
   }
 
   //device management
