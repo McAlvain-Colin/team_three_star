@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
-import { MatTableModule, _MatTableDataSource } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import {
   MatPaginator,
@@ -49,7 +49,7 @@ export interface SensorData {
   payload_dict: any;
   metadata_dict: any;
 }
-interface PayloadRecord {
+export interface PayloadRecord {
   [key: string]: number | string;
 }
 
@@ -217,39 +217,7 @@ export class FilterPageComponent implements AfterViewInit {
         },
       });
 
-      // this is for getting the organizations's applications associated with it
-
-      this.http
-      .get(this.base_url + '/userOrgAppDeviceList', {
-        observe: 'response',
-        responseType: 'json',
-        params: param,
-      })
-      .subscribe({
-        next: (response) => {
-          const res = JSON.stringify(response);
-
-          let resp = JSON.parse(res);
-
-          for (var i = 0; i < resp.body.list.length; i++) {
-            console.log('index: ', resp.body.list[i].name);
-            this.devices.push(resp.body.list[i].name);
-            this.deviceList.push({
-              name: resp.body.list[i].name,
-              devEUI: resp.body.list[i].dev,
-            });
-          }
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
-
-      this.deviceSource.paginator = this.devicePaginator;
-      console.log('Device Source: ', this.deviceSource.data)
-
-
-
+    this.fetchDevices();
 
     this.apiService.getAltData().subscribe({
       next: (data: SensorData[]) => {
@@ -373,7 +341,7 @@ export class FilterPageComponent implements AfterViewInit {
       panelOpenStateDeviceSelect: false,
     });
 
-    this.createPayloadChart("0025ca0A00015E62");
+    this.createPayloadChart(this.deviceEUI);
     this.createMetadataChart();
   }
 
@@ -382,18 +350,14 @@ export class FilterPageComponent implements AfterViewInit {
   @ViewChild('devIDPaginator') devIDPaginator!: MatPaginator;
   @ViewChild('payloadStatsPaginator') payloadStatsPaginator!: MatPaginator;
   @ViewChild('metadataStatsPaginator') metadataStatsPaginator!: MatPaginator;
-  @ViewChild('devicePaginator', { static: true })
-  devicePaginator: MatPaginator = new MatPaginator(
-    new MatPaginatorIntl(),
-    ChangeDetectorRef.prototype
-  );
+  @ViewChild('devicePaginator') devicePaginator!: MatPaginator;
 
   payloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
   paylaodStatSource = new MatTableDataSource<any>([]);
   metadataStatSource = new MatTableDataSource<any>([]);
-  deviceSource = new _MatTableDataSource(this.deviceList)
+  deviceSource = new MatTableDataSource<Device>([]);
 
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
@@ -409,6 +373,46 @@ export class FilterPageComponent implements AfterViewInit {
     console.log('PayStats Source: ', this.paylaodStatSource.data)
     console.log('MetaSatas Source: ', this.metadataStatSource.data)
     console.log('Device Source: ', this.deviceSource.data)
+  }
+
+  fetchDevices(): void {
+    this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    this.devName = this.route.snapshot.paramMap.get('dev');
+    console.log('appId1: ', this.appId);
+    console.log('devName1: ', this.devName)
+    const param = new HttpParams()
+      .set('app', this.appId != null ? this.appId : '-1')
+      .set('devName', this.devName != null ? this.devName : 'none');
+
+    this.http
+      .get(this.base_url + '/userOrgAppDeviceList', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          for (var i = 0; i < resp.body.list.length; i++) {
+            console.log('index: ', resp.body.list[i].name);
+            this.devices.push(resp.body.list[i].name);
+            this.deviceList.push({
+              name: resp.body.list[i].name,
+              devEUI: resp.body.list[i].dev,
+            });
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+      this.deviceSource.data = this.deviceList;
+      this.deviceSource.filter = '';
+      this.deviceSource._updateChangeSubscription();
+      console.log('Device Source1: ', this.deviceSource.data);
   }
 
   //device management
@@ -437,6 +441,10 @@ export class FilterPageComponent implements AfterViewInit {
         item[key].toString().toLowerCase().includes(query.toLowerCase())
       )
     );
+  }
+  applyDeviceFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.deviceSource.filter = filterValue.trim().toLowerCase();
   }
 
   applyPayloadFilter(event: Event) {
