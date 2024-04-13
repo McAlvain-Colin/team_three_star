@@ -693,12 +693,13 @@ def addAppDevice():
 	data = request.get_json()
 	appId = data['appId']
 	devEUI = data['devEUI']
+	devName = data['devName']
 
 	if (db.session.execute(db.select(Device).where(Device.dev_eui == devEUI)).scalar() is not None ):
 		
 		app = db.session.execute(db.select(Application).where(Application.id == appId)).scalar()
 
-		appSensor = AppSensors(app_id = app.id, dev_name='myDevice', dev_eui= devEUI)
+		appSensor = AppSensors(app_id = app.id, dev_name=devName, dev_eui= devEUI)
 		db.session.add(appSensor)
 		db.session.commit()
 		return jsonify({'DeviceAdded': True}), 200

@@ -82,8 +82,9 @@ export class AddDeviceComponent {
         {
           appId: this.appId,
           devEUI: this.devEUI,
-          // joinEui: this.joinEUI,
-          // appKey: this.appKey,
+          joinEui: this.joinEUI,
+          appKey: this.appKey,
+          devName: this.deviceName
         },
         httpOptions
       )
