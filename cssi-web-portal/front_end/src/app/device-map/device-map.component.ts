@@ -37,12 +37,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 
+
 export interface DeviceLocation {
   dev_eui: any;
   latitude: any;
   longitude: any;
   altitude: any;
   type: any;
+  application: any;
 }
 
 @Component({
@@ -93,7 +95,7 @@ export interface DeviceLocation {
 export class DeviceMapComponent implements AfterViewInit {
   constructor(private apiService: ApiService) {}
 
-  // @Input() locationRecord!: DeviceLocation[];
+  @Input() locationRecord!: DeviceLocation[];
 
   myMap!: Leaflet.Map;
   sensorIcon: Leaflet.Icon<Leaflet.IconOptions> = Leaflet.icon({
@@ -110,7 +112,8 @@ export class DeviceMapComponent implements AfterViewInit {
   showSensors: boolean = false;
   showGateways: boolean = false;
 
-  locationRecord: DeviceLocation[] = [];
+  // locationRecord: DeviceLocation[] = [];
+  // locationData: DeviceLocation[] = [];
 
   // This is a lifecycle hook used by Angular, it allows for defining which properties should be initialized upon when the component is being used,documentation is found here https://angular.io/api/core/OnInit. Here the lifecycle will
   // initialize the map by creating a html element with the id = map, the set view method indicates the location coordinates should be displaying in the map. The map will be using OpenStreetMap tile layer which is a geographic database of map
@@ -125,9 +128,54 @@ export class DeviceMapComponent implements AfterViewInit {
           longitude: item[2],
           altitude: item[3],
           type: item[4],
+          application: item[5],
         }));
 
         this.locationSource.data = locationRecord;
+        // this.locationData = this.locationSource.data;
+
+        console.log("Location Source: ", this.locationSource.data);
+        console.log("Location keys: ", Object.keys(this.locationSource.data));
+
+        console.log("Location Size: ", this.locationSource.data.length);
+
+        
+        if (this.showSensors === false) {
+          this.showSensors = true;
+
+          for (let i = 0; i < this.locationSource.data.length; i++) {
+            if(this.locationSource.data[i].type === 'device') {
+              this.sensors[i] = Leaflet.marker(
+                Leaflet.latLng(
+                  this.locationSource.data[i].latitude,
+                  this.locationSource.data[i].longitude,
+                  this.locationSource.data[i].altitude,
+                ),
+                { icon: this.sensorIcon }
+              )
+                .addTo(this.myMap)
+                .bindPopup('endDevice: ' + this.locationSource.data[i].dev_eui.toString());
+            }
+          }
+        }
+
+        if (this.showGateways === false) {
+          this.showGateways = true;
+          for (let i = 0; i < this.locationSource.data.length; i++) {
+            if(this.locationSource.data[i].type === 'gateway') {
+              this.gateways[i] = Leaflet.circle(
+                Leaflet.latLng(
+                  this.locationSource.data[i].latitude,
+                  this.locationSource.data[i].longitude,
+                  this.locationSource.data[i].altitude,
+                ),
+                { radius: 25000 }
+              )
+                .addTo(this.myMap)
+                .bindPopup('gateway: ' + this.locationSource.data[i].dev_eui.toString());
+            }
+          }
+        }
       },
 
       error: (error) => {
@@ -141,13 +189,7 @@ export class DeviceMapComponent implements AfterViewInit {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(this.myMap);
 
-    // for(let i = 0; i <  this.locationRecord.length; i++){
-    //   if(this.locationRecord[i].type === 'gateway'){
-    //     gateways.push
-    //   }
-    // }
-
-    this.addMarkers();
+    // this.addMarkers();
   }
 
   @ViewChild('locationPaginator') locationPaginator!: MatPaginator;
@@ -162,6 +204,7 @@ export class DeviceMapComponent implements AfterViewInit {
   // if the end devices sensors are not being displayed, then the method will places the sensor icons using the marker function from Leaflet JS, which are created using the end device locations retrieved from the current selected device from the device list and will be placed on top of the map layer,
   // and also add sensor popup icons depending on if the user clicks on the end device icon which as been added to the map. This was built using the marker documentation on Leaflet https://leafletjs.com/reference.html#marker
   addMarkers(): void {
+    console.log('locationData: ',this.locationSource)
     if (this.showGateways === true) {
       this.showGateways = false;
       for (let i = this.gateways.length - 1; i >= 0; i--) {
@@ -178,7 +221,8 @@ export class DeviceMapComponent implements AfterViewInit {
         this.sensors[i] = Leaflet.marker(
           Leaflet.latLng(
             this.locationRecord[i].latitude,
-            this.locationRecord[i].longitude
+            this.locationRecord[i].longitude,
+            this.locationRecord[i].altitude
           ),
           { icon: this.sensorIcon }
         )
@@ -243,7 +287,11 @@ export class DeviceMapComponent implements AfterViewInit {
             this.locationRecord[i].latitude,
             this.locationRecord[i].longitude
           ),
-          { radius: 3500 }
+          { 
+            radius: 3500, 
+            color: '#ff3388',
+            fillColor: 'red'
+          },
         )
           .addTo(this.myMap)
           .bindPopup('gateway: ' + this.locationRecord[i].dev_eui.toString());

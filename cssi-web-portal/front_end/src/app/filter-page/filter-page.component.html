@@ -28,11 +28,9 @@
           alt="Grey cat sitting on couch"
         /> -->
         <form [formGroup]="filterForm" (ngSubmit)="onFormSubmit()">
-          <!-- date filter options -->
-          <app-date-picker> </app-date-picker>
 
           <!-- time filter -->
-          <mat-card class="range-filter" formGroupName="range">
+          <!-- <mat-card class="range-filter" formGroupName="range">
             <mat-card-content>
               <h2 class="example-h2">Time Selection</h2>
 
@@ -47,9 +45,9 @@
                 </mat-form-field>
               </section>
             </mat-card-content>
-          </mat-card>
+          </mat-card> -->
           <!-- Data range of values -->
-          <mat-card class="range-filter" formGroupName="range">
+          <!-- <mat-card class="range-filter" formGroupName="range">
             <mat-card-content>
               <h2 class="example-h2">Slider configuration</h2>
 
@@ -70,9 +68,9 @@
                   <mat-label>Step size</mat-label>
                   <input matInput type="number" formControlName="step" />
                 </mat-form-field>
-              </section>
+              </section> -->
 
-              <mat-card class="left-section-box">
+              <!-- <mat-card class="left-section-box">
                 <section class="visual-section">
                   <mat-checkbox formControlName="showTicks"
                     >Show ticks</mat-checkbox
@@ -90,7 +88,9 @@
                     >Disabled</mat-checkbox
                   >
                 </section>
-              </mat-card>
+              </mat-card> -->
+          <mat-card>
+            <mat-card-content>
               <mat-card class="left-section-box">
                 <section class="filter-select">
                   <mat-checkbox formControlName="payloadSelect"
@@ -107,7 +107,7 @@
             </mat-card-content>
           </mat-card>
 
-          <mat-card class="example-result-card">
+          <!-- <mat-card class="example-result-card">
             <mat-card-content>
               <h2>Result</h2>
 
@@ -129,17 +129,17 @@
                 <input matSliderThumb formControlName="value" #slider />
               </mat-slider>
             </mat-card-content>
-          </mat-card>
+          </mat-card> -->
 
           <!-- Data Type -->
-          <mat-card class="type-filter">
+          <!-- <mat-card class="type-filter">
             <mat-form-field>
               <mat-label>Data Type</mat-label>
               <input matInput formControlName="dataType" />
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Data Type</mat-hint>
             </mat-form-field>
-          </mat-card>
+          </mat-card> -->
 
           <!-- Device ID -->
           <mat-card class="id-filter">

@@ -11,7 +11,7 @@ import { ApiService } from '../api.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
@@ -41,6 +41,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { keyframes } from '@angular/animations';
 import { HttpClient, HttpParams } from '@angular/common/http';
+
+import { MatNativeDateModule } from '@angular/material/core';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -94,7 +96,9 @@ export interface Device {
     MatPaginatorModule,
     MatButtonModule,
     TempNavBarComponent,
-    MatListModule
+    MatListModule,
+    JsonPipe,
+    MatNativeDateModule
   ],
 })
 export class FilterPageComponent implements AfterViewInit {
@@ -193,33 +197,6 @@ export class FilterPageComponent implements AfterViewInit {
       .set('app', this.appId != null ? this.appId : '-1')
       .set('devName', this.devName != null ? this.devName : 'none');
 
-    // this is for giving one device EUI from the given dev name from the user.
-    // this.http
-    //   .get(this.base_url + '/userOrgAppDevice', {
-    //     observe: 'response',
-    //     responseType: 'json',
-    //     params: param,
-    //   })
-    //   .subscribe({
-    //     next: (response) => {
-    //       const res = JSON.stringify(response);
-
-    //       let resp = JSON.parse(res);
-
-    //       // console.log('resp is in app page', resp.body.dev_eui);
-    //       this.deviceEUI = resp.body.dev_eui;
-    //       console.log('DEV_EUI', this.deviceEUI);
-    //       console.log('AppId', this.appId);
-    //       // this.getDataSetup();
-    //     },
-    //     error: (error) => {
-    //       console.error(error);
-    //     },
-    //   });
-
-    this.fetchDevices();
-    this.getDataSetup();
-
     this.apiService.getAltData().subscribe({
       next: (data: SensorData[]) => {
         const records = data.map((item: SensorData) => ({
@@ -231,7 +208,7 @@ export class FilterPageComponent implements AfterViewInit {
         this.payloadDataSource.data = records;
         this.metadataSource.data = records;
      
-        console.log(this.payloadDataSource.data[1].dev_time);
+        //console.log(this.payloadDataSource.data[1].dev_time);
 
         if (records.length > 0) {
           this.payloadColumns = Object.keys(records[0].payload_dict);
@@ -245,26 +222,26 @@ export class FilterPageComponent implements AfterViewInit {
         }
       },
       error: (error) => {
-        console.error('Error: ', error);
+        //console.error('Error: ', error);
       },
     });
 
 
-    this.apiService.getDevID().subscribe({
-      next: (data: string[][]) => {
-        const idRecord = data.map((item: string[]) => item[0]);
+    // this.apiService.getDevID().subscribe({
+    //   next: (data: string[][]) => {
+    //     const idRecord = data.map((item: string[]) => item[0]);
 
-        this.devIDSource.data = idRecord;
-      },
+    //     this.devIDSource.data = idRecord;
+    //   },
 
-      error: (error) => {
-        console.error('Error: ', error);
-      },
-    });
+    //   error: (error) => {
+    //     //console.error('Error: ', error);
+    //   },
+    // });
 
     this.apiService.getPayloadStatisticsData(this.deviceEUI).subscribe({
       next: (data: any[]) => {
-        // console.log(data)
+        // //console.log(data)
         const payloadStatRecord = Object.keys(data).map((key: any) => {
           const stats = data[key];
 
@@ -277,18 +254,18 @@ export class FilterPageComponent implements AfterViewInit {
             mode: stats.mode,
           };
         });
-        // console.log(payloadStatRecord)
+        // //console.log(payloadStatRecord)
 
         this.paylaodStatSource.data = payloadStatRecord;
       },
 
       error: (error) => {
-        console.error('Error: ', error);
+        //console.error('Error: ', error);
       },
     });
     this.apiService.getMetadataStatisticsData(this.deviceEUI).subscribe({
       next: (data: any[]) => {
-        console.log(data);
+        //console.log(data);
         const metadataStatRecord = Object.keys(data).map((key: any) => {
           const stats = data[key];
 
@@ -301,19 +278,19 @@ export class FilterPageComponent implements AfterViewInit {
             mode: stats.mode,
           };
         });
-        console.log(metadataStatRecord);
+        //console.log(metadataStatRecord);
 
         this.metadataStatSource.data = metadataStatRecord;
       },
 
       error: (error) => {
-        console.error('Error: ', error);
+        //console.error('Error: ', error);
       },
     });
 
     this.filterForm = this.fb.group({
-      startTime: [''], //, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
-      endTime: [''], //, Validators],
+      // startTime: [''], //, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
+      // endTime: [''], //, Validators],
       range: this.fb.group({
         value: [this.value],
         min: [this.min],
@@ -326,8 +303,8 @@ export class FilterPageComponent implements AfterViewInit {
         endValue: [{ value: this.defaultValue[1], disable: true }],
         metadataSelect: false,
         payloadSelect: false,
-        startTime: 0,
-        endTime: 0,
+        startTime: '',
+        endTime: '',
       }),
       value: 0,
       dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
@@ -336,10 +313,14 @@ export class FilterPageComponent implements AfterViewInit {
       location: [''], //, Validators.pattern('[a-zA-Z ]*')]
 
     });
-    console.log('deviceEUI: ', this.deviceEUI)
+    //console.log('deviceEUI: ', this.deviceEUI)
 
-    this.createPayloadChart(this.deviceEUI);
-    this.createMetadataChart();
+    // this.createPayloadChart(this.deviceEUI);
+    // this.createMetadataChart();
+
+
+    this.fetchDevices();
+    this.getDataSetup();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -364,15 +345,27 @@ export class FilterPageComponent implements AfterViewInit {
     this.metadataStatSource.paginator = this.metadataPaginator;
     this.deviceSource.paginator = this.devicePaginator;
 
-    console.log('Payload Source: ', this.payloadDataSource.data)
-    console.log('Metadata Source: ', this.metadataSource.data)
-    console.log('devID Source: ', this.devIDSource.data)
-    console.log('PayStats Source: ', this.paylaodStatSource.data)
-    console.log('MetaSatas Source: ', this.metadataStatSource.data)
-    console.log('Device Source: ', this.deviceSource.data)
+    //console.log('Payload Source: ', this.payloadDataSource.data)
+    //console.log('Metadata Source: ', this.metadataSource.data)
+    //console.log('devID Source: ', this.devIDSource.data)
+    //console.log('PayStats Source: ', this.paylaodStatSource.data)
+    //console.log('MetaSatas Source: ', this.metadataStatSource.data)
+    //console.log('Device Source: ', this.deviceSource.data)
   }
   private getDataSetup(): void {
+    console.log("getDataSetup")
+
+    console.log("is this anything", this.deviceEUI)
     if(this.deviceEUI) {
+      console.log("please")
+      try{
+        console.log("maybe")
+        this.createPayloadChart(this.deviceEUI);
+        this.createMetadataChart();
+      }
+      catch(error){
+        console.log('didnt work', error);
+      }
       this.apiService.getData(this.deviceEUI).subscribe({
         next: (data: SensorData[]) => {
           const records = data.map((item: SensorData) => ({
@@ -396,23 +389,19 @@ export class FilterPageComponent implements AfterViewInit {
           }
         },
         error: (error) => {
-          console.error('Error: ', error);
+          //console.error('Error: ', error);
         },
       });
       console.log('DEV_EUI_2', this.deviceEUI);
 
-      const id = this.deviceEUI;
-  
-      this.createPayloadChart(id);
-      this.createMetadataChart();
     }
   }
 
   fetchDevices(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
     this.devName = this.route.snapshot.paramMap.get('dev');
-    console.log('appId1: ', this.appId);
-    console.log('devName1: ', this.devName)
+    //console.log('appId1: ', this.appId);
+    //console.log('devName1: ', this.devName)
     const param = new HttpParams()
       .set('app', this.appId != null ? this.appId : '-1')
       .set('devName', this.devName != null ? this.devName : 'none');
@@ -430,7 +419,7 @@ export class FilterPageComponent implements AfterViewInit {
           let resp = JSON.parse(res);
 
           for (var i = 0; i < resp.body.list.length; i++) {
-            console.log('index: ', resp.body.list[i].name);
+            //console.log('index: ', resp.body.list[i].name);
             this.devices.push(resp.body.list[i].name);
             this.deviceList.push({
               name: resp.body.list[i].name,
@@ -439,13 +428,13 @@ export class FilterPageComponent implements AfterViewInit {
           }
         },
         error: (error) => {
-          console.error(error);
+          //console.error(error);
         },
       });
       this.deviceSource.data = this.deviceList;
       this.deviceSource.filter = '';
       this.deviceSource._updateChangeSubscription();
-      console.log('Device Source1: ', this.deviceSource.data);
+      //console.log('Device Source1: ', this.deviceSource.data);
   }
 
   //device management
@@ -505,81 +494,82 @@ export class FilterPageComponent implements AfterViewInit {
     if (this.filterForm.valid) {
       this.filterSensorData();
     } else {
-      console.error('Error: ', Error);
+      //console.error('Error: ', Error);
     }
   }
 
   filterSensorData() {
-    console.log("Filter Called")
-    console.log("payloadSelect:", this.filterForm.value)
-    // console.log("metadataSelect:", this.filterForm.values.metadataSelect)
-
-    // let filteredPayload = [];
-    // let filteredMetadata = [];
-
-    // this.filterForm = this.fb.group({
-    //   startTime: [''], //, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
-    //   endTime: [''], //, Validators],
-    //   range: this.fb.group({
-    //     value: [this.value],
-    //     min: [this.min],
-    //     max: [this.max],
-    //     step: [this.step],
-    //     showTicks: [this.showTicks],
-    //     thumbLabel: [this.thumbLabel],
-    //     disabled: [this.disabled],
-    //     startValue: [{ value: this.defaultValue[0], disabled: true }],
-    //     endValue: [{ value: this.defaultValue[1], disable: true }],
-    //     metadataSelect: false,
-    //     payloadSelect: false,
-    //     startTime: 0,
-    //     endTime: 0,
-    //   }),
-    //   value: 0,
-    //   dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
-    //   deviceId: [''], //, Validators.pattern('[a-zA-Z ]*')],
-    //   applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
-    //   location: [''], //, Validators.pattern('[a-zA-Z ]*')]
-    // });
+    console.log("This Worked: ", this.filterForm.value);
+    console.log("Payload: ", this.payloadDataSource.data)
+    const payObj = this.payloadDataSource.data[0].payload_dict;
+    const keys = Object.keys(payObj);
+    const values = Object.values(payObj);
+    console.log('payObj: ', payObj);
+    console.log('keys: ', keys);
+    console.log('values: ', values);
+    const metaObj = this.payloadDataSource.data[0].metadata_dict;
+    const mkeys = Object.keys(metaObj);
+    const mvalues = Object.values(metaObj);
+    console.log('metaObj: ', metaObj);
+    console.log('keys: ', mkeys);
+    console.log('values: ', mvalues);
 
     if (this.filterForm.value.range.payloadSelect == true) {
+      //console.log("Payload: ", this.payloadDataSource.data)
       this.payloadDataSource.data = this.payloadDataSource.data.filter((item) => {
         //add filter logic
-        console.log("this worked")
+        //console.log("This Worked: ", typeof(item.payload_dict));
         return (
           (this.filterForm.value.range.startTime === '' || item.dev_time.includes(this.filterForm.value.range.startTime)) &&
           (this.filterForm.value.range.endTime === '' || item.dev_time.includes(this.filterForm.value.range.endTime)) &&
-          (this.filterForm.value.range.value === '' || item.payload_dict.includes(this.filterForm.value.range.value)) &&
-          (this.filterForm.value.range.min === '' || item.payload_dict.includes(this.filterForm.value.range.min)) &&
-          (this.filterForm.value.range.max === '' || item.payload_dict.includes(this.filterForm.value.range.max)) &&
-          (this.filterForm.value.range.startValue === '' || item.payload_dict.includes(this.filterForm.value.range.startValue)) &&
-          (this.filterForm.value.range.endValue === '' || item.payload_dict.includes(this.filterForm.value.range.endValue)) &&
+          // (this.filterForm.value.range.value === '' || item.payload_dict.includes(this.filterForm.value.range.value)) &&
+          // (this.filterForm.value.range.min === '' || item.payload_dict.values.includes(this.filterForm.value.range.min)) &&
+          // (this.filterForm.value.range.max === '' || item.payload_dict.values.includes(this.filterForm.value.range.max)) &&
+          // (this.filterForm.value.range.startValue === '' || item.payload_dict.values.includes(this.filterForm.value.range.startValue)) &&
+          // (this.filterForm.value.range.endValue === '' || item.payload_dict.values.includes(this.filterForm.value.range.endValue)) &&
 
-          (this.filterForm.value.value === '' || item.payload_dict.includes(this.filterForm.value.value)) &&
-          (this.filterForm.value.dataType === '' || item.payload_dict.includes(this.filterForm.value.dataType)) &&
-          (this.filterForm.value.deviceId === '' || item.payload_dict.includes(this.filterForm.value.deviceId)) &&
-          (this.filterForm.value.applicationID === '' || item.payload_dict.includes(this.filterForm.value.applicationID)) &&
-          (this.filterForm.value.location === '' || item.payload_dict.includes(this.filterForm.value.location)) 
+          // (this.filterForm.value.value === '' || item.payload_dict.values.includes(this.filterForm.value.value)) &&
+          // (this.filterForm.value.dataType === '' || item.payload_dict.includes(this.filterForm.value.dataType)) &&
+          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) //&&
+          // (this.filterForm.value.applicationID === '' || item.payload_dict.values.includes(this.filterForm.value.applicationID)) &&
+          // (this.filterForm.value.location === '' || item.payload_dict.values.includes(this.filterForm.value.location)) 
         )
       });
     } 
+    // if (this.filterForm.value.range.payloadSelect == true) {
+    //   this.payloadDataSource.data = this.payloadDataSource.data.filter((item) => {
+    //     return (
+    //       (this.filterForm.value.range.value === '' || values.includes(this.filterForm.value.range.value)) &&
+    //       (this.filterForm.value.range.min === '' || values.includes(this.filterForm.value.range.min)) &&
+    //       (this.filterForm.value.range.max === '' || values.includes(this.filterForm.value.range.max)) &&
+    //       (this.filterForm.value.range.startValue === '' || values.includes(this.filterForm.value.range.startValue)) &&
+    //       (this.filterForm.value.range.endValue === '' || values.includes(this.filterForm.value.range.endValue)) &&
+
+    //       (this.filterForm.value.value === '' || values.includes(this.filterForm.value.value)) &&
+    //       (this.filterForm.value.dataType === '' || keys.includes(this.filterForm.value.dataType)) &&
+    //       (this.filterForm.value.applicationID === '' || values.includes(this.filterForm.value.applicationID)) &&
+    //       (this.filterForm.value.location === '' || values.includes(this.filterForm.value.location)) 
+    //     )
+    //   });
+    // }
     if (this.filterForm.value.range.metadataSelect== true) {
       this.metadataSource.data = this.metadataSource.data.filter((item) => {
         //add filter logic
-        console.log("this worked")
+        //console.log("this worked");
         return (
           (this.filterForm.value.range.startTime === '' || item.dev_time.includes(this.filterForm.value.range.startTime)) &&
           (this.filterForm.value.range.endTime === '' || item.dev_time.includes(this.filterForm.value.range.endTime)) &&
-          (this.filterForm.value.range.value === '' || item.metadata_dict.includes(this.filterForm.value.range.value)) &&
-          (this.filterForm.value.range.min === '' || item.metadata_dict.includes(this.filterForm.value.range.min)) &&
-          (this.filterForm.value.range.max === '' || item.metadata_dict.includes(this.filterForm.value.range.max)) &&
-          (this.filterForm.value.range.startValue === '' || item.metadata_dict.includes(this.filterForm.value.range.startValue)) &&
-          (this.filterForm.value.range.endValue === '' || item.metadata_dict.includes(this.filterForm.value.range.endValue)) &&
+          // (this.filterForm.value.range.value === '' || item.metadata_dict.includes(this.filterForm.value.range.value)) &&
+          // (this.filterForm.value.range.min === '' || item.metadata_dict.includes(this.filterForm.value.range.min)) &&
+          // (this.filterForm.value.range.max === '' || item.metadata_dict.includes(this.filterForm.value.range.max)) &&
+          // (this.filterForm.value.range.startValue === '' || item.metadata_dict.includes(this.filterForm.value.range.startValue)) &&
+          // (this.filterForm.value.range.endValue === '' || item.metadata_dict.includes(this.filterForm.value.range.endValue)) &&
 
-          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) &&
-
-          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) &&
-          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) 
+          // (this.filterForm.value.value === '' || item.metadata_dict.values.includes(this.filterForm.value.value)) &&
+          // (this.filterForm.value.dataType === '' || item.metadata_dict.values.includes(this.filterForm.value.dataType)) &&
+          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) //&&
+          // (this.filterForm.value.applicationID === '' || item.metadata_dict.values.includes(this.filterForm.value.applicationID)) &&
+          // (this.filterForm.value.location === '' || item.metadata_dict.values.includes(this.filterForm.value.location)) 
         )
       });
     }
@@ -595,7 +585,7 @@ export class FilterPageComponent implements AfterViewInit {
 
     // Validate data format
     if (!data.every((item) => typeof item === 'object' && item !== null)) {
-      console.error('Invalid data format for CSV export');
+      //console.error('Invalid data format for CSV export');
       return;
     }
 
@@ -661,14 +651,14 @@ export class FilterPageComponent implements AfterViewInit {
         this.payloadTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
         );
-        // console.log('Time Record: ', this.payloadTimeRecord)
+        // //console.log('Time Record: ', this.payloadTimeRecord)
         this.payloadRecord = data.map(
           (item: PayloadRecord[]) => item[1] as PayloadRecord
         );
         this.initializePayloadChart();
       },
       error: (error) => {
-        console.error('Error fetching payload data:', error);
+        //console.error('Error fetching payload data:', error);
       },
     });
   }
@@ -679,10 +669,10 @@ export class FilterPageComponent implements AfterViewInit {
         this.metadataTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
         );
-        // console.log('this.metadataTimeRecord : ', typeof(this.metadataTimeRecord[0]), this.metadataTimeRecord[0]);
+        // //console.log('this.metadataTimeRecord : ', typeof(this.metadataTimeRecord[0]), this.metadataTimeRecord[0]);
 
-        // console.log('this.metadataTimeRecord : ', typeof(this.metadataTimeRecord[0]).replace(' GMT', ''));
-        // console.log('Time Record: ', this.metadataTimeRecord)
+        // //console.log('this.metadataTimeRecord : ', typeof(this.metadataTimeRecord[0]).replace(' GMT', ''));
+        // //console.log('Time Record: ', this.metadataTimeRecord)
         this.metadataRecord = data.map(
           (item: PayloadRecord[]) => item[1] as PayloadRecord
         );
@@ -690,7 +680,7 @@ export class FilterPageComponent implements AfterViewInit {
 
       },
       error: (error) => {
-        console.error('Error fetching metadata:', error);
+        //console.error('Error fetching metadata:', error);
       },
     });
   }
@@ -816,7 +806,7 @@ export class FilterPageComponent implements AfterViewInit {
         this.selection.isSelected(row) ? 'deselect' : 'select'
       } row number ${index + 1}`;
     }
-    console.warn('checkboxLabel wa called without a row or index.');
+    //console.warn('checkboxLabel wa called without a row or index.');
     return '';
   }
 }
