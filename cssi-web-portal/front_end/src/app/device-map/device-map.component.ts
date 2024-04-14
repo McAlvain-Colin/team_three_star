@@ -149,9 +149,12 @@ export class DeviceMapComponent implements AfterViewInit {
                 Leaflet.latLng(
                   this.locationSource.data[i].latitude,
                   this.locationSource.data[i].longitude,
-                  this.locationSource.data[i].altitude,
+                  this.locationSource.data[i].altitude,                  
                 ),
-                { icon: this.sensorIcon }
+                { 
+                  icon: this.sensorIcon,
+                  title: this.locationSource.data[i].application
+                }
               )
                 .addTo(this.myMap)
                 .bindPopup('endDevice: ' + this.locationSource.data[i].dev_eui.toString());
@@ -272,7 +275,7 @@ export class DeviceMapComponent implements AfterViewInit {
             this.locationRecord[i].latitude,
             this.locationRecord[i].longitude
           ),
-          { icon: this.sensorIcon }
+          { icon: this.sensorIcon}
         )
           .addTo(this.myMap)
           .bindPopup('endDevice: ' + this.locationRecord[i].dev_eui.toString());
