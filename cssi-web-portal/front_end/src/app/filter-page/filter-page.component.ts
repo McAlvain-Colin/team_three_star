@@ -194,41 +194,44 @@ export class FilterPageComponent implements AfterViewInit {
       .set('devName', this.devName != null ? this.devName : 'none');
 
     // this is for giving one device EUI from the given dev name from the user.
-    this.http
-      .get(this.base_url + '/userOrgAppDevice', {
-        observe: 'response',
-        responseType: 'json',
-        params: param,
-      })
-      .subscribe({
-        next: (response) => {
-          const res = JSON.stringify(response);
+    // this.http
+    //   .get(this.base_url + '/userOrgAppDevice', {
+    //     observe: 'response',
+    //     responseType: 'json',
+    //     params: param,
+    //   })
+    //   .subscribe({
+    //     next: (response) => {
+    //       const res = JSON.stringify(response);
 
-          let resp = JSON.parse(res);
+    //       let resp = JSON.parse(res);
 
-          // console.log('resp is in app page', resp.body.dev_eui);
-          this.deviceEUI = resp.body.dev_eui;
-          console.log('DEV_EUI', this.deviceEUI);
-          console.log('AppId', this.appId);
-          // this.getDataSetup();
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
+    //       // console.log('resp is in app page', resp.body.dev_eui);
+    //       this.deviceEUI = resp.body.dev_eui;
+    //       console.log('DEV_EUI', this.deviceEUI);
+    //       console.log('AppId', this.appId);
+    //       // this.getDataSetup();
+    //     },
+    //     error: (error) => {
+    //       console.error(error);
+    //     },
+    //   });
 
     this.fetchDevices();
+    this.getDataSetup();
 
     this.apiService.getAltData().subscribe({
       next: (data: SensorData[]) => {
         const records = data.map((item: SensorData) => ({
           dev_eui: item.dev_eui,
-          dev_time: item.dev_time,
+          dev_time: item.dev_time.replace(' GMT', ''),
           payload_dict: JSON.parse(item.payload_dict),
           metadata_dict: JSON.parse(item.metadata_dict),
         }));
         this.payloadDataSource.data = records;
         this.metadataSource.data = records;
+     
+        console.log(this.payloadDataSource.data[1].dev_time);
 
         if (records.length > 0) {
           this.payloadColumns = Object.keys(records[0].payload_dict);
@@ -283,7 +286,7 @@ export class FilterPageComponent implements AfterViewInit {
         console.error('Error: ', error);
       },
     });
-    this.apiService.getMetadataStatisticsData('0025CA0A00015E62').subscribe({
+    this.apiService.getMetadataStatisticsData(this.deviceEUI).subscribe({
       next: (data: any[]) => {
         console.log(data);
         const metadataStatRecord = Object.keys(data).map((key: any) => {
@@ -332,14 +335,8 @@ export class FilterPageComponent implements AfterViewInit {
       applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
       location: [''], //, Validators.pattern('[a-zA-Z ]*')]
 
-      panelOpenState: false,
-      panelOpenStateDevEUI: false,
-      panelOpenStatePayload: false,
-      panelOpenStateMetadata: false,
-      panelOpenStatePayloadGraph: false,
-      panelOpenStateMetadataGraph: false,
-      panelOpenStateDeviceSelect: false,
     });
+    console.log('deviceEUI: ', this.deviceEUI)
 
     this.createPayloadChart(this.deviceEUI);
     this.createMetadataChart();
@@ -374,6 +371,42 @@ export class FilterPageComponent implements AfterViewInit {
     console.log('MetaSatas Source: ', this.metadataStatSource.data)
     console.log('Device Source: ', this.deviceSource.data)
   }
+  private getDataSetup(): void {
+    if(this.deviceEUI) {
+      this.apiService.getData(this.deviceEUI).subscribe({
+        next: (data: SensorData[]) => {
+          const records = data.map((item: SensorData) => ({
+            dev_eui: item.dev_eui,
+            dev_time: item.dev_time.replace(' GMT', ''),
+            payload_dict: JSON.parse(item.payload_dict),
+            metadata_dict: JSON.parse(item.metadata_dict),
+          }));
+          this.payloadDataSource.data = records;
+          this.metadataSource.data = records;
+  
+          if (records.length > 0) {
+            this.payloadColumns = Object.keys(records[0].payload_dict);
+            this.metadataColumns = Object.keys(records[0].metadata_dict);
+            this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
+              this.payloadColumns
+            );
+            this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
+              this.metadataColumns
+            );
+          }
+        },
+        error: (error) => {
+          console.error('Error: ', error);
+        },
+      });
+      console.log('DEV_EUI_2', this.deviceEUI);
+
+      const id = this.deviceEUI;
+  
+      this.createPayloadChart(id);
+      this.createMetadataChart();
+    }
+  }
 
   fetchDevices(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -401,7 +434,7 @@ export class FilterPageComponent implements AfterViewInit {
             this.devices.push(resp.body.list[i].name);
             this.deviceList.push({
               name: resp.body.list[i].name,
-              devEUI: resp.body.list[i].dev,
+              devEUI: resp.body.list[i].dev,              
             });
           }
         },
@@ -477,28 +510,79 @@ export class FilterPageComponent implements AfterViewInit {
   }
 
   filterSensorData() {
-    const formValues = this.filterForm.value;
+    console.log("Filter Called")
+    console.log("payloadSelect:", this.filterForm.value)
+    // console.log("metadataSelect:", this.filterForm.values.metadataSelect)
 
-    let filteredPayload = [];
-    let filteredMetadata = [];
+    // let filteredPayload = [];
+    // let filteredMetadata = [];
 
-    if (formValues.payloadSelect == true) {
-      filteredPayload = this.payloadDataSource.data.filter((item) => {
+    // this.filterForm = this.fb.group({
+    //   startTime: [''], //, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
+    //   endTime: [''], //, Validators],
+    //   range: this.fb.group({
+    //     value: [this.value],
+    //     min: [this.min],
+    //     max: [this.max],
+    //     step: [this.step],
+    //     showTicks: [this.showTicks],
+    //     thumbLabel: [this.thumbLabel],
+    //     disabled: [this.disabled],
+    //     startValue: [{ value: this.defaultValue[0], disabled: true }],
+    //     endValue: [{ value: this.defaultValue[1], disable: true }],
+    //     metadataSelect: false,
+    //     payloadSelect: false,
+    //     startTime: 0,
+    //     endTime: 0,
+    //   }),
+    //   value: 0,
+    //   dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
+    //   deviceId: [''], //, Validators.pattern('[a-zA-Z ]*')],
+    //   applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
+    //   location: [''], //, Validators.pattern('[a-zA-Z ]*')]
+    // });
+
+    if (this.filterForm.value.range.payloadSelect == true) {
+      this.payloadDataSource.data = this.payloadDataSource.data.filter((item) => {
         //add filter logic
-      });
-    } else {
-      filteredPayload = this.payloadDataSource.data;
-    }
-    if (formValues.metadataSelect == true) {
-      filteredMetadata = this.metadataSource.data.filter((item) => {
-        //add filter logic
-      });
-    } else {
-      filteredMetadata = this.metadataSource.data;
-    }
+        console.log("this worked")
+        return (
+          (this.filterForm.value.range.startTime === '' || item.dev_time.includes(this.filterForm.value.range.startTime)) &&
+          (this.filterForm.value.range.endTime === '' || item.dev_time.includes(this.filterForm.value.range.endTime)) &&
+          (this.filterForm.value.range.value === '' || item.payload_dict.includes(this.filterForm.value.range.value)) &&
+          (this.filterForm.value.range.min === '' || item.payload_dict.includes(this.filterForm.value.range.min)) &&
+          (this.filterForm.value.range.max === '' || item.payload_dict.includes(this.filterForm.value.range.max)) &&
+          (this.filterForm.value.range.startValue === '' || item.payload_dict.includes(this.filterForm.value.range.startValue)) &&
+          (this.filterForm.value.range.endValue === '' || item.payload_dict.includes(this.filterForm.value.range.endValue)) &&
 
-    this.payloadDataSource.data = filteredPayload;
-    this.metadataSource.data = filteredMetadata;
+          (this.filterForm.value.value === '' || item.payload_dict.includes(this.filterForm.value.value)) &&
+          (this.filterForm.value.dataType === '' || item.payload_dict.includes(this.filterForm.value.dataType)) &&
+          (this.filterForm.value.deviceId === '' || item.payload_dict.includes(this.filterForm.value.deviceId)) &&
+          (this.filterForm.value.applicationID === '' || item.payload_dict.includes(this.filterForm.value.applicationID)) &&
+          (this.filterForm.value.location === '' || item.payload_dict.includes(this.filterForm.value.location)) 
+        )
+      });
+    } 
+    if (this.filterForm.value.range.metadataSelect== true) {
+      this.metadataSource.data = this.metadataSource.data.filter((item) => {
+        //add filter logic
+        console.log("this worked")
+        return (
+          (this.filterForm.value.range.startTime === '' || item.dev_time.includes(this.filterForm.value.range.startTime)) &&
+          (this.filterForm.value.range.endTime === '' || item.dev_time.includes(this.filterForm.value.range.endTime)) &&
+          (this.filterForm.value.range.value === '' || item.metadata_dict.includes(this.filterForm.value.range.value)) &&
+          (this.filterForm.value.range.min === '' || item.metadata_dict.includes(this.filterForm.value.range.min)) &&
+          (this.filterForm.value.range.max === '' || item.metadata_dict.includes(this.filterForm.value.range.max)) &&
+          (this.filterForm.value.range.startValue === '' || item.metadata_dict.includes(this.filterForm.value.range.startValue)) &&
+          (this.filterForm.value.range.endValue === '' || item.metadata_dict.includes(this.filterForm.value.range.endValue)) &&
+
+          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) &&
+
+          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) &&
+          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) 
+        )
+      });
+    }
   }
 
   //data export functions
@@ -551,261 +635,7 @@ export class FilterPageComponent implements AfterViewInit {
   //Chart functions
   //----------------------------------------------------------------------------
 
-  // createInitLineChart method was upon the intial loading of the dashboard, the chart would be initialized and would have the values retrieved from the first device within the devicelist
-  // which was recieved using the input decorator. The chart consists from the Chart class from the Chart.JS library which was imported using "npm install chart.js", at the time of installation fro prototype, the newest
-  // version of ChartJS was 4.4.0, if no longer the newest version, use command "npm install chart.js@4.4.0". This function will create an line chart with the packet loss data present in the first device in our list.
-  // structure for initization was found in the Chart.JS documentation https://www.chartjs.org/docs/4.4.0/charts/line.html , and for chart white background, used in the plugin section, and examples were used from Chart.JS documentation
-  // which can be found here: https://www.chartjs.org/docs/4.4.0/configuration/canvas-background.html in the options attribute of the chart object the maintainAspectRatio property is set to fasle to allow for the chart to change as the window size changes.
-
-  createInitLineChart(device: SensorData) {
-    this.chartData = device.payload_dict;
-    console.log('inside create pkt ');
-
-    this.chart = new Chart('payloadChart', {
-      type: 'line',
-      data: {
-        labels: device.dev_time,
-        datasets: [
-          {
-            label: 'Packet Loss',
-            data: [],
-          },
-        ],
-        //removing this line will result in the chart reamining at the lowest window size that was opened
-      },
-      options: {
-        maintainAspectRatio: false,
-      },
-      plugins: [
-        {
-          id: 'customCanvasBackgroundColor',
-          beforeDraw: (chart, args, options) => {
-            const { ctx } = chart;
-            ctx.save();
-            ctx.globalCompositeOperation = 'destination-over';
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, chart.width, chart.height);
-            ctx.restore();
-          },
-        },
-      ],
-    });
-  }
-
-  // The updateChartData method will take in parameters the row of the table which was selected by the user, as well as the present type of chart the user has selected to visualize
-  // The method will be change data being presented to the user. this is done by checking the typeOfChart variable and chart data is altered to user selection, then the update method is called
-  // which is from the Chart.JS library. This method chart.update is in the Chart.JS documentation https://www.chartjs.org/docs/latest/developers/updates.html
-  updateChartData(row: SensorData, typeOfChart: string) {
-    if (row !== undefined) {
-      // if (typeOfChart === 'packetLoss') {
-      //   this.chart.data.datasets[0].data = row.packetLoss;
-      // } else if (typeOfChart === 'batteryStat') {
-      //   this.chart.data.datasets[0].data = row.batteryStat;
-      // } else if (typeOfChart === 'rssi') {
-      //   this.chart.data.datasets[0].data = row.RSSI;
-      // } else if (typeOfChart === 'snr') {
-      //   this.chart.data.datasets[0].data = row.SNR;
-      // }
-      this.chart.update();
-    }
-  }
-
-  //creataBarChart method will create a bar chart using the data provided from the device sent in as a parameter, the initalization structure was found in the ChartJS documentation
-  // https://www.chartjs.org/docs/4.4.0/charts/bar.html Since a chart exist upon initialization, the current chart object will be deleted and any references to it will be destroyed befor ecreate the bar chart using the
-  // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. again the color of the background is set to white implemented in the plugin portion of the
-  // initialization.
-  createBarChart(device: SensorData) {
-    //   console.log('inside of createBarChart');
-    //   console.log(device);
-    //   // this.chartData = device.batteryStat;
-    //   console.log(this.chartData);
-    //   this.chart.destroy();
-    //   this.chart = new Chart('payloadChart', {
-    //     type: 'bar',
-    //     data: {
-    //       // labels: device.time,
-    //       datasets: [
-    //         {
-    //           label: 'Battery',
-    //           // data: device.batteryStat,
-    //         },
-    //       ],
-    //     },
-    //     options: {
-    //       maintainAspectRatio: false,
-    //     },
-    //     plugins: [
-    //       {
-    //         id: 'customCanvasBackgroundColor',
-    //         beforeDraw: (chart, args, options) => {
-    //           const { ctx } = chart;
-    //           ctx.save();
-    //           ctx.globalCompositeOperation = 'destination-over';
-    //           ctx.fillStyle = '#ffffff';
-    //           ctx.fillRect(0, 0, chart.width, chart.height);
-    //           ctx.restore();
-    //         },
-    //       },
-    //     ],
-    //   });
-  }
-
-  // createScatterChart method will destroy the current chart object and any references to it will be destroyed before create the scatter chart, structure in ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/scatter.html using the
-  // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. The method will create a object that will be a scatter plot chart with units of dBm, using the currently
-  // selected devices RSSI readings provided from the device element object. The maintainAspectRatio attribute is set to false again to allow the chart size to vary when window size changes. The plugins attribute is used in the
-  // initizaltion structure to provide a white background to the new chart created and the data is using the RSSI values from the device of type SensorData sent in as a parameter.
-  createScatterChart(device: SensorData) {
-    console.log('inside of createBarChart');
-    console.log(device);
-    // this.chartData = device.batteryStat;
-    console.log(this.chartData);
-
-    this.chart.destroy();
-
-    this.chart = new Chart('payloadChart', {
-      type: 'scatter',
-      data: {
-        // labels: device.time,
-        datasets: [
-          // {
-          //   label: 'dBm',
-          //   data: device.RSSI,
-          // },
-        ],
-      },
-      options: {
-        maintainAspectRatio: false,
-      },
-      plugins: [
-        {
-          id: 'customCanvasBackgroundColor',
-          beforeDraw: (chart, args, options) => {
-            const { ctx } = chart;
-            ctx.save();
-            ctx.globalCompositeOperation = 'destination-over';
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, chart.width, chart.height);
-            ctx.restore();
-          },
-        },
-      ],
-    });
-  }
-
-  // createLineChart method will destroy the current chart object and any references to it will be destroyed before create the new line chart, structure in ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/scatter.html using the
-  // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. The structure for creating the new line chart is from the ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/line.html, here
-  // the function creates a new line chart using the the device  time recording and packet loss information sent as a parameter to method once its called. The plugins are used to provide the newly created chart with a white background, the use of maintainAspectRatio is
-  // used to allow the size of the chart to vary with the window size.
-  createLineChart(devicePayload: SensorData) {
-    // device: any[];
-    // device:  = JSON.parse(devicePayload.payload_dict);
-    // console.log('inside of createBarChart');
-    // console.log(device.);
-    // this.chartData = device.metadata_dict.;
-    // console.log(this.chartData);
-    // this.chart.destroy();
-    // this.chart = new Chart('payloadChart', {
-    //   type: 'line',
-    //   data: {
-    //     labels: device.time,
-    //     datasets: [
-    //       {
-    //         label: 'Packet Loss',
-    //         data: device.packetLoss,
-    //       },
-    //     ],
-    //   },
-    //   options: {
-    //     maintainAspectRatio: false,
-    //   },
-    //   plugins: [
-    //     {
-    //       id: 'customCanvasBackgroundColor',
-    //       beforeDraw: (chart, args, options) => {
-    //         const { ctx } = chart;
-    //         ctx.save();
-    //         ctx.globalCompositeOperation = 'destination-over';
-    //         ctx.fillStyle = '#ffffff';
-    //         ctx.fillRect(0, 0, chart.width, chart.height);
-    //         ctx.restore();
-    //       },
-    //     },
-    //   ],
-    // });
-  }
-
-  // createSNRChart method will destroy the current chart object and any references to it will be destroyed before create the new line chart with SNR values from the device sent in as a parameter, structure in ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/scatter.html using the
-  // destroy method found in the documentation https://www.chartjs.org/docs/4.4.0/developers/api.html. The structure for creating the new line chart is from the ChartJS documentation https://www.chartjs.org/docs/4.4.0/charts/bar.html, here the chart will create scatter chart with SNR data retrieved
-  // from the device sent in as a parameter to the method, with the labels of each data value being the distance recorded. The plugins within the chart initialization allows for the chart to have a white background, the maintainAspectRatio variabel being set to false so that the cahrt size can change with
-  // the window size.
-  createSNRChart(device: SensorData) {
-    // console.log('inside of createBarChart');
-    // console.log(device);
-    // this.chartData = device.batteryStat;
-    // console.log(this.chartData);
-    // this.chart.destroy();
-    // this.chart = new Chart('payloadChart', {
-    //   type: 'line',
-    //   data: {
-    //     labels: device.distance,
-    //     datasets: [
-    //       {
-    //         label: 'dBm',
-    //         data: device.SNR, // add here
-    //       },
-    //     ],
-    //   },
-    //   options: {
-    //     maintainAspectRatio: false,
-    //   },
-    //   plugins: [
-    //     {
-    //       id: 'customCanvasBackgroundColor',
-    //       beforeDraw: (chart, args, options) => {
-    //         const { ctx } = chart;
-    //         ctx.save();
-    //         ctx.globalCompositeOperation = 'destination-over';
-    //         ctx.fillStyle = '#ffffff';
-    //         ctx.fillRect(0, 0, chart.width, chart.height);
-    //         ctx.restore();
-    //       },
-    //     },
-    //   ],
-    // });
-  } //When a row in a table is clicked, updateChartData method will be called, updating the data on chart visualization, as well as indicating the type of chart with the current value in the typeOfChart variable which should be used for presenting the data.
-  viewDeviceHealth(row: SensorData) {
-    // console.log('inside of viewDeviceHealth');
-    // console.log(row);
-    // this.records = row;
-    // this.updateChartData(row, this.typeOfChart);
-  }
-
-  // When viewDevicePktloss is called, the typeofChart will indicate the visualization should be displaying device packet loss data, keeping log of what visualization type altered to, and creatLineChart is called with the selected device from the user.
-  viewDevicePktloss() {
-    // this.typeOfChart = 'packetLoss';
-    // //this.chart.updateChartData(this.records, this.typeOfChart);
-    // this.createLineChart(this.records);
-  }
-
-  // When viewGatewayRSSI is called, the typeofChart will indicate the visualization should be displaying gateway RSSI values, keeping log of what visualization type altered to, and creatScatterChart is called with the selected device from the user.
-  viewGatewayRSSI() {
-    // this.typeOfChart = 'rssi';
-    // //this.chart.updateChartData(this.records, this.typeOfChart);
-    // this.createScatterChart(this.records);
-  }
-
-  // When viewGatewaySNR is called, the typeofChart will indicate the visualization should be displaying gateway SNR values, keeping log of what visualization type altered to, and createSNRChart is called with the selected device from the user.
-  viewGatewaySNR() {
-    // this.typeOfChart = 'snr';
-    // this.createSNRChart(this.records);
-  }
-
-  // When viewDeviceBattery is called, the typeofChart will indicate the visualization should be displaying device battery values, keeping log of what visualization type altered to, and createBarChart is called with the selected device from the user.
-  viewDeviceBattery() {
-    // this.createBarChart(this.records);
-    // this.typeOfChart = 'batteryStat';
-  }
-
+  
   // added for visual acions, once a button is clicked, this function is called to added a loading spinner for effect of loading on the page for 250 milliseconds.
   loadSpinner() {
     this.showSpinner = true;
@@ -825,11 +655,13 @@ export class FilterPageComponent implements AfterViewInit {
   }
 
   createPayloadChart(devId: string) {
+    console.log('devId 1: ', devId);
     this.apiService.getPayload(devId).subscribe({
       next: (data: PayloadRecord[][]) => {
         this.payloadTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
         );
+        // console.log('Time Record: ', this.payloadTimeRecord)
         this.payloadRecord = data.map(
           (item: PayloadRecord[]) => item[1] as PayloadRecord
         );
@@ -847,10 +679,15 @@ export class FilterPageComponent implements AfterViewInit {
         this.metadataTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
         );
+        // console.log('this.metadataTimeRecord : ', typeof(this.metadataTimeRecord[0]), this.metadataTimeRecord[0]);
+
+        // console.log('this.metadataTimeRecord : ', typeof(this.metadataTimeRecord[0]).replace(' GMT', ''));
+        // console.log('Time Record: ', this.metadataTimeRecord)
         this.metadataRecord = data.map(
           (item: PayloadRecord[]) => item[1] as PayloadRecord
         );
         this.initializeMetadataChart();
+
       },
       error: (error) => {
         console.error('Error fetching metadata:', error);
@@ -903,6 +740,9 @@ export class FilterPageComponent implements AfterViewInit {
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
+      // if(typeof this.metadataTimeRecord === 'string') {
+      //   this.metadataTimeRecord['dev_time'] = dev_time.replace(' GMT', '')
+      // }      
       const labels = this.metadataTimeRecord;
       const datasets = this.metadataColumns.map((col) => {
         return {

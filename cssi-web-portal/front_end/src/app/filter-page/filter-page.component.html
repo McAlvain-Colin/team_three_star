@@ -39,11 +39,11 @@
               <section class="example-section">
                 <mat-form-field class="example-margin example-width">
                   <mat-label>Start Time</mat-label>
-                  <input matInput type="number" formControlName="startTime" />
+                  <input matInput type="string" formControlName="startTime" />
                 </mat-form-field>
                 <mat-form-field class="example-margin example-width">
                   <mat-label>End Time</mat-label>
-                  <input matInput type="number" formControlName="endTime" />
+                  <input matInput type="string" formControlName="endTime" />
                 </mat-form-field>
               </section>
             </mat-card-content>
@@ -135,7 +135,7 @@
           <mat-card class="type-filter">
             <mat-form-field>
               <mat-label>Data Type</mat-label>
-              <input matInput formControlName="dataType" required />
+              <input matInput formControlName="dataType" />
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Data Type</mat-hint>
             </mat-form-field>
@@ -145,7 +145,7 @@
           <mat-card class="id-filter">
             <mat-form-field>
               <mat-label>Device ID</mat-label>
-              <input matInput formControlName="deviceId" required />
+              <input matInput formControlName="deviceId" />
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Device ID</mat-hint>
             </mat-form-field>

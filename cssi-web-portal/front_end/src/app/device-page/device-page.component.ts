@@ -245,7 +245,7 @@ export class DevicePageComponent implements AfterViewInit {
         next: (data: SensorData[]) => {
           const records = data.map((item: SensorData) => ({
             dev_eui: item.dev_eui,
-            dev_time: item.dev_time,
+            dev_time: item.dev_time.replace(' GMT', ''),
             payload_dict: JSON.parse(item.payload_dict),
             metadata_dict: JSON.parse(item.metadata_dict),
           }));
