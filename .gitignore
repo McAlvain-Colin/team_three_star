@@ -7,3 +7,5 @@ package.json/
 cssi-web-portal/front_end/angular.json
 cssi-web-portal/front_end/package-lock.json
 cssi-web-portal/front_end/package.json
+*.pyc
+cssi-web-portal/back_end/app/example.log
