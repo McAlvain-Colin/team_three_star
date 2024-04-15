@@ -93,6 +93,9 @@ interface PayloadRecord {
   ],
 })
 export class DevicePageComponent implements AfterViewInit {
+  form = new FormGroup({
+    notes: new FormControl('')
+  });
   // private breakpointObserver = inject(BreakpointObserver);
 
   // I need to reimpliment this but the code seems to reject it will the onInit
@@ -155,6 +158,7 @@ export class DevicePageComponent implements AfterViewInit {
   devName: string | null = '';
   base_url: string = 'http://localhost:5000';
   deviceEUI: string = '';
+  deviceAnnotation: string = 'No Annotations';
 
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
   //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
@@ -182,41 +186,13 @@ export class DevicePageComponent implements AfterViewInit {
 
           console.log('resp is in app page', resp.body.dev_eui);
           this.deviceEUI = resp.body.dev_eui;
+          console.log('DEV_EUI', this.deviceEUI);
+          this.getDataSetup();
         },
         error: (error) => {
           console.error(error);
         },
       });
-
-    this.apiService.getData().subscribe({
-      next: (data: SensorData[]) => {
-        const records = data.map((item: SensorData) => ({
-          dev_eui: item.dev_eui,
-          dev_time: item.dev_time,
-          payload_dict: JSON.parse(item.payload_dict),
-          metadata_dict: JSON.parse(item.metadata_dict),
-        }));
-        this.payloadDataSource.data = records;
-        this.metadataSource.data = records;
-
-        if (records.length > 0) {
-          this.payloadColumns = Object.keys(records[0].payload_dict);
-          this.metadataColumns = Object.keys(records[0].metadata_dict);
-          this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
-            this.payloadColumns
-          );
-          this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
-            this.metadataColumns
-          );
-        }
-      },
-      error: (error) => {
-        console.error('Error: ', error);
-      },
-    });
-
-    this.createPayloadChart('0025CA0A00015E62');
-    this.createMetadataChart();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -235,6 +211,45 @@ export class DevicePageComponent implements AfterViewInit {
 
   addDevice(): void {}
   removeDevice(): void {}
+
+  private getDataSetup(): void {
+    if(this.deviceEUI) {
+      this.apiService.getData(this.deviceEUI).subscribe({
+        next: (data: SensorData[]) => {
+          const records = data.map((item: SensorData) => ({
+            dev_eui: item.dev_eui,
+            dev_time: item.dev_time.replace(' GMT', ''),
+            payload_dict: JSON.parse(item.payload_dict),
+            metadata_dict: JSON.parse(item.metadata_dict),
+          }));
+          this.payloadDataSource.data = records;
+          this.metadataSource.data = records;
+
+          if (records.length > 0) {
+            this.payloadColumns = Object.keys(records[0].payload_dict);
+            this.metadataColumns = Object.keys(records[0].metadata_dict);
+            this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
+              this.payloadColumns
+            );
+            this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
+          }
+        },
+        error: (error) => {
+          console.error('Error: ', error);
+        },
+      });
+      this.apiService.getdevAnnotation(this.deviceEUI).subscribe({
+        next: (data: string) => {
+          console.log("annotation: ", data)
+          this.deviceAnnotation = data},
+        error: (error) => {console.error('Error: ', error);},
+      });
+      console.log('Annotation', this.deviceAnnotation);
+  
+      this.createPayloadChart(this.deviceEUI);
+      this.createMetadataChart(this.deviceEUI);
+    }
+  }
 
   //filter function in order to allow users display only realivant data.
   //filters requested by pi
@@ -324,8 +339,8 @@ export class DevicePageComponent implements AfterViewInit {
     });
   }
 
-  createMetadataChart() {
-    this.apiService.getMetadata().subscribe({
+  createMetadataChart(devId: string) {
+    this.apiService.getMetadata(this.deviceEUI).subscribe({
       next: (data: PayloadRecord[][]) => {
         this.metadataTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
@@ -378,19 +393,18 @@ export class DevicePageComponent implements AfterViewInit {
     }
   }
   initializeMetadataChart() {
-    const meta_ctx = document.getElementById(
-      'metadataChart'
-    ) as HTMLCanvasElement;
+    const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
     if (
       meta_ctx &&
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
       const labels = this.metadataTimeRecord;
-      const datasets = this.metadataColumns.map((col) => {
+      const dataKeys = ['snr','rssi','channel_rssi'];
+      const datasets = dataKeys.map((key) => {
         return {
-          label: col,
-          data: this.metadataRecord.map((record) => +record[col]),
+          label: key,
+          data: this.metadataRecord.map((record) => +record[key]),
           fill: false,
           borderColor: this.getRandomColor(),
           tension: 0.1,
@@ -430,7 +444,7 @@ export class DevicePageComponent implements AfterViewInit {
   createChart(devId: string) {
     this.loadSpinner();
     this.createPayloadChart(devId);
-    this.createMetadataChart();
+    this.createMetadataChart(devId);
   }
   getDownload() {
     let link = document.createElement('a');
@@ -443,5 +457,21 @@ export class DevicePageComponent implements AfterViewInit {
     setTimeout(() => {
       this.showSpinner = false;
     }, 250);
+  }
+  onSubmit(){
+    console.log('Form Submitted: ', this.form.value)
+    const notesValue = this.form.value['notes'];
+    if(notesValue !== null && notesValue !== undefined){
+      this.apiService.setdevAnnotation(this.deviceEUI, notesValue).subscribe({
+        next: (data: string) => {
+          console.log("annotation: ", data);
+          this.deviceAnnotation = data;
+      },
+      error: (error) => {console.error('Error: ', error);},
+      });
+    }
+    else {
+      console.error('No notes to submit');
+    }
   }
 }

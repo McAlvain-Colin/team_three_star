@@ -53,6 +53,8 @@ def read_records(table, conditions=None, dev_eui=None):
     conn = None
     cursor = None
     print(table)
+    print(conditions)
+    print(dev_eui)
     try:
         conn = get_db_connection()
         if conn is None:
@@ -84,6 +86,10 @@ def read_records(table, conditions=None, dev_eui=None):
             sql = f"SELECT * FROM {table}"
             print(sql)
             cursor.execute(sql)
+        elif conditions == 'annotation':
+            sql = f"SELECT annotation FROM {table} WHERE dev_eui = '{dev_eui}'"
+            print(sql)
+            cursor.execute(sql)
         elif conditions:
             sql += " WHERE " + conditions + ' ORDER BY time DESC LIMIT 100' 
             print(sql)
@@ -103,21 +109,42 @@ def read_records(table, conditions=None, dev_eui=None):
             cursor.close()
         close_db_connection(conn)
 
-def update_record(table, data, conditions):
+def update_record(table, conditions, dev_eui, data):
     conn = None
     cursor = None
+    print(table)
+    print(conditions)
+    print(dev_eui)
+    print(data)
+
     try:
         conn = get_db_connection()
         if conn is None:
             return  # Early return if the connection was not obtained
         cursor = conn.cursor()
-        set_clause = ', '.join([f"{k} = %s" for k in data.keys()])
-        condition_clause = ' AND '.join([f"{k} = %s" for k in conditions.keys()])
-        sql = f"UPDATE {table} SET {set_clause} WHERE {condition_clause}"
-        cursor.execute(sql, list(data.values()) + list(conditions.values()))
-        conn.commit()
+        # print(sql)
+        if conditions == 'annotation': 
+            sql = f"UPDATE {table} SET annotation = '{data}' WHERE dev_eui = '{dev_eui}'"
+            print(sql)
+            cursor.execute(sql)
+            conn.commit()
+        else:
+            conn = get_db_connection()
+            if conn is None:
+                return  # Early return if the connection was not obtained
+            cursor = conn.cursor()
+            set_clause = ', '.join([f"{k} = %s" for k in data.keys()])
+            condition_clause = ' AND '.join([f"{k} = %s" for k in conditions.keys()])
+            sql = f"UPDATE {table} SET {set_clause} WHERE {condition_clause}"
+            cursor.execute(sql, list(data.values()) + list(conditions.values()))
+            conn.commit()
+        print('success')
+        # records = cursor.fetchall()
+        # print(f'records: {records}')
+        # return records    
     except Exception as e:
         log.error(f'Failed to update record: {e}')
+        print('fail')
         if conn:
             conn.rollback()
     finally:

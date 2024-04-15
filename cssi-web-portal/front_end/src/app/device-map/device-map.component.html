@@ -14,6 +14,13 @@
   <mat-card-content>
     <div class="grid-container">
       <div class="grid-child">
+        <!--The interactive map will be used to center on what is the selected device/gateway, there will be pop ups that occur if a device or gateway icon is selected on the interactive map -->
+
+        <div
+        class="grid-child"
+        id="map"
+        style="height: 600px; border-radius: 5%"
+        ></div>
         <!-- The table used stucture and styling provided from the Material library in Angular, includes list of devices and their information retrieved from the dashboard component, -->
         <!-- consisting of the device and gateway locations for the corresponding row presented in the table. Along with the td and tr for table data and row, the ng container element -->
         <!-- allows for the team to be able to place content within the element to not use excessive div elements and also be able to use mtuiple structural directives if needed -->
@@ -44,6 +51,11 @@
             <td mat-cell *matCellDef="let element">{{ element.type }}</td>
           </ng-container>
 
+          <ng-container matColumnDef="application">
+            <th mat-header-cell *matHeaderCellDef>application</th>
+            <td mat-cell *matCellDef="let element">{{ element.application }}</td>
+          </ng-container>
+
           <tr
             mat-header-row
             *matHeaderRowDef="[
@@ -51,7 +63,8 @@
               'latitude',
               'longitude',
               'altitude',
-              'type'
+              'type',
+              'application'
             ]"
           ></tr>
 
@@ -68,26 +81,20 @@
                 'latitude',
                 'longitude',
                 'altitude',
-                'type'
+                'type',
+                'application'
               ]
             "
             (click)="flyTo(row)"
           ></tr>
         </table>
       </div>
-      <!--The interactive map will be used to center on what is the selected device/gateway, there will be pop ups that occur if a device or gateway icon is selected on the interactive map -->
-
-      <div
-        class="grid-child"
-        id="map"
-        style="height: 600px; border-radius: 5%"
-      ></div>
     </div>
   </mat-card-content>
 
   <!-- Buttons here indicate how the which devices should be displayed on the screen, only end devices, with the Devices button, the Gateway button to display all of the gateway ranges, or both with the last option, each of which use event based binding to call  -->
   <!--their respective function for display.  -->
-  <mat-card-actions>
+  <!-- <mat-card-actions>
     <div class="button-container">
       <button mat-raised-button color="accent" (click)="addMarkers()">
         Devices
@@ -103,7 +110,7 @@
         Device and Gateways
       </button>
     </div>
-  </mat-card-actions>
+  </mat-card-actions> -->
 </mat-card>
 
 <!-- <mat-card>

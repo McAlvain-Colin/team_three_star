@@ -108,7 +108,7 @@ export class OrganizationPageComponent implements OnInit {
     const param = new HttpParams().set('org', decodeURI(String(this.orgId)));
 
     this.http
-      .get(this.base_url + '/userOrgAppList', {
+      .get<{list: Organization}>(this.base_url + '/userOrgAppList', {
         observe: 'response',
         responseType: 'json',
         params: param,
@@ -189,6 +189,7 @@ export class OrganizationPageComponent implements OnInit {
               name: resp.body.list[i].name,
             });
 
+
             // add members to the member list
           }
         },
@@ -238,7 +239,7 @@ export class OrganizationPageComponent implements OnInit {
   }
 
   getRouteName(app: App) {
-    let routeName: string = '/application/' + app.id;
+    let routeName: string = '/application/' + app.id + '/' + this.orgId;
     return routeName;
   }
 
