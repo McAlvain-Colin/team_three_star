@@ -219,7 +219,31 @@
                     </td>
                   </ng-container>
 
-                  <!-- Metadata Columns / Dynamic -->
+                  <!-- SNR Column -->
+                  <ng-container matColumnDef="snr" class="snr">
+                    <th mat-header-cell *matHeaderCellDef>snr</th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.metadata_dict.snr }}
+                    </td>
+                  </ng-container>
+
+                  <!-- RSSI Column -->
+                  <ng-container matColumnDef="rssi" class="rssi">
+                    <th mat-header-cell *matHeaderCellDef>rssi</th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.metadata_dict.rssi  }}
+                    </td>
+                  </ng-container>
+
+                  <!-- Channel RSSI Column -->
+                  <ng-container matColumnDef="channel_rssi" class="channel_rssi">
+                    <th mat-header-cell *matHeaderCellDef>channel_rssi</th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.metadata_dict.channel_rssi  }}
+                    </td>
+                  </ng-container>
+
+                  <!-- Metadata Columns / Dynamic
                   <ng-container
                     *ngFor="let column of metadataColumns"
                     [matColumnDef]="column"
@@ -229,19 +253,19 @@
                     <td mat-cell *matCellDef="let element">
                       {{ element.metadata_dict[column] }}
                     </td>
-                  </ng-container>
+                  </ng-container> -->
 
                   <tr
                     mat-header-row
                     *matHeaderRowDef="
-                      ['Dev_eui', 'Dev_time'].concat(metadataColumns)
+                      ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi']
                     "
                   ></tr>
                   <tr
                     mat-row
                     *matRowDef="
                       let row;
-                      columns: ['Dev_eui', 'Dev_time'].concat(metadataColumns)
+                      columns:['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi']
                     "
                   ></tr>
 
@@ -286,6 +310,15 @@
                     </mat-card>
                   </mat-expansion-panel>
                 </mat-accordion>
+              </mat-card>
+              <mat-card>{{deviceAnnotation}}</mat-card>
+              <mat-card class="Annotations">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                  <label for="notes">Notes:</label>
+                  <textarea id="notes" formControlName="notes" rows="4"></textarea>
+                  <button type="submit">Submit  </button>
+                  <p>Notes: {{form.value.notes}}</p>
+                </form>
               </mat-card>
             </mat-expansion-panel>
           </mat-accordion>

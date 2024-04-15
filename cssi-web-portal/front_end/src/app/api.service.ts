@@ -21,8 +21,8 @@ export class ApiService {
   getDevID(): Observable<any> {
     return this.http.get(`${this.BASE_URL}/dev_id`);
   }
-  getMetadata(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/metadata`);
+  getMetadata(devId: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/metadata/${devId}`);
   }
   getPayload(devId: string): Observable<any> {
     return this.http.get(`${this.BASE_URL}/payload/${devId}`);
@@ -36,5 +36,11 @@ export class ApiService {
   }
   getMetadataStatisticsData(devId: string) :Observable<any>{
     return this.http.get(`${this.BASE_URL}/metadataStats/${devId}`);
+  }
+  getdevAnnotation(devId: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getdevAnnotation/${devId}`);
+  }
+  setdevAnnotation(devId: string, data: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/setdevAnnotation/${devId}/${data}`);
   }
 }
