@@ -185,7 +185,7 @@ export class OrganizationPageComponent implements OnInit {
 
           for (var i = 0; i < resp.body.list.length; i++) {
             this.memberList.push({
-              id: resp.body.list[i].id,
+              id: resp.body.list[i].a_id,
               name: resp.body.list[i].name,
             });
 

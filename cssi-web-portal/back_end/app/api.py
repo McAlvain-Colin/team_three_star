@@ -328,6 +328,25 @@ def createOrganization():
 	orgName = data['orgName']
 	descript = data['orgDescript']
 
+	#Check for Org name in org id Table, and then get id, and then set the id's where user id and org id match active to true
+	ORGS = db.metadata.tables[Organization.__tablename__]
+	ORGACCOUNTS = db.metadata.tables[OrgAccount.__tablename__]
+
+	checkOrg = select(ORGS).where(
+		ORGS.c.name == orgName,
+		ORGS.c.active == False
+	)
+	theOrg = db.session.execute(checkOrg).first()
+
+	if theOrg:
+		updateOrg = update(ORGS).values(active = True).where(ORGS.c.id == theOrg.id)
+		updateOrgAccount = update(ORGACCOUNTS).values(active = True).where(ORGACCOUNTS.c.o_id == theOrg.id).where(ORGACCOUNTS.c.a_id == userId)
+		db.session.execute(updateOrg)
+		db.session.commit()
+		db.session.execute(updateOrgAccount)
+		db.session.commit()
+		return jsonify(orgCreated = True)
+
 	#database code
 	try:
 		newOrg = Organization(name= orgName, description= descript, active= True)
@@ -363,19 +382,32 @@ def inviteUser():
 	msg.body = "You've been invited to join an organization! \n Would you like to join " + orgName + "?\n"
 	msg.body = msg.body + 'Join org link: {}'.format(link)
 
+	ORGACCOUNTS = db.metadata.tables[OrgAccount.__tablename__]
+
 	joinUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
 	if joinUser is None:
 		return jsonify(inviteSent = False)
+	else:
+		checkOrgAccount = select(ORGACCOUNTS).where(
+		ORGACCOUNTS.c.o_id == orgId,
+		ORGACCOUNTS.c.a_id == joinUser.id,
+		ORGACCOUNTS.c.active == False
+		)
+		if db.session.query(checkOrgAccount.exists()).scalar():
+			updateOrgApp = update(ORGACCOUNTS).values(active = True).where(ORGACCOUNTS.c.id == joinUser.id).where(ORGACCOUNTS.c.o_id == orgId)
 
-	orgacc = OrgAccount(a_id= joinUser.id, o_id= orgId)
-	orgacc.r_id = 3
-	orgacc.active = False
+			db.session.execute(updateOrgApp)
+			db.session.commit()
+		else:
+			orgacc = OrgAccount(a_id= joinUser.id, o_id= orgId)
+			orgacc.r_id = 3
+			orgacc.active = False
 
-	db.session.add(orgacc)
-	db.session.commit()
-
-	mail.send(msg)
-	return jsonify(inviteSent = True)
+			db.session.add(orgacc)
+			db.session.commit()
+			
+		mail.send(msg)
+		return jsonify(inviteSent = True)
 
 @app.route('/invite_email/<token>')  
 def invite_email(token):
@@ -471,7 +503,7 @@ def getOrgMembers():
 	print(orgId)
 
 	try:
-		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(Account.verified  == True).where(Account.active == True)).scalars()
+		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)).scalars()
 
 		res = {
 			'list': [
@@ -593,6 +625,20 @@ def createOrgApplication():
 	orgId = data['orgId']
 	appName = data['appName']
 	appDescript = data['appDescript']
+
+	APPS = db.metadata.tables[Application.__tablename__]
+	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__]
+
+	checkApp = select(APPS).where(
+		APPS.c.name == appName,
+	)
+	theApp = db.session.execute(checkApp).first()
+
+	if theApp:
+		updateOrgApp = update(ORGAPPS).values(active = True).where(ORGAPPS.c.app_id == theApp.id).where(ORGAPPS.c.o_id == orgId)
+		db.session.execute(updateOrgApp)
+		db.session.commit()
+		return jsonify(orgCreated = True)
 
 	#link the app with the org
 	newApp= Application(name= appName, description= appDescript)
