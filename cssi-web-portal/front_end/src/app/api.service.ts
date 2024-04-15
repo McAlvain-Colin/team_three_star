@@ -37,4 +37,10 @@ export class ApiService {
   getMetadataStatisticsData(devId: string) :Observable<any>{
     return this.http.get(`${this.BASE_URL}/metadataStats/${devId}`);
   }
+  getdevAnnotation(devId: string, data: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getdevAnnotation/${devId}/${data}`);
+  }
+  setdevAnnotation(devId: string, data: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/setdevAnnotation/${devId}/${data}`);
+  }
 }

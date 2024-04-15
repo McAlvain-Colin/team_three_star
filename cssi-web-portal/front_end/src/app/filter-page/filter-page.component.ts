@@ -390,32 +390,30 @@ export class FilterPageComponent {
     //     console.error('Error: ', error);
     //   },
     // });
-    for(var i = 0; i < this.deviceList.length; i++){
-      this.apiService.getData(this.deviceList[i].devEUI).subscribe({
-        next: (data: SensorData[]) => {
-          const records = data.map((item: SensorData) => ({
-            dev_eui: item.dev_eui,
-            dev_time: item.dev_time.replace(' GMT', ''),
-            payload_dict: JSON.parse(item.payload_dict),
-            metadata_dict: JSON.parse(item.metadata_dict),
-          }));
-          this.payloadDataSource.data = records;
-          this.metadataSource.data = records;
+    this.apiService.getData(this.deviceList[1].devEUI).subscribe({
+      next: (data: SensorData[]) => {
+        const records = data.map((item: SensorData) => ({
+          dev_eui: item.dev_eui,
+          dev_time: item.dev_time.replace(' GMT', ''),
+          payload_dict: JSON.parse(item.payload_dict),
+          metadata_dict: JSON.parse(item.metadata_dict),
+        }));
+        this.payloadDataSource.data = records;
+        this.metadataSource.data = records;
 
-          if (records.length > 0) {
-            this.payloadColumns = Object.keys(records[0].payload_dict);
-            this.metadataColumns = Object.keys(records[0].metadata_dict);
-            this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
-              this.payloadColumns
-            );
-            this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
-          }
-        },
-        error: (error) => {
-          console.error('Error: ', error);
-        },
-      })
-    };
+        if (records.length > 0) {
+          this.payloadColumns = Object.keys(records[0].payload_dict);
+          this.metadataColumns = Object.keys(records[0].metadata_dict);
+          this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
+            this.payloadColumns
+          );
+          this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
+        }
+      },
+      error: (error) => {
+        console.error('Error: ', error);
+      },
+    });
     this.apiService.getPayloadStatisticsData(this.deviceList[1].devEUI).subscribe({
       next: (data: any[]) => {
         const payloadStatRecord = Object.keys(data).map((key: any) => {
@@ -843,6 +841,7 @@ export class FilterPageComponent {
   }
 
   checkboxLabel(index?: number, row?: string): string {
+    // console.log('Selection: ', this.selection.selected)
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
