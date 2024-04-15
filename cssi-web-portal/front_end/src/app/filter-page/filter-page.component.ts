@@ -44,6 +44,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { MatNativeDateModule } from '@angular/material/core';
 
+import { inject } from '@angular/core';
+import { DeviceMapComponent } from '../device-map/device-map.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable, map, shareReplay } from 'rxjs';
+
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
   dev_eui: any;
@@ -59,6 +66,23 @@ export interface Device {
   name: string;
   devEUI: string;
 }
+
+export class ApplicationPageComponent {
+  base_url: string = 'http://localhost:5000';
+  deviceList: Device[] = [];
+
+  routerLinkVariable = '/hi';
+  devices: string[] = [];
+  appName: string | null = 'Cat Chairs';
+  appId: string | null = '';
+  orgId: string | null = '';
+  appDescription: string | null =
+    "These devices consists of the best possible devices made for cat patting, for the best of cats out there. Don't let your feline friend down, get them feline great with these devices below.";
+  imgName: string | null = 'placeholder_cat2';
+  removeApps: boolean = false;
+  currentPage: number = 0;
+  deviceSource = new MatTableDataSource(this.deviceList);
+};
 
 @Component({
   selector: 'app-filter-page',
@@ -90,18 +114,19 @@ export interface Device {
     MatDatepickerModule,
     MatCheckboxModule,
     RouterModule,
-    CommonModule,
     MatToolbarModule,
     MatCardModule,
-    MatPaginatorModule,
-    MatButtonModule,
     TempNavBarComponent,
     MatListModule,
     JsonPipe,
-    MatNativeDateModule
+    MatNativeDateModule,
+
+    MatSidenavModule,
+    MatIconModule,
+    DeviceMapComponent,
   ],
 })
-export class FilterPageComponent implements AfterViewInit {
+export class FilterPageComponent {
   // Declared variables. Currently has duplicates until the better method is determined.
   //chart variables
   panelOpenState = false;
@@ -191,102 +216,92 @@ export class FilterPageComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
-    this.devName = this.route.snapshot.paramMap.get('dev');
+    this.orgId = this.route.snapshot.paramMap.get('org');
+    if (this.appId == null) {
+      this.appName = 'Cat Patting';
+    }
 
-    const param = new HttpParams()
-      .set('app', this.appId != null ? this.appId : '-1')
-      .set('devName', this.devName != null ? this.devName : 'none');
+    const param = new HttpParams().set(
+      'app',
+      this.appId != null ? this.appId : '-1'
+    );
 
-    this.apiService.getAltData().subscribe({
-      next: (data: SensorData[]) => {
-        const records = data.map((item: SensorData) => ({
-          dev_eui: item.dev_eui,
-          dev_time: item.dev_time.replace(' GMT', ''),
-          payload_dict: JSON.parse(item.payload_dict),
-          metadata_dict: JSON.parse(item.metadata_dict),
-        }));
-        this.payloadDataSource.data = records;
-        this.metadataSource.data = records;
-     
-        //console.log(this.payloadDataSource.data[1].dev_time);
+    // this request is for getting application name, id, and description
+    this.http
+      .get(this.base_url + '/userOrgApp', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
 
-        if (records.length > 0) {
-          this.payloadColumns = Object.keys(records[0].payload_dict);
-          this.metadataColumns = Object.keys(records[0].metadata_dict);
-          this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
-            this.payloadColumns
-          );
-          this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
-            this.metadataColumns
-          );
-        }
-      },
-      error: (error) => {
-        //console.error('Error: ', error);
-      },
-    });
+          let resp = JSON.parse(res);
 
+          console.log('resp is in app page', resp);
 
-    // this.apiService.getDevID().subscribe({
-    //   next: (data: string[][]) => {
-    //     const idRecord = data.map((item: string[]) => item[0]);
+          this.appName = resp.body.name;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+     // this is for giving one device EUI from the given dev name from the user.
+    // this.http
+    // .get(this.base_url + '/userOrgAppDevice', {
+    //   observe: 'response',
+    //   responseType: 'json',
+    //   params: param,
+    // })
+    // .subscribe({
+    //   next: (response) => {
+    //     const res = JSON.stringify(response);
 
-    //     this.devIDSource.data = idRecord;
+    //     let resp = JSON.parse(res);
+
+    //     console.log('resp is in app page', resp.body.dev_eui);
+    //     this.deviceList[1].devEUI = resp.body.dev_eui;
+    //     console.log('DEV_EUI', this.deviceList[1].devEUI);
+    //     this.getDataSetup();
     //   },
-
     //   error: (error) => {
-    //     //console.error('Error: ', error);
+    //     console.error(error);
     //   },
     // });
+    // this is for getting the organizations's applications associated with it
 
-    this.apiService.getPayloadStatisticsData(this.deviceEUI).subscribe({
-      next: (data: any[]) => {
-        // //console.log(data)
-        const payloadStatRecord = Object.keys(data).map((key: any) => {
-          const stats = data[key];
+    this.http
+      .get(this.base_url + '/userOrgAppDeviceList', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
 
-          return {
-            column: key,
-            mean: stats.mean,
-            variance: stats.variance,
-            standard_deviation: stats.standardDeviation,
-            median: stats.median,
-            mode: stats.mode,
-          };
-        });
-        // //console.log(payloadStatRecord)
+          let resp = JSON.parse(res);
 
-        this.paylaodStatSource.data = payloadStatRecord;
-      },
-
-      error: (error) => {
-        //console.error('Error: ', error);
-      },
-    });
-    this.apiService.getMetadataStatisticsData(this.deviceEUI).subscribe({
-      next: (data: any[]) => {
-        //console.log(data);
-        const metadataStatRecord = Object.keys(data).map((key: any) => {
-          const stats = data[key];
-
-          return {
-            column: key,
-            mean: stats.mean,
-            variance: stats.variance,
-            standard_deviation: stats.standardDeviation,
-            median: stats.median,
-            mode: stats.mode,
-          };
-        });
-        //console.log(metadataStatRecord);
-
-        this.metadataStatSource.data = metadataStatRecord;
-      },
-
-      error: (error) => {
-        //console.error('Error: ', error);
-      },
-    });
+          for (var i = 0; i < resp.body.list.length; i++) {
+            console.log('index: ', resp.body.list[i].name, resp.body.list[i].dev);
+            this.devices.push(resp.body.list[i].name);
+            this.deviceList.push({
+              name: resp.body.list[i].name,
+              devEUI: resp.body.list[i].dev,
+            });
+          } 
+          this.getDataSetup();
+        },
+        error: (error) => {
+          console.error(error);
+        },       
+      });
+    
+      this.deviceSource.data = this.deviceList;
+      this.deviceSource.filter = '';
+      this.deviceSource._updateChangeSubscription();
+      //console.log('Device Source1: ', this.deviceSource.data);
 
     this.filterForm = this.fb.group({
       // startTime: [''], //, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
@@ -309,18 +324,11 @@ export class FilterPageComponent implements AfterViewInit {
       value: 0,
       dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
       deviceId: [''], //, Validators.pattern('[a-zA-Z ]*')],
+      dateInfo: [''],
       applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
       location: [''], //, Validators.pattern('[a-zA-Z ]*')]
 
     });
-    //console.log('deviceEUI: ', this.deviceEUI)
-
-    // this.createPayloadChart(this.deviceEUI);
-    // this.createMetadataChart();
-
-
-    this.fetchDevices();
-    this.getDataSetup();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -353,20 +361,37 @@ export class FilterPageComponent implements AfterViewInit {
     //console.log('Device Source: ', this.deviceSource.data)
   }
   private getDataSetup(): void {
-    console.log("getDataSetup")
+    console.log('Data Setup: ', this.deviceList[1].name, this.deviceList[1].devEUI);
+    // this.apiService.getAltData().subscribe({
+    //   next: (data: SensorData[]) => {
+    //     const records = data.map((item: SensorData) => ({
+    //       dev_eui: item.dev_eui,
+    //       dev_time: item.dev_time.replace(' GMT', ''),
+    //       payload_dict: JSON.parse(item.payload_dict),
+    //       metadata_dict: JSON.parse(item.metadata_dict),
+    //     }));
+    //     this.payloadDataSource.data = records;
+    //     this.metadataSource.data = records;
+      
+    //     //console.log(this.payloadDataSource.data[1].dev_time);
 
-    console.log("is this anything", this.deviceEUI)
-    if(this.deviceEUI) {
-      console.log("please")
-      try{
-        console.log("maybe")
-        this.createPayloadChart(this.deviceEUI);
-        this.createMetadataChart();
-      }
-      catch(error){
-        console.log('didnt work', error);
-      }
-      this.apiService.getData(this.deviceEUI).subscribe({
+    //     if (records.length > 0) {
+    //       this.payloadColumns = Object.keys(records[0].payload_dict);
+    //       this.metadataColumns = Object.keys(records[0].metadata_dict);
+    //       this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
+    //         this.payloadColumns
+    //       );
+    //       this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
+    //         this.metadataColumns
+    //       );
+    //     }
+    //   },
+    //   error: (error) => {
+    //     console.error('Error: ', error);
+    //   },
+    // });
+    for(var i = 0; i < this.deviceList.length; i++){
+      this.apiService.getData(this.deviceList[i].devEUI).subscribe({
         next: (data: SensorData[]) => {
           const records = data.map((item: SensorData) => ({
             dev_eui: item.dev_eui,
@@ -376,25 +401,71 @@ export class FilterPageComponent implements AfterViewInit {
           }));
           this.payloadDataSource.data = records;
           this.metadataSource.data = records;
-  
+
           if (records.length > 0) {
             this.payloadColumns = Object.keys(records[0].payload_dict);
             this.metadataColumns = Object.keys(records[0].metadata_dict);
             this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
               this.payloadColumns
             );
-            this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
-              this.metadataColumns
-            );
+            this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
           }
         },
         error: (error) => {
-          //console.error('Error: ', error);
+          console.error('Error: ', error);
         },
-      });
-      console.log('DEV_EUI_2', this.deviceEUI);
+      })
+    };
+    this.apiService.getPayloadStatisticsData(this.deviceList[1].devEUI).subscribe({
+      next: (data: any[]) => {
+        const payloadStatRecord = Object.keys(data).map((key: any) => {
+          const stats = data[key];
 
-    }
+          return {
+            column: key,
+            mean: stats.mean,
+            variance: stats.variance,
+            standard_deviation: stats.standardDeviation,
+            median: stats.median,
+            mode: stats.mode,
+          };
+        });
+        // console.log(payloadStatRecord)
+
+        this.paylaodStatSource.data = payloadStatRecord;
+      },
+
+      error: (error) => {
+        console.error('Error: ', error);
+      },
+    });
+    this.apiService.getMetadataStatisticsData(this.deviceList[1].devEUI).subscribe({
+      next: (data: any[]) => {
+        //console.log(data);
+        const metadataStatRecord = Object.keys(data).map((key: any) => {
+          const stats = data[key];
+
+          return {
+            column: key,
+            mean: stats.mean,
+            variance: stats.variance,
+            standard_deviation: stats.standardDeviation,
+            median: stats.median,
+            mode: stats.mode,
+          };
+        });
+        //console.log(metadataStatRecord);
+
+        this.metadataStatSource.data = metadataStatRecord;
+      },
+
+      error: (error) => {
+        console.error('Error: ', error);
+      },
+    });
+    // this.fetchDevices();
+    this.createPayloadChart(this.deviceList[1].devEUI);
+    this.createMetadataChart(this.deviceList[1].devEUI);      
   }
 
   fetchDevices(): void {
@@ -428,7 +499,7 @@ export class FilterPageComponent implements AfterViewInit {
           }
         },
         error: (error) => {
-          //console.error(error);
+          console.error(error);
         },
       });
       this.deviceSource.data = this.deviceList;
@@ -494,7 +565,7 @@ export class FilterPageComponent implements AfterViewInit {
     if (this.filterForm.valid) {
       this.filterSensorData();
     } else {
-      //console.error('Error: ', Error);
+      console.error('Error: ', Error);
     }
   }
 
@@ -530,28 +601,13 @@ export class FilterPageComponent implements AfterViewInit {
 
           // (this.filterForm.value.value === '' || item.payload_dict.values.includes(this.filterForm.value.value)) &&
           // (this.filterForm.value.dataType === '' || item.payload_dict.includes(this.filterForm.value.dataType)) &&
-          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) //&&
+          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) &&
+          (this.filterForm.value.dateInfo === '' || item.dev_time.includes(this.filterForm.value.dateInfo)) //&&
           // (this.filterForm.value.applicationID === '' || item.payload_dict.values.includes(this.filterForm.value.applicationID)) &&
           // (this.filterForm.value.location === '' || item.payload_dict.values.includes(this.filterForm.value.location)) 
         )
       });
     } 
-    // if (this.filterForm.value.range.payloadSelect == true) {
-    //   this.payloadDataSource.data = this.payloadDataSource.data.filter((item) => {
-    //     return (
-    //       (this.filterForm.value.range.value === '' || values.includes(this.filterForm.value.range.value)) &&
-    //       (this.filterForm.value.range.min === '' || values.includes(this.filterForm.value.range.min)) &&
-    //       (this.filterForm.value.range.max === '' || values.includes(this.filterForm.value.range.max)) &&
-    //       (this.filterForm.value.range.startValue === '' || values.includes(this.filterForm.value.range.startValue)) &&
-    //       (this.filterForm.value.range.endValue === '' || values.includes(this.filterForm.value.range.endValue)) &&
-
-    //       (this.filterForm.value.value === '' || values.includes(this.filterForm.value.value)) &&
-    //       (this.filterForm.value.dataType === '' || keys.includes(this.filterForm.value.dataType)) &&
-    //       (this.filterForm.value.applicationID === '' || values.includes(this.filterForm.value.applicationID)) &&
-    //       (this.filterForm.value.location === '' || values.includes(this.filterForm.value.location)) 
-    //     )
-    //   });
-    // }
     if (this.filterForm.value.range.metadataSelect== true) {
       this.metadataSource.data = this.metadataSource.data.filter((item) => {
         //add filter logic
@@ -585,7 +641,7 @@ export class FilterPageComponent implements AfterViewInit {
 
     // Validate data format
     if (!data.every((item) => typeof item === 'object' && item !== null)) {
-      //console.error('Invalid data format for CSV export');
+      console.error('Invalid data format for CSV export');
       return;
     }
 
@@ -643,44 +699,36 @@ export class FilterPageComponent implements AfterViewInit {
     link.download = 'chart.png';
     link.click();
   }
-
   createPayloadChart(devId: string) {
-    console.log('devId 1: ', devId);
     this.apiService.getPayload(devId).subscribe({
       next: (data: PayloadRecord[][]) => {
         this.payloadTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
         );
-        // //console.log('Time Record: ', this.payloadTimeRecord)
         this.payloadRecord = data.map(
           (item: PayloadRecord[]) => item[1] as PayloadRecord
         );
         this.initializePayloadChart();
       },
       error: (error) => {
-        //console.error('Error fetching payload data:', error);
+        console.error('Error fetching payload data:', error);
       },
     });
   }
 
-  createMetadataChart() {
-    this.apiService.getMetadata().subscribe({
+  createMetadataChart(devId: string) {
+    this.apiService.getMetadata(this.deviceList[1].devEUI).subscribe({
       next: (data: PayloadRecord[][]) => {
         this.metadataTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
         );
-        // //console.log('this.metadataTimeRecord : ', typeof(this.metadataTimeRecord[0]), this.metadataTimeRecord[0]);
-
-        // //console.log('this.metadataTimeRecord : ', typeof(this.metadataTimeRecord[0]).replace(' GMT', ''));
-        // //console.log('Time Record: ', this.metadataTimeRecord)
         this.metadataRecord = data.map(
           (item: PayloadRecord[]) => item[1] as PayloadRecord
         );
         this.initializeMetadataChart();
-
       },
       error: (error) => {
-        //console.error('Error fetching metadata:', error);
+        console.error('Error fetching metadata:', error);
       },
     });
   }
@@ -722,22 +770,18 @@ export class FilterPageComponent implements AfterViewInit {
     }
   }
   initializeMetadataChart() {
-    const meta_ctx = document.getElementById(
-      'metadataChart'
-    ) as HTMLCanvasElement;
+    const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
     if (
       meta_ctx &&
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
-      // if(typeof this.metadataTimeRecord === 'string') {
-      //   this.metadataTimeRecord['dev_time'] = dev_time.replace(' GMT', '')
-      // }      
       const labels = this.metadataTimeRecord;
-      const datasets = this.metadataColumns.map((col) => {
+      const dataKeys = ['snr','rssi','channel_rssi'];
+      const datasets = dataKeys.map((key) => {
         return {
-          label: col,
-          data: this.metadataRecord.map((record) => +record[col]),
+          label: key,
+          data: this.metadataRecord.map((record) => +record[key]),
           fill: false,
           borderColor: this.getRandomColor(),
           tension: 0.1,
@@ -774,10 +818,11 @@ export class FilterPageComponent implements AfterViewInit {
     return color;
   }
 
+
   createChart(devId: string) {
     this.loadSpinner();
     this.createPayloadChart(devId);
-    this.createMetadataChart();
+    this.createMetadataChart(devId);
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
