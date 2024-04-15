@@ -869,11 +869,14 @@ def get_devAnnotation(dev_id):
 @app.route('/setdevAnnotation/<string:dev_id>/<string:data>', methods=['GET'])
 @jwt_required()
 def set_devAnnotation(dev_id, data):
+	print(f'dev_id: {dev_id}, Data: {data}')
 	try:
-		records = update_record('annotation', 'annotation', dev_id, data) #hard coded for test
+		update_record('annotation', 'annotation', dev_id, data) #hard coded for test
+		records = read_records('annotation', 'annotation', dev_id)
+		print(records)
 		return jsonify(records), 200 #200 shows correct  http responses
 	except Exception as e:
-		print('error')
+		print(f'error: {e}')
 		return jsonify({'Error': str(e)}), 500 #500 shows server error
 
 

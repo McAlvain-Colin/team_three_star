@@ -93,6 +93,9 @@ interface PayloadRecord {
   ],
 })
 export class DevicePageComponent implements AfterViewInit {
+  form = new FormGroup({
+    notes: new FormControl('')
+  });
   // private breakpointObserver = inject(BreakpointObserver);
 
   // I need to reimpliment this but the code seems to reject it will the onInit
@@ -454,5 +457,21 @@ export class DevicePageComponent implements AfterViewInit {
     setTimeout(() => {
       this.showSpinner = false;
     }, 250);
+  }
+  onSubmit(){
+    console.log('Form Submitted: ', this.form.value)
+    const notesValue = this.form.value['notes'];
+    if(notesValue !== null && notesValue !== undefined){
+      this.apiService.setdevAnnotation(this.deviceEUI, notesValue).subscribe({
+        next: (data: string) => {
+          console.log("annotation: ", data);
+          this.deviceAnnotation = data;
+      },
+      error: (error) => {console.error('Error: ', error);},
+      });
+    }
+    else {
+      console.error('No notes to submit');
+    }
   }
 }

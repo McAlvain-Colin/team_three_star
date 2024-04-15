@@ -312,6 +312,14 @@
                 </mat-accordion>
               </mat-card>
               <mat-card>{{deviceAnnotation}}</mat-card>
+              <mat-card class="Annotations">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                  <label for="notes">Notes:</label>
+                  <textarea id="notes" formControlName="notes" rows="4"></textarea>
+                  <button type="submit">Submit  </button>
+                  <p>Notes: {{form.value.notes}}</p>
+                </form>
+              </mat-card>
             </mat-expansion-panel>
           </mat-accordion>
         </mat-card-content>

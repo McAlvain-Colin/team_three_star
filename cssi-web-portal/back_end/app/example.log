@@ -15968,3 +15968,504 @@ INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 21:20:10] "OPTIONS /metadata/0025CA0A00
 INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 21:20:10] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 21:20:10] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
 INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 21:20:34] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:11:20] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:11:20] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:11:50] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:11:50] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:11:54] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:12:21] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:12:21] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:12:30] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:12:30] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:12:34] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:12:44] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:12:44] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:12:55] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:12:55] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:13:49] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:13:49] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:14:10] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:14:10] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:14:15] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:14:25] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:14:25] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:14:32] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:14:32] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:16:55] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:16:55] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:17:07] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:17:07] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:22:43] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:22:43] "[31m[1mGET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:39] "OPTIONS /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:40] "POST /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:40] "OPTIONS /protected HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:40] "GET /protected HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:40] "OPTIONS /userOwnedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:40] "OPTIONS /userJoinedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:40] "GET /userJoinedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:40] "GET /userOwnedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:42] "OPTIONS /userOrgAppList?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:42] "OPTIONS /getOrgInfo?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:42] "OPTIONS /OrgMembers?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:42] "GET /userOrgAppList?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:42] "GET /getOrgInfo?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:42] "GET /OrgMembers?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:45] "OPTIONS /userOrgApp?app=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:45] "OPTIONS /userOrgAppDeviceList?app=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:45] "GET /userOrgApp?app=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:45] "GET /userOrgAppDeviceList?app=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:46] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:46] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:46] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:46] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:47] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:47] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:47] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:47] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:47] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:23:47] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:52] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:52] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:53] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:53] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:53] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:53] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:53] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:53] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:53] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:25:53] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:00] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:00] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:01] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:01] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:01] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:01] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:01] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:01] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:01] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:01] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:10] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:20] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:20] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:21] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:21] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:21] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:21] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:21] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:21] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:21] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:26:21] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:30:24] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:02] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:02] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:03] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:03] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:03] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:03] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:03] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:03] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:03] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:03] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:10] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:10] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:11] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:11] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:11] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:11] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:11] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:11] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:11] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:31:11] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:32:29] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:56] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:57] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:57] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:57] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:57] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:57] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:57] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:57] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:57] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:44:57] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:47:57] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:37] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:45] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:45] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:46] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:46] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:46] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:46] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:46] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:46] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:46] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:49:46] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 22:50:38] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:16] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:36] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:45] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:45] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:45] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:45] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:45] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:46] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:46] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:46] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:46] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:02:46] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:04] "OPTIONS /setdevAnnotation/0025CA0A00015E62/This%20is%20also%20data! HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to update record: local variable 'records' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:04] "GET /setdevAnnotation/0025CA0A00015E62/This%20is%20also%20data! HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:11] "OPTIONS /setdevAnnotation/0025CA0A00015E62/This%20is%20also%20data! HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to update record: local variable 'records' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:11] "GET /setdevAnnotation/0025CA0A00015E62/This%20is%20also%20data! HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:22] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:22] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:22] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:22] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:22] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:22] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:22] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:22] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:23] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:03:23] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:04:11] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:05:06] "OPTIONS /setdevAnnotation/0025CA0A00015E62/this%20is%20also%20data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to update record: local variable 'records' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:05:06] "GET /setdevAnnotation/0025CA0A00015E62/this%20is%20also%20data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:07:49] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:09:54] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to update record: local variable 'records' referenced before assignment
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:09:54] "GET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:22] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:22] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:23] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:23] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:23] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:23] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:23] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:23] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:23] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:23] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:35] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to update record: no results to fetch
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:12:35] "GET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:14:41] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to update record: no results to fetch
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:14:41] "GET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:16:48] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to update record: no results to fetch
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:16:48] "GET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:17:53] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to update record: no results to fetch
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:17:53] "GET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:19:05] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+ERROR:helperFunctions:Failed to update record: no results to fetch
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:19:05] "GET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:20:19] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:20:19] "[35m[1mGET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:27] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:27] "[31m[1mGET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1[0m" 401 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:43] "OPTIONS /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:43] "POST /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:43] "OPTIONS /protected HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:43] "GET /protected HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:43] "OPTIONS /userOwnedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:43] "OPTIONS /userJoinedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:43] "GET /userOwnedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:43] "GET /userJoinedOrgList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:45] "OPTIONS /userOrgAppList?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:45] "OPTIONS /getOrgInfo?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:45] "GET /userOrgAppList?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:45] "OPTIONS /OrgMembers?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:45] "GET /getOrgInfo?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:45] "GET /OrgMembers?org=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:47] "OPTIONS /userOrgApp?app=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:47] "GET /userOrgApp?app=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:47] "OPTIONS /userOrgAppDeviceList?app=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:47] "GET /userOrgAppDeviceList?app=1 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "OPTIONS /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "GET /userOrgAppDevice?app=1&devName=TahoeTempSensor HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "OPTIONS /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "OPTIONS /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "OPTIONS /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "OPTIONS /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "GET /data/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "GET /payload/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "GET /metadata/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:27:49] "GET /getdevAnnotation/0025CA0A00015E62 HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:28:00] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:28:00] "[35m[1mGET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:31:12] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:31:12] "[35m[1mGET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:31:13] "[35m[1mGET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:31:15] "[35m[1mGET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:31:58] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:31:58] "GET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/api.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:32:25] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:32:26] "GET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/home/cssi/team_three_star/cssi-web-portal/back_end/app/helperFunctions.py', reloading
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 126-864-665
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:33:22] "OPTIONS /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:33:22] "GET /setdevAnnotation/0025CA0A00015E62/data%20data%20data HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:33:51] "OPTIONS /setdevAnnotation/0025CA0A00015E62/This%20data%20shows%20how%20the%20temperature%20in%20the%20lab%20is%20consistent HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:33:51] "GET /setdevAnnotation/0025CA0A00015E62/This%20data%20shows%20how%20the%20temperature%20in%20the%20lab%20is%20consistent HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:35:46] "OPTIONS /setdevAnnotation/0025CA0A00015E62/Here%20you%20can%20see%20the%20notes%20Im%20making HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:35:46] "GET /setdevAnnotation/0025CA0A00015E62/Here%20you%20can%20see%20the%20notes%20Im%20making HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:36:15] "OPTIONS /setdevAnnotation/0025CA0A00015E62/The%20notes%20Updated!%20:) HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:36:15] "GET /setdevAnnotation/0025CA0A00015E62/The%20notes%20Updated!%20:) HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:36:16] "GET /setdevAnnotation/0025CA0A00015E62/The%20notes%20Updated!%20:) HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:36:36] "OPTIONS /setdevAnnotation/0025CA0A00015E62/This%20took%20longer%20to%20do%20than%20I%20care%20to%20admit HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [14/Apr/2024 23:36:36] "GET /setdevAnnotation/0025CA0A00015E62/This%20took%20longer%20to%20do%20than%20I%20care%20to%20admit HTTP/1.1" 200 -

@@ -112,6 +112,11 @@ def read_records(table, conditions=None, dev_eui=None):
 def update_record(table, conditions, dev_eui, data):
     conn = None
     cursor = None
+    print(table)
+    print(conditions)
+    print(dev_eui)
+    print(data)
+
     try:
         conn = get_db_connection()
         if conn is None:
@@ -122,6 +127,7 @@ def update_record(table, conditions, dev_eui, data):
             sql = f"UPDATE {table} SET annotation = '{data}' WHERE dev_eui = '{dev_eui}'"
             print(sql)
             cursor.execute(sql)
+            conn.commit()
         else:
             conn = get_db_connection()
             if conn is None:
@@ -132,11 +138,13 @@ def update_record(table, conditions, dev_eui, data):
             sql = f"UPDATE {table} SET {set_clause} WHERE {condition_clause}"
             cursor.execute(sql, list(data.values()) + list(conditions.values()))
             conn.commit()
-            records = cursor.fetchall()
-            # print(records)
-        return records    
+        print('success')
+        # records = cursor.fetchall()
+        # print(f'records: {records}')
+        # return records    
     except Exception as e:
         log.error(f'Failed to update record: {e}')
+        print('fail')
         if conn:
             conn.rollback()
     finally:
