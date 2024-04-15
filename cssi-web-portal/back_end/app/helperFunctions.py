@@ -53,6 +53,8 @@ def read_records(table, conditions=None, dev_eui=None):
     conn = None
     cursor = None
     print(table)
+    print(conditions)
+    print(dev_eui)
     try:
         conn = get_db_connection()
         if conn is None:
@@ -84,7 +86,7 @@ def read_records(table, conditions=None, dev_eui=None):
             sql = f"SELECT * FROM {table}"
             print(sql)
             cursor.execute(sql)
-        elif condition == 'annotation':
+        elif conditions == 'annotation':
             sql = f"SELECT annotation FROM {table} WHERE dev_eui = '{dev_eui}'"
             print(sql)
             cursor.execute(sql)
@@ -117,7 +119,7 @@ def update_record(table, conditions, dev_eui, data):
         cursor = conn.cursor()
         # print(sql)
         if conditions == 'annotation': 
-            sql = f"UPDATE {table} SET annotation = {data} WHERE dev_eui = {dev_eui}""
+            sql = f"UPDATE {table} SET annotation = '{data}' WHERE dev_eui = '{dev_eui}'"
             print(sql)
             cursor.execute(sql)
         else:

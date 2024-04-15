@@ -155,6 +155,7 @@ export class DevicePageComponent implements AfterViewInit {
   devName: string | null = '';
   base_url: string = 'http://localhost:5000';
   deviceEUI: string = '';
+  deviceAnnotation: string = 'No Annotations';
 
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
   //currently hard coded until I learn how to send data back to backend so I can get data other than lab_sensor_json
@@ -229,23 +230,18 @@ export class DevicePageComponent implements AfterViewInit {
             );
             this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
           }
-  
-          // if (records.length > 0) {
-          //   this.payloadColumns = Object.keys(records[0].payload_dict);
-          //   this.metadataColumns = Object.keys(records[0].metadata_dict);
-          //   this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
-          //     this.payloadColumns
-          //   );
-          //   this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
-          //     this.metadataColumns
-          //   );
-          // }
         },
         error: (error) => {
           console.error('Error: ', error);
         },
       });
-      console.log('DEV_EUI_2', this.deviceEUI);
+      this.apiService.getdevAnnotation(this.deviceEUI).subscribe({
+        next: (data: string) => {
+          console.log("annotation: ", data)
+          this.deviceAnnotation = data},
+        error: (error) => {console.error('Error: ', error);},
+      });
+      console.log('Annotation', this.deviceAnnotation);
   
       this.createPayloadChart(this.deviceEUI);
       this.createMetadataChart(this.deviceEUI);

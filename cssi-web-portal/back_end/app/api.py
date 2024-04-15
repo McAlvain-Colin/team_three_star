@@ -855,21 +855,23 @@ def get_metadataStats(dev_id):
 	except Exception as e:
 		print('error')
 		return jsonify({'Error': str(e)}), 500 #500 shows server error
-@app.route('/getdevAnnotation/<string:dev_id>/<string:data>/', methods=['GET'])
-@jwt_required()
+@app.route('/getdevAnnotation/<string:dev_id>', methods=['GET'])
+# @jwt_required()
 def get_devAnnotation(dev_id):
+	print(f'get annotation dev_id {dev_id}')
 	try:
 		records = read_records('annotation', 'annotation', dev_id) #hard coded for test
-		return jsonify(data), 200 #200 shows correct  http responses
+		print(records)
+		return jsonify(records), 200 #200 shows correct  http responses
 	except Exception as e:
 		print('error')
 		return jsonify({'Error': str(e)}), 500 #500 shows server error
-@app.route('/setdevAnnotation/<string:dev_id>/<string:data>/', methods=['GET'])
+@app.route('/setdevAnnotation/<string:dev_id>/<string:data>', methods=['GET'])
 @jwt_required()
 def set_devAnnotation(dev_id, data):
 	try:
 		records = update_record('annotation', 'annotation', dev_id, data) #hard coded for test
-		return jsonify(data), 200 #200 shows correct  http responses
+		return jsonify(records), 200 #200 shows correct  http responses
 	except Exception as e:
 		print('error')
 		return jsonify({'Error': str(e)}), 500 #500 shows server error
