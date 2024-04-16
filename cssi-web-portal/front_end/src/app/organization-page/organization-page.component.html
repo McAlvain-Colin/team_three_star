@@ -108,7 +108,7 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <mat-card class="member-box" [hidden]="!isAdmin">
+    <mat-card class="member-box" [style.display]="!isAdmin ? 'none' : 'block'">
       <!--Created hidden instead of ngIF because of some weird properties of Angular that causes it not initialize the paginator, and thus no items are registered-->
       <mat-card-content class="member-content">
         <mat-tab-group [style.position]="'sticky'">
@@ -143,14 +143,26 @@
                   )
                 "
               >
-                {{ member.name }}
-                <button
-                  class="remove-icon"
-                  *ngIf="removeMembers"
-                  (click)="confirmRemoval(4, undefined, member)"
-                >
-                  <mat-icon fontIcon="remove" color="warn"></mat-icon>
-                </button>
+                <div class="make-flexbox" *ngIf="member">
+                  {{ member.name }}
+                  <span class="push-button-right"></span>
+                  <mat-select
+                    class="select-role"
+                    [(value)]="member.role"
+                    (selectionChange)="confirmRoleChange(member, $event)"
+                  >
+                    <mat-option [value]="1">Admin</mat-option>
+                    <mat-option [value]="2">Principle Investigator</mat-option>
+                    <mat-option [value]="3">Basic User</mat-option></mat-select
+                  >
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeMembers"
+                    (click)="confirmRemoval(4, undefined, member)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
               </a>
             </mat-nav-list>
             <mat-paginator

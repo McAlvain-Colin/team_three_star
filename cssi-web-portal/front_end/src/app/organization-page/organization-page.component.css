@@ -140,6 +140,7 @@ body {
   background-color: transparent;
   z-index: 10000;
   border-color: red;
+  margin-left: 2%;
 }
 
 .apps-box {
@@ -148,6 +149,7 @@ body {
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 3%;
+  margin-bottom: 3%;
   height: fit-content;
   max-height: fit-content;
   width: 90%;
@@ -161,7 +163,6 @@ body {
 }
 
 .member-box {
-  display: flex;
   position: relative;
   margin-left: 5%;
   margin-right: 5%;
@@ -177,4 +178,8 @@ body {
 .member-content {
   height: 100%;
   overflow-y: scroll;
+}
+
+.select-role {
+  width: 30%;
 }

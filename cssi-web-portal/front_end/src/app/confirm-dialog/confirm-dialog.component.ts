@@ -6,13 +6,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-removal-dialog',
-  templateUrl: './removal-dialog.component.html',
-  styleUrls: ['./removal-dialog.component.css'],
+  selector: 'app-confirm-dialog',
+  templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.css'],
   standalone: true,
   imports: [MatDialogModule, MatSnackBarModule, MatButtonModule],
 })
-export class RemovalDialogComponent {
+export class ConfirmDialogComponent {
   base_url: string = 'http://localhost:5000';
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -21,7 +21,6 @@ export class RemovalDialogComponent {
       itemId: string;
       itemType: number;
       orgId: string;
-      memberRole: number;
     }, //Note we can have any variable in the data parameter, but if it was passed in, it'll be considered undefined
     private snackBar: MatSnackBar,
     public router: Router,
@@ -83,38 +82,30 @@ export class RemovalDialogComponent {
           },
         });
     } else if (this.data.itemType == 4) {
-      if (this.data.memberRole == 1) {
-        this.message = "You can't remove an admin from their organization!";
-        this.snackBar.open(this.message, 'Dismiss', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
+      this.http
+        .put(
+          this.base_url + '/deleteMember',
+          { orgId: this.data.orgId, memberId: this.data.itemId },
+          { observe: 'response', responseType: 'json' }
+        )
+        .subscribe({
+          next: (response) => {
+            const res = JSON.stringify(response.body);
+
+            let resp = JSON.parse(res);
+
+            if (resp.memberDeleteSuccess) {
+              this.snackBar.open(this.message, 'Dismiss', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            }
+            this.reloadComponent();
+          },
+          error: (error) => {
+            console.error(error);
+          },
         });
-      } else {
-        this.http
-          .put(
-            this.base_url + '/deleteMember',
-            { orgId: this.data.orgId, memberId: this.data.itemId },
-            { observe: 'response', responseType: 'json' }
-          )
-          .subscribe({
-            next: (response) => {
-              const res = JSON.stringify(response.body);
-
-              let resp = JSON.parse(res);
-
-              if (resp.memberDeleteSuccess) {
-                this.snackBar.open(this.message, 'Dismiss', {
-                  horizontalPosition: 'center',
-                  verticalPosition: 'top',
-                });
-              }
-              this.reloadComponent();
-            },
-            error: (error) => {
-              console.error(error);
-            },
-          });
-      }
     }
   }
 

@@ -14,4 +14,5 @@ export interface App {
 export interface Member {
   name: string;
   id: number;
+  role: number;
 }

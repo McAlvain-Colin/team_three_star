@@ -394,10 +394,7 @@ def inviteUser():
 		ORGACCOUNTS.c.active == False
 		)
 		if db.session.query(checkOrgAccount.exists()).scalar():
-			updateOrgApp = update(ORGACCOUNTS).values(active = True).where(ORGACCOUNTS.c.id == joinUser.id).where(ORGACCOUNTS.c.o_id == orgId)
-
-			db.session.execute(updateOrgApp)
-			db.session.commit()
+			pass #Pass the creation function if it already exists
 		else:
 			orgacc = OrgAccount(a_id= joinUser.id, o_id= orgId)
 			orgacc.r_id = 3
@@ -500,20 +497,24 @@ def getOrgMembers():
 	orgId = request.args['org']
 
 	orgId = int(orgId)
-	print(orgId)
 
 	try:
-		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)).scalars()
+		#page = db.session.execute(db.select(Account).join(OrgAccount).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)).scalars() #This parameter was removed, since we need to proivde the option for admin..where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3))
+
+		users = select(Account.id, Account.name, OrgAccount.r_id).join(OrgAccount).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)
+
+		page = db.session.execute(users).all()
 
 		res = {
 			'list': [
 				{
 				'a_id' : p.id,
-				'name': p.name
-
-				} for p in page.all()
+				'name': p.name,
+				'r_id' : p.r_id
+				} for p in page
 			]
 		}
+		print(res)
 		return jsonify(res), 200
 	
 	except exc.SQLAlchemyError:
@@ -525,7 +526,7 @@ def deleteMember():
 	data = request.get_json()
 	orgId = data['orgId']
 	memberId = data['memberId']
-	ORGACCOUNTS = db.metadata.tables[OrgAccount.__tablename__] #Needsto adjust for members
+	ORGACCOUNTS = db.metadata.tables[OrgAccount.__tablename__]
 	
 	removeMember = update(ORGACCOUNTS).values(active = False).where(
 		ORGACCOUNTS.c.a_id == memberId,
@@ -598,13 +599,15 @@ def getOrgInfo():
 
 	try:
 		userOrg = db.session.execute(db.select(Organization).join(Organization.orgAccounts).where(OrgAccount.a_id == uid).where(OrgAccount.o_id == orgId)).scalar()
+		userId = db.session.execute(db.select(OrgAccount).where(OrgAccount.a_id == uid).where(OrgAccount.o_id == orgId)).scalar()
 
 		res = {
 		'list': [
 				{
 					'o_id' : orgId,
 					'name': userOrg.name,
-					'description': userOrg.description
+					'description': userOrg.description,
+					'r_id': userId.r_id
 				}
 			]
 		}
