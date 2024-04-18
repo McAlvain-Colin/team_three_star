@@ -84,7 +84,9 @@ export class AddOrganizationComponent {
               verticalPosition: 'top',
             });
           } else {
-            message = 'Failed to add organization, please try again later.';
+            message =
+              this.orgName +
+              ' already exists, please add a different organization!';
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',

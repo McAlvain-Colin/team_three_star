@@ -80,6 +80,7 @@ export class OrganizationPageComponent implements OnInit {
   removeMembers: boolean = false;
   selected: number = 0;
   isAdmin: boolean = false;
+  userRole: number = 0;
   currentPage: number = 0;
   appsSource = new MatTableDataSource(this.appList);
   memberSource = new MatTableDataSource(this.memberList);
@@ -166,7 +167,8 @@ export class OrganizationPageComponent implements OnInit {
 
           this.orgName = resp.body.list[0].name;
           this.orgDescription = resp.body.list[0].description;
-          if (Number(resp.body.list[0].r_id) == 1) {
+          this.userRole = Number(resp.body.list[0].r_id);
+          if (this.userRole == 1) {
             this.isAdmin = true;
             this.memberSource.data = this.memberList;
             this.memberSource.paginator = this.membersPaginator;

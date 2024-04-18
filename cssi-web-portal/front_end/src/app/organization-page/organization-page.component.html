@@ -59,6 +59,7 @@
                   mat-raised-button
                   color="accent"
                   class="group-button"
+                  *ngIf="userRole != 3"
                   routerLink="/add-application/{{ orgId }}"
                 >
                   Add
@@ -68,6 +69,7 @@
                   mat-raised-button
                   color="warn"
                   class="group-button"
+                  *ngIf="userRole != 3"
                   (click)="removeApps = !removeApps"
                 >
                   Remove
@@ -119,6 +121,7 @@
                   mat-raised-button
                   color="accent"
                   class="group-button"
+                  *ngIf="userRole == 1"
                   routerLink="/invite-user/{{ orgId }}"
                 >
                   Invite
@@ -128,6 +131,7 @@
                   mat-raised-button
                   color="warn"
                   class="group-button"
+                  *ngIf="userRole == 1"
                   (click)="removeMembers = !removeMembers"
                 >
                   Remove

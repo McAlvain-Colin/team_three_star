@@ -54,6 +54,7 @@
                 mat-raised-button
                 color="accent"
                 class="group-button"
+                *ngIf="userRole != 3 || userRole <= 0"
                 routerLink="/add-device/{{ appId }}"
               >
                 Add
@@ -63,6 +64,7 @@
                 mat-raised-button
                 color="warn"
                 class="group-button"
+                *ngIf="userRole != 3 || userRole <= 0"
                 (click)="removeApps = !removeApps"
               >
                 Remove

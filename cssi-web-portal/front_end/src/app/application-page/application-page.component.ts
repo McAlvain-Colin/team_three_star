@@ -20,6 +20,7 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Organization } from '../data.config';
 
 export interface Device {
   name: string;
@@ -55,6 +56,7 @@ export class ApplicationPageComponent {
   appName: string | null = 'Cat Chairs';
   appId: string | null = '';
   orgId: string | null = '';
+  userRole: number = 0;
   appDescription: string | null =
     "These devices consists of the best possible devices made for cat patting, for the best of cats out there. Don't let your feline friend down, get them feline great with these devices below.";
   imgName: string | null = 'placeholder_cat2';
@@ -76,10 +78,9 @@ export class ApplicationPageComponent {
       this.appName = 'Cat Patting';
     }
 
-    const param = new HttpParams().set(
-      'app',
-      this.appId != null ? this.appId : '-1'
-    );
+    const param = new HttpParams()
+      .set('app', this.appId != null ? this.appId : '-1')
+      .append('org', this.orgId != null ? this.orgId : '-1');
 
     // this request is for getting application name, id, and description
     this.http
@@ -97,6 +98,25 @@ export class ApplicationPageComponent {
           console.log('resp is in app page', resp);
 
           this.appName = resp.body.name;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+
+    this.http
+      .get<{ list: Organization }>(this.base_url + '/getOrgInfo', {
+        observe: 'response',
+        responseType: 'json',
+        params: param,
+      })
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response);
+
+          let resp = JSON.parse(res);
+
+          this.userRole = Number(resp.body.list[0].r_id);
         },
         error: (error) => {
           console.error(error);
