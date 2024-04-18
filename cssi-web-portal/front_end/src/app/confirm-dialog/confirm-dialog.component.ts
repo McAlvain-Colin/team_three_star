@@ -21,92 +21,44 @@ export class ConfirmDialogComponent {
       itemId: string;
       itemType: number;
       orgId: string;
+      roleId: number;
     }, //Note we can have any variable in the data parameter, but if it was passed in, it'll be considered undefined
     private snackBar: MatSnackBar,
     public router: Router,
     private http: HttpClient
   ) {}
 
-  message: string = 'Removed ' + this.data.itemName;
+  message: string = 'Changed ' + this.data.itemName + "'s role.";
 
-  deleteItem() {
-    //Trigger delete here with Post message to backend to change the value, we can check which parameters was passed in that's not undefined so that we can post the right information
-    if (this.data.itemType == 0) {
-      this.http
-        .put(
-          this.base_url + '/deleteOrg',
-          { orgId: this.data.itemId },
-          { observe: 'response', responseType: 'json' }
-        )
-        .subscribe({
-          next: (response) => {
-            const res = JSON.stringify(response.body);
+  alterRole() {
+    this.http
+      .put(
+        this.base_url + '/changeMemberRole',
+        {
+          orgId: this.data.orgId,
+          memberId: this.data.itemId,
+          roleId: this.data.roleId,
+        },
+        { observe: 'response', responseType: 'json' }
+      )
+      .subscribe({
+        next: (response) => {
+          const res = JSON.stringify(response.body);
 
-            let resp = JSON.parse(res);
+          let resp = JSON.parse(res);
 
-            if (resp.orgDeleteSuccess) {
-              this.snackBar.open(this.message, 'Dismiss', {
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-              });
-            }
-            this.reloadComponent();
-          },
-          error: (error) => {
-            console.error(error);
-          },
-        });
-    } else if (this.data.itemType == 3) {
-      this.http
-        .put(
-          this.base_url + '/deleteOrgApp',
-          { appId: this.data.itemId, orgId: this.data.orgId },
-          { observe: 'response', responseType: 'json' }
-        )
-        .subscribe({
-          next: (response) => {
-            const res = JSON.stringify(response.body);
-
-            let resp = JSON.parse(res);
-
-            if (resp.appDeleteSuccess) {
-              this.snackBar.open(this.message, 'Dismiss', {
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-              });
-            }
-            this.reloadComponent();
-          },
-          error: (error) => {
-            console.error(error);
-          },
-        });
-    } else if (this.data.itemType == 4) {
-      this.http
-        .put(
-          this.base_url + '/deleteMember',
-          { orgId: this.data.orgId, memberId: this.data.itemId },
-          { observe: 'response', responseType: 'json' }
-        )
-        .subscribe({
-          next: (response) => {
-            const res = JSON.stringify(response.body);
-
-            let resp = JSON.parse(res);
-
-            if (resp.memberDeleteSuccess) {
-              this.snackBar.open(this.message, 'Dismiss', {
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-              });
-            }
-            this.reloadComponent();
-          },
-          error: (error) => {
-            console.error(error);
-          },
-        });
-    }
+          if (resp.roleChangeSuccess) {
+            this.snackBar.open(this.message, 'Dismiss', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+          }
+          this.reloadComponent();
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
   }
 
   reloadComponent() {

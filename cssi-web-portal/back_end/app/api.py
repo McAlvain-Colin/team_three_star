@@ -537,6 +537,23 @@ def deleteMember():
 	db.session.commit()
 	return jsonify(memberDeleteSuccess = True)
 
+@app.route('/changeMemberRole', methods = ['PUT'])
+@jwt_required()
+def changeMemberRole():
+	data = request.get_json()
+	orgId = data['orgId']
+	memberId = data['memberId']
+	roleId = data['roleId']
+	ORGACCOUNTS = db.metadata.tables[OrgAccount.__tablename__]
+	
+	changeRoleMember = update(ORGACCOUNTS).values(r_id = roleId).where(
+		ORGACCOUNTS.c.a_id == memberId,
+		ORGACCOUNTS.c.o_id == orgId
+	)
+
+	db.session.execute(changeRoleMember)
+	db.session.commit()
+	return jsonify(roleChangeSuccess = True)
 
 @app.route('/userOwnedOrgList', methods = ['GET']) 
 @jwt_required() 

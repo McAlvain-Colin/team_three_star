@@ -152,8 +152,12 @@
                     (selectionChange)="confirmRoleChange(member, $event)"
                   >
                     <mat-option [value]="1">Admin</mat-option>
-                    <mat-option [value]="2">Principle Investigator</mat-option>
-                    <mat-option [value]="3">Basic User</mat-option></mat-select
+                    <mat-option [value]="2" *ngIf="member.role != 1"
+                      >Principle Investigator</mat-option
+                    >
+                    <mat-option [value]="3" *ngIf="member.role != 1"
+                      >Basic User</mat-option
+                    ></mat-select
                   >
                   <button
                     class="remove-icon"
