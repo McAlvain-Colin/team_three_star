@@ -44,7 +44,7 @@ export class ForgottenPasswordComponent {
   //use the `` to allow connections to the variable in the declaration.
   //This function is developed by Huy, and  is utilized in the HTML tied with the button which will call this function when clicked, it will alert the user based on if all the fields were correct or not when the form is submitted
   submitForm() {
-    var message: string = `Welcome ${this.email}`;
+    var message: string = `An email has been sent to ${this.email}, please check it to reset your password.`;
     if (
       this.emailField.hasError('required') ||
       this.emailField.hasError('email')

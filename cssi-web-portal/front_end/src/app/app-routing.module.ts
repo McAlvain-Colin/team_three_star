@@ -32,8 +32,9 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'login/:verified', component: LoginComponent },
   { path: 'forgotten-password', component: ForgottenPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'reset-password/:user', component: ResetPasswordComponent },
   { path: 'tool-bar', component: ToolBarComponent },
   { path: 'home', component: UserHomeComponent },
   { path: 'home/:user', component: UserHomeComponent }, //:user is dynamic

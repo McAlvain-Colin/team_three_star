@@ -292,7 +292,43 @@ def confirm_email(token):
 
 		return '<h1>The email confirmation was unsuccessful, please try again</h1>'
 
+@app.route('/resetRequest', methods = ['PUT'])  
+def resetRequest():
 
+	data = request.get_json()
+	email = data['email']
+
+	emailtoken = s.dumps(email, salt='password-reset')
+
+	msg = Message('CSSI Portal Password Reset', sender='cssiportalconfirmation@gmail.com', recipients= [email])
+
+	link = url_for('reset_email', token = emailtoken, _external = True)
+
+	msg.body = "You've requested to reset the your password! \nClick the link below to start the process for setting a new password. \nIf you didn't request this procedure, feel free to disregard this message.\n"
+	msg.body = msg.body + 'Reset Password Link: {}'.format(link)
+
+	mail.send(msg)
+
+	return jsonify(emailSent = True)
+
+@app.route('/reset_email/<token>')  
+def reset_email(token):
+
+	try:
+		email = s.loads(token, salt='password-reset', max_age = 360)
+
+		requestedUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+		
+
+		
+		return '<h1>The email confirmation was successful, please login</h1>'
+	except SignatureExpired:
+		newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
+	
+		db.session.delete(newUser)
+		db.session.commit()
+
+		return '<h1>The email confirmation was unsuccessful, please try again</h1>'
 
 
 @app.route('/logout', methods = ['DELETE'])  
