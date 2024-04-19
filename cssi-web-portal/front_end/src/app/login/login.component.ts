@@ -20,6 +20,7 @@ import {
   RouterModule,
   RouterState,
   RouterStateSnapshot,
+  ActivatedRoute,
 } from '@angular/router';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { FormBuilder } from '@angular/forms';
@@ -117,7 +118,8 @@ export class LoginComponent {
     private snackBar: MatSnackBar,
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
@@ -125,7 +127,25 @@ export class LoginComponent {
   password: string = '';
   passwordCode: number = 0; //Set as unknown for if debugging is needed, so we can cast the hash into a viewable string.
   sentPassword: string = '';
+  linkSuccess: string | null = '';
 
+  ngOnInit(): void {
+    this.linkSuccess = this.route.snapshot.paramMap.get('expired'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    if (this.linkSuccess == 'false') {
+      var message: string = 'The email link has expired, please try again.';
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+    } else if (this.linkSuccess == 'true') {
+      var message: string =
+        'Invitation successful, please login to view the changes.';
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+    }
+  }
   //Derived from https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript for basic hashing on front end for secure sending to the backend.
   hashPassword() {
     var hash = 0;

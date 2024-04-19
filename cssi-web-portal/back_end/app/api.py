@@ -1,5 +1,5 @@
 import json
-from flask import Flask, request, jsonify, url_for, make_response
+from flask import Flask, request, jsonify, url_for, make_response, redirect
 from flask_cors import CORS
 import datetime
 from helperFunctions import * 
@@ -283,22 +283,21 @@ def confirm_email(token):
 
 		db.session.commit()
 
-		return '<h1>The email confirmation was successful, please login</h1>'
+		return redirect("http://localhost:4200/login/true", code=302)
 	except SignatureExpired:
 		newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
 	
 		db.session.delete(newUser)
 		db.session.commit()
 
-		return '<h1>The email confirmation was unsuccessful, please try again</h1>'
+		return redirect("http://localhost:4200/login/false", code=302)
 
 @app.route('/resetRequest', methods = ['PUT'])  
 def resetRequest():
-
 	data = request.get_json()
 	email = data['email']
 
-	emailtoken = s.dumps(email, salt='password-reset')
+	emailtoken = s.dumps(email, salt='reset-request')
 
 	msg = Message('CSSI Portal Password Reset', sender='cssiportalconfirmation@gmail.com', recipients= [email])
 
@@ -315,21 +314,33 @@ def resetRequest():
 def reset_email(token):
 
 	try:
-		email = s.loads(token, salt='password-reset', max_age = 360)
+		email = s.loads(token, salt='reset-request', max_age = 360)
 
-		requestedUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+		resetToken = s.dumps(email, salt='reset-password')
 		
-
-		
-		return '<h1>The email confirmation was successful, please login</h1>'
+		return redirect("http://localhost:4200/reset-password/" + resetToken, code=302)
 	except SignatureExpired:
-		newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
+		return redirect("http://localhost:4200/login/false" , code=302)
 	
-		db.session.delete(newUser)
+@app.route('/resetPassword', methods = ['PUT'])
+def resetPassword():
+	try:
+		data = request.get_json()
+		token = data['token']
+		newPassword = data['password']
+		email = s.loads(token, salt='reset-password', max_age = 720)
+
+		newHashed = bcrypt.hashpw(newPassword.encode('utf-8'), bcrypt.gensalt())
+
+		ACCOUNTS = db.metadata.tables[Account.__tablename__]
+
+		updatePassword = update(ACCOUNTS).values(password = newHashed).where(ACCOUNTS.c.email == email)
+		db.session.execute(updatePassword)
 		db.session.commit()
 
-		return '<h1>The email confirmation was unsuccessful, please try again</h1>'
-
+		return jsonify(resetPasswordSuccess = True)
+	except SignatureExpired:
+		return redirect("http://localhost:4200/login/false", code=302)
 
 @app.route('/logout', methods = ['DELETE'])  
 @jwt_required()
@@ -461,9 +472,9 @@ def invite_email(token):
 		db.session.execute(userActivate)
 		db.session.commit()
 
-		return '<h1>The organization invite was successful, please check your organizations.</h1>'
+		return redirect("http://localhost:4200/login/true", code=302)
 	except SignatureExpired:
-		return '<h1>The email invitation has expired, please request another invite.</h1>'
+		return redirect("http://localhost:4200/login/false", code=302)
 
 
 @app.route('/deleteOrg', methods = ['PUT'])
