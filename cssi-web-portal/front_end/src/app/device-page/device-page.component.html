@@ -27,8 +27,8 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
       ><a routerLink="/home" class="color-white">Home ></a>
-      <a routerLink="/organization" class="color-white">Organization ></a>
-      <a routerLink="/application" class="color-white">Application </a> >
+      <a routerLink="/organization/{{orgId}}" class="color-white">Organization ></a>
+      <a routerLink="/application/{{appId}}/{{orgId}}" class="color-white">Application </a> >
       Device</mat-toolbar
     >
     <body class="background">
@@ -41,12 +41,11 @@
           />
           <mat-card-content class="about-device-box">
             <mat-card-header
-              ><h3 class="device-title">About Cat Device</h3>
+              ><h3 class="device-title">About {{ devName }}</h3>
             </mat-card-header>
             <mat-divider class="device-divider"></mat-divider>
             <p>
-              This is the device that the cat owns, so we must consider how much
-              it data it has and can display.
+              {{ deviceAnnotation }}
             </p>
           </mat-card-content>
         </mat-card-content>
@@ -61,7 +60,7 @@
             >
               <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
               <mat-expansion-panel-header>
-                <mat-panel-title> View the data here! </mat-panel-title>
+                <mat-panel-title> View device payload data here! </mat-panel-title>
                 <mat-panel-description>
                   {{
                     panelOpenState
@@ -70,10 +69,6 @@
                   }}
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <img
-                src="../../assets/placeholder_cat.jfif"
-                alt="Grey cat sitting on couch"
-              />
               <mat-card class="payload-table">
                 <!-- Filters need to be reintroduced into the tables when I can reliably display data -->
                 <!-- Filters need to be refined further -->
@@ -152,7 +147,7 @@
                   aria-label="Select page of Payload Data"
                 ></mat-paginator>
 
-                <button (click)="exportPayloadData()">
+                <button mat-raised-button color="accent" (click)="exportPayloadData()">
                   Export Payload Data
                 </button>
               </mat-card>
@@ -184,6 +179,29 @@
                 </mat-accordion>
               </mat-card>
 
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="device-metadata-box">
+        <mat-card-content class="device-metadata">
+          <mat-accordion class="metadata-search-bar">
+            <mat-expansion-panel
+              class="search-expansion-box"
+              (opened)="panelMetaOpenState = true"
+              (closed)="panelMetaOpenState = false"
+            >
+              <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
+              <mat-expansion-panel-header>
+                <mat-panel-title> View device metadata here! </mat-panel-title>
+                <mat-panel-description>
+                  {{
+                    panelMetaOpenState
+                      ? "This is all the metadata of the device."
+                      : "Click me!"
+                  }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
               <mat-card class="metadata-table">
                 <!-- Filter for Metadata -->
                 <mat-form-field>
@@ -283,7 +301,7 @@
                   aria-label="Select page of Metadata Data"
                 ></mat-paginator>
 
-                <button (click)="exportMetadata()">Export Metadata Data</button>
+                <button mat-raised-button color="accent" (click)="exportMetadata()">Export Metadata Data</button>
               </mat-card>
               <!-- metadata graph -->
               <mat-card class="graph">
@@ -316,7 +334,7 @@
                 <form [formGroup]="form" (ngSubmit)="onSubmit()">
                   <label for="notes">Notes:</label>
                   <textarea id="notes" formControlName="notes" rows="4"></textarea>
-                  <button type="submit">Submit  </button>
+                  <button mat-raised-button color="accent" type="submit">Submit  </button>
                   <p>Notes: {{form.value.notes}}</p>
                 </form>
               </mat-card>

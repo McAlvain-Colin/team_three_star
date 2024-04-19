@@ -107,6 +107,7 @@ export class DevicePageComponent implements AfterViewInit {
   //   );
 
   panelOpenState = false;
+  panelMetaOpenState = false;
   panelOpenStatePayload = false;
   panelOpenStateMetadata = false;
   panelOpenStatePayloadGraph = false;
@@ -155,6 +156,7 @@ export class DevicePageComponent implements AfterViewInit {
   chartData!: number[];
 
   appId: string | null = '';
+  orgId: string | null = '';
   devName: string | null = '';
   base_url: string = 'http://localhost:5000';
   deviceEUI: string = '';
@@ -165,6 +167,7 @@ export class DevicePageComponent implements AfterViewInit {
   //itterating code to try and get the data in a formate I can use.
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    this.orgId = this.route.snapshot.paramMap.get('org');
     this.devName = this.route.snapshot.paramMap.get('dev');
 
     const param = new HttpParams()

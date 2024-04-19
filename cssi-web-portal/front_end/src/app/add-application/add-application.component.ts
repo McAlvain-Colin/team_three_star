@@ -92,7 +92,7 @@ export class AddApplicationComponent {
               verticalPosition: 'top',
             });
           } else {
-            message = 'Failed to add organization, please try again later.';
+            message = 'Failed to add application, please try again later.';
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',

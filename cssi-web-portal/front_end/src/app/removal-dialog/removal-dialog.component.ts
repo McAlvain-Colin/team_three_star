@@ -21,6 +21,7 @@ export class RemovalDialogComponent {
       itemId: string;
       itemType: number;
       orgId: string;
+      memberRole: number;
     }, //Note we can have any variable in the data parameter, but if it was passed in, it'll be considered undefined
     private snackBar: MatSnackBar,
     public router: Router,
@@ -82,30 +83,38 @@ export class RemovalDialogComponent {
           },
         });
     } else if (this.data.itemType == 4) {
-      this.http
-        .put(
-          this.base_url + '/deleteMember',
-          { orgId: this.data.orgId, memberId: this.data.itemId },
-          { observe: 'response', responseType: 'json' }
-        )
-        .subscribe({
-          next: (response) => {
-            const res = JSON.stringify(response.body);
-
-            let resp = JSON.parse(res);
-
-            if (resp.memberDeleteSuccess) {
-              this.snackBar.open(this.message, 'Dismiss', {
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-              });
-            }
-            this.reloadComponent();
-          },
-          error: (error) => {
-            console.error(error);
-          },
+      if (this.data.memberRole == 1) {
+        this.message = "You can't remove an admin from their organization!";
+        this.snackBar.open(this.message, 'Dismiss', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
         });
+      } else {
+        this.http
+          .put(
+            this.base_url + '/deleteMember',
+            { orgId: this.data.orgId, memberId: this.data.itemId },
+            { observe: 'response', responseType: 'json' }
+          )
+          .subscribe({
+            next: (response) => {
+              const res = JSON.stringify(response.body);
+
+              let resp = JSON.parse(res);
+
+              if (resp.memberDeleteSuccess) {
+                this.snackBar.open(this.message, 'Dismiss', {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                });
+              }
+              this.reloadComponent();
+            },
+            error: (error) => {
+              console.error(error);
+            },
+          });
+      }
     }
   }
 

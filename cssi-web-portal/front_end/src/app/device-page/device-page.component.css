@@ -92,7 +92,7 @@
 
 .device-box {
   display: flex;
-  position: absolute;
+  position: relative;
   margin-top: 1%;
   margin-left: 5%;
   margin-right: 5%;
@@ -112,15 +112,17 @@
 }
 
 .data-button {
-  position: inline;
-  left: 45%;
+  position: relative;
+  left: 25%;
   top: 45%;
+  margin-top: 4%;
 }
 
 .map-button {
-  position: inline;
+  position: relative;
   left: 45%;
   top: 45%;
+  margin-top: 4%;
 }
 
 
@@ -131,7 +133,7 @@
 
 .device-data-box {
   display: flex;
-  position: inline;
+  position: relative;
   margin-left: 5%;
   margin-right: 5%;
   top: 40%;
@@ -144,8 +146,30 @@
   overflow-y: scroll;
 }
 
+.device-metadata-box {
+  display: flex;
+  position: relative;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 4%;
+  top: 30%;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.device-metadata {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.metadata-search-bar {
+  position: relative;
+  top: 30%;
+}
+
 .payload-table {
   /* position: absolute; */
+  position: relative;
 
   
   top: 50%;
@@ -167,6 +191,7 @@
 
 .metadata-table {
   /* position: absolute; */
+  position: relative;
   
   top: 70%;
 

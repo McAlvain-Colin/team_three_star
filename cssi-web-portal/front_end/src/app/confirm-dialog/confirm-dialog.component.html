@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Do you want to change {{ data.itemName }}'s role?</h2>
+<mat-dialog-content
+  >This will alter their permissions! Make sure you're only altering their roles
+  when needed.
+</mat-dialog-content>
+<mat-dialog-actions>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-raised-button color="warn" mat-dialog-close (click)="alterRole()">
+    Confirm
+  </button>
+  <span class="push-button-right"></span>
+  <button mat-raised-button mat-dialog-close (click)="reloadComponent()">
+    Cancel
+  </button>
+</mat-dialog-actions>

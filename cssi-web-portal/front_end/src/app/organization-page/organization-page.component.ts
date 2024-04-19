@@ -34,6 +34,9 @@ import {
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Organization, App, Member } from '../data.config';
 import { MatDividerModule } from '@angular/material/divider';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { SelectionChange } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-organization-page',
@@ -47,6 +50,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatIconModule,
     MatSidenavModule,
     MatListModule,
+    MatSelectModule,
     MatPaginatorModule,
     MatCardModule,
     MatTabsModule,
@@ -56,6 +60,7 @@ import { MatDividerModule } from '@angular/material/divider';
     DeviceMapComponent,
     MatDialogModule,
     RemovalDialogComponent,
+    ConfirmDialogComponent,
   ],
 })
 export class OrganizationPageComponent implements OnInit {
@@ -73,7 +78,9 @@ export class OrganizationPageComponent implements OnInit {
   imgName: string | null = 'placeholder_cat2';
   removeApps: boolean = false;
   removeMembers: boolean = false;
-  isAdmin: boolean = true;
+  selected: number = 0;
+  isAdmin: boolean = false;
+  userRole: number = 0;
   currentPage: number = 0;
   appsSource = new MatTableDataSource(this.appList);
   memberSource = new MatTableDataSource(this.memberList);
@@ -93,7 +100,8 @@ export class OrganizationPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private http: HttpClient
+    private http: HttpClient,
+    private changeDetector: ChangeDetectorRef
   ) {} //makes an instance of the router
   ngOnInit(): void {
     this.orgId = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -108,7 +116,7 @@ export class OrganizationPageComponent implements OnInit {
     const param = new HttpParams().set('org', decodeURI(String(this.orgId)));
 
     this.http
-      .get<{list: Organization}>(this.base_url + '/userOrgAppList', {
+      .get<{ list: Organization }>(this.base_url + '/userOrgAppList', {
         observe: 'response',
         responseType: 'json',
         params: param,
@@ -159,6 +167,13 @@ export class OrganizationPageComponent implements OnInit {
 
           this.orgName = resp.body.list[0].name;
           this.orgDescription = resp.body.list[0].description;
+          this.userRole = Number(resp.body.list[0].r_id);
+          if (this.userRole == 1) {
+            this.isAdmin = true;
+            this.memberSource.data = this.memberList;
+            this.memberSource.paginator = this.membersPaginator;
+            this.changeDetector.detectChanges();
+          }
         },
         error: (error) => {
           console.error(error);
@@ -187,11 +202,10 @@ export class OrganizationPageComponent implements OnInit {
             this.memberList.push({
               id: resp.body.list[i].a_id,
               name: resp.body.list[i].name,
+              role: resp.body.list[i].r_id,
             });
-
-
-            // add members to the member list
           }
+          this.memberSource.paginator = this.membersPaginator;
         },
         error: (error) => {
           console.error(error);
@@ -232,10 +246,22 @@ export class OrganizationPageComponent implements OnInit {
           orgId: this.orgId,
           itemName: removeMember?.name,
           itemId: removeMember?.id,
+          memberRole: removeMember?.role,
           itemType: itemType,
         }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
       });
     }
+  }
+
+  confirmRoleChange(changeMember: Member, roleEvent: MatSelectChange) {
+    const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        orgId: this.orgId,
+        itemName: changeMember.name,
+        itemId: changeMember.id,
+        roleId: roleEvent.value,
+      }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+    });
   }
 
   getRouteName(app: App) {
