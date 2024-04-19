@@ -98,6 +98,7 @@ export class ApplicationPageComponent {
           console.log('resp is in app page', resp);
 
           this.appName = resp.body.name;
+          this.appDescription = resp.body.description;
         },
         error: (error) => {
           console.error(error);
@@ -144,6 +145,8 @@ export class ApplicationPageComponent {
               name: resp.body.list[i].name,
               devEUI: resp.body.list[i].dev,
             });
+            this.deviceSource.data = this.deviceList;
+            this.deviceSource.paginator = this.devicePaginator;
           }
         },
         error: (error) => {

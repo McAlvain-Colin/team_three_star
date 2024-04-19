@@ -73,7 +73,7 @@
             <mat-nav-list>
               <a
                 mat-list-item
-                routerLink="/device/{{ appId }}/{{ device.name }}"
+                routerLink="/device/{{ orgId }}/{{ appId }}/{{ device.name }}"
                 *ngFor="
                   let device of deviceSource.data.slice(
                     devicePaginator.pageIndex * devicePaginator.pageSize,
