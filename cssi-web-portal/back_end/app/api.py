@@ -2,11 +2,13 @@ import json
 from flask import Flask, request, jsonify, url_for, make_response
 from flask_cors import CORS
 import datetime
+from datetime import timezone
 # import dbinteractions
 from flask_mail import Mail, Message
 
-from flask_jwt_extended import (create_access_token, JWTManager,
+from flask_jwt_extended import (create_access_token, JWTManager, get_jti,
 								jwt_required, get_jwt_identity,
+								create_refresh_token, get_jwt
 								)
 
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -17,13 +19,14 @@ import bcrypt
 #db imports
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, types, Text, LargeBinary, ForeignKey, select, update, exc
+from sqlalchemy.sql.functions import now
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry, relationship
 from typing_extensions import Annotated
 from typing import List
 
 #for query paramters
-from urllib.parse import unquote
+# from urllib.parse import unquote
 
 
 #db things###########################
@@ -58,20 +61,22 @@ app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR P
 app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
-# app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
+
 app.config['JWT_SECRET_KEY'] = 'secret' # ALTERED FOR PRIVACY
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 20)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 1)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(minutes= 4)
+
 CORS(app, resources={r'*': {'origins': 'http://localhost:4200'}})
 
-JWTManager(app)
+jwt = JWTManager(app)
 
 mail.init_app(app)
 s = URLSafeTimedSerializer('email-secret') 
 
 
 
-#models.py db things
 #REQUIRED#############################
+
 
 
 
@@ -185,6 +190,24 @@ class AppSensors(Base):
 	dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
 #     devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
 
+
+
+
+#STEP 1 ADD THIS CLASS FOR KEEPING TRACK OF THE USER REVOKED TOKENS 
+class TokenBlockList(Base):
+	__tablename__ = 'TokenBlockList'
+	id: Mapped[int] = mapped_column(primary_key=True)
+	jti: Mapped[str] = mapped_column(nullable=False, index=True)
+	type: Mapped[str] = mapped_column(nullable=False)
+	user_id: Mapped[int] = mapped_column(nullable=False)
+	created_at: Mapped[datetime.datetime] = mapped_column(server_default= now(), nullable=False)
+	valid: Mapped[bool] = mapped_column(nullable= False)
+
+
+
+
+
+
 with app.app_context():
 # for creating db
 	db.reflect()
@@ -196,34 +219,81 @@ with app.app_context():
 #     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True) 
 
 			
-
+#NEED TO REMOVE THE INDEX ROUTE, 
 
 ###############################
 
-@app.route('/')
-def index():
-	return "return backend home message"
+# @app.route('/')
+# def index():
+# 	return "return backend home message"
+
+
+@jwt.token_in_blocklist_loader
+def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
+	jti = jwt_payload['jti']
+	token_valid = db.session.execute(db.select(TokenBlockList.valid).where(TokenBlockList.jti == jti)).scalar()
+	# print(token_valid)
+	return not token_valid
+
+
+@app.route('/refresh', methods = ['POST'])
+@jwt_required(refresh = True)
+def refresh():
+
+	# print('inside of the refresh tokemn func ')
+	identity = get_jwt_identity()
+
+	token = create_access_token(identity = identity)
+
+	# add the new JWT access token to the db
+	jti = get_jti(token)
+	ttype = 'access'
+	now = datetime.datetime.now(timezone.utc)# updated 
+	db.session.add(TokenBlockList(jti= jti, type= ttype, user_id = identity, created_at = now, valid = True))
+	db.session.commit()
+
+	return jsonify({'token': token}), 200
+
+
 
 #using flask JWT extended based on the example provided in docs using JWT tokens.
 @app.route('/login', methods = ['POST'])
-# @cross_origin()
 def login_user():
 
 	data = request.get_json()
 	email = data['email']
 	password =  data['password']
 
-	user = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+	user = db.session.execute(db.select(Account).where(Account.email == email).where(Account.verified == True)).scalar()
 	if(user == None):
-		return make_response(jsonify({'login': False}), 200)
+		return jsonify({'login': False}), 401
 
 	if bcrypt.checkpw(password.encode('utf-8'), user.password): #database logic for searching goes here
 	
 		token = create_access_token(identity = user.id)
-		return make_response(jsonify({'login': True, 'token': token}), 200)
+		refreshToken = create_refresh_token(identity = user.id)
+
+
+		# add the JWT access token in the jwt block list
+		jti = get_jti(token)
+		ttype = 'access'
+		now = datetime.datetime.now(timezone.utc)# updated 
+		db.session.add(TokenBlockList(jti= jti, type= ttype, user_id = user.id, created_at = now, valid = True))
+		db.session.commit()
+
+		# add the JWT refresh token in the jwt block list
+		jti = get_jti(refreshToken)
+		ttype = 'refresh'
+		now = datetime.datetime.now(timezone.utc)# updated 
+		db.session.add(TokenBlockList(jti= jti, type= ttype, user_id = user.id, created_at = now, valid = True))
+		db.session.commit()
+
+
+		response = jsonify({'login': True, 'token': token, 'refreshToken': refreshToken})
+		return response, 200
 
 	else:
-		return make_response(jsonify({'login': False}), 200)
+		return jsonify({'login': False}), 401
 
 
 #used to test authorized routes, only authenticated users can get this info
@@ -290,27 +360,21 @@ def confirm_email(token):
 
 
 @app.route('/logout', methods = ['DELETE'])  
-@jwt_required()
+@jwt_required(verify_type= False)
 def logout_user():
 
-	#jwt token is removed from local storage on frontend
+	identity = get_jwt_identity()
+	# remove all tokens that user generated in the session 
+	tokenList = db.session.execute(db.select(TokenBlockList).where(TokenBlockList.user_id == identity).where(TokenBlockList.valid == True)).scalars()
 
-	return jsonify(deleted_user =  True)
+	for token in tokenList.all():
+		token.valid = False
 
+	db.session.commit()
 
+	response = jsonify({'logout': True})
 
-
-@app.route('/deleteUser', methods = ['DELETE'])  
-@jwt_required()
-def deleteUser():
-	# data = request.get_json()
-	#remove user to database code
-
-	#need to add revoked token to revoked list
-
-
-	return jsonify(deleted_user =  True)
-
+	return response, 200
 
 
 @app.route('/createOrg', methods = ['POST'])  
@@ -460,7 +524,6 @@ def getOrgMembers():
 	orgId = request.args['org']
 
 	orgId = int(orgId)
-	print(orgId)
 
 	try:
 		page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3)).where(OrgAccount.o_id == orgId).where(Account.verified  == True).where(Account.active == True)).scalars()
@@ -553,7 +616,6 @@ def getOrgInfo():
 			]
 		}
 		res = json.dumps(res)
-		print(res)
 		return make_response(res, 200)
 	
 	except Exception as e:
@@ -729,6 +791,5 @@ def getOrgAppDeviceList():
 
 if __name__ == '__main__':
 	with app.app_context():
-		#db.drop_all()
-		#db.create_all()
+		
 		app.run(debug = True)

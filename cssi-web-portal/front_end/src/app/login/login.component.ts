@@ -34,9 +34,10 @@ import {
   HTTP_INTERCEPTORS,
   HttpHeaders,
   HttpClientModule,
+  HttpErrorResponse,
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, mergeMap, throwError } from 'rxjs';
 
 // import { CookieService } from 'ngx-cookie-service';
 import { Browser } from 'leaflet';
@@ -45,6 +46,7 @@ import { Browser } from 'leaflet';
 
 // added implementation for checking if there a token in the local storage, if ther is go to dashbaord, otherwise go to the homepage
 import { inject } from '@angular/core';
+import { ObserversModule } from '@angular/cdk/observers';
 
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
@@ -58,37 +60,195 @@ export const authGuard: CanActivateFn = (
     : true;
 };
 
-@Injectable()
-export class appInterceptor implements HttpInterceptor {
-  //   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-  //     const currToken = localStorage.getItem('token')
-  //     req = req.clone({ withCredentials: true, headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
-  //     return next.handle(req);
-  //   }
-  // }
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const currToken = localStorage.getItem('token');
-    req = req.clone({
-      headers: req.headers.set('Authorization', 'Bearer ' + currToken),
-    });
-    return next.handle(req);
+
+
+
+
+@Injectable({providedIn: 'root'})
+export class TimerService
+{
+  
+  timer!: ReturnType<typeof setTimeout>;
+  constructor(private router: Router, private http: HttpClient){}
+
+
+  private logout() {
+    console.log('in logout func');
+    this.http
+      .delete('http://localhost:5000/logout', {
+        observe: 'response',
+        responseType: 'json',
+      })
+      .subscribe({
+        next: (response) => {
+          const resp = { ...response.body };
+
+          console.log('deleted message');
+          console.log(resp);
+
+          localStorage.clear();
+          
+
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+  }
+
+  startRefreshTokenTimer()
+  {
+    let refreshToken = localStorage.getItem('refreshToken')
+
+    let jwtBase64 = refreshToken!.split('.')[1];
+
+    let token = JSON.parse(atob(jwtBase64)); 
+
+    let expires = new Date(token.exp * 1000);
+    let timeout = expires.getTime() - Date.now() - (60 * 1000);
+    this.timer = setTimeout(() => this.logout(), timeout)
+  }
+
+  stopRefreshTimer()
+  {
+    clearTimeout(this.timer)
   }
 }
 
-////interceptor for cookies
-// @Injectable()
-// export class appInterceptor implements HttpInterceptor {
 
-//   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//     const currToken = localStorage.getItem('token')
-//     req = req.clone({withCredentials: true})
 
-//     return next.handle(req);
-//   }
-// }
+
+
+//interceptor forjwt/refresh tokens
+@Injectable()
+export class appInterceptor implements HttpInterceptor {
+
+  constructor(private router: Router, private http: HttpClient){}
+  
+
+  // private logout() {
+  //   console.log('in logout func');
+  //   this.http
+  //     .delete('http://localhost:5000/logout', {
+  //       observe: 'response',
+  //       responseType: 'json',
+  //     })
+  //     .subscribe({
+  //       next: (response) => {
+  //         const resp = { ...response.body };
+
+  //         console.log('deleted message');
+  //         console.log(resp);
+
+  //         localStorage.clear();
+          
+
+  //         this.router.navigate(['/login']);
+  //       },
+  //       error: (error) => {
+  //         console.error(error);
+  //       },
+  //     });
+  // }
+
+
+
+  private handleError(next: HttpHandler, req: HttpRequest<any>,)
+  {
+    let header = new HttpHeaders({'Content-Type': 'application/json', responseType:'json'})
+
+    return this.http.post('http://localhost:5000/refresh', {}, {headers: header}).pipe(
+      map((data: any)  => {
+        console.log('data is ', data.token)
+        localStorage.setItem('token', data.token)
+
+        const clone = req.clone({
+          headers: req.headers.set('Authorization', 'Bearer ' + data.token)
+        });
+        
+        return next.handle(clone);
+      }),
+      
+      mergeMap(res => res)
+
+
+    );
+  }
+
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // req = req.clone({withCredentials: true})
+    const currToken = localStorage.getItem('token')
+    
+
+    
+    if(!req.url.includes('refresh'))
+    {
+      const currToken = localStorage.getItem('token')
+
+      req = req.clone({
+        headers: req.headers.set('Authorization', 'Bearer ' + currToken),
+      });
+    }
+    
+    else
+    {
+      const refreshToken = localStorage.getItem('refreshToken');
+      
+      req = req.clone({
+        headers: req.headers.set('Authorization', 'Bearer ' + refreshToken),
+      });
+    }
+
+    
+
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) =>
+        {
+          if(error instanceof HttpErrorResponse)
+          {
+            // need to add the logout revoke tokne thing here
+            if((error.status == 401 || error.status == 403) && currToken == null)
+            {
+              this.router.navigate(['login'])
+              return throwError(() => console.log('my error is ', error));
+            } 
+            // where both the access and refresh token have expired NEED TIMER!!!!!!
+            
+            // when access token expired
+            else if(error.status == 401 && currToken != null) 
+            {
+              console.log('in the handle error if cond ')
+              
+              return this.handleError(next, req)
+
+            }
+            else
+            {
+              // this.logout()
+
+              this.router.navigate(['login'])
+
+              return throwError(() => error);
+            }
+
+          }
+          else{
+            // this.logout()
+
+            this.router.navigate(['login'])
+
+            return throwError(() => error);
+          }
+          
+        }
+      )
+    );
+  }
+
+  
+}
 
 @Component({
   selector: 'app-login',
@@ -117,7 +277,8 @@ export class LoginComponent {
     private snackBar: MatSnackBar,
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private timerService: TimerService
   ) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
@@ -191,22 +352,19 @@ export class LoginComponent {
         )
         .subscribe({
           next: (response) => {
-            // this.cookieService.set('mine', 'test')
-
+            
             const res = JSON.stringify(response);
 
             let resp = JSON.parse(res);
 
             console.log('resp is ');
 
-            console.log(resp);
+            console.log(resp.body);
 
-            // console.log('cookie is ')
-
-            // const cook = this.cookieService.get('access_token_cookie')
-            // console.log(cook)
-            // Browser.cookies.get
+            
             localStorage.setItem('token', resp.token);
+            localStorage.setItem('refreshToken', resp.refreshToken)
+            this.timerService.startRefreshTokenTimer()
 
             if (this.checkResponse(resp.login)) {
               this.snackBar.open(message, 'Close', {
@@ -328,79 +486,6 @@ export class LoginComponent {
     }
   }
 
-  //   const httpOptions = {
-  //     withCredentials: true,
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json',
-  //       'charset': 'UTF-8',
-
-  //       })
-  //   };
-
-  //   //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC:
-  //   this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, httpOptions).subscribe(
-  //     {
-  //       next: (response) =>
-  //       {
-  //         const res = JSON.stringify(response)
-
-  //         let resp = JSON.parse(res)
-
-  //         console.log('response is')
-  //         console.log(resp)
-
-  //         //localStorage.setItem('token', resp.token)
-
-  //         this.checkResponse(resp.login);
-  //       },
-  //       error: (error) =>
-  //       {
-  //         console.error(error);
-  //       },
-  //     }
-  //   );
-
-  // }
-
-  // //check value retunred from the backend response, not sure if else condition works
-  // checkResponse(response: boolean)//, route: ActivatedRouteSnapshot, state : RouterStateSnapshot)
-  // {
-  //   console.log('check response is called')
-  //   if(response)
-  //   {
-
-  //     const httpOptions = {
-  //       withCredentials: true,
-  //       headers: new HttpHeaders({
-  //         'Content-Type': 'application/json',
-  //         'charset': 'UTF-8',
-
-  //         })
-  //     };
-
-  //     //this get request was used to ensure the user can access protected backend routes and working
-  //     this.http.get(this.base_url + '/protected', httpOptions).subscribe(
-  //       {
-  //         next: (response) =>
-  //         {
-  //           console.log('get request next is called')
-  //           console.log(response)
-  //         },
-  //         error: (error) =>
-  //         {
-  //           console.error(error);
-  //         }
-  //       });
-
-  //     this.router.navigate(['/dashboard']);
-
-  //   }
-  //   else
-  //   {
-  //     this.getErrorMessage()
-  //   }
-  // }
-
   // This method gets an error message based on what error that the user has produced, empty, or invalid email.
   getErrorMessage() {
     if (this.emailField.hasError('required')) {
@@ -411,220 +496,3 @@ export class LoginComponent {
   }
 }
 
-////////////////////////////////////////////////////////////////
-
-// import { Component, Injectable } from '@angular/core';
-// import {
-//   FormControl,
-//   Validators,
-//   FormsModule,
-//   ReactiveFormsModule,
-//   FormGroup,
-//   FormBuilder
-// } from '@angular/forms';
-// import { NgIf } from '@angular/common';
-// import { MatInputModule } from '@angular/material/input';
-// import { MatFormFieldModule } from '@angular/material/form-field';
-// import { MatIconModule } from '@angular/material/icon';
-// import { MatButtonModule } from '@angular/material/button';
-// import { MatSelectModule } from '@angular/material/select';
-// import { MatCardModule } from '@angular/material/card';
-// import { ToolBarComponent } from '../tool-bar/tool-bar.component';
-// import { ActivatedRouteSnapshot, RouterModule, RouterState, RouterStateSnapshot } from '@angular/router';
-// import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
-// // import { HttpClient, HttpResponse } from ' angular/common/http';
-// import { Router } from '@angular/router';
-// import { HttpClient,HttpInterceptor, HttpEvent, HttpHandler, HttpRequest, HTTP_INTERCEPTORS} from '@angular/common/http';
-
-// import { Observable } from 'rxjs';
-
-// @Injectable()
-// export class appInterceptor implements HttpInterceptor {
-
-//   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//     const currToken = localStorage.getItem('token')
-//     req = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
-//     return next.handle(req);
-//   }
-// }
-
-// export interface Resp{
-//   success: boolean
-//   token: any
-// }
-
-// @Component({
-//   selector: 'app-login',
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.css'],
-//   standalone: true,
-//   imports: [
-//     ToolBarComponent,
-//     MatFormFieldModule,
-//     MatInputModule,
-//     MatSelectModule,
-//     MatCardModule,
-//     MatIconModule,
-//     MatButtonModule,
-//     FormsModule,
-//     ReactiveFormsModule,
-//     TempNavBarComponent,
-//     RouterModule,
-//     NgIf,
-//   ],
-// })
-
-// export class LoginComponent {
-//   emailField = new FormControl('', [Validators.required, Validators.email]);
-//   hide: boolean = true;
-//   email: string = '';
-//   password: string = '';
-
-//   userForm!: FormGroup;
-//   backendResponse!: any;
-
-//   base_url : string = 'http://localhost:5000';
-
-//   constructor(private http : HttpClient, private formBuilder: FormBuilder, private router : Router)
-//   {
-
-//   }
-
-//   //use the `` to allow connections to the variable in the declaration.
-//   //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
-//   submitForm() {
-//     var message: string = `Welcome ${this.email}`;
-//     if (
-//       this.emailField.hasError('required') ||
-//       this.emailField.hasError('email')
-//     ) {
-//       message = 'Email incorrect!';
-//       alert(message);
-//     }
-//     else {
-//       alert(message);
-//     }
-
-//     // console.log("the form is: ", {email  : this.emailField.getRawValue(),  password : this.password})
-
-//     //this code for seneding get requests and saving response in a variable
-//     // this.http.get(this.base_url,{responseType : 'text'}).subscribe(
-//     // {
-//     //   next: (response) =>
-//     //   {
-//     //     this.backendResponse = response;
-//     //     console.log("this post is : " + this.backendResponse);
-//     //   },
-//     //   error: (error) =>
-//     //   {
-//     //     console.error(error);
-//     //   },
-//     // }
-
-//     // )
-
-//     //===================================================
-//     //send to the backend so to check if user is valid
-//     // this.http.post(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'text'}).subscribe(
-//     //   {
-//     //     next: (response) =>
-//     //     {
-//     //       this.backendResponse = response;
-//     //       console.log("this post is :" + this.backendResponse + "space");
-//     //       console.log("this post is : " + typeof(this.backendResponse));
-//     //       this.checkResponse(this.backendResponse);
-
-//     //     },
-//     //     error: (error) =>
-//     //     {
-//     //       console.error(error);
-//     //     },
-//     //   }
-//     // );
-//     //========================================================
-//     //new implementation returning json data saved to an TS interface instance
-//     // this.http.post<Resp>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
-//     //   {
-//     //     next: (response) =>
-//     //     {
-//     //       this.checkResponse(response.success);
-
-//     //     },
-//     //     error: (error) =>
-//     //     {
-//     //       console.error(error);
-//     //     },
-//     //   }
-//     // );
-//     // ==================
-//     // this.http.post <httpResponse<Resp>>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
-//     //   {
-//     //     next: (response) =>
-//     //     {
-//     //       this.checkResponse(response.success);
-
-//     //     },
-//     //     error: (error) =>
-//     //     {
-//     //       console.error(error);
-//     //     },
-//     //   }
-//     // );
-
-//     //THIS IS THE NEW CURRENT IMPLEMENTATION OF POST REQUEST TO FLASK SERVER IT USES HTTP RESPONSE MODULE FROM ANGULAR DOC:
-//     this.http.post(this.base_url + '/login', {email  : this.emailField.getRawValue(), password : this.password}, {observe: 'response', responseType : 'json'}).subscribe(
-//       {
-//         next: (response) =>
-//         {
-//           const res = JSON.stringify(response.body)
-
-//           let resp = JSON.parse(res)
-
-//           localStorage.setItem('token', resp.token)
-
-//           this.checkResponse(resp.success);
-//         },
-//         error: (error) =>
-//         {
-//           console.error(error);
-//         },
-//       }
-//     );
-
-//   }
-
-//   //check value retunred from the backend response, not sure if else condition works
-//   checkResponse(response: boolean)//, route: ActivatedRouteSnapshot, state : RouterStateSnapshot)
-//   {
-//     if(response)
-//     {
-//       this.http.get(this.base_url + '/protected', {observe: 'response', responseType : 'json'}).subscribe(
-//         {
-//           next: (response) =>
-//           {
-//             const resp = {...response.body}
-//           },
-//           error: (error) =>
-//           {
-//             console.error(error);
-//           }
-//         });
-
-//       this.router.navigate(['/dashboard']);
-
-//     }
-//     else
-//     {
-//       this.getErrorMessage()
-//     }
-//   }
-
-//   // This method gets an error message based on what error that the user has produced, empty, or invalid email.
-//   getErrorMessage() {
-//     if (this.emailField.hasError('required')) {
-//       return 'You must enter a value';
-//     }
-
-//     return this.emailField.hasError('email') ? 'Not a valid email' : '';
-//   }
-// }

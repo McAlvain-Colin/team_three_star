@@ -43,6 +43,8 @@ import {
 } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
+import { TimerService } from '../login/login.component';
 
 @Component({
   selector: 'app-user-home',
@@ -109,7 +111,8 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
     public router: Router,
     public dialog: MatDialog,
     private http: HttpClient,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    // private timerService : TimerService
   ) {} //makes an instance of the router alsoe creates aaa hhhttp object to use for Requests to backend
   ngOnInit(): void {
     this.http
@@ -250,6 +253,7 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
           console.log(resp);
 
           localStorage.clear();
+          
 
           this.router.navigate(['/login']);
         },
@@ -259,12 +263,5 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
       });
   }
 
-  // setupExampleLists() {
-  //   for (let i = 1; i <= 14; i++) {
-  //     this.notifications.push('Notification ' + i);
-  //     this.ownedOrgs.push('Owned Organization ' + i);
-  //     this.joinedOrgs.push('Joined Organization ' + i);
-  //     this.favDevices.push('Favorite Device ' + i);
-  //   }
-  // }
+  //
 }

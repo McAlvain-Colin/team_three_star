@@ -93,6 +93,7 @@ export class ApplicationPageComponent {
         console.log('resp is in app page', resp);
 
         this.appName = resp.body.name;
+        this.appDescription = resp.body.description;
 
 
       },
