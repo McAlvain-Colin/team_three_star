@@ -65,6 +65,10 @@ export interface SensorData {
 export interface PayloadRecord {
   [key: string]: number | string;
 }
+export interface variableMap {
+  [key: string]: any;
+}
+
 
 export interface Device {
   name: string;
@@ -419,7 +423,7 @@ export class FilterPageComponent {
         this.metadataSource.data = records;
 
         this.filteredPayloadDataSource.data = [...this.payloadDataSource.data];
-        this.filteredMetadataSource.data = [...this.filteredMetadataSource.data];
+        this.filteredMetadataSource.data = [...this.metadataSource.data];
 
         if (records.length > 0) {
           this.payloadColumns = Object.keys(records[0].payload_dict);
@@ -594,54 +598,57 @@ export class FilterPageComponent {
   filterSensorData() {
     console.log("this worked")
     const formValues = this.filterForm.value.range;
-    console.log("form Values: ", formValues)
+    console.log("form Values: ", formValues);
+    console.log("payloadDataSource: ", this.payloadDataSource.data);
+    const dict = this.payloadDataSource.data;
+    console.log("object keys:  ", Object.keys(dict[1].payload_dict));
 
-    if (this.filterForm.value.range.payloadSelect == true) {
+    let variables : variableMap = {};
+
+    Object.keys(dict[0].payload_dict).forEach(key =>{
+      variables['value_${keys}'] = dict[0].payload_dict[key];
+    })
+
+    if (formValues.payloadSelect == true) {
       console.log("in payload filter")
-      let filteredPayloadDataSource = this.payloadDataSource.data.filter((item) => {
+      this.filteredPayloadDataSource.data = this.payloadDataSource.data.filter((item) => {
+        if(formValues){
+          const dataTypeKey = formValues.dataType;
+          const value = +item.payload_dict[dataTypeKey];
+        }
+
         return (
           (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
           (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
-          // (this.filterForm.value.range.value === '' || item.payload_dict.includes(this.filterForm.value.range.value)) &&
-          // (this.filterForm.value.range.min === '' || item.payload_dict.values.includes(this.filterForm.value.range.min)) &&
-          // (this.filterForm.value.range.max === '' || item.payload_dict.values.includes(this.filterForm.value.range.max)) &&
-          // (this.filterForm.value.range.startValue === '' || item.payload_dict.values.includes(this.filterForm.value.range.startValue)) &&
-          // (this.filterForm.value.range.endValue === '' || item.payload_dict.values.includes(this.filterForm.value.range.endValue)) &&
-
-          // (this.filterForm.value.value === '' || item.payload_dict.values.includes(this.filterForm.value.value)) &&
-          // (this.filterForm.value.dataType === '' || item.payload_dict.includes(this.filterForm.value.dataType)) &&
           (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
-          (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo))  //&&
-          // (this.filterForm.value.applicationID === '' || item.payload_dict.values.includes(this.filterForm.value.applicationID)) &&
-          // (this.filterForm.value.location === '' || item.payload_dict.values.includes(this.filterForm.value.location)) 
+          (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) &&
+          (!formValues.min || (this.value != null && this.value >= formValues.min)) &&
+          (!formValues.max || (this.value != null && this.value <= formValues.max)) 
         )
       });
       if(this.filteredPayloadDataSource.paginator){
         this.filteredPayloadDataSource.paginator.firstPage();
       }
     } 
-    if (this.filterForm.value.range.metadataSelect== true) {
+    if (formValues.metadataSelect == true) {
       console.log("in metadata filter")
-      let filteredMetadataSource= this.metadataSource.data.filter((item) => {
-        //add filter logic
-        //console.log("this worked");
-        return (
-          (this.filterForm.value.range.startTime === '' || item.dev_time.includes(this.filterForm.value.range.startTime)) &&
-          (this.filterForm.value.range.endTime === '' || item.dev_time.includes(this.filterForm.value.range.endTime)) &&
-          // (this.filterForm.value.range.value === '' || item.metadata_dict.includes(this.filterForm.value.range.value)) &&
-          // (this.filterForm.value.range.min === '' || item.metadata_dict.includes(this.filterForm.value.range.min)) &&
-          // (this.filterForm.value.range.max === '' || item.metadata_dict.includes(this.filterForm.value.range.max)) &&
-          // (this.filterForm.value.range.startValue === '' || item.metadata_dict.includes(this.filterForm.value.range.startValue)) &&
-          // (this.filterForm.value.range.endValue === '' || item.metadata_dict.includes(this.filterForm.value.range.endValue)) &&
+      this.filteredMetadataSource.data = this.metadataSource.data.filter((item) => {
+        const dataTypeKey = formValues.dataType;
+        const value = +item.metadata_dict[dataTypeKey];
 
-          // (this.filterForm.value.value === '' || item.metadata_dict.values.includes(this.filterForm.value.value)) &&
-          // (this.filterForm.value.dataType === '' || item.metadata_dict.values.includes(this.filterForm.value.dataType)) &&
-          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) //&&
-          // (this.filterForm.value.applicationID === '' || item.metadata_dict.values.includes(this.filterForm.value.applicationID)) &&
-          // (this.filterForm.value.location === '' || item.metadata_dict.values.includes(this.filterForm.value.location)) 
+        return (
+          (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
+          (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
+          (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
+          (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) &&
+          (!formValues.min || value >= formValues.min) &&
+          (!formValues.max || value <= formValues.max) 
         )
       });
-    }
+      if(this.filteredMetadataSource.paginator){
+        this.filteredMetadataSource.paginator.firstPage();
+      }
+    } 
   }
 
   //data export functions
