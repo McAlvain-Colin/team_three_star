@@ -92,22 +92,6 @@
   overflow-y: auto;
 }
 
-/* .table-container {
-  margin-top: 1%;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 4%;
-
-  max-height: 500px;
-  max-width: 80%;
-  overflow-y: auto;
-  overflow-x: scroll;
-
-  width: 80%;
-  left: 20%;
-  top: 40%;
-} */
-
 .payload-table {
   position: inline;
 
