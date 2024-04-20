@@ -43,7 +43,6 @@ import { UserHomeComponent } from './user-home/user-home.component';
 import { InviteUserComponent } from './invite-user/invite-user.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
-import { CookieService } from 'ngx-cookie-service'
 
 
 @NgModule({
@@ -93,7 +92,6 @@ import { CookieService } from 'ngx-cookie-service'
     ChartService,
     DeviceDataService,
     DataStatsService,
-    CookieService,
     { provide: HTTP_INTERCEPTORS, useClass: appInterceptor, multi: true },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } },
   ],

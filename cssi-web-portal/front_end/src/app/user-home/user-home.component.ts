@@ -43,7 +43,6 @@ import {
 } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
 import { TimerService } from '../login/login.component';
 
 @Component({
