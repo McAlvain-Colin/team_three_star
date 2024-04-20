@@ -348,9 +348,13 @@ export class FilterPageComponent {
   @ViewChild('payloadStatsPaginator') payloadStatsPaginator!: MatPaginator;
   @ViewChild('metadataStatsPaginator') metadataStatsPaginator!: MatPaginator;
   @ViewChild('devicePaginator') devicePaginator!: MatPaginator;
+  @ViewChild('devicePaginator') filteredPayloadPaginator!: MatPaginator;
+  @ViewChild('devicePaginator') filteredMetadataPaginator!: MatPaginator;
 
   payloadDataSource = new MatTableDataSource<SensorData>([]);
+  filteredPayloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
+  filteredMetadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
   paylaodStatSource = new MatTableDataSource<any>([]);
   metadataStatSource = new MatTableDataSource<any>([]);
@@ -359,6 +363,9 @@ export class FilterPageComponent {
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
     this.metadataSource.paginator = this.metadataPaginator;
+    this.filteredPayloadDataSource.paginator = this.filteredPayloadPaginator;
+    this.metadataSource.paginator = this.metadataPaginator;
+    this.filteredMetadataSource.paginator = this.filteredMetadataPaginator;
     this.devIDSource.paginator = this.devIDPaginator;
     this.paylaodStatSource.paginator = this.payloadPaginator;
     this.metadataStatSource.paginator = this.metadataPaginator;
@@ -414,8 +421,8 @@ export class FilterPageComponent {
         this.payloadDataSource.data = records;
         this.metadataSource.data = records;
 
-        console.log(this.payloadDataSource.data)
-        console.log(this.metadataSource.data)
+        this.filteredPayloadDataSource.data = [...this.payloadDataSource.data];
+        this.filteredMetadataSource.data = [...this.filteredMetadataSource.data];
 
         if (records.length > 0) {
           this.payloadColumns = Object.keys(records[0].payload_dict);
@@ -584,24 +591,24 @@ export class FilterPageComponent {
   }
 
   filterSensorData() {
-    console.log("This Worked: ", this.filterForm.value);
-    console.log("Payload: ", this.payloadDataSource.data)
-    const payObj = this.payloadDataSource.data[0].payload_dict;
-    const keys = Object.keys(payObj);
-    const values = Object.values(payObj);
-    console.log('payObj: ', payObj);
-    console.log('keys: ', keys);
-    console.log('values: ', values);
-    const metaObj = this.payloadDataSource.data[0].metadata_dict;
-    const mkeys = Object.keys(metaObj);
-    const mvalues = Object.values(metaObj);
-    console.log('metaObj: ', metaObj);
-    console.log('keys: ', mkeys);
-    console.log('values: ', mvalues);
+    // console.log("This Worked: ", this.filterForm.value);
+    // console.log("Payload: ", this.payloadDataSource.data)
+    // const payObj = this.payloadDataSource.data[0].payload_dict;
+    // const keys = Object.keys(payObj);
+    // const values = Object.values(payObj);
+    // console.log('payObj: ', payObj);
+    // console.log('keys: ', keys);
+    // console.log('values: ', values);
+    // const metaObj = this.payloadDataSource.data[0].metadata_dict;
+    // const mkeys = Object.keys(metaObj);
+    // const mvalues = Object.values(metaObj);
+    // console.log('metaObj: ', metaObj);
+    // console.log('keys: ', mkeys);
+    // console.log('values: ', mvalues);
 
     if (this.filterForm.value.range.payloadSelect == true) {
       //console.log("Payload: ", this.payloadDataSource.data)
-      this.payloadDataSource.data = this.payloadDataSource.data.filter((item) => {
+      let filteredPayloadDataSource = this.payloadDataSource.data.filter((item) => {
         //add filter logic
         //console.log("This Worked: ", typeof(item.payload_dict));
         return (
@@ -623,7 +630,7 @@ export class FilterPageComponent {
       });
     } 
     if (this.filterForm.value.range.metadataSelect== true) {
-      this.metadataSource.data = this.metadataSource.data.filter((item) => {
+      let filteredMetadataSource= this.metadataSource.data.filter((item) => {
         //add filter logic
         //console.log("this worked");
         return (

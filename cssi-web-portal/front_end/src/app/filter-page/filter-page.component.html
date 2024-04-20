@@ -321,7 +321,7 @@
           <p>Payload Table</p>
           <table
             mat-table
-            [dataSource]="payloadDataSource"
+            [dataSource]="filteredPayloadDataSource"
             class="mat-elevation-z8"
           >
             <!-- Dev_eui Column -->
@@ -533,7 +533,7 @@
           <p>Metadata Table</p>
           <table
             mat-table
-            [dataSource]="metadataSource"
+            [dataSource]="filteredMetadataSource"
             class="mat-elevation-z8"
           >
             <!-- Dev_eui Column -->

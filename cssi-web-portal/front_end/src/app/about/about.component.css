@@ -1,11 +1,41 @@
 /* about.component.css */
+/* 
+.html {
+  height: 100%;
+  background-color: aliceblue;
+} */
+.background {
+  background-color: aliceblue;
+  background-size: cover;
+}
 
+.title{
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 100%;
+  justify-content: left;
+  font-size: 50px;
+  text-align: center;
+  margin: 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
 .about-content {
   display: flex;
   flex-direction: column;
   align-items: left;
   width: 100%;
   justify-content: left;
+  font-size: large;
+  text-align: center;
+  margin: 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
 }
 .mat-card-title {
   text-align: center;
@@ -14,12 +44,26 @@
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
+  font-size: large;
+  text-align: center;
+  margin: 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: inline;
 }
 
 .mat-card-header {
   align-self: center;
   display: block;
   justify-content: center;
+  font-size: large;
+  text-align: center;
+  margin: 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: inline;
 }
 
 .mat-grid-list {
@@ -31,6 +75,13 @@
 mat-card-content {
   text-align: center;
   display: block;
+  font-size: large;
+  text-align: center;
+  margin: 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: inline;
 }
 
 .mat-grid-tile {
@@ -47,13 +98,73 @@ mat-card-content {
 
 .name-line {
   font-size: xx-large;
+  font-size: large;
+  text-align: center;
+  margin: 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: inline;html {
+    height: 100%;
+    background-color: aliceblue;
+  }
+  body {
+    min-height: 100%;
+    position: absolute;
+    background-color: aliceblue;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+  }
+  
+  display: inline;
+}
+.about-body{
+  font-size: large;
+  text-align: center;
+  margin: 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: inline;
+}
+.tag-line{
+  font-size: xx-large;
+  text-align: center;
+  margin: 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: inline;
 }
 
-body {
-  /* This is the main control for the visuals on the background of the home page */
-  background-image: url("../../assets/unr.jpeg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
+.content {
+  flex-direction: column;
+  font-size: large;
+  text-align: center;
+  margin: 10px 10px;
+  justify-content: center;
+  align-items: center;
+  display: inline;
+  width: 80%;
+  margin-left: 10%;
+  text-align: center;
+}
+.box{
+  width: 80%;
+  padding: 10px;
+  text-align: justify;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-left: 10%;
+  margin-top: 50px;
+}
+.final_box{
+  width: 80%;
+  padding: 10px;
+  text-align: justify;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-left: 10%;
+  margin-top: 50px;
+  margin-bottom: 100px;
 }

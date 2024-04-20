@@ -37,4 +37,12 @@ export class AboutComponent {
     { url: '../../assets/zach.png', alt: 'Zach Estreito' },
     { url: '../../assets/kaden.png', alt: 'Kaden Nesch' },
   ];
+  nvwex_images = [
+    { url: '../../assets/IMG_6866.jpg', alt: 'CSSI Meeting' },
+    { url: '../../assets/Home-page-2.jpg', alt: 'Weather Station' },
+    { url: '../../assets/home-background.jpg', alt: 'Nevada Mountain Range' },
+    { url: '../../assets/lora_temp_probe.jpeg', alt: 'LoRa Temperature Probe' },
+    { url: '../../assets/lora_gateway.jpeg', alt: 'LoRa Gateway' },
+    { url: '../../assets/nevada_google_map.jpeg', alt: 'Nevada Toplogical Map' },
+  ];
 }

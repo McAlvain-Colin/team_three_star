@@ -8,21 +8,18 @@
     <link rel="stylesheet" href="about.component.css" />
   </head>
   <app-tool-bar>
-    <body>
-      <mat-card class="about-content">
-        <mat-card-title>Team Three Star TO5: CSSI-Portal</mat-card-title>
-        <mat-card-header>Connecting Data and Scientists</mat-card-header>
-        <mat-card-content>
-          <p>
-            The purpose of this web portal is to provide easier accessibility
-            for scientists, and the public to view and manage their LoRa devices
-            allowing quick access to climate information.
-          </p>
-        </mat-card-content>
+    <body class="background">
+      <mat-card class="box">
+        <mat-card-title class="title">Team Three Star TO5: CSSI-Portal</mat-card-title>
+        <mat-card-title class="tag-line">Connecting Data and Scientists</mat-card-title>
+        <mat-card-header class="content">CS426 Senior Project Computer Science</mat-card-header>
+        <mat-card-header class="content">Spring 2024</mat-card-header>
+        <mat-card-header class="content">University of Nevada, Reno</mat-card-header>
+        <mat-card-header class="content">Computer Science Engineering Department</mat-card-header>
       </mat-card>
 
-      <mat-card>
-        <mat-card-title>The Team</mat-card-title>
+      <mat-card class="box">
+        <mat-card-title class="content">The Team</mat-card-title>
         <mat-grid-list cols="3" rowHeight="1:1" gutterSize="4px">
           <mat-grid-tile class="image-tile" *ngFor="let image of team_images">
             <img
@@ -35,7 +32,7 @@
             }}</mat-grid-tile-footer>
           </mat-grid-tile>
         </mat-grid-list>
-        <mat-card-title>Instructors</mat-card-title>
+        <mat-card-title class="content">Instructors</mat-card-title>
         <mat-grid-list cols="3" rowHeight="1:1" gutterSize="4px">
           <mat-grid-tile
             class="image-tile"
@@ -51,7 +48,7 @@
             }}</mat-grid-tile-footer>
           </mat-grid-tile>
         </mat-grid-list>
-        <mat-card-header>Advisors</mat-card-header>
+        <mat-card-header class="content">Advisors</mat-card-header>
         <mat-grid-list cols="3" rowHeight="1:1" gutterSize="4px">
           <mat-grid-tile
             class="image-tile"
@@ -69,67 +66,56 @@
         </mat-grid-list>
       </mat-card>
 
-      <mat-card>
-        <mat-card-title>Description</mat-card-title>
-        <mat-card-header>CS426 Senior Project Computer Science</mat-card-header>
-        <mat-card-header>Spring 2024</mat-card-header>
-        <mat-card-header>University of Nevada, Reno</mat-card-header>
-        <mat-card-header
-          >Computer Science Engineering Department</mat-card-header
-        >
-        <mat-card-content>
-          <p>TODO: description</p>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card>
-        <mat-card-title>Resources</mat-card-title>
-        <mat-card-header>Resources #1</mat-card-header>
-        <mat-card-header>Resources #2</mat-card-header>
-        <mat-card-header>Resources #3</mat-card-header>
-        <mat-card-header>Resources #4</mat-card-header>
-      </mat-card>
-
-      <mat-card>
-        <mat-card-title>Description</mat-card-title>
-        <mat-card-header>CS426 Senior Project Computer Science</mat-card-header>
-        <mat-card-header>Spring 2024</mat-card-header>
-        <mat-card-header>University of Nevada, Reno</mat-card-header>
-        <mat-card-header
-          >Computer Science Engineering Department</mat-card-header
-        >
-        <mat-card-content>
+      <mat-card class="box">
+        <mat-card-content class="content"> 
           <p>
-            The CSSI Web Portal is desiged to be a data portal for researchers,
-            utilizing LoRa devices set up across the Greater Nevada Area to
-            analyze climate data, Initally created for researcher, the portal is
-            planned to extend to the general populace, utilizing sensors for
-            comuunity-wide alerts on threats like wildfires, enhancing local
-            saftey. The project utiliizes an Angular-based framework, HTML, CSS,
-            and TypeScript to create its front-end design. The backend structure
-            consists of Apache acting as a middleware, Python for the backend
-            logic, PostgreSQL for database management, with a Linux operating
-            system, and a planned nginx load balancing system.
+            The CSSI_Web Portal is a link between scientist and data stored on the NvWex cyber infastructure with a stated goal of gathering data to 
+            better handle wildfires and other natural disasters. The NvWex cyber infastructure is a structure that allows organizations to set up
+            LoRa devices in the Greater Nevada area that can send sensor data from teh environment back to secured servers of the NvWex system.
+
+            The CSSI-Web Prtal provides access to the sensor data. Creating tables, graphs, and maps. Provides statistical data, and exports infromation 
+            in csv and png files for external data processing.
           </p>
         </mat-card-content>
       </mat-card>
 
-      <mat-card>
-        <mat-card-title>Resources</mat-card-title>
-        <mat-card-header>Resources #1</mat-card-header>
-        <mat-card-header>Resources #2</mat-card-header>
-        <mat-card-header>Resources #3</mat-card-header>
-        <mat-card-header>Resources #4</mat-card-header>
+      <mat-card class="box">
+        <mat-card-title class="content">Resources</mat-card-title>
+        <mat-card-header class="content">Angular Materials Library: https://material.angular.io</mat-card-header>
+        <mat-card-header class="content">Nevada Today: https://www.unr.edu/nevada-today/news/2023/edge-to-edge</mat-card-header>
+        <mat-card-header class="content">Flask API: https://flask.palletsprojects.com/en/latest/api/</mat-card-header>
+        <mat-card-header class="content">PSQL RESTful API: https://www.postqresql.org</mat-card-header>
+        <mat-card-header class="content">The Things Network: https://www.thethingsnetwork.org</mat-card-header>
+        <mat-card-header class="content">LoRa Alliance: https://www.lora-alliance.org</mat-card-header>
+        <mat-card-header class="content">Charts.js: https://www.chartjs.org</mat-card-header>
       </mat-card>
 
-      <mat-card>
-        <mat-card-title>Project Video</mat-card-title>
-        <mat-card-header>TBD</mat-card-header>
+      <mat-card class="box">
+        <mat-card-title class="content">Project Video</mat-card-title>
+        <mat-card-header class="content">TBD</mat-card-header>
       </mat-card>
 
-      <mat-card>
-        <mat-card-title>Contact Us</mat-card-title>
-        <mat-card-header>TBD</mat-card-header>
+      <mat-card class="box">
+        <mat-card-title class="content">NvWex</mat-card-title>
+        <mat-grid-list cols="3" rowHeight="1:1" gutterSize="4px">
+          <mat-grid-tile class="image-tile" *ngFor="let image of nvwex_images">
+            <img
+              src="{{ image.url }}"
+              alt="{{ image.alt }}"
+              style="width: 100%"
+            />
+            <mat-grid-tile-footer class="name-line">{{
+              image.alt
+            }}</mat-grid-tile-footer>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card>
+
+      <mat-card class="final_box">
+        <mat-card-title class="content">Contact Us</mat-card-title>
+        <mat-card-header class="content">Colin McAlvain - email: cmcalvain@nevada.unr.edu</mat-card-header>
+        <mat-card-header class="content">David Vargas - email: davidadbdiel775@gmail.com</mat-card-header>
+        <mat-card-header class="content">Huy Tran - email: huytran@nevada.unr.edu</mat-card-header>
       </mat-card>
     </body>
   </app-tool-bar>
