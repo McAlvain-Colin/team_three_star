@@ -139,20 +139,20 @@
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Data Type</mat-hint>
             </mat-form-field>-->
-          </mat-card> 
+          <!-- </mat-card>  -->
 
           <!-- Device ID -->
-          <mat-card class="id-filter">
+          <!-- <mat-card class="id-filter"> -->
             <mat-form-field>
               <mat-label>Device ID: ie '0025CA0A00015EEE'</mat-label>
               <input matInput formControlName="deviceId" />
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Device ID</mat-hint>
             </mat-form-field>
-          </mat-card>
+          <!-- </mat-card> -->
 
           <!-- Data ID -->
-          <mat-card class="id-filter">
+          <!-- <mat-card class="id-filter"> -->
             <mat-form-field>
               <mat-label>Date Information: ie 'Thu, 28 Dec 2023 05:21:39' </mat-label>
               <input matInput formControlName="dateInfo" />
@@ -312,7 +312,7 @@
             <input
               matInput
               (keyup)="applyPayloadFilter($event)"
-              placeholder="Dev_eui"
+              placeholder="Type to filter data, e.g., Dev_eui or Time"
               #input
             />
           </mat-form-field>
@@ -533,7 +533,7 @@
           <p>Metadata Table</p>
           <table
             mat-table
-            [dataSource]="filteredMetadataSource"
+            [dataSource]="metadataSource"
             class="mat-elevation-z8"
           >
             <!-- Dev_eui Column -->
