@@ -304,8 +304,6 @@ export class FilterPageComponent {
       //console.log('Device Source1: ', this.deviceSource.data);
 
     this.filterForm = this.fb.group({
-      // startTime: [''], //, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
-      // endTime: [''], //, Validators],
       range: this.fb.group({
         value: [this.value],
         min: [this.min],
@@ -320,13 +318,12 @@ export class FilterPageComponent {
         payloadSelect: false,
         startTime: '',
         endTime: '',
+        deviceId: '',
+        dateInfo: '',
+        dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
+        applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
+        location: [''] //, Validators.pattern('[a-zA-Z ]*')]
       }),
-      value: 0,
-      dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
-      deviceId: [''], //, Validators.pattern('[a-zA-Z ]*')],
-      dateInfo: [''],
-      applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
-      location: [''], //, Validators.pattern('[a-zA-Z ]*')]
 
     });
   }
@@ -543,6 +540,10 @@ export class FilterPageComponent {
       )
     );
   }
+  applyFilter(event: Event){
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filteredPayloadDataSource.filter = filterValue.trim().toLowerCase();
+  }
   applyDeviceFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.deviceSource.filter = filterValue.trim().toLowerCase();
@@ -578,29 +579,16 @@ export class FilterPageComponent {
   }
 
   filterSensorData() {
-    // console.log("This Worked: ", this.filterForm.value);
-    // console.log("Payload: ", this.payloadDataSource.data)
-    // const payObj = this.payloadDataSource.data[0].payload_dict;
-    // const keys = Object.keys(payObj);
-    // const values = Object.values(payObj);
-    // console.log('payObj: ', payObj);
-    // console.log('keys: ', keys);
-    // console.log('values: ', values);
-    // const metaObj = this.payloadDataSource.data[0].metadata_dict;
-    // const mkeys = Object.keys(metaObj);
-    // const mvalues = Object.values(metaObj);
-    // console.log('metaObj: ', metaObj);
-    // console.log('keys: ', mkeys);
-    // console.log('values: ', mvalues);
+    console.log("this worked")
+    const formValues = this.filterForm.value.range;
+    console.log("form Values: ", formValues)
 
     if (this.filterForm.value.range.payloadSelect == true) {
-      //console.log("Payload: ", this.payloadDataSource.data)
+      console.log("in payload filter")
       let filteredPayloadDataSource = this.payloadDataSource.data.filter((item) => {
-        //add filter logic
-        //console.log("This Worked: ", typeof(item.payload_dict));
         return (
-          (this.filterForm.value.range.startTime === '' || item.dev_time.includes(this.filterForm.value.range.startTime)) &&
-          (this.filterForm.value.range.endTime === '' || item.dev_time.includes(this.filterForm.value.range.endTime)) &&
+          (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
+          (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
           // (this.filterForm.value.range.value === '' || item.payload_dict.includes(this.filterForm.value.range.value)) &&
           // (this.filterForm.value.range.min === '' || item.payload_dict.values.includes(this.filterForm.value.range.min)) &&
           // (this.filterForm.value.range.max === '' || item.payload_dict.values.includes(this.filterForm.value.range.max)) &&
@@ -609,14 +597,18 @@ export class FilterPageComponent {
 
           // (this.filterForm.value.value === '' || item.payload_dict.values.includes(this.filterForm.value.value)) &&
           // (this.filterForm.value.dataType === '' || item.payload_dict.includes(this.filterForm.value.dataType)) &&
-          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) &&
-          (this.filterForm.value.dateInfo === '' || item.dev_time.includes(this.filterForm.value.dateInfo)) //&&
+          (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
+          (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo))  //&&
           // (this.filterForm.value.applicationID === '' || item.payload_dict.values.includes(this.filterForm.value.applicationID)) &&
           // (this.filterForm.value.location === '' || item.payload_dict.values.includes(this.filterForm.value.location)) 
         )
       });
+      if(this.filteredPayloadDataSource.paginator){
+        this.filteredPayloadDataSource.paginator.firstPage();
+      }
     } 
     if (this.filterForm.value.range.metadataSelect== true) {
+      console.log("in metadata filter")
       let filteredMetadataSource= this.metadataSource.data.filter((item) => {
         //add filter logic
         //console.log("this worked");
