@@ -337,8 +337,8 @@ export class FilterPageComponent {
   @ViewChild('payloadStatsPaginator') payloadStatsPaginator!: MatPaginator;
   @ViewChild('metadataStatsPaginator') metadataStatsPaginator!: MatPaginator;
   @ViewChild('devicePaginator') devicePaginator!: MatPaginator;
-  @ViewChild('devicePaginator') filteredPayloadPaginator!: MatPaginator;
-  @ViewChild('devicePaginator') filteredMetadataPaginator!: MatPaginator;
+  @ViewChild('filteredPayloadPaginator') filteredPayloadPaginator!: MatPaginator;
+  @ViewChild('filteredMetadataPaginator') filteredMetadataPaginator!: MatPaginator;
 
   payloadDataSource = new MatTableDataSource<SensorData>([]);
   filteredPayloadDataSource = new MatTableDataSource<SensorData>([]);
@@ -359,13 +359,6 @@ export class FilterPageComponent {
     this.paylaodStatSource.paginator = this.payloadPaginator;
     this.metadataStatSource.paginator = this.metadataPaginator;
     this.deviceSource.paginator = this.devicePaginator;
-
-    ////console.log('Payload Source: ', this.payloadDataSource.data)
-    ////console.log('Metadata Source: ', this.metadataSource.data)
-    ////console.log('devID Source: ', this.devIDSource.data)
-    ////console.log('PayStats Source: ', this.paylaodStatSource.data)
-    ////console.log('MetaSatas Source: ', this.metadataStatSource.data)
-    ////console.log('Device Source: ', this.deviceSource.data)
   }
   private getDataSetup(): void {
     //console.log('Data Setup: ', this.deviceList[1].name, this.deviceList[1].devEUI);
@@ -613,9 +606,9 @@ export class FilterPageComponent {
           (!formValues.max || (this.value != null && this.value <= formValues.max)) 
         )
       });
-      if(this.filteredPayloadDataSource.paginator){
-        this.filteredPayloadDataSource.paginator.firstPage();
-      }
+      // if(this.filteredPayloadDataSource.paginator){
+      //   this.filteredPayloadDataSource.paginator.firstPage();
+      // }
     } 
     if (formValues.metadataSelect == true) {
       //console.log("in metadata filter")
@@ -632,9 +625,9 @@ export class FilterPageComponent {
           (!formValues.max || value <= formValues.max) 
         )
       });
-      if(this.filteredMetadataSource.paginator){
-        this.filteredMetadataSource.paginator.firstPage();
-      }
+      // if(this.filteredMetadataSource.paginator){
+      //   this.filteredMetadataSource.paginator.firstPage();
+      // }
     } 
   }
 
@@ -862,15 +855,13 @@ export class FilterPageComponent {
     ////console.warn('checkboxLabel wa called without a row or index.');
     return '';
   }
-  shouldHighlightPayload(value: any, key: any, column: any): boolean {
+  shouldHighlightPayload(value: any, key: any): boolean {
     const dataValues = this.paylaodStatSource.data;
     const statValues = dataValues[key+1];
     try{
       const mean = parseFloat(statValues.mean);
       const stddev = parseFloat(statValues.standard_deviation);
-      console.log('column: ', column);
-      console.log('value: ', value, 'Upperbound: ', mean +stddev-5)
-      if( (value <= mean + stddev-5) && (value >= mean - stddev+5)){ 
+      if( (value > (mean + stddev - 2)) && (value < (mean - stddev +2))){ 
         return true;
       }
       return false; 
@@ -880,13 +871,20 @@ export class FilterPageComponent {
     }
   }
 
-  shouldHighlightMetadata(value: any): boolean {
-    const statValues = this.paylaodStatSource
-    if( value > 20.99 + 1.71 || 20.99  < value - 1.71){ 
-      console.log('value: ', value);
-      return true;
+  shouldHighlightMetadata(value: any, key: any): boolean {
+    const dataValues = this.metadataStatSource.data;
+    const statValues = dataValues[key+1];
+    try{
+      const mean = parseFloat(statValues.mean);
+      const stddev = parseFloat(statValues.standard_deviation);
+      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
+        return true;
+      }
+      return false; 
     }
-    return false; 
+    catch{
+      return false;
+    }
   }
 }
 
