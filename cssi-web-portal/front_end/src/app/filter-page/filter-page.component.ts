@@ -254,12 +254,12 @@ export class FilterPageComponent {
 
           let resp = JSON.parse(res);
 
-          console.log('resp is in app page', resp);
+          //console.log('resp is in app page', resp);
 
           this.appName = resp.body.name;
         },
         error: (error) => {
-          console.error(error);
+          //console.error(error);
         },
       });
      // this is for giving one device EUI from the given dev name from the user.
@@ -275,13 +275,13 @@ export class FilterPageComponent {
 
     //     let resp = JSON.parse(res);
 
-    //     console.log('resp is in app page', resp.body.dev_eui);
+    //     //console.log('resp is in app page', resp.body.dev_eui);
     //     this.deviceList[1].devEUI = resp.body.dev_eui;
-    //     console.log('DEV_EUI', this.deviceList[1].devEUI);
+    //     //console.log('DEV_EUI', this.deviceList[1].devEUI);
     //     this.getDataSetup();
     //   },
     //   error: (error) => {
-    //     console.error(error);
+    //     //console.error(error);
     //   },
     // });
     // this is for getting the organizations's applications associated with it
@@ -309,14 +309,13 @@ export class FilterPageComponent {
           this.getDataSetup();
         },
         error: (error) => {
-          console.error(error);
+          //console.error(error);
         },       
       });
     
       this.deviceSource.data = this.deviceList;
       this.deviceSource.filter = '';
       this.deviceSource._updateChangeSubscription();
-      //console.log('Device Source1: ', this.deviceSource.data);
 
     this.filterForm = this.fb.group({
       range: this.fb.group({
@@ -372,15 +371,15 @@ export class FilterPageComponent {
     this.metadataStatSource.paginator = this.metadataPaginator;
     this.deviceSource.paginator = this.devicePaginator;
 
-    //console.log('Payload Source: ', this.payloadDataSource.data)
-    //console.log('Metadata Source: ', this.metadataSource.data)
-    //console.log('devID Source: ', this.devIDSource.data)
-    //console.log('PayStats Source: ', this.paylaodStatSource.data)
-    //console.log('MetaSatas Source: ', this.metadataStatSource.data)
-    //console.log('Device Source: ', this.deviceSource.data)
+    ////console.log('Payload Source: ', this.payloadDataSource.data)
+    ////console.log('Metadata Source: ', this.metadataSource.data)
+    ////console.log('devID Source: ', this.devIDSource.data)
+    ////console.log('PayStats Source: ', this.paylaodStatSource.data)
+    ////console.log('MetaSatas Source: ', this.metadataStatSource.data)
+    ////console.log('Device Source: ', this.deviceSource.data)
   }
   private getDataSetup(): void {
-    console.log('Data Setup: ', this.deviceList[1].name, this.deviceList[1].devEUI);
+    //console.log('Data Setup: ', this.deviceList[1].name, this.deviceList[1].devEUI);
     // this.apiService.getAltData().subscribe({
     //   next: (data: SensorData[]) => {
     //     const records = data.map((item: SensorData) => ({
@@ -392,7 +391,7 @@ export class FilterPageComponent {
     //     this.payloadDataSource.data = records;
     //     this.metadataSource.data = records;
       
-    //     //console.log(this.payloadDataSource.data[1].dev_time);
+    //     ////console.log(this.payloadDataSource.data[1].dev_time);
 
     //     if (records.length > 0) {
     //       this.payloadColumns = Object.keys(records[0].payload_dict);
@@ -406,7 +405,7 @@ export class FilterPageComponent {
     //     }
     //   },
     //   error: (error) => {
-    //     console.error('Error: ', error);
+    //     //console.error('Error: ', error);
     //   },
     // });
     this.apiService.getData(this.deviceList[1].devEUI).subscribe({
@@ -435,7 +434,7 @@ export class FilterPageComponent {
         }
       },
       error: (error) => {
-        console.error('Error: ', error);
+        //console.error('Error: ', error);
       },
     });
     this.apiService.getPayloadStatisticsData(this.deviceList[1].devEUI).subscribe({
@@ -452,18 +451,18 @@ export class FilterPageComponent {
             mode: stats.mode,
           };
         });
-        // console.log(payloadStatRecord)
+        // //console.log(payloadStatRecord)
 
         this.paylaodStatSource.data = payloadStatRecord;
       },
 
       error: (error) => {
-        console.error('Error: ', error);
+        //console.error('Error: ', error);
       },
     });
     this.apiService.getMetadataStatisticsData(this.deviceList[1].devEUI).subscribe({
       next: (data: any[]) => {
-        //console.log(data);
+        ////console.log(data);
         const metadataStatRecord = Object.keys(data).map((key: any) => {
           const stats = data[key];
 
@@ -476,13 +475,13 @@ export class FilterPageComponent {
             mode: stats.mode,
           };
         });
-        //console.log(metadataStatRecord);
+        ////console.log(metadataStatRecord);
 
         this.metadataStatSource.data = metadataStatRecord;
       },
 
       error: (error) => {
-        console.error('Error: ', error);
+        //console.error('Error: ', error);
       },
     });
     // this.fetchDevices();
@@ -493,8 +492,8 @@ export class FilterPageComponent {
   fetchDevices(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
     this.devName = this.route.snapshot.paramMap.get('dev');
-    //console.log('appId1: ', this.appId);
-    //console.log('devName1: ', this.devName)
+    ////console.log('appId1: ', this.appId);
+    ////console.log('devName1: ', this.devName)
     const param = new HttpParams()
       .set('app', this.appId != null ? this.appId : '-1')
       .set('devName', this.devName != null ? this.devName : 'none');
@@ -512,7 +511,7 @@ export class FilterPageComponent {
           let resp = JSON.parse(res);
 
           for (var i = 0; i < resp.body.list.length; i++) {
-            //console.log('index: ', resp.body.list[i].name);
+            ////console.log('index: ', resp.body.list[i].name);
             this.devices.push(resp.body.list[i].name);
             this.deviceList.push({
               name: resp.body.list[i].name,
@@ -521,13 +520,13 @@ export class FilterPageComponent {
           }
         },
         error: (error) => {
-          console.error(error);
+          //console.error(error);
         },
       });
       this.deviceSource.data = this.deviceList;
       this.deviceSource.filter = '';
       this.deviceSource._updateChangeSubscription();
-      //console.log('Device Source1: ', this.deviceSource.data);
+      ////console.log('Device Source1: ', this.deviceSource.data);
   }
 
   //device management
@@ -591,17 +590,17 @@ export class FilterPageComponent {
     if (this.filterForm.valid) {
       this.filterSensorData();
     } else {
-      console.error('Error: ', Error);
+      //console.error('Error: ', Error);
     }
   }
 
   filterSensorData() {
-    console.log("this worked")
+    //console.log("this worked")
     const formValues = this.filterForm.value.range;
-    console.log("form Values: ", formValues);
-    console.log("payloadDataSource: ", this.payloadDataSource.data);
+    //console.log("form Values: ", formValues);
+    //console.log("payloadDataSource: ", this.payloadDataSource.data);
     const dict = this.payloadDataSource.data;
-    console.log("object keys:  ", Object.keys(dict[1].payload_dict));
+    //console.log("object keys:  ", Object.keys(dict[1].payload_dict));
 
     let variables : variableMap = {};
 
@@ -610,7 +609,7 @@ export class FilterPageComponent {
     })
 
     if (formValues.payloadSelect == true) {
-      console.log("in payload filter")
+      //console.log("in payload filter")
       this.filteredPayloadDataSource.data = this.payloadDataSource.data.filter((item) => {
         if(formValues){
           const dataTypeKey = formValues.dataType;
@@ -631,7 +630,7 @@ export class FilterPageComponent {
       }
     } 
     if (formValues.metadataSelect == true) {
-      console.log("in metadata filter")
+      //console.log("in metadata filter")
       this.filteredMetadataSource.data = this.metadataSource.data.filter((item) => {
         const dataTypeKey = formValues.dataType;
         const value = +item.metadata_dict[dataTypeKey];
@@ -661,7 +660,7 @@ export class FilterPageComponent {
 
     // Validate data format
     if (!data.every((item) => typeof item === 'object' && item !== null)) {
-      console.error('Invalid data format for CSV export');
+      //console.error('Invalid data format for CSV export');
       return;
     }
 
@@ -731,7 +730,7 @@ export class FilterPageComponent {
         this.initializePayloadChart();
       },
       error: (error) => {
-        console.error('Error fetching payload data:', error);
+        //console.error('Error fetching payload data:', error);
       },
     });
   }
@@ -748,7 +747,7 @@ export class FilterPageComponent {
         this.initializeMetadataChart();
       },
       error: (error) => {
-        console.error('Error fetching metadata:', error);
+        //console.error('Error fetching metadata:', error);
       },
     });
   }
@@ -863,7 +862,7 @@ export class FilterPageComponent {
   }
 
   checkboxLabel(index?: number, row?: string): string {
-    // console.log('Selection: ', this.selection.selected)
+    // //console.log('Selection: ', this.selection.selected)
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
@@ -872,7 +871,32 @@ export class FilterPageComponent {
         this.selection.isSelected(row) ? 'deselect' : 'select'
       } row number ${index + 1}`;
     }
-    //console.warn('checkboxLabel wa called without a row or index.');
+    ////console.warn('checkboxLabel wa called without a row or index.');
     return '';
   }
+  shouldHighlightPayload(value: any, key: any, column: any): boolean {
+    // console.log('column: ', column);
+    // console.log('key: ', key);
+    // console.log('value: ', value);
+    // console.log(' this.paylaodStatSource.data: ',  this.paylaodStatSource.data);
+    
+    const statValues = this.paylaodStatSource.data[key];
+    // console.log('this.paylaodStatSource.data[0]: ', this.paylaodStatSource.data[key]);
+    // console.log('statValues: ', statValues);
+    if( value > statValues.mean[column] + statValues.standard_deviation[column] || value < statValues.mean[column] - statValues.standard_deviation[column]){ 
+      // console.log('value: ', value);
+      return true;
+    }
+    return false; 
+  }
+
+  shouldHighlightMetadata(value: any): boolean {
+    const statValues = this.paylaodStatSource
+    if( value > 20.99 + 1.71 || 20.99  < value - 1.71){ 
+      console.log('value: ', value);
+      return true;
+    }
+    return false; 
+  }
 }
+
