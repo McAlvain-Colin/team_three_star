@@ -11,7 +11,7 @@ import { ApiService } from '../api.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe, getLocaleNumberSymbol } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
@@ -441,6 +441,7 @@ export class FilterPageComponent {
         // //console.log(payloadStatRecord)
 
         this.paylaodStatSource.data = payloadStatRecord;
+        
       },
 
       error: (error) => {
@@ -862,19 +863,21 @@ export class FilterPageComponent {
     return '';
   }
   shouldHighlightPayload(value: any, key: any, column: any): boolean {
-    // console.log('column: ', column);
-    // console.log('key: ', key);
-    // console.log('value: ', value);
-    // console.log(' this.paylaodStatSource.data: ',  this.paylaodStatSource.data);
-    
-    const statValues = this.paylaodStatSource.data[key];
-    // console.log('this.paylaodStatSource.data[0]: ', this.paylaodStatSource.data[key]);
-    // console.log('statValues: ', statValues);
-    if( value > statValues.mean[column] + statValues.standard_deviation[column] || value < statValues.mean[column] - statValues.standard_deviation[column]){ 
-      // console.log('value: ', value);
-      return true;
+    const dataValues = this.paylaodStatSource.data;
+    const statValues = dataValues[key+1];
+    try{
+      const mean = parseFloat(statValues.mean);
+      const stddev = parseFloat(statValues.standard_deviation);
+      console.log('column: ', column);
+      console.log('value: ', value, 'Upperbound: ', mean +stddev-5)
+      if( (value <= mean + stddev-5) && (value >= mean - stddev+5)){ 
+        return true;
+      }
+      return false; 
     }
-    return false; 
+    catch{
+      return false;
+    }
   }
 
   shouldHighlightMetadata(value: any): boolean {
