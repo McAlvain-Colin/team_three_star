@@ -19,7 +19,8 @@ import {
   MatPaginatorModule,
   PageEvent,
 } from '@angular/material/paginator';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -72,7 +73,7 @@ export class ApplicationPageComponent {
     ChangeDetectorRef.prototype
   );
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {} //makes an instance of the router
+  constructor(private route: ActivatedRoute, private http: HttpClient,private snackBar: MatSnackBar  ) {} //makes an instance of the router
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
     if (this.appId == null) {
@@ -97,9 +98,15 @@ export class ApplicationPageComponent {
 
 
       },
-      error: (error) => {
-        console.error(error);
-      },
+      error: (error: HttpErrorResponse) => {
+
+        const message = error.error.errorMessage;
+        this.snackBar.open(message, 'Close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+        
+      }
     });
 
 
@@ -121,9 +128,15 @@ export class ApplicationPageComponent {
         }
 
       },
-      error: (error) => {
-        console.error(error);
-      },
+      error: (error: HttpErrorResponse) => {
+
+        const message = error.error.errorMessage;
+        this.snackBar.open(message, 'Close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+        
+      }
     });
 
           

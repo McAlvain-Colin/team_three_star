@@ -17,6 +17,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   HttpClient,
   HttpClientModule,
+  HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
 
@@ -93,13 +94,15 @@ export class AddDeviceComponent {
             });
           }
         },
-        error: (error) => {
-          message = 'There was an error that occurred: \n' + error;
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-        },
+          
+        }
       });
   }
 }

@@ -39,24 +39,26 @@ import {
 
 import { Observable, catchError, map, mergeMap, throwError } from 'rxjs';
 
-// import { CookieService } from 'ngx-cookie-service';
-import { Browser } from 'leaflet';
+// import { Browser } rom 'leaflet';
 
 // import { CanActivateFn, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 // added implementation for checking if there a token in the local storage, if ther is go to dashbaord, otherwise go to the homepage
 import { inject } from '@angular/core';
-import { ObserversModule } from '@angular/cdk/observers';
 
+// auth guard to protect routes can only be accessed if there is an 
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot
+  state: RouterStateSnapshot,
+  // timerService: TimerService
 ) => {
+  const timerService = inject(TimerService);
   const router: Router = inject(Router);
-  const protectedRoutes: string[] = ['/dashboard'];
+  const token = sessionStorage.getItem('refreshToken');
+  const protectedRoutes: string[] = ['/dashboard', '/home', '/organization', '/application', '/device', '/filter'];
 
-  return protectedRoutes.includes(state.url) && !localStorage.getItem('token')
-    ? router.navigate(['/'])
+  return protectedRoutes.includes(state.url) && (!sessionStorage.getItem('refreshToken') || !sessionStorage.getItem('token')) || new RegExp('(^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$)').test(token!)
+    ? router.navigate(['/login'])
     : true;
 };
 
@@ -72,7 +74,7 @@ export class TimerService
   constructor(private router: Router, private http: HttpClient){}
 
 
-  private logout() {
+  logout() {
     console.log('in logout func');
     this.http
       .delete('http://localhost:5000/logout', {
@@ -86,7 +88,8 @@ export class TimerService
           console.log('deleted message');
           console.log(resp);
 
-          localStorage.clear();
+          sessionStorage.clear();
+          this.stopRefreshTimer();
           
 
           this.router.navigate(['/login']);
@@ -97,16 +100,35 @@ export class TimerService
       });
   }
 
-  startRefreshTokenTimer()
+  
+
+
+  isJWTExpired(jwt: string)
   {
-    let refreshToken = localStorage.getItem('refreshToken')
+    let refreshToken = sessionStorage.getItem('refreshToken')
 
     let jwtBase64 = refreshToken!.split('.')[1];
 
     let token = JSON.parse(atob(jwtBase64)); 
 
     let expires = new Date(token.exp * 1000);
-    let timeout = expires.getTime() - Date.now() - (60 * 1000);
+
+    return expires > new Date();
+    
+  }
+
+
+
+  startRefreshTokenTimer()
+  {
+    let refreshToken = sessionStorage.getItem('refreshToken')
+
+    let jwtBase64 = refreshToken!.split('.')[1];
+
+    let token = JSON.parse(atob(jwtBase64)); 
+
+    let expires = new Date(token.exp * 1000);
+    let timeout = expires.getTime() - Date.now() - (120 * 1000);
     this.timer = setTimeout(() => this.logout(), timeout)
   }
 
@@ -127,30 +149,7 @@ export class appInterceptor implements HttpInterceptor {
   constructor(private router: Router, private http: HttpClient){}
   
 
-  // private logout() {
-  //   console.log('in logout func');
-  //   this.http
-  //     .delete('http://localhost:5000/logout', {
-  //       observe: 'response',
-  //       responseType: 'json',
-  //     })
-  //     .subscribe({
-  //       next: (response) => {
-  //         const resp = { ...response.body };
-
-  //         console.log('deleted message');
-  //         console.log(resp);
-
-  //         localStorage.clear();
-          
-
-  //         this.router.navigate(['/login']);
-  //       },
-  //       error: (error) => {
-  //         console.error(error);
-  //       },
-  //     });
-  // }
+ 
 
 
 
@@ -161,13 +160,27 @@ export class appInterceptor implements HttpInterceptor {
     return this.http.post('http://localhost:5000/refresh', {}, {headers: header}).pipe(
       map((data: any)  => {
         console.log('data is ', data.token)
-        localStorage.setItem('token', data.token)
+        sessionStorage.setItem('token', data.token)
 
         const clone = req.clone({
           headers: req.headers.set('Authorization', 'Bearer ' + data.token)
         });
         
-        return next.handle(clone);
+        return next.handle(clone).pipe(catchError((error: HttpErrorResponse) =>
+          {
+            if(error instanceof HttpErrorResponse)
+            {
+              // need to add the logout revoke tokne thing here
+             
+              sessionStorage.clear()
+              this.router.navigate(['login'])
+  
+              return throwError(() => error);
+            }
+            return throwError(() => error);
+
+          }
+        ));
       }),
       
       mergeMap(res => res)
@@ -179,13 +192,14 @@ export class appInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // req = req.clone({withCredentials: true})
-    const currToken = localStorage.getItem('token')
+
+    const currToken = sessionStorage.getItem('token')
     
 
     
     if(!req.url.includes('refresh'))
     {
-      const currToken = localStorage.getItem('token')
+      const currToken = sessionStorage.getItem('token')
 
       req = req.clone({
         headers: req.headers.set('Authorization', 'Bearer ' + currToken),
@@ -194,7 +208,7 @@ export class appInterceptor implements HttpInterceptor {
     
     else
     {
-      const refreshToken = localStorage.getItem('refreshToken');
+      const refreshToken = sessionStorage.getItem('refreshToken');
       
       req = req.clone({
         headers: req.headers.set('Authorization', 'Bearer ' + refreshToken),
@@ -362,8 +376,8 @@ export class LoginComponent {
             console.log(resp.body);
 
             
-            localStorage.setItem('token', resp.token);
-            localStorage.setItem('refreshToken', resp.refreshToken)
+            sessionStorage.setItem('token', resp.token);
+            sessionStorage.setItem('refreshToken', resp.refreshToken)
             this.timerService.startRefreshTokenTimer()
 
             if (this.checkResponse(resp.login)) {
@@ -379,80 +393,19 @@ export class LoginComponent {
               });
             }
           },
-          error: (error) => {
-            console.error(error);
+          error: (error: HttpErrorResponse )=> {
+            //lack of valid authenication 
+            console.error('error in subscribe is ', error);
+            
+            message = 'Email and/or Password Incorrect!';
+            this.snackBar.open(message, 'Close', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
           },
         });
     }
-    // else {
-    //   alert(message);
-    // }
-
-    // console.log("the form is: ", {email  : this.emailField.getRawValue(),  password : this.password})
-
-    //this code for sending get requests and saving response in a variable
-    // this.http.get(this.base_url,{responseType : 'text'}).subscribe(
-    // {
-    //   next: (response) =>
-    //   {
-    //     this.backendResponse = response;
-    //     console.log("this post is : " + this.backendResponse);
-    //   },
-    //   error: (error) =>
-    //   {
-    //     console.error(error);
-    //   },
-    // }
-
-    // )
-
-    //===================================================
-    //send to the backend so to check if user is valid
-    // this.http.post(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'text'}).subscribe(
-    //   {
-    //     next: (response) =>
-    //     {
-    //       this.backendResponse = response;
-    //       console.log("this post is :" + this.backendResponse + "space");
-    //       console.log("this post is : " + typeof(this.backendResponse));
-    //       this.checkResponse(this.backendResponse);
-
-    //     },
-    //     error: (error) =>
-    //     {
-    //       console.error(error);
-    //     },
-    //   }
-    // );
-    //========================================================
-    //new implementation returning json data saved to an TS interface instance
-    // this.http.post<Resp>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
-    //   {
-    //     next: (response) =>
-    //     {
-    //       this.checkResponse(response.success);
-
-    //     },
-    //     error: (error) =>
-    //     {
-    //       console.error(error);
-    //     },
-    //   }
-    // );
-    // ==================
-    // this.http.post <httpResponse<Resp>>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
-    //   {
-    //     next: (response) =>
-    //     {
-    //       this.checkResponse(response.success);
-
-    //     },
-    //     error: (error) =>
-    //     {
-    //       console.error(error);
-    //     },
-    //   }
-    // );
+    
   }
 
   //check value retunred from the backend response, not sure if else condition works

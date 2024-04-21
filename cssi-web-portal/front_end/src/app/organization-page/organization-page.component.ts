@@ -31,8 +31,9 @@ import {
   _MatTableDataSource,
   MatTableDataSource,
 } from '@angular/material/table';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Organization } from '../data.config';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 // an interfca foooooooooooor describing json data in request
 export interface App {
@@ -104,7 +105,8 @@ export class OrganizationPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private http: HttpClient
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
   ) {} //makes an instance of the router
   ngOnInit(): void {
     this.orgId = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -147,9 +149,15 @@ export class OrganizationPageComponent implements OnInit {
           // this.appsSource = new MatTableDataSource(response.body?.list);
           this.appsSource.paginator = this.appsPaginator;
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+          
+        }
       });
 
     this.http
@@ -172,9 +180,15 @@ export class OrganizationPageComponent implements OnInit {
           this.orgName = resp.body.list[0].name;
           this.orgDescription = resp.body.list[0].description;
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+          
+        }
       });
 
 
@@ -204,9 +218,15 @@ export class OrganizationPageComponent implements OnInit {
 
           // add members to the member list 
         }},
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+          
+        }
       });
 
 

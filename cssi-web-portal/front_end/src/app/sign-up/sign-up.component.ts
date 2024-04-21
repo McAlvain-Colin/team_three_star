@@ -17,7 +17,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
@@ -182,33 +182,34 @@ export class SignUpComponent {
             console.log(resp);
 
             console.log(resp.emailConfirmation);
-
+          
             this.checkEmailConfirmation(resp.emailConfirmation);
           },
-          error: (error) => {
-            console.error(error);
-          },
+          error: (error: HttpErrorResponse) => {
+            console.error('mym errro',error.error.errorMessage);
+            // error.message.
+            this.checkEmailConfirmation(false);
+
+            message = error.error.errorMessage;
+            this.snackBar.open(message, 'Close', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+            
+          }
         });
     }
 
-    // console.log('in signin ');
-    // this.http
-    //   .put(
-    //     this.base_url + '/createUser',
-    //     { email: this.emailField.getRawValue() },
-    //     { observe: 'response', responseType: 'json' }
-    //   )
-    //   .subscribe({
-    //     next: (response) => {
-    //       const res = JSON.stringify(response.body);
   }
 
+  
+  
   checkEmailConfirmation(check: boolean) {
     if (check) {
       this.router.navigate(['/login']);
     } else {
-      this.router.navigate(['/signin']);
-      alert('signup was unsuccessful');
+      this.router.navigate(['/sign-up']);
+      // alert('signup was unsuccessful');
     }
   }
 

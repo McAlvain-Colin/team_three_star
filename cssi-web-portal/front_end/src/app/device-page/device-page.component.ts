@@ -23,7 +23,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { MatTableModule }  from '@angular/material/table';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 //using code from the filter page here since it is essentiall the same
 //I want to redo this code if theres time using the pageinate module. 
@@ -97,7 +98,7 @@ export class DevicePageComponent implements OnInit{
   deviceEUI:string = ''
 
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private http: HttpClient) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private http: HttpClient,     private snackBar: MatSnackBar  ) { }
   
 
   //when this page is initiated, get data from the apiService. Should connect to back end an get data from database.
@@ -126,9 +127,15 @@ export class DevicePageComponent implements OnInit{
 
 
       },
-      error: (error) => {
-        console.error(error);
-      },
+      error: (error: HttpErrorResponse) => {
+
+        const message = error.error.errorMessage;
+        this.snackBar.open(message, 'Close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+        
+      }
     });
  
 
