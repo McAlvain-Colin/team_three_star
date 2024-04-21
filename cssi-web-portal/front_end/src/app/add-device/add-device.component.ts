@@ -19,6 +19,7 @@ import {
   HttpClientModule,
   HttpHeaders,
 } from '@angular/common/http';
+import { BadWordsFilterPipe } from '../badwords.pipe';
 
 @Component({
   selector: 'app-add-device',
@@ -38,6 +39,7 @@ import {
     HttpClientModule,
     TempNavBarComponent,
     NgIf,
+    BadWordsFilterPipe,
   ],
 })
 export class AddDeviceComponent {
@@ -84,7 +86,7 @@ export class AddDeviceComponent {
           devEUI: this.devEUI,
           joinEui: this.joinEUI,
           appKey: this.appKey,
-          devName: this.deviceName
+          devName: this.deviceName,
         },
         httpOptions
       )

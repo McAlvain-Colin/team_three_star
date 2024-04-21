@@ -19,6 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { BadWordsFilterPipe } from '../badwords.pipe';
 
 @Component({
   selector: 'app-sign-up',
@@ -41,6 +42,7 @@ import { Router } from '@angular/router';
     TempNavBarComponent,
     MatSnackBarModule,
     NgIf,
+    BadWordsFilterPipe,
   ],
 })
 export class SignUpComponent {
