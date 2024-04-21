@@ -18,6 +18,7 @@ import {
   HttpClientModule,
   HttpClient,
   HttpHeaders,
+  HttpErrorResponse
 } from '@angular/common/http';
 
 @Component({
@@ -99,13 +100,15 @@ export class AddApplicationComponent {
             });
           }
         },
-        error: (error) => {
-          message = 'There was an error that occurred: \n' + error;
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-        },
+          
+        }
       });
   }
 }
