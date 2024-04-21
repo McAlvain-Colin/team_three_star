@@ -42,7 +42,8 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { TimerService } from '../login/login.component';
 
 @Component({
   selector: 'app-user-home',
@@ -109,7 +110,9 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
     public router: Router,
     public dialog: MatDialog,
     private http: HttpClient,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,    
+    private timerService : TimerService,
+    private snackBar: MatSnackBar,
   ) {} //makes an instance of the router alsoe creates aaa hhhttp object to use for Requests to backend
   ngOnInit(): void {
     this.http
@@ -171,9 +174,17 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
           this.joinedOrgSource = new MatTableDataSource(response.body?.list);
           this.joinedOrgSource.paginator = this.joinedOrgPaginator;
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+          if(error.status != 422)
+          {
+            const message = error.error.errorMessage;
+            this.snackBar.open(message, 'Close', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+          }
+
+        }
       });
 
     this.userName = this.route.snapshot.paramMap.get('user'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -236,27 +247,8 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
   }
 
   logout() {
-    console.log('in logout func');
-    this.http
-      .delete(this.base_url + '/logout', {
-        observe: 'response',
-        responseType: 'json',
-      })
-      .subscribe({
-        next: (response) => {
-          const resp = { ...response.body };
+    this.timerService.logout();
 
-          console.log('deleted message');
-          console.log(resp);
-
-          localStorage.clear();
-
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
   }
 
   // setupExampleLists() {

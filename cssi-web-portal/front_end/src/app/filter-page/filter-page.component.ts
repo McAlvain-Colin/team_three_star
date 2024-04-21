@@ -11,7 +11,7 @@ import { ApiService } from '../api.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe, getLocaleNumberSymbol } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
@@ -24,7 +24,7 @@ import {
 } from '@angular/material/paginator';import { MatTableDataSource } from '@angular/material/table';
 import { DatePicker } from '../date-picker/date-picker.component';
 import { saveAs } from 'file-saver';
-import { Chart, registerables } from 'chart.js/auto';
+import { Chart, ChartConfiguration, ChartTypeRegistry, registerables } from 'chart.js/auto';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgIf, PercentPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -61,6 +61,10 @@ export interface SensorData {
 export interface PayloadRecord {
   [key: string]: number | string;
 }
+export interface variableMap {
+  [key: string]: any;
+}
+
 
 export interface Device {
   name: string;
@@ -239,12 +243,12 @@ export class FilterPageComponent {
 
           let resp = JSON.parse(res);
 
-          console.log('resp is in app page', resp);
+          //console.log('resp is in app page', resp);
 
           this.appName = resp.body.name;
         },
         error: (error) => {
-          console.error(error);
+          //console.error(error);
         },
       });
      // this is for giving one device EUI from the given dev name from the user.
@@ -260,13 +264,13 @@ export class FilterPageComponent {
 
     //     let resp = JSON.parse(res);
 
-    //     console.log('resp is in app page', resp.body.dev_eui);
+    //     //console.log('resp is in app page', resp.body.dev_eui);
     //     this.deviceList[1].devEUI = resp.body.dev_eui;
-    //     console.log('DEV_EUI', this.deviceList[1].devEUI);
+    //     //console.log('DEV_EUI', this.deviceList[1].devEUI);
     //     this.getDataSetup();
     //   },
     //   error: (error) => {
-    //     console.error(error);
+    //     //console.error(error);
     //   },
     // });
     // this is for getting the organizations's applications associated with it
@@ -294,18 +298,15 @@ export class FilterPageComponent {
           this.getDataSetup();
         },
         error: (error) => {
-          console.error(error);
+          //console.error(error);
         },       
       });
     
       this.deviceSource.data = this.deviceList;
       this.deviceSource.filter = '';
       this.deviceSource._updateChangeSubscription();
-      //console.log('Device Source1: ', this.deviceSource.data);
 
     this.filterForm = this.fb.group({
-      // startTime: [''], //, Validators.pattern('^([01]?[0-9]|2[0-3]):[0-5][0-9]$')],
-      // endTime: [''], //, Validators],
       range: this.fb.group({
         value: [this.value],
         min: [this.min],
@@ -320,13 +321,12 @@ export class FilterPageComponent {
         payloadSelect: false,
         startTime: '',
         endTime: '',
+        deviceId: '',
+        dateInfo: '',
+        dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
+        applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
+        location: [''] //, Validators.pattern('[a-zA-Z ]*')]
       }),
-      value: 0,
-      dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
-      deviceId: [''], //, Validators.pattern('[a-zA-Z ]*')],
-      dateInfo: [''],
-      applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
-      location: [''], //, Validators.pattern('[a-zA-Z ]*')]
 
     });
   }
@@ -337,9 +337,13 @@ export class FilterPageComponent {
   @ViewChild('payloadStatsPaginator') payloadStatsPaginator!: MatPaginator;
   @ViewChild('metadataStatsPaginator') metadataStatsPaginator!: MatPaginator;
   @ViewChild('devicePaginator') devicePaginator!: MatPaginator;
+  @ViewChild('filteredPayloadPaginator') filteredPayloadPaginator!: MatPaginator;
+  @ViewChild('filteredMetadataPaginator') filteredMetadataPaginator!: MatPaginator;
 
   payloadDataSource = new MatTableDataSource<SensorData>([]);
+  filteredPayloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
+  filteredMetadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
   paylaodStatSource = new MatTableDataSource<any>([]);
   metadataStatSource = new MatTableDataSource<any>([]);
@@ -348,20 +352,16 @@ export class FilterPageComponent {
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
     this.metadataSource.paginator = this.metadataPaginator;
+    this.filteredPayloadDataSource.paginator = this.filteredPayloadPaginator;
+    this.metadataSource.paginator = this.metadataPaginator;
+    this.filteredMetadataSource.paginator = this.filteredMetadataPaginator;
     this.devIDSource.paginator = this.devIDPaginator;
     this.paylaodStatSource.paginator = this.payloadPaginator;
     this.metadataStatSource.paginator = this.metadataPaginator;
     this.deviceSource.paginator = this.devicePaginator;
-
-    //console.log('Payload Source: ', this.payloadDataSource.data)
-    //console.log('Metadata Source: ', this.metadataSource.data)
-    //console.log('devID Source: ', this.devIDSource.data)
-    //console.log('PayStats Source: ', this.paylaodStatSource.data)
-    //console.log('MetaSatas Source: ', this.metadataStatSource.data)
-    //console.log('Device Source: ', this.deviceSource.data)
   }
   private getDataSetup(): void {
-    console.log('Data Setup: ', this.deviceList[1].name, this.deviceList[1].devEUI);
+    //console.log('Data Setup: ', this.deviceList[1].name, this.deviceList[1].devEUI);
     // this.apiService.getAltData().subscribe({
     //   next: (data: SensorData[]) => {
     //     const records = data.map((item: SensorData) => ({
@@ -373,7 +373,7 @@ export class FilterPageComponent {
     //     this.payloadDataSource.data = records;
     //     this.metadataSource.data = records;
       
-    //     //console.log(this.payloadDataSource.data[1].dev_time);
+    //     ////console.log(this.payloadDataSource.data[1].dev_time);
 
     //     if (records.length > 0) {
     //       this.payloadColumns = Object.keys(records[0].payload_dict);
@@ -387,7 +387,7 @@ export class FilterPageComponent {
     //     }
     //   },
     //   error: (error) => {
-    //     console.error('Error: ', error);
+    //     //console.error('Error: ', error);
     //   },
     // });
     this.apiService.getData(this.deviceList[1].devEUI).subscribe({
@@ -401,6 +401,9 @@ export class FilterPageComponent {
         this.payloadDataSource.data = records;
         this.metadataSource.data = records;
 
+        this.filteredPayloadDataSource.data = [...this.payloadDataSource.data];
+        this.filteredMetadataSource.data = [...this.metadataSource.data];
+
         if (records.length > 0) {
           this.payloadColumns = Object.keys(records[0].payload_dict);
           this.metadataColumns = Object.keys(records[0].metadata_dict);
@@ -411,7 +414,7 @@ export class FilterPageComponent {
         }
       },
       error: (error) => {
-        console.error('Error: ', error);
+        //console.error('Error: ', error);
       },
     });
     this.apiService.getPayloadStatisticsData(this.deviceList[1].devEUI).subscribe({
@@ -428,18 +431,19 @@ export class FilterPageComponent {
             mode: stats.mode,
           };
         });
-        // console.log(payloadStatRecord)
+        // //console.log(payloadStatRecord)
 
         this.paylaodStatSource.data = payloadStatRecord;
+        
       },
 
       error: (error) => {
-        console.error('Error: ', error);
+        //console.error('Error: ', error);
       },
     });
     this.apiService.getMetadataStatisticsData(this.deviceList[1].devEUI).subscribe({
       next: (data: any[]) => {
-        //console.log(data);
+        ////console.log(data);
         const metadataStatRecord = Object.keys(data).map((key: any) => {
           const stats = data[key];
 
@@ -452,13 +456,13 @@ export class FilterPageComponent {
             mode: stats.mode,
           };
         });
-        //console.log(metadataStatRecord);
+        ////console.log(metadataStatRecord);
 
         this.metadataStatSource.data = metadataStatRecord;
       },
 
       error: (error) => {
-        console.error('Error: ', error);
+        //console.error('Error: ', error);
       },
     });
     // this.fetchDevices();
@@ -469,8 +473,8 @@ export class FilterPageComponent {
   fetchDevices(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
     this.devName = this.route.snapshot.paramMap.get('dev');
-    //console.log('appId1: ', this.appId);
-    //console.log('devName1: ', this.devName)
+    ////console.log('appId1: ', this.appId);
+    ////console.log('devName1: ', this.devName)
     const param = new HttpParams()
       .set('app', this.appId != null ? this.appId : '-1')
       .set('devName', this.devName != null ? this.devName : 'none');
@@ -488,7 +492,7 @@ export class FilterPageComponent {
           let resp = JSON.parse(res);
 
           for (var i = 0; i < resp.body.list.length; i++) {
-            //console.log('index: ', resp.body.list[i].name);
+            ////console.log('index: ', resp.body.list[i].name);
             this.devices.push(resp.body.list[i].name);
             this.deviceList.push({
               name: resp.body.list[i].name,
@@ -497,13 +501,13 @@ export class FilterPageComponent {
           }
         },
         error: (error) => {
-          console.error(error);
+          //console.error(error);
         },
       });
       this.deviceSource.data = this.deviceList;
       this.deviceSource.filter = '';
       this.deviceSource._updateChangeSubscription();
-      //console.log('Device Source1: ', this.deviceSource.data);
+      ////console.log('Device Source1: ', this.deviceSource.data);
   }
 
   //device management
@@ -532,6 +536,10 @@ export class FilterPageComponent {
         item[key].toString().toLowerCase().includes(query.toLowerCase())
       )
     );
+  }
+  applyFilter(event: Event){
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filteredPayloadDataSource.filter = filterValue.trim().toLowerCase();
   }
   applyDeviceFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -563,70 +571,64 @@ export class FilterPageComponent {
     if (this.filterForm.valid) {
       this.filterSensorData();
     } else {
-      console.error('Error: ', Error);
+      //console.error('Error: ', Error);
     }
   }
 
   filterSensorData() {
-    console.log("This Worked: ", this.filterForm.value);
-    console.log("Payload: ", this.payloadDataSource.data)
-    const payObj = this.payloadDataSource.data[0].payload_dict;
-    const keys = Object.keys(payObj);
-    const values = Object.values(payObj);
-    console.log('payObj: ', payObj);
-    console.log('keys: ', keys);
-    console.log('values: ', values);
-    const metaObj = this.payloadDataSource.data[0].metadata_dict;
-    const mkeys = Object.keys(metaObj);
-    const mvalues = Object.values(metaObj);
-    console.log('metaObj: ', metaObj);
-    console.log('keys: ', mkeys);
-    console.log('values: ', mvalues);
+    //console.log("this worked")
+    const formValues = this.filterForm.value.range;
+    //console.log("form Values: ", formValues);
+    //console.log("payloadDataSource: ", this.payloadDataSource.data);
+    const dict = this.payloadDataSource.data;
+    //console.log("object keys:  ", Object.keys(dict[1].payload_dict));
 
-    if (this.filterForm.value.range.payloadSelect == true) {
-      //console.log("Payload: ", this.payloadDataSource.data)
-      this.payloadDataSource.data = this.payloadDataSource.data.filter((item) => {
-        //add filter logic
-        //console.log("This Worked: ", typeof(item.payload_dict));
+    let variables : variableMap = {};
+
+    Object.keys(dict[0].payload_dict).forEach(key =>{
+      variables['value_${keys}'] = dict[0].payload_dict[key];
+    })
+
+    if (formValues.payloadSelect == true) {
+      //console.log("in payload filter")
+      this.filteredPayloadDataSource.data = this.payloadDataSource.data.filter((item) => {
+        if(formValues){
+          const dataTypeKey = formValues.dataType;
+          const value = +item.payload_dict[dataTypeKey];
+        }
+
         return (
-          (this.filterForm.value.range.startTime === '' || item.dev_time.includes(this.filterForm.value.range.startTime)) &&
-          (this.filterForm.value.range.endTime === '' || item.dev_time.includes(this.filterForm.value.range.endTime)) &&
-          // (this.filterForm.value.range.value === '' || item.payload_dict.includes(this.filterForm.value.range.value)) &&
-          // (this.filterForm.value.range.min === '' || item.payload_dict.values.includes(this.filterForm.value.range.min)) &&
-          // (this.filterForm.value.range.max === '' || item.payload_dict.values.includes(this.filterForm.value.range.max)) &&
-          // (this.filterForm.value.range.startValue === '' || item.payload_dict.values.includes(this.filterForm.value.range.startValue)) &&
-          // (this.filterForm.value.range.endValue === '' || item.payload_dict.values.includes(this.filterForm.value.range.endValue)) &&
-
-          // (this.filterForm.value.value === '' || item.payload_dict.values.includes(this.filterForm.value.value)) &&
-          // (this.filterForm.value.dataType === '' || item.payload_dict.includes(this.filterForm.value.dataType)) &&
-          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) &&
-          (this.filterForm.value.dateInfo === '' || item.dev_time.includes(this.filterForm.value.dateInfo)) //&&
-          // (this.filterForm.value.applicationID === '' || item.payload_dict.values.includes(this.filterForm.value.applicationID)) &&
-          // (this.filterForm.value.location === '' || item.payload_dict.values.includes(this.filterForm.value.location)) 
+          (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
+          (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
+          (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
+          (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) &&
+          (!formValues.min || (this.value != null && this.value >= formValues.min)) &&
+          (!formValues.max || (this.value != null && this.value <= formValues.max)) 
         )
       });
+      // if(this.filteredPayloadDataSource.paginator){
+      //   this.filteredPayloadDataSource.paginator.firstPage();
+      // }
     } 
-    if (this.filterForm.value.range.metadataSelect== true) {
-      this.metadataSource.data = this.metadataSource.data.filter((item) => {
-        //add filter logic
-        //console.log("this worked");
-        return (
-          (this.filterForm.value.range.startTime === '' || item.dev_time.includes(this.filterForm.value.range.startTime)) &&
-          (this.filterForm.value.range.endTime === '' || item.dev_time.includes(this.filterForm.value.range.endTime)) &&
-          // (this.filterForm.value.range.value === '' || item.metadata_dict.includes(this.filterForm.value.range.value)) &&
-          // (this.filterForm.value.range.min === '' || item.metadata_dict.includes(this.filterForm.value.range.min)) &&
-          // (this.filterForm.value.range.max === '' || item.metadata_dict.includes(this.filterForm.value.range.max)) &&
-          // (this.filterForm.value.range.startValue === '' || item.metadata_dict.includes(this.filterForm.value.range.startValue)) &&
-          // (this.filterForm.value.range.endValue === '' || item.metadata_dict.includes(this.filterForm.value.range.endValue)) &&
+    if (formValues.metadataSelect == true) {
+      //console.log("in metadata filter")
+      this.filteredMetadataSource.data = this.metadataSource.data.filter((item) => {
+        const dataTypeKey = formValues.dataType;
+        const value = +item.metadata_dict[dataTypeKey];
 
-          // (this.filterForm.value.value === '' || item.metadata_dict.values.includes(this.filterForm.value.value)) &&
-          // (this.filterForm.value.dataType === '' || item.metadata_dict.values.includes(this.filterForm.value.dataType)) &&
-          (this.filterForm.value.deviceId === '' || item.dev_eui.includes(this.filterForm.value.deviceId)) //&&
-          // (this.filterForm.value.applicationID === '' || item.metadata_dict.values.includes(this.filterForm.value.applicationID)) &&
-          // (this.filterForm.value.location === '' || item.metadata_dict.values.includes(this.filterForm.value.location)) 
+        return (
+          (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
+          (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
+          (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
+          (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) &&
+          (!formValues.min || value >= formValues.min) &&
+          (!formValues.max || value <= formValues.max) 
         )
       });
-    }
+      // if(this.filteredMetadataSource.paginator){
+      //   this.filteredMetadataSource.paginator.firstPage();
+      // }
+    } 
   }
 
   //data export functions
@@ -639,7 +641,7 @@ export class FilterPageComponent {
 
     // Validate data format
     if (!data.every((item) => typeof item === 'object' && item !== null)) {
-      console.error('Invalid data format for CSV export');
+      //console.error('Invalid data format for CSV export');
       return;
     }
 
@@ -693,7 +695,7 @@ export class FilterPageComponent {
   // use of chart JS method toBase64Image is here: https://www.chartjs.org/docs/latest/developers/api.html http://www.java2s.com/example/javascript/chart.js/chartjs-to-update-and-exporting-chart-as-png.html, download method documentation: https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement/download.
   getDownload() {
     let link = document.createElement('a');
-    link.href = this.chart.toBase64Image();
+    link.href = this.payloadChart.toBase64Image();
     link.download = 'chart.png';
     link.click();
   }
@@ -709,7 +711,7 @@ export class FilterPageComponent {
         this.initializePayloadChart();
       },
       error: (error) => {
-        console.error('Error fetching payload data:', error);
+        //console.error('Error fetching payload data:', error);
       },
     });
   }
@@ -726,7 +728,7 @@ export class FilterPageComponent {
         this.initializeMetadataChart();
       },
       error: (error) => {
-        console.error('Error fetching metadata:', error);
+        //console.error('Error fetching metadata:', error);
       },
     });
   }
@@ -841,7 +843,7 @@ export class FilterPageComponent {
   }
 
   checkboxLabel(index?: number, row?: string): string {
-    // console.log('Selection: ', this.selection.selected)
+    // //console.log('Selection: ', this.selection.selected)
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
@@ -850,7 +852,39 @@ export class FilterPageComponent {
         this.selection.isSelected(row) ? 'deselect' : 'select'
       } row number ${index + 1}`;
     }
-    //console.warn('checkboxLabel wa called without a row or index.');
+    ////console.warn('checkboxLabel wa called without a row or index.');
     return '';
   }
+  shouldHighlightPayload(value: any, key: any): boolean {
+    const dataValues = this.paylaodStatSource.data;
+    const statValues = dataValues[key+1];
+    try{
+      const mean = parseFloat(statValues.mean);
+      const stddev = parseFloat(statValues.standard_deviation);
+      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
+        return true;
+      }
+      return false; 
+    }
+    catch{
+      return false;
+    }
+  }
+
+  shouldHighlightMetadata(value: any, key: any): boolean {
+    const dataValues = this.metadataStatSource.data;
+    const statValues = dataValues[key+1];
+    try{
+      const mean = parseFloat(statValues.mean);
+      const stddev = parseFloat(statValues.standard_deviation);
+      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
+        return true;
+      }
+      return false; 
+    }
+    catch{
+      return false;
+    }
+  }
 }
+

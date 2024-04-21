@@ -35,61 +35,203 @@ import {
   HTTP_INTERCEPTORS,
   HttpHeaders,
   HttpClientModule,
+  HttpErrorResponse,
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, mergeMap, throwError } from 'rxjs';
 
 // import { CookieService } from 'ngx-cookie-service';
 import { Browser } from 'leaflet';
 
 // import { CanActivateFn, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-// added implementation for checking if there a token in the local storage, if ther is go to dashbaord, otherwise go to the homepage
 import { inject } from '@angular/core';
+import { ObserversModule } from '@angular/cdk/observers';
 
+// auth guard to protect routes can only be accessed if there is an
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
+  // timerService: TimerService
 ) => {
+  const timerService = inject(TimerService);
   const router: Router = inject(Router);
-  const protectedRoutes: string[] = ['/dashboard'];
+  const token = sessionStorage.getItem('refreshToken');
+  const protectedRoutes: string[] = [
+    '/dashboard',
+    '/home',
+    '/organization',
+    '/application',
+    '/device',
+    '/filter',
+  ];
 
-  return protectedRoutes.includes(state.url) && !localStorage.getItem('token')
-    ? router.navigate(['/'])
+  return (protectedRoutes.includes(state.url) &&
+    (!sessionStorage.getItem('refreshToken') ||
+      !sessionStorage.getItem('token'))) ||
+    new RegExp('(^[A-Za-z0-9-_]*.[A-Za-z0-9-_]*.[A-Za-z0-9-_]*$)').test(token!)
+    ? router.navigate(['/login'])
     : true;
 };
 
+@Injectable({ providedIn: 'root' })
+export class TimerService {
+  timer!: ReturnType<typeof setTimeout>;
+  constructor(private router: Router, private http: HttpClient) {}
+
+  logout() {
+    console.log('in logout func');
+    this.http
+      .delete('http://localhost:5000/logout', {
+        observe: 'response',
+        responseType: 'json',
+      })
+      .subscribe({
+        next: (response) => {
+          const resp = { ...response.body };
+
+          console.log('deleted message');
+          console.log(resp);
+
+          sessionStorage.clear();
+          this.stopRefreshTimer();
+
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+  }
+
+  isJWTExpired(jwt: string) {
+    let refreshToken = sessionStorage.getItem('refreshToken');
+
+    let jwtBase64 = refreshToken!.split('.')[1];
+
+    let token = JSON.parse(atob(jwtBase64));
+
+    let expires = new Date(token.exp * 1000);
+
+    return expires > new Date();
+  }
+
+  startRefreshTokenTimer() {
+    let refreshToken = sessionStorage.getItem('refreshToken');
+
+    let jwtBase64 = refreshToken!.split('.')[1];
+
+    let token = JSON.parse(atob(jwtBase64));
+
+    let expires = new Date(token.exp * 1000);
+    let timeout = expires.getTime() - Date.now() - 120 * 1000;
+    this.timer = setTimeout(() => this.logout(), timeout);
+  }
+
+  stopRefreshTimer() {
+    clearTimeout(this.timer);
+  }
+}
+
+//interceptor forjwt/refresh tokens
 @Injectable()
 export class appInterceptor implements HttpInterceptor {
-  //   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-  //     const currToken = localStorage.getItem('token')
-  //     req = req.clone({ withCredentials: true, headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
-  //     return next.handle(req);
-  //   }
-  // }
+  constructor(private router: Router, private http: HttpClient) {}
+
+  private handleError(next: HttpHandler, req: HttpRequest<any>) {
+    let header = new HttpHeaders({
+      'Content-Type': 'application/json',
+      responseType: 'json',
+    });
+
+    return this.http
+      .post('http://localhost:5000/refresh', {}, { headers: header })
+      .pipe(
+        map((data: any) => {
+          console.log('data is ', data.token);
+          sessionStorage.setItem('token', data.token);
+
+          const clone = req.clone({
+            headers: req.headers.set('Authorization', 'Bearer ' + data.token),
+          });
+
+          return next.handle(clone).pipe(
+            catchError((error: HttpErrorResponse) => {
+              if (error instanceof HttpErrorResponse) {
+                // need to add the logout revoke tokne thing here
+
+                sessionStorage.clear();
+                this.router.navigate(['login']);
+
+                return throwError(() => error);
+              }
+              return throwError(() => error);
+            })
+          );
+        }),
+
+        mergeMap((res) => res)
+      );
+  }
+
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const currToken = localStorage.getItem('token');
-    req = req.clone({
-      headers: req.headers.set('Authorization', 'Bearer ' + currToken),
-    });
-    return next.handle(req);
+    // req = req.clone({withCredentials: true})
+
+    const currToken = sessionStorage.getItem('token');
+
+    if (!req.url.includes('refresh')) {
+      const currToken = sessionStorage.getItem('token');
+
+      req = req.clone({
+        headers: req.headers.set('Authorization', 'Bearer ' + currToken),
+      });
+    } else {
+      const refreshToken = sessionStorage.getItem('refreshToken');
+
+      req = req.clone({
+        headers: req.headers.set('Authorization', 'Bearer ' + refreshToken),
+      });
+    }
+
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error instanceof HttpErrorResponse) {
+          // need to add the logout revoke tokne thing here
+          if (
+            (error.status == 401 || error.status == 403) &&
+            currToken == null
+          ) {
+            this.router.navigate(['login']);
+            return throwError(() => console.log('my error is ', error));
+          }
+          // where both the access and refresh token have expired NEED TIMER!!!!!!
+
+          // when access token expired
+          else if (error.status == 401 && currToken != null) {
+            console.log('in the handle error if cond ');
+
+            return this.handleError(next, req);
+          } else {
+            // this.logout()
+
+            // this.router.navigate(['login'])
+
+            return throwError(() => error);
+          }
+        } else {
+          // this.logout()
+
+          this.router.navigate(['login']);
+
+          return throwError(() => error);
+        }
+      })
+    );
   }
 }
-
-////interceptor for cookies
-// @Injectable()
-// export class appInterceptor implements HttpInterceptor {
-
-//   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//     const currToken = localStorage.getItem('token')
-//     req = req.clone({withCredentials: true})
-
-//     return next.handle(req);
-//   }
-// }
 
 @Component({
   selector: 'app-login',
@@ -119,7 +261,8 @@ export class LoginComponent {
     private http: HttpClient,
     private formBuilder: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private timerService: TimerService
   ) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   hide: boolean = true;
@@ -211,22 +354,16 @@ export class LoginComponent {
         )
         .subscribe({
           next: (response) => {
-            // this.cookieService.set('mine', 'test')
-
             const res = JSON.stringify(response);
 
             let resp = JSON.parse(res);
 
             console.log('resp is ');
 
-            console.log(resp);
-
-            // console.log('cookie is ')
-
-            // const cook = this.cookieService.get('access_token_cookie')
-            // console.log(cook)
-            // Browser.cookies.get
-            localStorage.setItem('token', resp.token);
+            // console.log(resp);
+            sessionStorage.setItem('token', resp.token);
+            sessionStorage.setItem('refreshToken', resp.refreshToken);
+            this.timerService.startRefreshTokenTimer();
 
             if (this.checkResponse(resp.login)) {
               this.snackBar.open(message, 'Close', {
@@ -241,8 +378,15 @@ export class LoginComponent {
               });
             }
           },
-          error: (error) => {
-            console.error(error);
+          error: (error: HttpErrorResponse) => {
+            //lack of valid authenication
+            console.error('error in subscribe is ', error);
+
+            message = 'Email and/or Password Incorrect!';
+            this.snackBar.open(message, 'Close', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
           },
         });
     }
@@ -369,7 +513,7 @@ export class LoginComponent {
   //         console.log('response is')
   //         console.log(resp)
 
-  //         //localStorage.setItem('token', resp.token)
+  //         //sessionStorage.setItem('token', resp.token)
 
   //         this.checkResponse(resp.login);
   //       },
@@ -462,7 +606,7 @@ export class LoginComponent {
 // export class appInterceptor implements HttpInterceptor {
 
 //   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//     const currToken = localStorage.getItem('token')
+//     const currToken = sessionStorage.getItem('token')
 //     req = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + currToken)})
 //     return next.handle(req);
 //   }
@@ -600,7 +744,7 @@ export class LoginComponent {
 
 //           let resp = JSON.parse(res)
 
-//           localStorage.setItem('token', resp.token)
+//           sessionStorage.setItem('token', resp.token)
 
 //           this.checkResponse(resp.success);
 //         },

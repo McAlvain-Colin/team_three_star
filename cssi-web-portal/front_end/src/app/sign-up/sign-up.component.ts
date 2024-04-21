@@ -17,7 +17,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BadWordsFilterPipe } from '../badwords.pipe';
 
@@ -189,8 +189,16 @@ export class SignUpComponent {
               this.router.navigate(['/sign-up']);
             }
           },
-          error: (error) => {
-            console.error(error);
+          error: (error: HttpErrorResponse) => {
+            console.error('mym errro', error.error.errorMessage);
+            // error.message.
+            message = error.error.errorMessage;
+            this.snackBar.open(message, 'Close', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+
+            this.router.navigate(['/sign-up']);
           },
         });
     }

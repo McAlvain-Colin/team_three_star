@@ -31,12 +31,13 @@ import {
   _MatTableDataSource,
   MatTableDataSource,
 } from '@angular/material/table';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Organization, App, Member } from '../data.config';
 import { MatDividerModule } from '@angular/material/divider';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { SelectionChange } from '@angular/cdk/collections';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-organization-page',
@@ -101,7 +102,9 @@ export class OrganizationPageComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private http: HttpClient,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef, 
+    private snackBar: MatSnackBar,
+
   ) {} //makes an instance of the router
   ngOnInit(): void {
     this.orgId = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -143,9 +146,15 @@ export class OrganizationPageComponent implements OnInit {
           // this.appsSource = new MatTableDataSource(response.body?.list);
           this.appsSource.paginator = this.appsPaginator;
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+
+        }
       });
 
     this.http
@@ -175,9 +184,15 @@ export class OrganizationPageComponent implements OnInit {
             this.changeDetector.detectChanges();
           }
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+
+        }
       });
 
     // this for getting org members
@@ -207,9 +222,15 @@ export class OrganizationPageComponent implements OnInit {
           }
           this.memberSource.paginator = this.membersPaginator;
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+
+        }
       });
 
     // this is for getting a org's applicatiiions

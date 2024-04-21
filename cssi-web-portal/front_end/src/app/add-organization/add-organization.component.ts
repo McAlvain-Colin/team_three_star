@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
 import {
   HttpClient,
   HttpClientModule,
+  HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
 import { BadWordsFilterPipe } from '../badwords.pipe';
@@ -95,15 +96,14 @@ export class AddOrganizationComponent {
             });
           }
         },
-        error: (error) => {
-          message =
-            this.orgName +
-            ' already exists, please add a different organization!';
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-        },
+        }
       });
   }
 }

@@ -19,7 +19,9 @@ import {
   MatPaginatorModule,
   PageEvent,
 } from '@angular/material/paginator';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { Organization } from '../data.config';
 
 export interface Device {
@@ -70,7 +72,7 @@ export class ApplicationPageComponent {
     ChangeDetectorRef.prototype
   );
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {} //makes an instance of the router
+  constructor(private route: ActivatedRoute, private http: HttpClient,private snackBar: MatSnackBar) {} //makes an instance of the router
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
     this.orgId = this.route.snapshot.paramMap.get('org');
@@ -100,9 +102,15 @@ export class ApplicationPageComponent {
           this.appName = resp.body.name;
           this.appDescription = resp.body.description;
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+  
+        }
       });
 
     this.http
@@ -119,9 +127,15 @@ export class ApplicationPageComponent {
 
           this.userRole = Number(resp.body.list[0].r_id);
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+  
+        }
       });
 
     // this is for getting the organizations's applications associated with it
@@ -149,9 +163,15 @@ export class ApplicationPageComponent {
             this.deviceSource.paginator = this.devicePaginator;
           }
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+  
+        }
       });
 
     this.deviceSource.paginator = this.devicePaginator;
