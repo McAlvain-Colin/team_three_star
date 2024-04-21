@@ -24,7 +24,7 @@ import {
 } from '@angular/material/paginator';import { MatTableDataSource } from '@angular/material/table';
 import { DatePicker } from '../date-picker/date-picker.component';
 import { saveAs } from 'file-saver';
-import { Chart, registerables } from 'chart.js/auto';
+import { Chart, ChartConfiguration, ChartTypeRegistry, registerables } from 'chart.js/auto';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgIf, PercentPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -695,7 +695,7 @@ export class FilterPageComponent {
   // use of chart JS method toBase64Image is here: https://www.chartjs.org/docs/latest/developers/api.html http://www.java2s.com/example/javascript/chart.js/chartjs-to-update-and-exporting-chart-as-png.html, download method documentation: https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement/download.
   getDownload() {
     let link = document.createElement('a');
-    link.href = this.chart.toBase64Image();
+    link.href = this.payloadChart.toBase64Image();
     link.download = 'chart.png';
     link.click();
   }
@@ -861,7 +861,7 @@ export class FilterPageComponent {
     try{
       const mean = parseFloat(statValues.mean);
       const stddev = parseFloat(statValues.standard_deviation);
-      if( (value > (mean + stddev - 2)) && (value < (mean - stddev +2))){ 
+      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
         return true;
       }
       return false; 
