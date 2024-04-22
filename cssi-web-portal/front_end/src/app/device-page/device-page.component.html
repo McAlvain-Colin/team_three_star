@@ -497,7 +497,7 @@
                   </mat-expansion-panel>
                 </mat-accordion>
               </mat-card>
-              <mat-card>{{ deviceAnnotation }}</mat-card>
+              <!-- <mat-card>{{ deviceAnnotation }}</mat-card> -->
               <mat-card class="Annotations">
                 <form [formGroup]="form" (ngSubmit)="onSubmit()">
                   <label for="notes">Notes:</label>
@@ -509,7 +509,7 @@
                   <button mat-raised-button color="accent" type="submit">
                     Submit
                   </button>
-                  <p>Notes: {{ form.value.notes }}</p>
+                  <!-- <p>Notes: {{ form.value.notes }}</p> -->
                 </form>
               </mat-card>
             </mat-expansion-panel>

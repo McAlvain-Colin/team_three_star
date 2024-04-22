@@ -288,7 +288,7 @@ export class FilterPageComponent {
           let resp = JSON.parse(res);
 
           for (var i = 0; i < resp.body.list.length; i++) {
-            console.log('index: ', resp.body.list[i].name, resp.body.list[i].dev);
+            // console.log('index: ', resp.body.list[i].name, resp.body.list[i].dev);
             this.devices.push(resp.body.list[i].name);
             this.deviceList.push({
               name: resp.body.list[i].name,
@@ -380,14 +380,19 @@ export class FilterPageComponent {
             payload_dict: JSON.parse(item.payload_dict),
             metadata_dict: JSON.parse(item.metadata_dict),
           }));
-          this.payloadDataSource.data.push(...records);
-          this.metadataSource.data.push(...records);
+          if(records[0].payload_dict.keys === 'error'){
+            console.log('Error: Unsupported message type');
+          }
+          else{
+            this.payloadDataSource.data.push(...records);
+            this.metadataSource.data.push(...records);
 
-          this.filteredPayloadDataSource.data = [...this.payloadDataSource.data];
-          this.filteredMetadataSource.data = [...this.metadataSource.data];
-          this.filteredPayloadDataSource.data.flat()// = this.filteredPayloadDataSource.data.flat(Infinity)
-          this.filteredMetadataSource.data.flat()// = this.filteredMetadataSource.data.flat(Infinity);
-          // console.log('filteredPayloadDataSource: ', this.filteredPayloadDataSource.data)
+            this.filteredPayloadDataSource.data = [...this.payloadDataSource.data];
+            this.filteredMetadataSource.data = [...this.metadataSource.data];
+            this.filteredPayloadDataSource.data.flat()// = this.filteredPayloadDataSource.data.flat(Infinity)
+            this.filteredMetadataSource.data.flat()// = this.filteredMetadataSource.data.flat(Infinity);
+          }
+          console.log('filteredPayloadDataSource: ', this.filteredPayloadDataSource.data)
           // console.log('filteredMetadataSource: ', this.filteredMetadataSource.data)
 
           records.forEach(record => {
@@ -579,7 +584,7 @@ export class FilterPageComponent {
   filterSensorData() {
     //console.log("this worked")
     const formValues = this.filterForm.value.range;
-    // console.log("form Values: ", formValues);
+    console.log("form Values: ", formValues);
     //console.log("payloadDataSource: ", this.payloadDataSource.data);
     const dict = this.payloadDataSource.data;
     //console.log("object keys:  ", Object.keys(dict[1].payload_dict));
@@ -589,48 +594,84 @@ export class FilterPageComponent {
     Object.keys(dict[0].payload_dict).forEach(key =>{
       variables['value_${keys}'] = dict[0].payload_dict[key];
     })
-    let dataValue: any;
+    let dataValue: any = null;
 
-    if (formValues.payloadSelect == true) {
-      //console.log("in payload filter")
-      this.filteredPayloadDataSource.data = this.payloadDataSource.data.filter((item) => {
-        if(formValues){
-          const dataTypeKey = formValues.dataType;
-          dataValue = +item.payload_dict[dataTypeKey];
+    try{
+      if (formValues.payloadSelect == true) {
+        console.log("in payload filter")
+        this.filteredPayloadDataSource.data = this.payloadDataSource.data.filter((item) => {
+
+          if(formValues.dataType){
+            console.log("in dataType", formValues.dataType)
+            const dataTypeKey = formValues.dataType;
+            dataValue = +item.payload_dict[dataTypeKey];
+
+            return (
+              (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
+              (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
+              (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
+              (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) &&
+              (!formValues.min || (dataValue != null && !isNaN(dataValue) && dataValue >= formValues.min)) &&
+              (!formValues.max || (dataValue != null && !isNaN(dataValue) && dataValue <= formValues.max)) 
+            )
+          }
+          // console.log("item: " , item);
+          // console.log("dataValue: ", dataValue);
+          // console.log("mix: ", formValues.min, ' Max: ', formValues.max);
+
+          return (
+            (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
+            (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
+            (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
+            (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) 
+          )
+        });
+      }      
+      console.log("filteredPayloadDataSource", this.filteredPayloadDataSource.data)
+      if(this.filteredPayloadDataSource.paginator){
+        this.filteredPayloadDataSource.paginator.firstPage();
+      }
+    } 
+    catch{
+      console.log("Failed to Filter")
+      this.filteredPayloadDataSource.data = this.payloadDataSource.data
+    }
+    try{
+      if (formValues.metadataSelect == true) {
+        //console.log("in metadata filter")
+        this.filteredMetadataSource.data = this.metadataSource.data.filter((item) => {
+
+          if(formValues.dataType){
+            console.log("in dataType", formValues.dataType)
+            const dataTypeKey = formValues.dataType;
+            dataValue = +item.payload_dict[dataTypeKey];
+
+            return (
+              (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
+              (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
+              (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
+              (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) &&
+              (!formValues.min || (dataValue != null && !isNaN(dataValue) && dataValue >= formValues.min)) &&
+              (!formValues.max || (dataValue != null && !isNaN(dataValue) && dataValue <= formValues.max)) 
+            )
+          }
+
+          return (
+            (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
+            (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
+            (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
+            (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) 
+          )
+        });
+        if(this.filteredMetadataSource.paginator){
+          this.filteredMetadataSource.paginator.firstPage();
         }
-
-        return (
-          (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
-          (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
-          (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
-          (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) &&
-          (!formValues.min || (dataValue != null && dataValue >= formValues.min)) &&
-          (!formValues.max || (dataValue != null && dataValue <= formValues.max)) 
-        )
-      });
-      // if(this.filteredPayloadDataSource.paginator){
-      //   this.filteredPayloadDataSource.paginator.firstPage();
-      // }
-    } 
-    if (formValues.metadataSelect == true) {
-      //console.log("in metadata filter")
-      this.filteredMetadataSource.data = this.metadataSource.data.filter((item) => {
-        const dataTypeKey = formValues.dataType;
-        const value = +item.metadata_dict[dataTypeKey];
-
-        return (
-          (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
-          (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
-          (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
-          (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) &&
-          (!formValues.min || value >= formValues.min) &&
-          (!formValues.max || value <= formValues.max) 
-        )
-      });
-      // if(this.filteredMetadataSource.paginator){
-      //   this.filteredMetadataSource.paginator.firstPage();
-      // }
-    } 
+      } 
+    }
+    catch{
+      console.log("Failed to Filter")
+      this.filteredPayloadDataSource.data = this.payloadDataSource.data
+    }
   }
 
   //data export functions
@@ -849,7 +890,7 @@ export class FilterPageComponent {
       // console.log('data: ', this.metadataRecord);
 
       ids.forEach((id, index) => {
-        console.log('index: ', index)
+        // console.log('index: ', index)
         dataKeys.forEach(key => {
           const dataset = {
             label: `${id}: ${key}`,
@@ -881,7 +922,7 @@ export class FilterPageComponent {
               const { ctx }= chart;
               ctx.save();
               ctx.globalCompositeOperation = 'destination-over';
-              ctx.fillStyle = '#fffffff'
+              ctx.fillStyle = 'white'
               ctx.fillRect(0,0, chart.width, chart.height);
               ctx.restore();
             },
