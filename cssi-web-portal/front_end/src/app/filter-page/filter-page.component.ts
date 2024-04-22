@@ -727,6 +727,7 @@ export class FilterPageComponent {
 
           this.payloadTimeRecord.flat();
           this.payloadRecord.flat();
+          this.payloadTimeRecord.reverse();
 
           // console.log('time: ', this.payloadTimeRecord);
           // console.log('record 1: ', this.payloadRecord);
@@ -756,6 +757,7 @@ export class FilterPageComponent {
 
           this.metadataTimeRecord.flat();
           this.metadataRecord.flat();
+          this.metadataTimeRecord.reverse();
 
           // console.log('time: ', this.metadataTimeRecord);
           // console.log('record 1: ', this.metadataRecord);
@@ -770,10 +772,13 @@ export class FilterPageComponent {
   }
   initializePayloadChart() {
     // console.log('time: ', this.payloadTimeRecord);
-    console.log('record 2: ', this.payloadRecord);
-    console.log('columns: ', this.displayedPayloadColumns);
+    // console.log('record 2: ', this.payloadRecord);
+    // console.log('columns: ', this.displayedPayloadColumns);
     let labels: any;
     let datasets: any;
+    // const dataKeys = this.payloadRecord.map(record => Object.keys(record));
+    // console.log('dataKeys: ', dataKeys);
+    const ids = this.deviceList.map(record => record.devEUI);
     const ctx = document.getElementById('payloadChart') as HTMLCanvasElement;
     if (
       ctx &&
@@ -781,6 +786,8 @@ export class FilterPageComponent {
       this.payloadRecord.length > 0
     ) {
       labels = this.payloadTimeRecord;
+
+      // ids.forEach(id => {
       datasets = this.displayedPayloadColumns.map((col) => {
         return {
           label: col,
@@ -790,6 +797,7 @@ export class FilterPageComponent {
           tension: 0.1,
         };
       });
+      // });
 
       if (this.payloadChart) {
         this.payloadChart.destroy();
@@ -815,7 +823,7 @@ export class FilterPageComponent {
   }
   initializeMetadataChart() {
     // console.log('time: ', this.metadataTimeRecord);
-    // console.log('record 2: ', this.metadataRecord);
+    // console.log('record 2: ', this.metadataRecord[100]);
     let labels: any;
     let datasets: any = [];
     const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
@@ -832,11 +840,12 @@ export class FilterPageComponent {
 
       // console.log('data: ', this.metadataRecord);
 
-      ids.forEach(id => {
+      ids.forEach((id, index) => {
+        console.log('index: ', index)
         dataKeys.forEach(key => {
           const dataset = {
-            label: '${id}: ${key}',
-            data: this.metadataRecord.map(record => +record[key]),
+            label: `${id}: ${key}`,
+            data: this.metadataRecord.slice(((index+1)*1)-((index+1)*100)).map(record => +record[key]),
             fill: false,
             borderColor: this.getRandomColor(),
             tension: 0.1,            
