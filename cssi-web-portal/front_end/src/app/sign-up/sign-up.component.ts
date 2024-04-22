@@ -19,6 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { BadWordsFilterPipe } from '../badwords.pipe';
 
 @Component({
   selector: 'app-sign-up',
@@ -41,6 +42,7 @@ import { Router } from '@angular/router';
     TempNavBarComponent,
     MatSnackBarModule,
     NgIf,
+    BadWordsFilterPipe,
   ],
 })
 export class SignUpComponent {
@@ -158,17 +160,17 @@ export class SignUpComponent {
         verticalPosition: 'top',
       });
     } else {
-      this.snackBar.open(message, 'Close', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
       this.passwordCode = this.hashPassword();
       this.sentPassword = this.passwordCode.toString();
       console.log('in signin ');
       this.http
         .put(
           this.base_url + '/createUser',
-          { email: this.emailField.getRawValue(), password: this.sentPassword, name: this.name },
+          {
+            email: this.emailField.getRawValue(),
+            password: this.sentPassword,
+            name: this.name,
+          },
           { observe: 'response', responseType: 'json' }
         )
         .subscribe({
@@ -177,26 +179,27 @@ export class SignUpComponent {
 
             let resp = JSON.parse(res);
 
-            console.log('sign in resp is ');
-
-            console.log(resp);
-
-            console.log(resp.emailConfirmation);
-
-            this.checkEmailConfirmation(resp.emailConfirmation);
+            if (resp.emailConfirmation) {
+              this.snackBar.open(message, 'Close', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+              this.router.navigate(['/login']);
+            } else {
+              this.router.navigate(['/sign-up']);
+            }
           },
           error: (error: HttpErrorResponse) => {
-            console.error('mym errro',error.error.errorMessage);
+            console.error('mym errro', error.error.errorMessage);
             // error.message.
-            this.checkEmailConfirmation(false);
-
             message = error.error.errorMessage;
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
 
-          }
+            this.router.navigate(['/sign-up']);
+          },
         });
     }
 
@@ -210,14 +213,6 @@ export class SignUpComponent {
     //   .subscribe({
     //     next: (response) => {
     //       const res = JSON.stringify(response.body);
-  }
-
-  checkEmailConfirmation(check: boolean) {
-    if (check) {
-      this.router.navigate(['/login']);
-    } else {
-      this.router.navigate(['/sign-up']);
-    }
   }
 
   // This method gets an error message based on what error that the user has produced, empty, or invalid email. The number is to signify if it needs to be confirmed.

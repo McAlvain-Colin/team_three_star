@@ -16,3 +16,8 @@ export interface Member {
   id: number;
   role: number;
 }
+
+export interface Device {
+  name: string;
+  devEUI: string;
+}

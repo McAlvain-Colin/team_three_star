@@ -16,6 +16,8 @@ import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-reset-password',
@@ -39,14 +41,22 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   ],
 })
 export class ResetPasswordComponent {
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient
+  ) {}
   password: string = '';
   repeatPassword: string = '';
+  sentPassword: string = '';
+  token: string | null = '';
   hide1st: boolean = true;
   hide2nd: boolean = true;
   toolTipText: string =
     "Password must have: \n 1 Uppercase Letter \n 1 Lowercase Letter \n 1 Number \n 1 Special Character(i.e. ?,!,/,', etc.) \n More than 8 Letters";
-  passwordCode: unknown = 0; //Set as unknown for if debugging is needed, so we can cast the hash into a viewable string.
+  passwordCode: number = 0; //Set as unknown for if debugging is needed, so we can cast the hash into a viewable string.
+  base_url: string = 'http://localhost:5000';
   specialChars: string[] = [
     '~',
     '!',
@@ -75,6 +85,18 @@ export class ResetPasswordComponent {
     '?',
     '/',
   ];
+
+  ngOnInit(): void {
+    this.token = this.route.snapshot.paramMap.get('token'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    if (this.token == null) {
+      var message: string =
+        'This webpage will not reset a password without the email link, please navigate here using the email link.';
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+    }
+  }
 
   hasNumber(checkWord: string) {
     return /\d/.test(checkWord); //Checks through word for number and checks for metacharacter d = digit
@@ -122,12 +144,37 @@ export class ResetPasswordComponent {
         verticalPosition: 'top',
       });
     } else if (this.password === this.repeatPassword) {
-      this.snackBar.open(message, 'Close', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
       this.passwordCode = this.hashPassword();
-      //Send off the hashcode to the backend
+      this.sentPassword = this.passwordCode.toString();
+      this.http
+        .put(
+          this.base_url + '/resetPassword',
+          {
+            token: this.token,
+            password: this.sentPassword,
+          },
+          { observe: 'response', responseType: 'json' }
+        )
+        .subscribe({
+          next: (response) => {
+            const res = JSON.stringify(response.body);
+
+            let resp = JSON.parse(res);
+
+            if (resp.resetPasswordSuccess) {
+              this.snackBar.open(message, 'Close', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+              this.router.navigateByUrl('http://localhost:4200/login');
+            } else if (resp.url) {
+              this.router.navigateByUrl(resp.url);
+            }
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
     } else {
       message = "Password doesn't match";
       this.snackBar.open(message, 'Close', {
