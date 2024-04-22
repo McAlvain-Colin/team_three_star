@@ -168,7 +168,7 @@ export class appInterceptor implements HttpInterceptor {
         
         return next.handle(clone).pipe(catchError((error: HttpErrorResponse) =>
           {
-            if(error instanceof HttpErrorResponse)
+            if(error instanceof HttpErrorResponse ) 
             {
               // need to add the logout revoke tokne thing here
              
@@ -242,7 +242,7 @@ export class appInterceptor implements HttpInterceptor {
             {
               // this.logout()
 
-              this.router.navigate(['login'])
+              // this.router.navigate(['login'])
 
               return throwError(() => error);
             }

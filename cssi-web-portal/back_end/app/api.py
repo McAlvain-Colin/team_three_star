@@ -335,10 +335,10 @@ def create_user():
 		return jsonify({'errorMessage': 'The email is already registered'}), 409 
 	else:
 		try:
-			hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+			# hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 
-			emailtoken = s.dumps(email + "|" + hashed + "|" + name, salt='email-confirm')
+			emailtoken = s.dumps(email + "|" + password + "|" + name, salt='email-confirm')
 
 			
 
@@ -363,11 +363,14 @@ def confirm_email(token):
 		userInfo = s.loads(token, salt='email-confirm', max_age = 360)
 		userInfo = userInfo.split("|")
 		email = userInfo[0]
-		hashedP = userInfo[1]
+		password = userInfo[1]
 		name = userInfo[2]
 
+		hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-		newUser = Account(email, hashedP, name,  True, True)
+
+
+		newUser = Account(email, hashed, name,  True, True)
 		db.session.add(newUser)
 		db.session.commit()
 
@@ -751,7 +754,7 @@ def addAppDevice():
 			
 			app = db.session.execute(db.select(Application).where(Application.id == appId)).scalar()
 
-			appSensor = AppSensors(app_id = app.id, dev_name='myDevice', dev_eui= devEUI)
+			appSensor = AppSensors(app_id = app.id, dev_name='lol', dev_eui= devEUI)
 			db.session.add(appSensor)
 			db.session.commit()
 			return jsonify({'DeviceAdded': True}), 200

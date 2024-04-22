@@ -82,7 +82,7 @@ export class AddDeviceComponent {
           const responseString = JSON.stringify(response);
           let parsedRes = JSON.parse(responseString);
           if (parsedRes.body.DeviceAdded) {
-            this.snackBar.open(message, 'Close', {
+            this.snackBar.open('Added Device', 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
@@ -101,7 +101,7 @@ export class AddDeviceComponent {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-          
+          // router.navigate(['add-device'])
         }
       });
   }
