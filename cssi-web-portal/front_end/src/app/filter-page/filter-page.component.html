@@ -246,29 +246,29 @@
               <th mat-header-cell *matHeaderCellDef>Data</th>
               <td mat-cell *matCellDef="let element">{{ element.column }}</td>
             </ng-container>
-            <!-- Mean Column -->
-            <ng-container matColumnDef="Mean" class="Mean">
-              <th mat-header-cell *matHeaderCellDef>Mean</th>
+            <!-- mean Column -->
+            <ng-container matColumnDef="mean" class="mean">
+              <th mat-header-cell *matHeaderCellDef>mean</th>
               <td mat-cell *matCellDef="let element">{{ element.mean }}</td>
             </ng-container>
-            <!-- Variance Column -->
-            <ng-container matColumnDef="Variance" class="Variance">
-              <th mat-header-cell *matHeaderCellDef>Variance</th>
+            <!-- variance Column -->
+            <ng-container matColumnDef="variance" class="variance">
+              <th mat-header-cell *matHeaderCellDef>variance</th>
               <td mat-cell *matCellDef="let element">{{ element.variance }}</td>
             </ng-container>
             <!-- Standard Deviation Column -->
-            <ng-container matColumnDef="Standard_Deviation" class="Standard_Deviation">
+            <ng-container matColumnDef="standard_deviation" class="standard_deviation">
               <th mat-header-cell *matHeaderCellDef>Standard Deviation</th>
               <td mat-cell *matCellDef="let element"> {{ element.standard_deviation }} </td>
             </ng-container>
-            <!-- Median Column -->
-            <ng-container matColumnDef="Median" class="Median">
-              <th mat-header-cell *matHeaderCellDef>Median</th>
+            <!-- median Column -->
+            <ng-container matColumnDef="median" class="median">
+              <th mat-header-cell *matHeaderCellDef>median</th>
               <td mat-cell *matCellDef="let element">{{ element.median }}</td>
             </ng-container>
-            <!-- Mode Column -->
-            <ng-container matColumnDef="Mode" class="Mode">
-              <th mat-header-cell *matHeaderCellDef>Mode</th>
+            <!-- mode Column -->
+            <ng-container matColumnDef="mode" class="mode">
+              <th mat-header-cell *matHeaderCellDef>mode</th>
               <td mat-cell *matCellDef="let element">{{ element.mode }}</td>
             </ng-container>
 
@@ -277,11 +277,11 @@
               *matHeaderRowDef="[
                 'devEUI',
                 'column',
-                'Mean',
-                'Variance',
-                'Standard_Deviation',
-                'Median',
-                'Mode'
+                'mean',
+                'variance',
+                'standard_deviation',
+                'median',
+                'mode'
               ]"
             ></tr>
             <tr
@@ -291,15 +291,21 @@
                 columns: [
                   'devEUI',
                   'column',
-                  'Mean',
-                  'Variance',
-                  'Standard_Deviation',
-                  'Median',
-                  'Mode'
+                  'mean',
+                  'variance',
+                  'standard_deviation',
+                  'median',
+                  'mode'
                 ]
               "
             ></tr>
           </table>
+          <mat-paginator
+            #payloadStatsPaginator
+            [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons
+            aria-label="Select page of Payload Stats"
+          ></mat-paginator>
         </mat-card>
         <mat-card-actions>
           <div class="button-container">
@@ -471,29 +477,29 @@
             <th mat-header-cell *matHeaderCellDef>Data</th>
             <td mat-cell *matCellDef="let element">{{ element.column }}</td>
           </ng-container>
-          <!-- Mean Column -->
-          <ng-container matColumnDef="Mean" class="Mean">
-            <th mat-header-cell *matHeaderCellDef>Mean</th>
+          <!-- mean Column -->
+          <ng-container matColumnDef="mean" class="mean">
+            <th mat-header-cell *matHeaderCellDef>mean</th>
             <td mat-cell *matCellDef="let element">{{ element.mean }}</td>
           </ng-container>
-          <!-- Variance Column -->
-          <ng-container matColumnDef="Variance" class="Variance">
-            <th mat-header-cell *matHeaderCellDef>Variance</th>
+          <!-- variance Column -->
+          <ng-container matColumnDef="variance" class="variance">
+            <th mat-header-cell *matHeaderCellDef>variance</th>
             <td mat-cell *matCellDef="let element">{{ element.variance }}</td>
           </ng-container>
           <!-- Standard Deviation Column -->
-          <ng-container matColumnDef="Standard_Deviation" class="Standard_Deviation">
+          <ng-container matColumnDef="standard_deviation" class="standard_deviation">
             <th mat-header-cell *matHeaderCellDef>Standard Deviation</th>
             <td mat-cell *matCellDef="let element"> {{ element.standard_deviation }} </td>
           </ng-container>
-          <!-- Median Column -->
-          <ng-container matColumnDef="Median" class="Median">
-            <th mat-header-cell *matHeaderCellDef>Median</th>
+          <!-- median Column -->
+          <ng-container matColumnDef="median" class="median">
+            <th mat-header-cell *matHeaderCellDef>median</th>
             <td mat-cell *matCellDef="let element">{{ element.median }}</td>
           </ng-container>
-          <!-- Mode Column -->
-          <ng-container matColumnDef="Mode" class="Mode">
-            <th mat-header-cell *matHeaderCellDef>Mode</th>
+          <!-- mode Column -->
+          <ng-container matColumnDef="mode" class="mode">
+            <th mat-header-cell *matHeaderCellDef>mode</th>
             <td mat-cell *matCellDef="let element">{{ element.mode }}</td>
           </ng-container>
 
@@ -502,11 +508,11 @@
             *matHeaderRowDef="[
               'devEUI',
               'column',
-              'Mean',
-              'Variance',
-              'Standard_Deviation',
-              'Median',
-              'Mode'
+              'mean',
+              'variance',
+              'standard_deviation',
+              'median',
+              'mode'
             ]"
           ></tr>
           <tr
@@ -516,15 +522,21 @@
               columns: [
                 'devEUI',
                 'column',
-                'Mean',
-                'Variance',
-                'Standard_Deviation',
-                'Median',
-                'Mode'
+                'mean',
+                'variance',
+                'standard_deviation',
+                'median',
+                'mode'
               ]
             "
           ></tr>
         </table>
+        <mat-paginator
+          #metadataStatsPaginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          aria-label="Select page of Metadata Stats"
+        ></mat-paginator>
         </mat-card>
         <!-- The mat card will also have buttons present to retrieve user input and specific what infromation the user would like to view with respect tot he device health. -->
         <!-- using event based binding which will use the correpsonding method and allow the user to view the selected information visuallized with the chart, here the chart is specified-->
