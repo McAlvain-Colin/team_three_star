@@ -18,6 +18,7 @@ import {
   HttpClient,
   HttpClientModule,
   HttpHeaders,
+  HttpErrorResponse
 } from '@angular/common/http';
 
 @Component({
@@ -93,7 +94,7 @@ export class AddDeviceComponent {
           const responseString = JSON.stringify(response);
           let parsedRes = JSON.parse(responseString);
           if (parsedRes.body.DeviceAdded) {
-            this.snackBar.open(message, 'Close', {
+            this.snackBar.open('device added', 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
@@ -105,13 +106,14 @@ export class AddDeviceComponent {
             });
           }
         },
-        error: (error) => {
-          message = 'There was an error that occurred: \n' + error;
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-        },
+        }
       });
   }
 }

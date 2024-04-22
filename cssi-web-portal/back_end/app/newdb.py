@@ -1,7 +1,9 @@
+import datetime
 import json
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, types, Text, LargeBinary, ForeignKey, select, ForeignKeyConstraint, UniqueConstraint
+from sqlalchemy import String, types, Text, LargeBinary, ForeignKey
 
+from sqlalchemy.sql.functions import now
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry, relationship
 from typing_extensions import Annotated
 from typing import List
@@ -128,8 +130,6 @@ class OrgApplication(Base):
     o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
     org: Mapped['Organization'] = relationship(back_populates='orgApps')
 
-    active: Mapped[bool] = mapped_column(unique=False)
-
     # dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
     # device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
     def __repr__(self):
@@ -149,6 +149,22 @@ class AppSensors(Base):
     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
 #     devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
 
+
+#STEP 1 ADD THIS CLASS FOR KEEPING TRACK OF THE USER REVOKED TOKENS 
+class TokenBlockList(Base):
+	__tablename__ = 'TokenBlockList'
+	id: Mapped[int] = mapped_column(primary_key=True)
+	jti: Mapped[str] = mapped_column(nullable=False, index=True)
+	type: Mapped[str] = mapped_column(nullable=False)
+	user_id: Mapped[int] = mapped_column(nullable=False)
+	created_at: Mapped[datetime.datetime] = mapped_column(server_default= now(), nullable=False)
+	valid: Mapped[bool] = mapped_column(nullable= False)
+
+
+
+
+
+
 with app.app_context():
 # for creating db
     db.reflect()
@@ -162,196 +178,196 @@ class Device(Base):
             
           
 
-def func():
+# def func():
 
 
-    # o = db.session.execute(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = 1))
+#     # o = db.session.execute(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = 1))
 
-    # print(o)
-    # for creating a account
-    # email ='hasasds1234dfg2143d@gmail.com'
-    # hashed = 'lol1'
-    # hashed = hashed.encode('utf-8')
-    # newUser = Account(email, hashed,'me', False, True )
-    # db.session.add(newUser)
-    # db.session.commit()
+#     # print(o)
+#     # for creating a account
+#     # email ='hasasds1234dfg2143d@gmail.com'
+#     # hashed = 'lol1'
+#     # hashed = hashed.encode('utf-8')
+#     # newUser = Account(email, hashed,'me', False, True )
+#     # db.session.add(newUser)
+#     # db.session.commit()
 
-    # # # # for creating a org
-    # org = Organization('5org', 'this is my first org', True)
-    # db.session.add(org)
-    # db.session.commit()
+#     # # # # for creating a org
+#     # org = Organization('5org', 'this is my first org', True)
+#     # db.session.add(org)
+#     # db.session.commit()
 
-    # org = Organization('6org', 'this is my first org', True)
-    # db.session.add(org)
-    # db.session.commit()
+#     # org = Organization('6org', 'this is my first org', True)
+#     # db.session.add(org)
+#     # db.session.commit()
 
-    # org = Organization('7org', 'this is my first org', True)
-    # db.session.add(org)
-    # db.session.commit()
+#     # org = Organization('7org', 'this is my first org', True)
+#     # db.session.add(org)
+#     # db.session.commit()
 
-    # org = Organization('8org', 'this is my first org', True)
-    # db.session.add(org)
-    # db.session.commit()
+#     # org = Organization('8org', 'this is my first org', True)
+#     # db.session.add(org)
+#     # db.session.commit()
 
-    # org = Organization('9org', 'this is my first org', True)
-    # db.session.add(org)
-    # db.session.commit()
+#     # org = Organization('9org', 'this is my first org', True)
+#     # db.session.add(org)
+#     # db.session.commit()
 
-    # org = Organization('10org', 'this is my first org', True)
-    # db.session.add(org)
-    # db.session.commit()
-
-
-    # For adding to orgAccounts
-    # newUser = db.session.execute(db.select(Account).filter_by(id = 5)).scalar()
-    # newOrg = db.session.execute(db.select(Organization).filter_by(id = 1)).scalar()
-
-    # # # # newOrg = Organization('lol', 'testintg')
-
-    # # # # #link the account with the org
-    # # for i in range(1,7):
-    # # orgAcc = OrgAccount(a_id= 1, o_id= i, r_id = i % 4)
-
-    # orgAcc = OrgAccount(a_id= newUser.id, o_id= newOrg.id, r_id = 3, active=True)
+#     # org = Organization('10org', 'this is my first org', True)
+#     # db.session.add(org)
+#     # db.session.commit()
 
 
-    # db.session.add(orgAcc)
-    # db.session.commit()
-    # try:
+#     # For adding to orgAccounts
+#     # newUser = db.session.execute(db.select(Account).filter_by(id = 5)).scalar()
+#     # newOrg = db.session.execute(db.select(Organization).filter_by(id = 1)).scalar()
 
-    # page = db.paginate(db.select(Account).filter_by(id = 1), page=1, per_page=5)
-    # j = [
-    # {
-    # 'id': p.id,
-    # 'email': p.email
-    # } for p in page.items
-    # ]
-    # print(j)
-    # except Exception as e:
-    # print(str(e))
-    # k = make_response({'error': str(e)}, 404)
+#     # # # # newOrg = Organization('lol', 'testintg')
 
-    # print(k)
+#     # # # # #link the account with the org
+#     # # for i in range(1,7):
+#     # # orgAcc = OrgAccount(a_id= 1, o_id= i, r_id = i % 4)
 
-    # select(Organization).join(Organization.orgAccounts)
-    # page = db.paginate(db.select(Organization).filter_by(a_id = 1), page= 1, per_page= 10)
-    # res = {'total': page.pages,
-    # 'list': [
-    # {
-    # 'role': 1,
-
-    # 'name': p.name,
-    # 'description': p.description
-    # } for p in page.items
-    # ]
-    # }
+#     # orgAcc = OrgAccount(a_id= newUser.id, o_id= newOrg.id, r_id = 3, active=True)
 
 
+#     # db.session.add(orgAcc)
+#     # db.session.commit()
+#     # try:
 
-    # page = db.paginate(db.select(Organization).filter_by(id = 1)).pages
+#     # page = db.paginate(db.select(Account).filter_by(id = 1), page=1, per_page=5)
+#     # j = [
+#     # {
+#     # 'id': p.id,
+#     # 'email': p.email
+#     # } for p in page.items
+#     # ]
+#     # print(j)
+#     # except Exception as e:
+#     # print(str(e))
+#     # k = make_response({'error': str(e)}, 404)
+
+#     # print(k)
+
+#     # select(Organization).join(Organization.orgAccounts)
+#     # page = db.paginate(db.select(Organization).filter_by(a_id = 1), page= 1, per_page= 10)
+#     # res = {'total': page.pages,
+#     # 'list': [
+#     # {
+#     # 'role': 1,
+
+#     # 'name': p.name,
+#     # 'description': p.description
+#     # } for p in page.items
+#     # ]
+#     # }
 
 
 
-
-    # THIS IS BETTER VERSION OF WHAT TO DO with orhg info and org account role id
-    # o = db.session.execute(db.select(OrgAccount.r_id, Organization).join_from(Organization, OrgAccount))
-
-
-    # print(o.all())
-    # print(o.all())
-    # for i in o.all():
-    # print('rid:', i.r_id)
-    # print('org name:', i.Organization.name)
-
-
-
-    # this works forr joins ACTUALY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    # o = db.session.execute(db.select(OrgAccount.r_id, Organization).join(Organization.orgAccounts).filter_by(a_id = 1))
-
-    # print(o.all())
-    # # print(o.all())
-    # for i in o.all():
-    # print('rid:', i.r_id)
-    # print('org name:', i.Organization.name)
+#     # page = db.paginate(db.select(Organization).filter_by(id = 1)).pages
 
 
 
 
-    # page = db.paginate(db.select(OrgAccount.r_id, Organization).join(OrgAccount.org).filter_by(a_id = 1), per_page = 1)
-
-    # res = {'total': page.pages,
-    # 'list': [
-    # {
-    # 'role': 1,
-
-    # 'name': p.name,
-    # 'description': p.description
-    # } for p in page.items
-    # ]
-    # }
+#     # THIS IS BETTER VERSION OF WHAT TO DO with orhg info and org account role id
+#     # o = db.session.execute(db.select(OrgAccount.r_id, Organization).join_from(Organization, OrgAccount))
 
 
-    # page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = 1), per_page = 1)
-
-    # print(page.items)
-
-    # # print(res.items)
-
-    ############################################################
-    # working for reading orgs associated with an account org - orgAccount working
-
-    # page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = 1), page= 1, per_page= 10)
-    # for i in page.items:
-    # print(i.r_id)
-    # res = {'total': page.pages,
-    # 'list': [
-    # {
-    # # 'role': p.r_id
-    # 'o_id' : p.id,
-    # 'name': p.name,
-    # 'description': p.description
-    # } for p in page.items
-    # ]
-    # }
-
-    # print(res)
+#     # print(o.all())
+#     # print(o.all())
+#     # for i in o.all():
+#     # print('rid:', i.r_id)
+#     # print('org name:', i.Organization.name)
 
 
-    ####################################################################
-    # get org with id = 1
-    # org = db.session.execute(db.select(Organization).where(Organization.id == 1)).scalar()
 
-    # print(org.id)
+#     # this works forr joins ACTUALY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-    # acc = db.session.execute(db.select(Account).where(Account.id == 1)).scalar()
-    # print(acc.email)
+#     # o = db.session.execute(db.select(OrgAccount.r_id, Organization).join(Organization.orgAccounts).filter_by(a_id = 1))
 
-    # orgAcc =OrgAccount(account= acc, org= org, r_id = 1)
-    # db.session.add(orgAcc)
-    # db.session.commit()
-    # # # AppSensors()
-    # oApp = OrgApplication(description='for mah testing', o_id= org.id)
-
-    # db.session.add(oApp)
-    # db.sesson.commit()
-
-    # app = Application(name= 'mwryjnszugtrbApp', description= 'idk')
-    # db.session.add(app)
-    # db.session.commit()
+#     # print(o.all())
+#     # # print(o.all())
+#     # for i in o.all():
+#     # print('rid:', i.r_id)
+#     # print('org name:', i.Organization.name)
 
 
 
 
+#     # page = db.paginate(db.select(OrgAccount.r_id, Organization).join(OrgAccount.org).filter_by(a_id = 1), per_page = 1)
+
+#     # res = {'total': page.pages,
+#     # 'list': [
+#     # {
+#     # 'role': 1,
+
+#     # 'name': p.name,
+#     # 'description': p.description
+#     # } for p in page.items
+#     # ]
+#     # }
 
 
-    # res = db.session.execute(db.select(Application).where(Application.id == 5)).scalar()
+#     # page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = 1), per_page = 1)
 
-    # print(res.name)
+#     # print(page.items)
 
-    # orgApp = OrgApplication(app= res, org= org)
-    # db.session.add(orgApp) 
-    # db.session.commit()
+#     # # print(res.items)
+
+#     ############################################################
+#     # working for reading orgs associated with an account org - orgAccount working
+
+#     # page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter_by(a_id = 1), page= 1, per_page= 10)
+#     # for i in page.items:
+#     # print(i.r_id)
+#     # res = {'total': page.pages,
+#     # 'list': [
+#     # {
+#     # # 'role': p.r_id
+#     # 'o_id' : p.id,
+#     # 'name': p.name,
+#     # 'description': p.description
+#     # } for p in page.items
+#     # ]
+#     # }
+
+#     # print(res)
+
+
+#     ####################################################################
+#     # get org with id = 1
+#     # org = db.session.execute(db.select(Organization).where(Organization.id == 1)).scalar()
+
+#     # print(org.id)
+
+#     # acc = db.session.execute(db.select(Account).where(Account.id == 1)).scalar()
+#     # print(acc.email)
+
+#     # orgAcc =OrgAccount(account= acc, org= org, r_id = 1)
+#     # db.session.add(orgAcc)
+#     # db.session.commit()
+#     # # # AppSensors()
+#     # oApp = OrgApplication(description='for mah testing', o_id= org.id)
+
+#     # db.session.add(oApp)
+#     # db.sesson.commit()
+
+#     # app = Application(name= 'mwryjnszugtrbApp', description= 'idk')
+#     # db.session.add(app)
+#     # db.session.commit()
+
+
+
+
+
+
+#     # res = db.session.execute(db.select(Application).where(Application.id == 5)).scalar()
+
+#     # print(res.name)
+
+#     # orgApp = OrgApplication(app= res, org= org)
+#     # db.session.add(orgApp) 
+#     # db.session.commit()
         
         
         
@@ -360,18 +376,18 @@ def func():
         
         
         
-    # json_data = json.dumps(res)
-    # t = json.dumps(total)
+#     # json_data = json.dumps(res)
+#     # t = json.dumps(total)
 
-    # w = json_data + t
+#     # w = json_data + t
 
-    # json_data += ','+str({'total': 1})
-    # print(w)
+#     # json_data += ','+str({'total': 1})
+#     # print(w)
 
 
-    # res = db.session.execute(db.select(Device)).scalar()
+#     # res = db.session.execute(db.select(Device)).scalar()
 
-    # print(res.dev_eui)
+#     # print(res.dev_eui)
 
 
 
@@ -382,33 +398,33 @@ def func():
 
 
 
-    # Need two in order to paginate CORRECTLY, 1 one needed once user indictesat teeeh org assocaiteed
-    # role = db.session.execute(db.select(OrgAccount.r_id).where(OrgAccount.a_id == 1).where(OrgAccount.o_id == 2)).scalar()
+#     # Need two in order to paginate CORRECTLY, 1 one needed once user indictesat teeeh org assocaiteed
+#     # role = db.session.execute(db.select(OrgAccount.r_id).where(OrgAccount.a_id == 1).where(OrgAccount.o_id == 2)).scalar()
 
-    # page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter(OrgAccount.a_id == 1), page= 1, per_page= 5)
+#     # page = db.paginate(db.select(Organization).join(Organization.orgAccounts).filter(OrgAccount.a_id == 1), page= 1, per_page= 5)
 
-    # print('role: ', role)
-    # print(page.items)
-    # res = {
-    # 'total': page.pages,
-    # 'list': [
-    # {
-    # 'o_id' : p.id,
-    # 'name': p.name,
-    # 'description': p.description
-    # } for p in page.items
-    # ]
-    # }
+#     # print('role: ', role)
+#     # print(page.items)
+#     # res = {
+#     # 'total': page.pages,
+#     # 'list': [
+#     # {
+#     # 'o_id' : p.id,
+#     # 'name': p.name,
+#     # 'description': p.description
+#     # } for p in page.items
+#     # ]
+#     # }
 
-    # print(res)
+#     # print(res)
 
 
 
 
 
 
-    #move on to org appliactions #########################################################################
-    #create an app associated with an organization
+#     #move on to org appliactions #########################################################################
+#     #create an app associated with an organization
 
 
 
@@ -417,55 +433,55 @@ def func():
 
 
 
-    # first create an application
+#     # first create an application
 
-    # app = Application(name='myapp', description= 'oidk')
+#     # app = Application(name='myapp', description= 'oidk')
 
-    # db.session.add(app)
-    # db.session.commit()
+#     # db.session.add(app)
+#     # db.session.commit()
 
 
 
 
 
-    # for creating a orgApp
-    # ap = db.session.execute(db.select(Application).where(Application.name == 'myapp')).scalar()
+#     # for creating a orgApp
+#     # ap = db.session.execute(db.select(Application).where(Application.name == 'myapp')).scalar()
 
-    # organ = db.session.execute(db.select(Organization).join(OrgAccount.org).where(OrgAccount.a_id == 1).where(Organization.id == 5)).scalar()
-    # # print('org', organ.name)
-    # print(ap.name)
+#     # organ = db.session.execute(db.select(Organization).join(OrgAccount.org).where(OrgAccount.a_id == 1).where(Organization.id == 5)).scalar()
+#     # # print('org', organ.name)
+#     # print(ap.name)
 
-    # oApp = OrgApplication(app = ap, org=organ)
-    # # # # print('oApp', oApp.org)
-    # db.session.add(oApp)
-    # db.session.commit()
-    ####################################
+#     # oApp = OrgApplication(app = ap, org=organ)
+#     # # # # print('oApp', oApp.org)
+#     # db.session.add(oApp)
+#     # db.session.commit()
+#     ####################################
 
-    # select statement with org application
+#     # select statement with org application
 
-    # res = db.session.execute(db.select(OrgApplication).where(OrgApplication.o_id == 1)).scalar()
-    # res = db.session.execute(db.select(OrgApplication).where(OrgApplication.o_id == 1)).scalars()
+#     # res = db.session.execute(db.select(OrgApplication).where(OrgApplication.o_id == 1)).scalar()
+#     # res = db.session.execute(db.select(OrgApplication).where(OrgApplication.o_id == 1)).scalars()
 
-    # print(res.all())
+#     # print(res.all())
 
 
 
 
-    # this is for find the an organizations applications ###########################
-    # page = db.paginate(db.select(OrgApplication).where(OrgApplication.o_id == 1), page= 1, per_page= 10)
+#     # this is for find the an organizations applications ###########################
+#     # page = db.paginate(db.select(OrgApplication).where(OrgApplication.o_id == 1), page= 1, per_page= 10)
 
-    # j = {
-    # 'o_id': 1,
-    # 'totalPages': page.pages,
-    # 'list':[
-    # {
-    # 'appId': p.id,
-    # 'description': p.description
-    # } for p in page.items
-    # ]
-    # }
+#     # j = {
+#     # 'o_id': 1,
+#     # 'totalPages': page.pages,
+#     # 'list':[
+#     # {
+#     # 'appId': p.id,
+#     # 'description': p.description
+#     # } for p in page.items
+#     # ]
+#     # }
 
-    # print(j)
+#     # print(j)
 
 
 
@@ -473,83 +489,83 @@ def func():
 
 
 
-    # ap = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == 5)).scalar()
+#     # ap = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == 5)).scalar()
 
-    # p = db.session.execute(db.select(Application)).scalar()
+#     # p = db.session.execute(db.select(Application)).scalar()
 
-    # print(ap.name)
+#     # print(ap.name)
 
-    # page = db.paginate(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == 5), page= 1, per_page= 5)
+#     # page = db.paginate(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == 5), page= 1, per_page= 5)
 
-    # # print(page.items) #doesnt work if not specified the object attributes to expose
-    # res = {
-    # 'totalPages': page.pages,
-    # 'list': [
-    # {
-    # 'app_id' : p.id,
-    # 'name': p.name,
-    # 'description': p.description
-    # } for p in page.items
-    # ]
-    # }
+#     # # print(page.items) #doesnt work if not specified the object attributes to expose
+#     # res = {
+#     # 'totalPages': page.pages,
+#     # 'list': [
+#     # {
+#     # 'app_id' : p.id,
+#     # 'name': p.name,
+#     # 'description': p.description
+#     # } for p in page.items
+#     # ]
+#     # }
 
-    # print(res)
+#     # print(res)
 
 
-    ###############################################
+#     ###############################################
 
-    # adding a device to applciation needs a join eui, app key and dev eui
+#     # adding a device to applciation needs a join eui, app key and dev eui
 
 
 
-    # res = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == 5)).scalar()
+#     # res = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == 5)).scalar()
 
-    # print('app',res.name)
+#     # print('app',res.name)
 
 
-    # dev = db.session.execute(db.select(Device).where(Device.dev_eui == 'A3')).scalar()
-    # print('dev', dev.dev_eui)
+#     # dev = db.session.execute(db.select(Device).where(Device.dev_eui == 'A3')).scalar()
+#     # print('dev', dev.dev_eui)
 
 
 
-    # appsensor = AppSensors(app= res, dev_eui= dev.dev_eui)
+#     # appsensor = AppSensors(app= res, dev_eui= dev.dev_eui)
 
-    # db.session.add(appsensor)
-    # db.session.commit()
+#     # db.session.add(appsensor)
+#     # db.session.commit()
 
 
 
 
 
-    # paginate devs in a app
+#     # paginate devs in a app
 
-    # res = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 1)).scalars()
+#     # res = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 1)).scalars()
 
-    # print(res.all())
-    # for i in res:
-    # print(i.dev_eui)
+#     # print(res.all())
+#     # for i in res:
+#     # print(i.dev_eui)
 
 
 
-    # print('id', db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id ==1)).scalars())
+#     # print('id', db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id ==1)).scalars())
 
 
-    # page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 1)).scalars()
+#     # page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == 1)).scalars()
 
-    #     # # print(page.items) #doesnt work if not specified the object attributes to expose
-    # res = {
-    # # 'totalPages': page.pages,
-    # 'list': [
-    #     {
-    #         'app_id': p.app_id,
-    #         'name': p.dev_name,
-    #         'dev': p.dev_eui
+#     #     # # print(page.items) #doesnt work if not specified the object attributes to expose
+#     # res = {
+#     # # 'totalPages': page.pages,
+#     # 'list': [
+#     #     {
+#     #         'app_id': p.app_id,
+#     #         'name': p.dev_name,
+#     #         'dev': p.dev_eui
 
-    #     } for p in page.all()
-    # ]
-    # }
+#     #     } for p in page.all()
+#     # ]
+#     # }
 
-    # print(res)
+#     # print(res)
 
 
 
@@ -593,23 +609,23 @@ def func():
 
 
 
-    page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3))).scalars()
+#     page = db.session.execute(db.select(Account).join(Account.orgAccounts).where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3))).scalars()
 
-    # # print(page.items) #doesnt work if not specified the object attributes to expose
-    res = {
-    # 'totalPages': page.pages,
-    'list': [
-    {
-    'a_id' : p.id,
-    'name': p.name
+#     # # print(page.items) #doesnt work if not specified the object attributes to expose
+#     res = {
+#     # 'totalPages': page.pages,
+#     'list': [
+#     {
+#     'a_id' : p.id,
+#     'name': p.name
 
-    } for p in page.all()
-    ]
-    }
+#     } for p in page.all()
+#     ]
+#     }
 
-    j = json.dumps(res)
+#     j = json.dumps(res)
 
-    print(j)
+#     print(j)
 
 
 
@@ -621,33 +637,33 @@ def func():
 
 
 
-    # changed implmetation for making JSON responses
+#     # changed implmetation for making JSON responses
 
 
 
-    # page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.app_id == 1)).scalars()
+#     # page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.app_id == 1)).scalars()
 
-    # # # print(page.items) #doesnt work if not specified the object attributes to expose
-    # res = {
-    # # 'totalPages': page.pages,
-    # 'list': [
-    # {
-    # 'app_id' : p.id,
-    # 'name': p.name
-    # } for p in page.all()
-    # ]
-    # }
+#     # # # print(page.items) #doesnt work if not specified the object attributes to expose
+#     # res = {
+#     # # 'totalPages': page.pages,
+#     # 'list': [
+#     # {
+#     # 'app_id' : p.id,
+#     # 'name': p.name
+#     # } for p in page.all()
+#     # ]
+#     # }
 
-    # j = json.dumps(res)
+#     # j = json.dumps(res)
 
     
 
 
 
 
-    # app = db.session.execute(db.select(Application).where(Application.id == 1)).scalar()
+#     # app = db.session.execute(db.select(Application).where(Application.id == 1)).scalar()
 
-    # dev = AppSenseo()
+#     # dev = AppSenseo()
 
 ##############################################################
 
@@ -743,8 +759,10 @@ def func():
 with app.app_context():
 # for creating db
     # db.reflect()
-    # db.create_all()
+    db.create_all()
     # print(db.session.execute(db.select(Device.dev_eui)).scalars().all())
+
+    # TokenBlockList.__table__.drop(db.engine)
 
     # OrgAccount.__table__.drop(db.engine)
 
@@ -762,7 +780,7 @@ with app.app_context():
     # db.reflect()
     # db.drop_all()
 
-    func()
+    # func()
 # # pass
 
 
@@ -775,3 +793,4 @@ with app.app_context():
 # with app.app_context():
     # db.create_all()
     # func()
+    # pass

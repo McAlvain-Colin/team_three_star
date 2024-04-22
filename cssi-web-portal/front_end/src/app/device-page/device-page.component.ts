@@ -41,7 +41,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 //using code from the filter page here since it is essentiall the same
 //I want to redo this code if theres time using the pageinate module.
@@ -137,7 +138,8 @@ export class DevicePageComponent implements AfterViewInit {
     private apiService: ApiService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private snackBar: MatSnackBar 
   ) {
     Chart.register(...registerables); // ...registerables is an array that contains all the components Chart.js offers
   }
@@ -192,9 +194,15 @@ export class DevicePageComponent implements AfterViewInit {
           console.log('DEV_EUI', this.deviceEUI);
           this.getDataSetup();
         },
-        error: (error) => {
-          console.error(error);
-        },
+        error: (error: HttpErrorResponse) => {
+
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+  
+        }
       });
   }
 

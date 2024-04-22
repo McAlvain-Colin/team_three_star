@@ -6,11 +6,12 @@ from helperFunctions import *
 from data_parser import *
 import models
 from stats import *
-# import dbinteractions
+from datetime import timezone
 from flask_mail import Mail, Message
 
-from flask_jwt_extended import (create_access_token, JWTManager,
+from flask_jwt_extended import (create_access_token, JWTManager, get_jti,
 								jwt_required, get_jwt_identity,
+								create_refresh_token, get_jwt
 								)
 
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -18,9 +19,9 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import bcrypt
 
 
-#db imports
+from sqlalchemy.sql.functions import now
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, types, Text, LargeBinary, ForeignKey, select, update, exc
+from sqlalchemy import String, or_, types, Text, LargeBinary, ForeignKey, select, update, exc
 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry, relationship
 from typing_extensions import Annotated
@@ -62,12 +63,12 @@ app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR P
 app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
-# app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers', 'json']
 app.config['JWT_SECRET_KEY'] = 'secret' # ALTERED FOR PRIVACY
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 60)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 20)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(hours= 24)
 CORS(app, resources={r'/*': {'origins': ['http://localhost:4200', 'http://localhost:5000']}})
 
-JWTManager(app)
+jwt = JWTManager(app)
 
 mail.init_app(app)
 s = URLSafeTimedSerializer('email-secret') 
@@ -191,6 +192,18 @@ class AppSensors(Base):
 	dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
 #     devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
 
+
+class TokenBlockList(Base):
+	__tablename__ = 'TokenBlockList'
+	id: Mapped[int] = mapped_column(primary_key=True)
+	jti: Mapped[str] = mapped_column(nullable=False, index=True)
+	type: Mapped[str] = mapped_column(nullable=False)
+	user_id: Mapped[int] = mapped_column(nullable=False)
+	created_at: Mapped[datetime.datetime] = mapped_column(server_default= now(), nullable=False)
+	valid: Mapped[bool] = mapped_column(nullable= False)
+
+
+
 with app.app_context():
 # for creating db
 	db.reflect()
@@ -201,6 +214,8 @@ class Device(Base):
 	
     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True) 
 
+
+
 			
 
 
@@ -209,6 +224,37 @@ class Device(Base):
 @app.route('/')
 def index():
 	return "return backend home message"
+
+
+
+@jwt.token_in_blocklist_loader
+def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
+	jti = jwt_payload['jti']
+	token_valid = db.session.execute(db.select(TokenBlockList.valid).where(TokenBlockList.jti == jti)).scalar()
+	# print(token_valid)
+	return not token_valid
+
+
+@app.route('/refresh', methods = ['POST'])
+@jwt_required(refresh = True)
+def refresh():
+
+	# print('inside of the refresh tokemn func ')
+	identity = get_jwt_identity()
+
+	token = create_access_token(identity = identity)
+
+	# add the new JWT access token to the db
+	jti = get_jti(token)
+	ttype = 'access'
+	now = datetime.datetime.now(timezone.utc)# updated 
+	db.session.add(TokenBlockList(jti= jti, type= ttype, user_id = identity, created_at = now, valid = True))
+	db.session.commit()
+
+	return jsonify({'token': token}), 200
+
+
+
 
 #using flask JWT extended based on the example provided in docs using JWT tokens.
 @app.route('/login', methods = ['POST'])
@@ -219,18 +265,37 @@ def login_user():
 	email = data['email']
 	password =  data['password']
 
-	user = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
+	
+	user = db.session.execute(db.select(Account).where(Account.email == email).where(Account.verified == True)).scalar()
 	if(user == None):
-		return make_response(jsonify({'login': False}), 200)
+		return jsonify({'login': False}), 401
 
 	if bcrypt.checkpw(password.encode('utf-8'), user.password): #database logic for searching goes here
 	
 		token = create_access_token(identity = user.id)
-		return make_response(jsonify({'login': True, 'token': token}), 200)
+		refreshToken = create_refresh_token(identity = user.id)
 
+
+		# add the JWT access token in the jwt block list
+		jti = get_jti(token)
+		ttype = 'access'
+		now = datetime.datetime.now(timezone.utc)# updated 
+		db.session.add(TokenBlockList(jti= jti, type= ttype, user_id = user.id, created_at = now, valid = True))
+		db.session.commit()
+
+		# add the JWT refresh token in the jwt block list
+		jti = get_jti(refreshToken)
+		ttype = 'refresh'
+		now = datetime.datetime.now(timezone.utc)# updated 
+		db.session.add(TokenBlockList(jti= jti, type= ttype, user_id = user.id, created_at = now, valid = True))
+		db.session.commit()
+
+
+		response = jsonify({'login': True, 'token': token, 'refreshToken': refreshToken})
+		return response, 200
 	else:
-		return make_response(jsonify({'login': False}), 200)
 
+		return jsonify({'login': False}), 401
 
 #used to test authorized routes, only authenticated users can get this info
 @app.route('/protected', methods = ['GET'])  
@@ -253,69 +318,79 @@ def create_user():
 	password =  data['password']
 	name = data['name']
 
-	hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-	emailtoken = s.dumps(email, salt='email-confirm')
-
-	newUser = Account(email, hashed, name,  False, True)
-	db.session.add(newUser)
-	db.session.commit()
+	user = db.session.execute(db.select(Account).where(Account.email == email).where(Account.verified == True)).scalar()
+	if(user != None):
+		return jsonify({'errorMessage': 'The email is already registered'}), 409 
+	else:
+		try:
 
 
-	msg = Message('Confirm Email', sender='cssiportalconfirmation@gmail.com', recipients= [email])
+			emailtoken = s.dumps(email + "|" + password + "|" + name, salt='email-confirm')
 
-	link = url_for('confirm_email', token = emailtoken, _external = True)
+			
 
-	msg.body = 'email confirmation link {}'.format(link)
 
-	mail.send(msg)
+			msg = Message('Confirm Email', sender='cssiportalconfirmation@gmail.com', recipients= [email])
 
-	return jsonify({'emailConfirmation': True})
+			link = url_for('confirm_email', token = emailtoken, _external = True)
+
+			msg.body = 'email confirmation link {}'.format(link)
+
+			mail.send(msg)
+
+			return jsonify({'emailConfirmation': True})
+		except exc.SQLAlchemyError:
+			return jsonify({'errorMessage': "couldn't create a account" }), 409 
+
+
 
 @app.route('/confirm_email/<token>')  
 def confirm_email(token):
 
 	try:
-		email = s.loads(token, salt='email-confirm', max_age = 360)
 
-		newUser = db.session.execute(db.select(Account).filter_by(email = email)).scalar()
-		newUser.verified = True
+		userInfo = s.loads(token, salt='email-confirm', max_age = 360)
+		userInfo = userInfo.split("|")
+		email = userInfo[0]
+		password = userInfo[1]
+		name = userInfo[2]
 
+		hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+		newUser = Account(email, hashed, name,  True, True)
+		db.session.add(newUser)
 		db.session.commit()
+
 
 		return '<h1>The email confirmation was successful, please login</h1>'
-	except SignatureExpired:
-		newUser = db.session.execute(db.select(Account).filter_by(verified = False)).scalar()
-	
-		db.session.delete(newUser)
-		db.session.commit()
+	except SignatureExpired or exc.SQLAlchemyError:
+		
 
 		return '<h1>The email confirmation was unsuccessful, please try again</h1>'
 
 
 
 
+
 @app.route('/logout', methods = ['DELETE'])  
-@jwt_required()
+@jwt_required(verify_type= False)
 def logout_user():
 
-	#jwt token is removed from local storage on frontend
+	identity = get_jwt_identity()
+	# remove all tokens that user generated in the session 
+	tokenList = db.session.execute(db.select(TokenBlockList).where(TokenBlockList.user_id == identity).where(TokenBlockList.valid == True)).scalars()
 
-	return jsonify(deleted_user =  True)
+	for token in tokenList.all():
+		token.valid = False
 
+	db.session.commit()
 
+	response = jsonify({'logout': True})
 
-
-@app.route('/deleteUser', methods = ['DELETE'])  
-@jwt_required()
-def deleteUser():
-	# data = request.get_json()
-	#remove user to database code
-
-	#need to add revoked token to revoked list
+	return response, 200
 
 
-	return jsonify(deleted_user =  True)
+
 
 
 
@@ -475,9 +550,10 @@ def deleteOrg():
 def getOrg():
 	
 	orgId = request.args['org']
-	orgId  = int(orgId)
 
 	try:
+		orgId  = int(orgId)
+
 		page = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
 		res  = {
 			'name': page.name,
@@ -485,7 +561,7 @@ def getOrg():
 		} 
 		return jsonify(res), 200
 
-	except exc.SQLAlchemyError:
+	except exc.SQLAlchemyError or ValueEr:
 		return jsonify({'error': "couldn't get your org with name specified"}), 404
 
 
@@ -496,10 +572,9 @@ def getOrgMembers():
 
 	orgId = request.args['org']
 
-	orgId = int(orgId)
 
 	try:
-		#page = db.session.execute(db.select(Account).join(OrgAccount).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)).scalars() #This parameter was removed, since we need to proivde the option for admin..where((OrgAccount.r_id == 2) | (OrgAccount.r_id == 3))
+		orgId = int(orgId)
 
 		users = select(Account.id, Account.name, OrgAccount.r_id).join(OrgAccount).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)
 
@@ -514,10 +589,9 @@ def getOrgMembers():
 				} for p in page
 			]
 		}
-		print(res)
 		return jsonify(res), 200
 	
-	except exc.SQLAlchemyError:
+	except exc.SQLAlchemyError or ValueError:
 		return jsonify({'error': "couldn't get your org members"}), 404
 
 @app.route('/deleteMember', methods = ['PUT'])
@@ -578,7 +652,7 @@ def getOwnedOrgList():
 	
 	except exc.SQLAlchemyError:
 
-		return jsonify({'error': "Couldn't get your owned orgs"}), 404
+		return jsonify({'errorMessage': "Couldn't get your owned organizations"}), 404
 	
 	
 
@@ -602,11 +676,11 @@ def getJoinedOrgList():
 		}
 		print(res)
 		res = json.dumps(res)
-		return make_response(res, 200)
+		return jsonify(res), 200
 	
 	except exc.SQLAlchemyError:
 
-		return make_response({'error': "Couldn't get your Joined Orgs"}, 404)
+		return jsonify({'errorMessage': "Couldn't get your Joined Organizations"}), 404
 	
 @app.route('/getOrgInfo', methods = ['GET'])
 @jwt_required()
@@ -661,20 +735,24 @@ def createOrgApplication():
 		return jsonify(orgCreated = True)
 
 	#link the app with the org
+	# try:
+	orgId = int(orgId)
 	newApp= Application(name= appName, description= appDescript)
-
 	org = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
 
 
-	orgApp = OrgApplication(app= newApp, org= org, active= True)
-	orgApp.active = True
+	orgApp = OrgApplication(app= newApp, org= org, active=True)
 
 	db.session.add(newApp)
 	db.session.commit()
 	db.session.add(orgApp)
 	db.session.commit()
 
-	return jsonify(orgCreated = True)
+	return jsonify(orgCreated = True), 200
+
+	# except exc.SQLAlchemyError or ValueError:
+
+	# 	return jsonify({'errorMessage': "Couldn't add your application"}), 404
 
 @app.route('/deleteOrgApp', methods = ['PUT'])
 @jwt_required()
@@ -702,9 +780,9 @@ def getOrgApp():
 
 	app_id = request.args['app']
 
-	app_id = int(app_id)
 
 	try:
+		app_id = int(app_id)
 
 		app = db.session.execute(db.select(Application).where(Application.id == app_id)).scalar()
 		res = {
@@ -714,9 +792,9 @@ def getOrgApp():
 		}
 		return jsonify(res), 200
 	
-	except Exception as e:
+	except exc.SQLAlchemyError or ValueError:
 
-		return jsonify({'error': str(e)}), 404
+		return jsonify({'errorMessage': "Couldn't get your organization"}), 404
 	
 
 
@@ -732,6 +810,8 @@ def getOrgAppList():
 	
 
 	try:
+		oid = int(oid)
+ 
 		page = db.session.execute(db.select(Application).join(Application.orgs).where(OrgApplication.o_id == oid).where(OrgApplication.active == True)).scalars()
 
 		res = {
@@ -747,8 +827,9 @@ def getOrgAppList():
 		# j = json.dumps(res)
 		return jsonify(res), 200
 
-	except Exception as e:
-		return jsonify({'error': str(e)}), 404
+	except exc.SQLAlchemyError or ValueError:
+
+		return jsonify({'errorMessage': "Couldn't get your organization applications"}), 404
 	
 	
 
@@ -761,17 +842,25 @@ def addAppDevice():
 	devEUI = data['devEUI']
 	devName = data['devName']
 
-	if (db.session.execute(db.select(Device).where(Device.dev_eui == devEUI)).scalar() is not None ):
+	try:
+
+		if (db.session.execute(db.select(Device).where(Device.dev_eui == devEUI)).scalar() is not None ):
+			
+			app = db.session.execute(db.select(Application).where(Application.id == appId)).scalar()
+
+			appSensor = AppSensors(app_id = app.id, dev_name= devName, dev_eui= devEUI)
+			db.session.add(appSensor)
+			db.session.commit()
+			return jsonify({'DeviceAdded': True}), 200
+
+		else:
+			return jsonify({'DeviceAdded': False}), 200 
 		
-		app = db.session.execute(db.select(Application).where(Application.id == appId)).scalar()
+	except exc.SQLAlchemyError:
 
-		appSensor = AppSensors(app_id = app.id, dev_name=devName, dev_eui= devEUI)
-		db.session.add(appSensor)
-		db.session.commit()
-		return jsonify({'DeviceAdded': True}), 200
-
-	else:
-		return jsonify({'DeviceAdded': False}), 200  
+		return jsonify({'errorMessage': "Couldn't add your device"}), 404
+ 
+ 
 
 
 
@@ -783,10 +872,11 @@ def getOrgAppDevice():
 	appId = request.args['app']
 	devName = request.args['devName']
 
-	appId = int(appId)
 
 
 	try:
+		appId = int(appId)
+
 		page = db.session.execute(db.select(AppSensors.dev_eui).where(AppSensors.app_id == appId).where(AppSensors.dev_name == devName)).scalar()
 
 		res = {
@@ -795,9 +885,9 @@ def getOrgAppDevice():
 
 		return jsonify(res), 200
 	
-	except exc.SQLAlchemyError:
+	except exc.SQLAlchemyError or ValueError:
 
-		return jsonify({'error': "couldn't retieve the sensors of this application"}), 404
+		return jsonify({'errorMessage': "couldn't retrieve the sensor of this application"}), 404
 	
 
 
@@ -811,9 +901,10 @@ def getOrgAppDeviceList():
 	# data = request.get_json()
 	appId = request.args['app']
 
-	appId = int(appId)
 
 	try:
+		appId = int(appId)
+
 		page = db.session.execute(db.select(AppSensors).where(AppSensors.app_id == appId)).scalars()
 
 		res = {
@@ -829,9 +920,9 @@ def getOrgAppDeviceList():
 
 		return jsonify(res), 200
 	
-	except exc.SQLAlchemyError:
+	except exc.SQLAlchemyError or ValueError:
 
-		return jsonify({'error': "couldn't retieve the sensors of this application"}), 404
+		return jsonify({'errorMessage': "couldn't retrieve the sensors of this application"}), 404
 	
 	
 
@@ -950,7 +1041,6 @@ def set_devAnnotation(dev_id, data):
 
 if __name__ == '__main__':
 	with app.app_context():
-		#db.drop_all()
 		#db.create_all()
 		#OrgAccount.__table__.drop(db.engine)
 		#Account.__table__.drop(db.engine)
