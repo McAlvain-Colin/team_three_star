@@ -20,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BadWordsFilterPipe } from '../badwords.pipe';
+import Filter from 'bad-words';
 
 @Component({
   selector: 'app-sign-up',
@@ -62,6 +63,7 @@ export class SignUpComponent {
     "Password must have: \n 1 Uppercase Letter \n 1 Lowercase Letter \n 1 Number \n 1 Special Character(i.e. ?,!,/,', etc.) \n More than 8 Letters";
   passwordCode: number = 0; //Set as unknown for if debugging is needed, so we can cast the hash into a viewable string.
   sentPassword: string = '';
+  hasBadWords: boolean = false;
   specialChars: string[] = [
     '~',
     '!',
@@ -91,16 +93,37 @@ export class SignUpComponent {
     '/',
   ];
 
+  checkBadWords(checkWord: string) {
+    var filter = new Filter();
+    filter.removeWords('Dick');
+
+    if (filter.isProfane(checkWord)) {
+      this.hasBadWords = true;
+      this.name = filter.clean(checkWord);
+    } else {
+      this.hasBadWords = false;
+      this.name = checkWord;
+    }
+  }
+
   hasNumber(checkWord: string) {
     return /\d/.test(checkWord); //Checks through word for number and checks for metacharacter d = digit
   }
 
   hasProperCases(checkWord: string) {
     if (checkWord === checkWord.toLowerCase()) {
-      alert('There is no uppercase');
+      var message: string = 'There is no uppercase';
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
       return false;
     } else if (checkWord === checkWord.toUpperCase()) {
-      alert('There is no lowercase');
+      var message: string = 'There is no lowercase';
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
       return false;
     } else {
       return true;
@@ -127,80 +150,88 @@ export class SignUpComponent {
   //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
   submitForm() {
     var message: string = `Confirmation email sent! Please check your email.`;
-    if (
-      this.emailField.hasError('required') ||
-      this.emailField.hasError('email')
-    ) {
-      message = 'Email incorrect!';
-      this.snackBar.open(message, 'Close', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
-    } else if (this.email != this.emailConfirm) {
-      message = "Emails don't match!";
-      this.snackBar.open(message, 'Close', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
-    } else if (
-      this.password.length < 8 ||
-      !this.specialChars.some((char) => this.password.includes(char)) ||
-      !this.hasNumber(this.password) ||
-      !this.hasProperCases(this.password)
-    ) {
-      message = "Your password doesn't meet the proper requirements!";
-      this.snackBar.open(message, 'Close', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
-    } else if (this.password != this.passwordConfirm) {
-      message = "Passwords don't match!";
+    if (this.hasBadWords) {
+      message = "Please don't use bad words in your inputs.";
       this.snackBar.open(message, 'Close', {
         horizontalPosition: 'center',
         verticalPosition: 'top',
       });
     } else {
-      this.passwordCode = this.hashPassword();
-      this.sentPassword = this.passwordCode.toString();
-      console.log('in signin ');
-      this.http
-        .put(
-          this.base_url + '/createUser',
-          {
-            email: this.emailField.getRawValue(),
-            password: this.sentPassword,
-            name: this.name,
-          },
-          { observe: 'response', responseType: 'json' }
-        )
-        .subscribe({
-          next: (response) => {
-            const res = JSON.stringify(response.body);
+      if (
+        this.emailField.hasError('required') ||
+        this.emailField.hasError('email')
+      ) {
+        message = 'Email incorrect!';
+        this.snackBar.open(message, 'Close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      } else if (this.email != this.emailConfirm) {
+        message = "Emails don't match!";
+        this.snackBar.open(message, 'Close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      } else if (
+        this.password.length < 8 ||
+        !this.specialChars.some((char) => this.password.includes(char)) ||
+        !this.hasNumber(this.password) ||
+        !this.hasProperCases(this.password)
+      ) {
+        message = "Your password doesn't meet the proper requirements!";
+        this.snackBar.open(message, 'Close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      } else if (this.password != this.passwordConfirm) {
+        message = "Passwords don't match!";
+        this.snackBar.open(message, 'Close', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      } else {
+        this.passwordCode = this.hashPassword();
+        this.sentPassword = this.passwordCode.toString();
+        console.log('in signin ');
+        this.http
+          .put(
+            this.base_url + '/createUser',
+            {
+              email: this.emailField.getRawValue(),
+              password: this.sentPassword,
+              name: this.name,
+            },
+            { observe: 'response', responseType: 'json' }
+          )
+          .subscribe({
+            next: (response) => {
+              const res = JSON.stringify(response.body);
 
-            let resp = JSON.parse(res);
+              let resp = JSON.parse(res);
 
-            if (resp.emailConfirmation) {
+              if (resp.emailConfirmation) {
+                this.snackBar.open(message, 'Close', {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                });
+                this.router.navigate(['/login']);
+              } else {
+                this.router.navigate(['/sign-up']);
+              }
+            },
+            error: (error: HttpErrorResponse) => {
+              console.error('mym errro', error.error.errorMessage);
+              // error.message.
+              message = error.error.errorMessage;
               this.snackBar.open(message, 'Close', {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
               });
-              this.router.navigate(['/login']);
-            } else {
-              this.router.navigate(['/sign-up']);
-            }
-          },
-          error: (error: HttpErrorResponse) => {
-            console.error('mym errro', error.error.errorMessage);
-            // error.message.
-            message = error.error.errorMessage;
-            this.snackBar.open(message, 'Close', {
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            });
 
-            this.router.navigate(['/sign-up']);
-          },
-        });
+              this.router.navigate(['/sign-up']);
+            },
+          });
+      }
     }
 
     // console.log('in signin ');

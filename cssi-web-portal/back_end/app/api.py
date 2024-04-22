@@ -768,16 +768,24 @@ def createOrgApplication():
 	APPS = db.metadata.tables[Application.__tablename__]
 	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__]
 
-	checkApp = select(APPS).where(
+	getApp = select(APPS).where(
 		APPS.c.name == appName,
 	)
-	theApp = db.session.execute(checkApp).first()
+	theApp = db.session.execute(getApp).first()
 
 	if theApp:
-		updateOrgApp = update(ORGAPPS).values(active = True).where(ORGAPPS.c.app_id == theApp.id).where(ORGAPPS.c.o_id == orgId)
-		db.session.execute(updateOrgApp)
-		db.session.commit()
-		return jsonify(orgCreated = True)
+		checkOrgApp = select(ORGAPPS).where(
+			ORGAPPS.c.app_id == theApp.id,
+			ORGAPPS.c.active == False
+		)
+
+		theOrgApp = db.session.execute(checkOrgApp).first()
+
+		if theOrgApp:
+			updateOrgApp = update(ORGAPPS).values(active = True).where(ORGAPPS.c.app_id == theApp.id).where(ORGAPPS.c.o_id == orgId)
+			db.session.execute(updateOrgApp)
+			db.session.commit()
+			return jsonify(orgCreated = True)
 
 	#link the app with the org
 	# try:

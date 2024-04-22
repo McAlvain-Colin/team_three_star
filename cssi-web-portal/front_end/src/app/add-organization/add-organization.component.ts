@@ -21,6 +21,7 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { BadWordsFilterPipe } from '../badwords.pipe';
+import Filter from 'bad-words';
 
 @Component({
   selector: 'app-add-organization',
@@ -48,8 +49,34 @@ export class AddOrganizationComponent {
   orgName: string = '';
   orgDescription: string = '';
   userID: number = 0; //Set this from the link in order to navigate back home.
+  nameBadWords: boolean = false;
+  descriptBadWords: boolean = false;
 
   baseUrl: string = 'http://localhost:5000';
+
+  checkBadWords(checkWord: string, itemType: number) {
+    var filter = new Filter();
+
+    if (filter.isProfane(checkWord)) {
+      if (itemType == 0) {
+        this.nameBadWords = true;
+        this.orgName = filter.clean(checkWord);
+      }
+      if (itemType == 1) {
+        this.descriptBadWords = true;
+        this.orgDescription = filter.clean(checkWord);
+      }
+    } else {
+      if (itemType == 0) {
+        this.nameBadWords = false;
+        this.orgName = checkWord;
+      }
+      if (itemType == 1) {
+        this.descriptBadWords = false;
+        this.orgDescription = checkWord;
+      }
+    }
+  }
 
   //use the `` to allow connections to the variable in the declaration.
   //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
@@ -66,44 +93,51 @@ export class AddOrganizationComponent {
 
     var message: string = `${this.orgName} is added to your Organizations!`;
 
-    this.http
-      .post(
-        this.baseUrl + '/createOrg',
-        {
-          orgName: this.orgName,
-          orgDescript: this.orgDescription,
-        },
-        httpOptions
-      )
-      .subscribe({
-        next: (response) => {
-          const responseString = JSON.stringify(response);
-          let parsedRes = JSON.parse(responseString);
-
-          console.log(parsedRes);
-          if (parsedRes.orgCreated) {
-            this.snackBar.open(message, 'Close', {
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            });
-          } else {
-            message =
-              this.orgName +
-              ' already exists, please add a different organization!';
-            this.snackBar.open(message, 'Close', {
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            });
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-
-          const message = error.error.errorMessage;
-          this.snackBar.open(message, 'Close', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-          });
-        }
+    if (this.nameBadWords || this.descriptBadWords) {
+      message = "Please don't use bad words in your inputs.";
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
       });
+    } else {
+      this.http
+        .post(
+          this.baseUrl + '/createOrg',
+          {
+            orgName: this.orgName,
+            orgDescript: this.orgDescription,
+          },
+          httpOptions
+        )
+        .subscribe({
+          next: (response) => {
+            const responseString = JSON.stringify(response);
+            let parsedRes = JSON.parse(responseString);
+
+            console.log(parsedRes);
+            if (parsedRes.orgCreated) {
+              this.snackBar.open(message, 'Close', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            } else {
+              message =
+                this.orgName +
+                ' already exists, please add a different organization!';
+              this.snackBar.open(message, 'Close', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            }
+          },
+          error: (error: HttpErrorResponse) => {
+            const message = error.error.errorMessage;
+            this.snackBar.open(message, 'Close', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+          },
+        });
+    }
   }
 }
