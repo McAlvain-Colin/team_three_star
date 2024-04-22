@@ -905,11 +905,25 @@ def addAppDevice():
 
 		return jsonify({'errorMessage': "Couldn't add your device"}), 404
  
- 
+@app.route('/removeOrgAppDevice', methods = ['PUT']) 
+@jwt_required() 
+def removeAppDevice():
 
+	data = request.get_json()
+	appId = data['appId']
+	devEUI = data['devEUI']
+	devName = data['devName']
 
+	try:
+		theDevice = db.session.query(AppSensors).filter(AppSensors.app_id == appId, AppSensors.dev_name == devName, AppSensors.dev_eui == devEUI).first()
 
-
+		if theDevice:
+			db.session.delete(theDevice)
+			db.session.commit()
+			return jsonify({'deviceRemoved': True}), 200
+		
+	except exc.SQLAlchemyError:
+		return jsonify({'errorMessage': "Couldn't find your device"}), 404
 
 @app.route('/userOrgAppDevice', methods = ['GET']) 
 @jwt_required() 

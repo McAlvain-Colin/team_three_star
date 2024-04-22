@@ -21,6 +21,7 @@ export class RemovalDialogComponent {
       itemId: string;
       itemType: number;
       orgId: string;
+      appId: string;
       memberRole: number;
     }, //Note we can have any variable in the data parameter, but if it was passed in, it'll be considered undefined
     private snackBar: MatSnackBar,
@@ -46,6 +47,35 @@ export class RemovalDialogComponent {
             let resp = JSON.parse(res);
 
             if (resp.orgDeleteSuccess) {
+              this.snackBar.open(this.message, 'Dismiss', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            }
+            this.reloadComponent();
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
+    } else if (this.data.itemType == 2) {
+      this.http
+        .put(
+          this.base_url + '/removeOrgAppDevice',
+          {
+            devName: this.data.itemName,
+            devEUI: this.data.itemId,
+            appId: this.data.appId,
+          },
+          { observe: 'response', responseType: 'json' }
+        )
+        .subscribe({
+          next: (response) => {
+            const res = JSON.stringify(response.body);
+
+            let resp = JSON.parse(res);
+
+            if (resp.deviceRemoved) {
               this.snackBar.open(this.message, 'Dismiss', {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
