@@ -58,7 +58,7 @@ export class AddDeviceComponent {
 
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('appId'); //From the current route, get the route name, which should be the identifier for what you need to render.
-    // this.orgId = this.route.snapshot.paramMap.get('orgId');
+    this.orgId = this.route.snapshot.paramMap.get('orgId');
   }
 
   //use the `` to allow connections to the variable in the declaration.
