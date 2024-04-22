@@ -356,8 +356,8 @@ export class FilterPageComponent {
     this.metadataSource.paginator = this.metadataPaginator;
     this.filteredMetadataSource.paginator = this.filteredMetadataPaginator;
     this.devIDSource.paginator = this.devIDPaginator;
-    this.paylaodStatSource.paginator = this.payloadPaginator;
-    this.metadataStatSource.paginator = this.metadataPaginator;
+    this.paylaodStatSource.paginator = this.payloadStatsPaginator;
+    this.metadataStatSource.paginator = this.metadataStatsPaginator;
     this.deviceSource.paginator = this.devicePaginator;
   }
   private getDataSetup(): void {
@@ -390,32 +390,103 @@ export class FilterPageComponent {
     //     //console.error('Error: ', error);
     //   },
     // });
-    this.apiService.getData(this.deviceList[1].devEUI).subscribe({
-      next: (data: SensorData[]) => {
-        const records = data.map((item: SensorData) => ({
-          dev_eui: item.dev_eui,
-          dev_time: item.dev_time.replace(' GMT', ''),
-          payload_dict: JSON.parse(item.payload_dict),
-          metadata_dict: JSON.parse(item.metadata_dict),
-        }));
-        this.payloadDataSource.data = records;
-        this.metadataSource.data = records;
+    // this.apiService.getData(this.deviceList[1].devEUI).subscribe({
+    //   next: (data: SensorData[]) => {
+    //     const records = data.map((item: SensorData) => ({
+    //       dev_eui: item.dev_eui,
+    //       dev_time: item.dev_time.replace(' GMT', ''),
+    //       payload_dict: JSON.parse(item.payload_dict),
+    //       metadata_dict: JSON.parse(item.metadata_dict),
+    //     }));
+    //     this.payloadDataSource.data = records;
+    //     this.metadataSource.data = records;
 
-        this.filteredPayloadDataSource.data = [...this.payloadDataSource.data];
-        this.filteredMetadataSource.data = [...this.metadataSource.data];
+    //     this.filteredPayloadDataSource.data = [...this.payloadDataSource.data];
+    //     this.filteredMetadataSource.data = [...this.metadataSource.data];
 
-        if (records.length > 0) {
-          this.payloadColumns = Object.keys(records[0].payload_dict);
-          this.metadataColumns = Object.keys(records[0].metadata_dict);
-          this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
-            this.payloadColumns
-          );
-          this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
-        }
+    //     if (records.length > 0) {
+    //       this.payloadColumns = Object.keys(records[0].payload_dict);
+    //       this.metadataColumns = Object.keys(records[0].metadata_dict);
+    //       this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
+    //         this.payloadColumns
+    //       );
+    //       this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
+    //     }
+    //   },
+    //   error: (error) => {
+    //     //console.error('Error: ', error);
+    //   },
+    // });
+    this.apiService.getPayloadStatisticsData(this.deviceList[1].devEUI).subscribe({
+      next: (data: any[]) => {
+        const payloadStatRecord = Object.keys(data).map((key: any) => {
+          const stats = data[key];
+
+          return {
+            column: key,
+            mean: stats.mean,
+            variance: stats.variance,
+            standard_deviation: stats.standardDeviation,
+            median: stats.median,
+            mode: stats.mode,
+          };
+        });
+        // //console.log(payloadStatRecord)
+
+        this.paylaodStatSource.data = payloadStatRecord;
+        
       },
+
       error: (error) => {
         //console.error('Error: ', error);
       },
+    });
+
+    this.displayedPayloadColumns = [];
+    this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
+    let allPayloadColumns = new Set<string>(this.displayedPayloadColumns);
+
+    this.deviceList.forEach((device, index) => { 
+      this.apiService.getData(device.devEUI).subscribe({
+        next: (data: SensorData[]) => {
+          const records = data.map((item: SensorData) => ({
+            dev_eui: item.dev_eui,
+            dev_time: item.dev_time.replace(' GMT', ''),
+            payload_dict: JSON.parse(item.payload_dict),
+            metadata_dict: JSON.parse(item.metadata_dict),
+          }));
+          this.payloadDataSource.data.push(...records);
+          this.metadataSource.data.push(...records);
+
+          this.filteredPayloadDataSource.data = [...this.payloadDataSource.data];
+          this.filteredMetadataSource.data = [...this.metadataSource.data];
+          this.filteredPayloadDataSource.data.flat()// = this.filteredPayloadDataSource.data.flat(Infinity)
+          this.filteredMetadataSource.data.flat()// = this.filteredMetadataSource.data.flat(Infinity);
+
+          records.forEach(record => {
+            Object.keys(record.payload_dict).forEach(key => allPayloadColumns.add(key));
+          })
+
+          if (index === this.deviceList.length -1) {
+            this.displayedPayloadColumns = Array.from(allPayloadColumns);
+          }
+          console.log('Payload Columns: ', this.displayedPayloadColumns)
+          console.log('filteredPayloadDataSource: ', this.filteredPayloadDataSource.data);
+          console.log('Metadata Columns: ', this.displayedMetadataColumns)
+          console.log('filteredMetadataSource: ', this.filteredMetadataSource.data);
+
+          // const testData = this.filteredPayloadDataSource.data;
+          // for (let i = 0; i < testData.length; i++){
+          //   for(const column in this.displayedPayloadColumns){
+          //     console.log('column', column);
+          //     // console.log('test', testData[i].payload_dict[column]);
+          //   }
+          // }
+        },
+        error: (error) => {
+          console.error('Error: ', error);
+        },
+      });
     });
     this.apiService.getPayloadStatisticsData(this.deviceList[1].devEUI).subscribe({
       next: (data: any[]) => {
@@ -578,7 +649,7 @@ export class FilterPageComponent {
   filterSensorData() {
     //console.log("this worked")
     const formValues = this.filterForm.value.range;
-    //console.log("form Values: ", formValues);
+    // console.log("form Values: ", formValues);
     //console.log("payloadDataSource: ", this.payloadDataSource.data);
     const dict = this.payloadDataSource.data;
     //console.log("object keys:  ", Object.keys(dict[1].payload_dict));
@@ -588,13 +659,14 @@ export class FilterPageComponent {
     Object.keys(dict[0].payload_dict).forEach(key =>{
       variables['value_${keys}'] = dict[0].payload_dict[key];
     })
+    let dataValue: any;
 
     if (formValues.payloadSelect == true) {
       //console.log("in payload filter")
       this.filteredPayloadDataSource.data = this.payloadDataSource.data.filter((item) => {
         if(formValues){
           const dataTypeKey = formValues.dataType;
-          const value = +item.payload_dict[dataTypeKey];
+          dataValue = +item.payload_dict[dataTypeKey];
         }
 
         return (
@@ -602,8 +674,8 @@ export class FilterPageComponent {
           (!formValues.endTime || item.dev_time.includes(formValues.endTime))  &&
           (!formValues.deviceId || item.dev_eui.includes(formValues.deviceId)) &&
           (!formValues.dateInfo || item.dev_time.includes(formValues.dateInfo)) &&
-          (!formValues.min || (this.value != null && this.value >= formValues.min)) &&
-          (!formValues.max || (this.value != null && this.value <= formValues.max)) 
+          (!formValues.min || (dataValue != null && dataValue >= formValues.min)) &&
+          (!formValues.max || (dataValue != null && dataValue <= formValues.max)) 
         )
       });
       // if(this.filteredPayloadDataSource.paginator){
@@ -733,6 +805,7 @@ export class FilterPageComponent {
     });
   }
   initializePayloadChart() {
+    // console.log('in create payload chart')
     const ctx = document.getElementById('payloadChart') as HTMLCanvasElement;
     if (
       ctx &&
