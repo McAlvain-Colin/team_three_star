@@ -442,7 +442,7 @@ export class FilterPageComponent {
       },
     });
 
-    this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'];
+    this.displayedPayloadColumns = [];
     this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
     let allPayloadColumns = new Set<string>(this.displayedPayloadColumns);
 
