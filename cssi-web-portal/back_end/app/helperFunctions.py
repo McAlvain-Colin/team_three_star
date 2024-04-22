@@ -13,7 +13,7 @@ db_pool = pool.SimpleConnectionPool(
     maxconn=50,         # maximum number of connections to keep open
     dbname="postgres",  # Database name
     user="postgres",  # Database username
-    password="cssiwebportal2024",  # Database password
+    password="Locomexican22",  # Database password
     host="0.0.0.0"  # IP addresswh
 )
 def get_db_connection():

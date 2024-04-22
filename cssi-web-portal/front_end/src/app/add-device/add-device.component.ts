@@ -82,21 +82,17 @@ export class AddDeviceComponent {
     this.http
       .post(
         this.baseUrl + '/addOrgAppDevice',
-        {
-          appId: this.appId,
-          devEUI: this.devEUI,
-          joinEui: this.joinEUI,
-          appKey: this.appKey,
-          devName: this.deviceName,
-        },
+        { appId: this.appId, devEUI: this.devEUI, joinEui: this.joinEUI, appKey: this.appKey, devName:this.deviceName },
         httpOptions
       )
       .subscribe({
         next: (response) => {
           const responseString = JSON.stringify(response);
           let parsedRes = JSON.parse(responseString);
-          if (parsedRes.body.DeviceAdded) {
-            this.snackBar.open('device added', 'Close', {
+          console.log(responseString)
+          console.log(parsedRes.DeviceAdded)
+          if (parsedRes.DeviceAdded) {
+            this.snackBar.open('Device was added', 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });

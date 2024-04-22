@@ -51,7 +51,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:cssiwebportal2024@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
 db.init_app(app)
 
 
@@ -76,6 +76,7 @@ s = URLSafeTimedSerializer('email-secret')
 
 
 #REQUIRED#############################
+
 
 
 
@@ -172,6 +173,7 @@ class OrgApplication(Base):
 	org: Mapped['Organization'] = relationship(back_populates='orgApps')
 
 	active: Mapped[bool] = mapped_column(unique=False)
+
 
 	# dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
 	# device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
@@ -463,6 +465,11 @@ def createOrganization():
 
 	#database code
 	try:
+		if ( db.session.execute(db.select(Organization.name).where(Organization.name == orgName).where(Organization.active == True)).scalar() is not None):
+			return jsonify({'errorMessage': 'A organization with this organization title is already present'}), 409
+		
+
+
 		newOrg = Organization(name= orgName, description= descript, active= True)
 		user = db.session.execute(db.select(Account).filter_by(id = userId)).scalar()
 
@@ -753,7 +760,7 @@ def getOrgInfo():
 @jwt_required()
 def createOrgApplication():
 
-	data = request.get_json() #uid, org titel, org descritpion
+	data = request.get_json()
 	orgId = data['orgId']
 	appName = data['appName']
 	appDescript = data['appDescript']
@@ -767,30 +774,38 @@ def createOrgApplication():
 	theApp = db.session.execute(checkApp).first()
 
 	if theApp:
-		updateOrgApp = update(ORGAPPS).values(active = True).where(ORGAPPS.c.app_id == theApp.id).where(ORGAPPS.c.o_id == orgId)
-		db.session.execute(updateOrgApp)
-		db.session.commit()
-		return jsonify(orgCreated = True)
+		checkOrgApp = select(ORGAPPS).where(ORGAPPS.c.app_id == theApp.id,ORGAPPS.c.active == False)
+		theOrgApp = db.session.execute(checkOrgApp).first()
+
+		if theOrgApp:
+			updateOrgApp = update(ORGAPPS).values(active = True).where(ORGAPPS.c.app_id == theApp.id, ORGAPPS.c.o_id == orgId)
+			db.session.execute(updateOrgApp)
+			db.session.commit()
+			return jsonify(orgCreated = True)
 
 	#link the app with the org
-	# try:
-	orgId = int(orgId)
-	newApp= Application(name= appName, description= appDescript)
-	org = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
+	try:
+		if ( db.session.execute(db.select(Application.name).join(Application.orgs).where(Application.name == appName).where(OrgApplication.active == True)).scalar() is not None):
+			return jsonify({'errorMessage': 'A application with this application name is already present'}), 409
+		
+
+		orgId = int(orgId)
+		newApp= Application(name= appName, description= appDescript)
+		org = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
 
 
-	orgApp = OrgApplication(app= newApp, org= org, active=True)
+		orgApp = OrgApplication(app= newApp, org= org, active=True)
 
-	db.session.add(newApp)
-	db.session.commit()
-	db.session.add(orgApp)
-	db.session.commit()
+		db.session.add(newApp)
+		db.session.commit()
+		db.session.add(orgApp)
+		db.session.commit()
 
-	return jsonify(orgCreated = True), 200
+		return jsonify(orgCreated = True), 200
 
-	# except exc.SQLAlchemyError or ValueError:
+	except exc.SQLAlchemyError or ValueError:
 
-	# 	return jsonify({'errorMessage': "Couldn't add your application"}), 404
+		return jsonify({'errorMessage': "Couldn't add your application"}), 404
 
 @app.route('/deleteOrgApp', methods = ['PUT'])
 @jwt_required()
@@ -820,6 +835,9 @@ def getOrgApp():
 
 
 	try:
+
+
+
 		app_id = int(app_id)
 
 		app = db.session.execute(db.select(Application).where(Application.id == app_id)).scalar()
@@ -879,8 +897,14 @@ def addAppDevice():
 	appId = data['appId']
 	devEUI = data['devEUI']
 	devName = data['devName']
+	devName = data['devName']
 
 	try:
+		if ( db.session.execute(db.select(AppSensors).where(AppSensors.dev_eui == devEUI).where(AppSensors.app_id == appId)).scalar() is not None):
+			return jsonify({'errorMessage': 'A device with this DEVICE EUI is already present'}), 409
+		
+		if(db.session.execute(db.select(AppSensors).where(AppSensors.dev_name == devName).where(AppSensors.app_id == appId)).scalar() is not None):
+			return jsonify({'errorMessage': 'A device with this device name is already present, please choose a new name'}), 409
 
 		if (db.session.execute(db.select(Device).where(Device.dev_eui == devEUI)).scalar() is not None ):
 			
