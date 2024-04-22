@@ -233,17 +233,6 @@ export class SignUpComponent {
           });
       }
     }
-
-    // console.log('in signin ');
-    // this.http
-    //   .put(
-    //     this.base_url + '/createUser',
-    //     { email: this.emailField.getRawValue() },
-    //     { observe: 'response', responseType: 'json' }
-    //   )
-    //   .subscribe({
-    //     next: (response) => {
-    //       const res = JSON.stringify(response.body);
   }
 
   // This method gets an error message based on what error that the user has produced, empty, or invalid email. The number is to signify if it needs to be confirmed.

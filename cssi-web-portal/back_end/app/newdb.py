@@ -29,7 +29,7 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:cssiwebportal2024@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
 db.init_app(app)
 
 
@@ -61,96 +61,96 @@ class Account(Base):
 	def __repr__(self):
 		return f'id = {self.id}, email = {self.email}'
 
-
 class Organization(Base):
-    __tablename__ = "Organization"
+	__tablename__ = "Organization"
 
-    id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
-    name: Mapped[str] = mapped_column(nullable= False, unique= True)
-    description:Mapped[str] = mapped_column(nullable= True)
-    active: Mapped[bool] = mapped_column(unique= False)
+	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
+	name: Mapped[str] = mapped_column(nullable= False, unique= True)
+	description:Mapped[str] = mapped_column(nullable= True)
+	active: Mapped[bool] = mapped_column(unique= False)
 
-    orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='org')
+	orgAccounts: Mapped[List['OrgAccount']] = relationship(back_populates='org')
 
-    orgApps: Mapped[List['OrgApplication']] = relationship(back_populates='org')
+	orgApps: Mapped[List['OrgApplication']] = relationship(back_populates='org')
 
 
-    def __init__(self, name, description, active):
-        self.name = name
-        self.description = description
-        self.active = active
+	def __init__(self, name, description, active):
+		self.name = name
+		self.description = description
+		self.active = active
 
-    def __repr__(self):
-        return f'organization: {self.name}'
+	def __repr__(self):
+		return f'organization: {self.name}'
 
 
 # 1- admin, 2- PI, 3 - basic user.
 
 class OrgAccount(Base):
-    __tablename__ = 'OrgAccount'
+	__tablename__ = 'OrgAccount'
 
-    id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
+	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
 
-    a_id: Mapped[int] = mapped_column(ForeignKey('Account.id'))
-    account: Mapped['Account'] = relationship(back_populates='orgAccounts')
+	a_id: Mapped[int] = mapped_column(ForeignKey('Account.id'))
+	account: Mapped['Account'] = relationship(back_populates='orgAccounts')
 
-    o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
-    org: Mapped['Organization'] = relationship(back_populates='orgAccounts')
+	o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
+	org: Mapped['Organization'] = relationship(back_populates='orgAccounts')
 
-    #added line/column for roles
-    r_id:Mapped[int] = mapped_column()
-    active: Mapped[bool] = mapped_column()
+	#added line/column for roles
+	r_id:Mapped[int] = mapped_column()
+	active: Mapped[bool] = mapped_column()
 
 
 
 class Application(Base):
-    __tablename__ = 'Application'
+	__tablename__ = 'Application'
 
-    id: Mapped[int] = mapped_column(primary_key= True)
-    name : Mapped[str] = mapped_column(nullable= False)
-    description: Mapped[str] = mapped_column(nullable= True)
+	id: Mapped[int] = mapped_column(primary_key= True)
+	name : Mapped[str] = mapped_column(nullable= False)
+	description: Mapped[str] = mapped_column(nullable= True)
 
-    orgs: Mapped[List['OrgApplication']] = relationship(back_populates='app')
+	orgs: Mapped[List['OrgApplication']] = relationship(back_populates='app')
 
-    appSensors: Mapped[List['AppSensors']] = relationship(back_populates='app')
+	appSensors: Mapped[List['AppSensors']] = relationship(back_populates='app')
 
-    def __repr__(self):
-        f'app: {self.id}, {self.name}'
+	def __repr__(self):
+		f'app: {self.id}, {self.name}'
 
 class OrgApplication(Base):
-    __tablename__ = 'OrgApplication'
+	__tablename__ = 'OrgApplication'
 
-    id: Mapped [int] = mapped_column(primary_key = True)
-    # appSensors: Mapped[List['AppSensors']] = relationship(back_populates='orgApp')
+	id: Mapped [int] = mapped_column(primary_key = True)
+	# appSensors: Mapped[List['AppSensors']] = relationship(back_populates='orgApp')
 
-    #apps
-    app_id: Mapped[int] = mapped_column(ForeignKey('Application.id'))
-    app: Mapped['Application'] = relationship(back_populates= 'orgs')
+	#apps
+	app_id: Mapped[int] = mapped_column(ForeignKey('Application.id'))
+	app: Mapped['Application'] = relationship(back_populates= 'orgs')
 
-    o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
-    org: Mapped['Organization'] = relationship(back_populates='orgApps')
+	o_id: Mapped[int] = mapped_column(ForeignKey('Organization.id'))
+	org: Mapped['Organization'] = relationship(back_populates='orgApps')
 
-    # dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
-    # device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
-    def __repr__(self):
-        return f'orgApp: {self.id} {self.app_id} {self.o_id}'
+	active: Mapped[bool] = mapped_column(unique=False)
+
+	# dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
+	# device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
+	def __repr__(self):
+		return f'orgApp: {self.id} {self.app_id} {self.o_id}'
 
 
 
 class AppSensors(Base):
-    __tablename__ = 'AppSensors'
-    # __table_args__  = (ForeignKeyConstraint(['dev_eui'], ['lab_sensor_json.dev_eui']),)
+	__tablename__ = 'AppSensors'
+	# __table_args__  = (ForeignKeyConstraint(['dev_eui'], ['lab_sensor_json.dev_eui']),)
 
-    app_id: Mapped[int] = mapped_column(ForeignKey('Application.id'))
-    app: Mapped['Application'] = relationship(back_populates= 'appSensors')
+	app_id: Mapped[int] = mapped_column(ForeignKey('Application.id'))
+	app: Mapped['Application'] = relationship(back_populates= 'appSensors')
 
-    # dev_eui needs to have the table name as stored in postgreSQL
-    dev_name: Mapped[str] = mapped_column(String, nullable= False, unique= True)
-    dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
+	# dev_eui needs to have the table name as stored in postgreSQL
+	dev_name: Mapped[str] = mapped_column(String, nullable= False, unique= True)
+	dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
 #     devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
 
 
-#STEP 1 ADD THIS CLASS FOR KEEPING TRACK OF THE USER REVOKED TOKENS 
 class TokenBlockList(Base):
 	__tablename__ = 'TokenBlockList'
 	id: Mapped[int] = mapped_column(primary_key=True)
@@ -162,20 +162,17 @@ class TokenBlockList(Base):
 
 
 
-
-
-
 with app.app_context():
 # for creating db
-    db.reflect()
+	db.reflect()
 
 # this table represent the lab sensor json provided by Zach
 class Device(Base):
     __tablename__ = db.metadata.tables['lab_sensor_json']
-    
+	
     dev_eui: Mapped[str] = mapped_column(Text, primary_key= True) 
 
-            
+       
           
 
 # def func():
@@ -793,4 +790,4 @@ with app.app_context():
 # with app.app_context():
     # db.create_all()
     # func()
-    # pass
+    pass

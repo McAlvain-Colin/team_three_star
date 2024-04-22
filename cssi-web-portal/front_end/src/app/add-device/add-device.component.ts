@@ -17,8 +17,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   HttpClient,
   HttpClientModule,
-  HttpHeaders,
   HttpErrorResponse,
+  HttpHeaders,
 } from '@angular/common/http';
 import { BadWordsFilterPipe } from '../badwords.pipe';
 import Filter from 'bad-words';
