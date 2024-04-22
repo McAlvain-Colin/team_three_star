@@ -14,12 +14,13 @@
             matInput
             name="name"
             placeholder="John Joestar"
-            [(ngModel)]="name"
+            [ngModel]="name | badWordsFilter"
+            (ngModelChange)="name = $event"
             #nameInput="ngModel"
             required
-          >
-        <!--Only invalid if left empty, and has been clicked into-->
-        <mat-error *ngIf="nameInput.invalid && nameInput.touched"></mat-error>
+          />
+          <!--Only invalid if left empty, and has been clicked into-->
+          <mat-error *ngIf="nameInput.invalid && nameInput.touched"></mat-error>
         </mat-form-field>
         <!--The email field utilizes the angular framework to check for invalid email entries-->
         <mat-form-field color="primary" [style.width.px]="250">
@@ -128,5 +129,4 @@
       </form>
     </mat-card>
   </body>
-  <app-temp-nav-bar></app-temp-nav-bar>
 </app-tool-bar>

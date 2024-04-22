@@ -31,22 +31,17 @@ import {
   _MatTableDataSource,
   MatTableDataSource,
 } from '@angular/material/table';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Organization } from '../data.config';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
+import { Organization, App, Member } from '../data.config';
+import { MatDividerModule } from '@angular/material/divider';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { SelectionChange } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-// an interfca foooooooooooor describing json data in request
-export interface App {
-  name: string;
-  id: number;
-  description: string;
-}
-
-export interface Member{
-  name: string,
-  id: number
-
-}
 
 @Component({
   selector: 'app-organization-page',
@@ -60,14 +55,17 @@ export interface Member{
     MatIconModule,
     MatSidenavModule,
     MatListModule,
+    MatSelectModule,
     MatPaginatorModule,
     MatCardModule,
     MatTabsModule,
     MatButtonModule,
+    MatDividerModule,
     TempNavBarComponent,
     DeviceMapComponent,
     MatDialogModule,
     RemovalDialogComponent,
+    ConfirmDialogComponent,
   ],
 })
 export class OrganizationPageComponent implements OnInit {
@@ -85,7 +83,9 @@ export class OrganizationPageComponent implements OnInit {
   imgName: string | null = 'placeholder_cat2';
   removeApps: boolean = false;
   removeMembers: boolean = false;
-  isAdmin: boolean = true;
+  selected: number = 0;
+  isAdmin: boolean = false;
+  userRole: number = 0;
   currentPage: number = 0;
   appsSource = new MatTableDataSource(this.appList);
   memberSource = new MatTableDataSource(this.memberList);
@@ -106,7 +106,8 @@ export class OrganizationPageComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private http: HttpClient,
-    private snackBar: MatSnackBar,
+    private changeDetector: ChangeDetectorRef,
+    private snackBar: MatSnackBar
   ) {} //makes an instance of the router
   ngOnInit(): void {
     this.orgId = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -121,7 +122,7 @@ export class OrganizationPageComponent implements OnInit {
     const param = new HttpParams().set('org', decodeURI(String(this.orgId)));
 
     this.http
-      .get(this.base_url + '/userOrgAppList', {
+      .get<{ list: Organization }>(this.base_url + '/userOrgAppList', {
         observe: 'response',
         responseType: 'json',
         params: param,
@@ -132,32 +133,29 @@ export class OrganizationPageComponent implements OnInit {
 
           let resp = JSON.parse(res);
 
-          // console.log('resp is ');
+          console.log('resp is ');
 
-          // console.log(resp);
-          // console.log('body', resp.body.list);
+          console.log(resp);
+          console.log('body', resp.body.list);
 
           for (var i = 0; i < resp.body.list.length; i++) {
-            // this.applications.push(resp.body.list[i].name);
+            this.applications.push(resp.body.list[i].name);
             this.appList.push({
               id: resp.body.list[i].app_id,
               name: resp.body.list[i].name,
               description: resp.body.list[i].description,
             });
           }
-          // console.log('in the app list ')
           // this.appsSource = new MatTableDataSource(response.body?.list);
           this.appsSource.paginator = this.appsPaginator;
         },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-          
-        }
+        },
       });
 
     this.http
@@ -179,21 +177,25 @@ export class OrganizationPageComponent implements OnInit {
 
           this.orgName = resp.body.list[0].name;
           this.orgDescription = resp.body.list[0].description;
+          this.userRole = Number(resp.body.list[0].r_id);
+          if (this.userRole == 1) {
+            this.isAdmin = true;
+            this.memberSource.data = this.memberList;
+            this.memberSource.paginator = this.membersPaginator;
+            this.changeDetector.detectChanges();
+          }
         },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-          
-        }
+        },
       });
 
-
-      // this for getting org members 
-      this.http
+    // this for getting org members
+    this.http
       .get(this.base_url + '/OrgMembers', {
         observe: 'response',
         responseType: 'json',
@@ -212,24 +214,21 @@ export class OrganizationPageComponent implements OnInit {
 
           for (var i = 0; i < resp.body.list.length; i++) {
             this.memberList.push({
-              id: resp.body.list[i].id,
-              name: resp.body.list[i].name
+              id: resp.body.list[i].a_id,
+              name: resp.body.list[i].name,
+              role: resp.body.list[i].r_id,
             });
-
-          // add members to the member list 
-        }},
+          }
+          this.memberSource.paginator = this.membersPaginator;
+        },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-          
-        }
+        },
       });
-
-
 
     // this is for getting a org's applicatiiions
     this.appsSource.paginator = this.appsPaginator;
@@ -249,15 +248,42 @@ export class OrganizationPageComponent implements OnInit {
     //Make get request here that sends in pageEvent.pageIndex
   }
 
-  confirmRemoval(itemName: string) {
-    //SHould open a snackbar that asks if you want to remove the component, and then based on the action does the thing
-    const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
-      data: { itemName: itemName }, //Can pass in more data if needed so that we can trigger the delete with orgID and userID
+  confirmRemoval(itemType: number, removeApp?: App, removeMember?: Member) {
+    if (itemType == 3) {
+      const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+        data: {
+          orgId: this.orgId,
+          itemName: removeApp?.name,
+          itemId: removeApp?.id,
+          itemType: itemType,
+        }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+      });
+    } else if (itemType == 4) {
+      const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
+        data: {
+          orgId: this.orgId,
+          itemName: removeMember?.name,
+          itemId: removeMember?.id,
+          memberRole: removeMember?.role,
+          itemType: itemType,
+        }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+      });
+    }
+  }
+
+  confirmRoleChange(changeMember: Member, roleEvent: MatSelectChange) {
+    const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        orgId: this.orgId,
+        itemName: changeMember.name,
+        itemId: changeMember.id,
+        roleId: roleEvent.value,
+      }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
     });
   }
 
   getRouteName(app: App) {
-    let routeName: string = '/application/' + app.id;
+    let routeName: string = '/application/' + app.id + '/' + this.orgId;
     return routeName;
   }
 

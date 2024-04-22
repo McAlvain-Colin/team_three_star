@@ -12,7 +12,8 @@
         <input
           matInput
           name="appName"
-          [(ngModel)]="appName"
+          [ngModel]="appName | badWordsFilter"
+          (ngModelChange)="appName = $event"
           #nameInput="ngModel"
           required
         />
@@ -24,7 +25,8 @@
         <input
           matInput
           name="appDescription"
-          [(ngModel)]="appDescription"
+          [ngModel]="appDescription | badWordsFilter"
+          (ngModelChange)="appDescription = $event"
           #nameInput="ngModel"
         />
       </mat-form-field>
@@ -35,4 +37,3 @@
     </form>
   </mat-card>
 </body>
-<app-temp-nav-bar></app-temp-nav-bar>

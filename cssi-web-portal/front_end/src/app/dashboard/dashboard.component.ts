@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { DeviceMapComponent } from '../device-map/device-map.component';
 import { DeviceTableComponent } from '../device-table/device-table.component';

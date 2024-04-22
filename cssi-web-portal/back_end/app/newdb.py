@@ -29,7 +29,7 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:cssiwebportal2024@localhost/postgres'
 db.init_app(app)
 
 
@@ -793,4 +793,4 @@ with app.app_context():
 # with app.app_context():
     # db.create_all()
     # func()
-    pass
+    # pass

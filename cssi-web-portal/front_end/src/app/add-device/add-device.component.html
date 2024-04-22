@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="toolbar">
-  <a routerLink="/application/{{ appID }}" class="color-white"
+  <a routerLink="/application/{{ appId }}/{{ orgId }}" class="color-white"
     >&#60; Return to Application</a
   ></mat-toolbar
 >
@@ -12,7 +12,8 @@
         <input
           matInput
           name="deviceName"
-          [(ngModel)]="deviceName"
+          [ngModel]="deviceName | badWordsFilter"
+          (ngModelChange)="deviceName = $event"
           #nameInput="ngModel"
           required
         />
@@ -62,4 +63,3 @@
     </form>
   </mat-card>
 </body>
-<app-temp-nav-bar></app-temp-nav-bar>

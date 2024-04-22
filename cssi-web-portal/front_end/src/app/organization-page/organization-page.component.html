@@ -13,9 +13,7 @@
     <mat-nav-list>
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item routerLink="/home">Home</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -59,6 +57,7 @@
                   mat-raised-button
                   color="accent"
                   class="group-button"
+                  *ngIf="userRole != 3"
                   routerLink="/add-application/{{ orgId }}"
                 >
                   Add
@@ -68,6 +67,7 @@
                   mat-raised-button
                   color="warn"
                   class="group-button"
+                  *ngIf="userRole != 3"
                   (click)="removeApps = !removeApps"
                 >
                   Remove
@@ -83,14 +83,17 @@
                   )
                 "
               >
-                {{ application.name }}
-                <button
-                  class="remove-icon"
-                  *ngIf="removeApps"
-                  (click)="confirmRemoval(application.name)"
-                >
-                  <mat-icon fontIcon="remove" color="warn"></mat-icon>
-                </button>
+                <div class="make-flexbox">
+                  {{ application.name }}
+                  <span class="push-button-right"></span>
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeApps"
+                    (click)="confirmRemoval(3, application)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
               </a>
             </mat-nav-list>
             <mat-paginator
@@ -105,7 +108,7 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <mat-card class="member-box" [hidden]="!isAdmin">
+    <mat-card class="member-box" [style.display]="!isAdmin ? 'none' : 'block'">
       <!--Created hidden instead of ngIF because of some weird properties of Angular that causes it not initialize the paginator, and thus no items are registered-->
       <mat-card-content class="member-content">
         <mat-tab-group [style.position]="'sticky'">
@@ -116,6 +119,7 @@
                   mat-raised-button
                   color="accent"
                   class="group-button"
+                  *ngIf="userRole == 1"
                   routerLink="/invite-user/{{ orgId }}"
                 >
                   Invite
@@ -125,6 +129,7 @@
                   mat-raised-button
                   color="warn"
                   class="group-button"
+                  *ngIf="userRole == 1"
                   (click)="removeMembers = !removeMembers"
                 >
                   Remove
@@ -140,14 +145,30 @@
                   )
                 "
               >
-                {{ member.name }}
-                <button
-                  class="remove-icon"
-                  *ngIf="removeMembers"
-                  (click)="confirmRemoval(member.name)"
-                >
-                  <mat-icon fontIcon="remove" color="warn"></mat-icon>
-                </button>
+                <div class="make-flexbox" *ngIf="member">
+                  {{ member.name }}
+                  <span class="push-button-right"></span>
+                  <mat-select
+                    class="select-role"
+                    [(value)]="member.role"
+                    (selectionChange)="confirmRoleChange(member, $event)"
+                  >
+                    <mat-option [value]="1">Admin</mat-option>
+                    <mat-option [value]="2" *ngIf="member.role != 1"
+                      >Principle Investigator</mat-option
+                    >
+                    <mat-option [value]="3" *ngIf="member.role != 1"
+                      >Basic User</mat-option
+                    ></mat-select
+                  >
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeMembers"
+                    (click)="confirmRemoval(4, undefined, member)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
               </a>
             </mat-nav-list>
             <mat-paginator

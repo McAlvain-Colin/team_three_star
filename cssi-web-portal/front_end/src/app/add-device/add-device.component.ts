@@ -20,6 +20,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
+import { BadWordsFilterPipe } from '../badwords.pipe';
 
 @Component({
   selector: 'app-add-device',
@@ -39,17 +40,28 @@ import {
     HttpClientModule,
     TempNavBarComponent,
     NgIf,
+    BadWordsFilterPipe,
   ],
 })
 export class AddDeviceComponent {
-  constructor(private snackBar: MatSnackBar, private http: HttpClient, private route: ActivatedRoute,) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private http: HttpClient,
+    private route: ActivatedRoute
+  ) {}
   deviceName: string = '';
-  appID: string | null= '';
+  appId: string | null = '';
+  orgId: string | null = '';
   joinEUI: string = '';
   devEUI: string = '';
   appKey: string = '';
 
   baseUrl: string = 'http://localhost:5000';
+
+  ngOnInit(): void {
+    this.appId = this.route.snapshot.paramMap.get('appId'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    this.orgId = this.route.snapshot.paramMap.get('orgId');
+  }
 
   //use the `` to allow connections to the variable in the declaration.
   //This submit form method will check for the user's email entry to see if it's correct, currently it will display the user's email if login was successful.
@@ -66,15 +78,17 @@ export class AddDeviceComponent {
     //Retrive user id from the link, and then Post message with orgData and userID to backend for adding to the table
     var message: string = `${this.deviceName} is added to your Organization!`;
 
-
-
-    this.appID = this.route.snapshot.paramMap.get('appId'); //From the current route, get the route name, which should be the identifier for what you need to render.
-
     //Post stuff cuz we're creating things
     this.http
       .post(
         this.baseUrl + '/addOrgAppDevice',
-        { appId: this.appID, devEUI: this.devEUI, joinEui: this.joinEUI, appKey: this.appKey },
+        {
+          appId: this.appId,
+          devEUI: this.devEUI,
+          joinEui: this.joinEUI,
+          appKey: this.appKey,
+          devName: this.deviceName,
+        },
         httpOptions
       )
       .subscribe({
@@ -82,7 +96,7 @@ export class AddDeviceComponent {
           const responseString = JSON.stringify(response);
           let parsedRes = JSON.parse(responseString);
           if (parsedRes.body.DeviceAdded) {
-            this.snackBar.open('Added Device', 'Close', {
+            this.snackBar.open('device added', 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
@@ -95,14 +109,13 @@ export class AddDeviceComponent {
           }
         },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
           // router.navigate(['add-device'])
-        }
+        },
       });
   }
 }

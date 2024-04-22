@@ -13,9 +13,8 @@
     <mat-nav-list>
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item routerLink="/home">Home</a>
+      <a mat-list-item routerLink="/organization/{{ orgId }}">Organization</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -28,7 +27,9 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
       ><a routerLink="/home" class="color-white">Home ></a>
-      <a routerLink="/organization" class="color-white"> Organization ></a>
+      <a routerLink="/organization/{{ orgId }}" class="color-white">
+        Organization ></a
+      >
       Application</mat-toolbar
     >
     <mat-card class="app-box">
@@ -46,30 +47,32 @@
       <mat-card-content class="devices-content">
         <mat-tab-group [style.position]="'sticky'">
           <mat-tab label="{{ appName }} Devices">
-            <div class="make-flexbox">
-              <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
-              <button
-                mat-raised-button
-                color="accent"
-                class="group-button"
-                routerLink="/add-device/{{ appId }}"
-              >
-                Add
-              </button>
-              <span class="push-button-right"> </span>
-              <button
-                mat-raised-button
-                color="warn"
-                class="group-button"
-                (click)="removeApps = !removeApps"
-              >
-                Remove
-              </button>
-            </div>
             <mat-nav-list>
+              <div class="make-flexbox">
+                <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
+                <button
+                  mat-raised-button
+                  color="accent"
+                  class="group-button"
+                  *ngIf="userRole != 3 || userRole <= 0"
+                  routerLink="/add-device/{{ appId }}"
+                >
+                  Add
+                </button>
+                <span class="push-button-right"> </span>
+                <button
+                  mat-raised-button
+                  color="warn"
+                  class="group-button"
+                  *ngIf="userRole != 3 || userRole <= 0"
+                  (click)="removeDevices = !removeDevices"
+                >
+                  Remove
+                </button>
+              </div>
               <a
                 mat-list-item
-                routerLink="/device/{{ appId }}/{{device.name}}"
+                [routerLink]="removeDevices ? null : getRouteName(device)"
                 *ngFor="
                   let device of deviceSource.data.slice(
                     devicePaginator.pageIndex * devicePaginator.pageSize,
@@ -77,7 +80,17 @@
                   )
                 "
               >
-                {{ device.name }}
+                <div class="make-flexbox">
+                  {{ device.name }}
+                  <span class="push-button-right"></span>
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeDevices"
+                    (click)="confirmRemoval(2, device)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
               </a>
             </mat-nav-list>
             <mat-paginator
@@ -92,8 +105,6 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <body class="background">
-      <app-temp-nav-bar></app-temp-nav-bar>
-    </body>
+    <body class="background"></body>
   </mat-sidenav-content>
 </mat-sidenav-container>

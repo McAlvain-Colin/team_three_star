@@ -6,11 +6,13 @@
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  padding: 20px;
+  z-index: 1;
 
   /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
   &:before {
     content: "";
-    position: absolute;
+    position: inline;
     width: 100%;
     height: 91.5%;
     top: 8.5%;
@@ -33,7 +35,7 @@
 }
 
 .header-text {
-  position: absolute;
+  position: inline;
   top: 30%;
   left: 24.5%;
   font-size: 10vw;
@@ -42,10 +44,35 @@
 }
 
 .search-expansion-box {
-  position: absolute;
-  width: 50%;
-  left: 25%;
+  position: inline;
+  width: 90%;
+  /* left: 10%; */
   top: 40%;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+.graph {
+  position: inline;
+  width: 80%;
+  /* left: 10%; */
+  top: 40%;
+  left: 10%;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.device_selection {
+  position: inline;
+  width: 80%;
+  /* left: 10%; */
+  /* top: 40%; */
+  left: 10%;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
@@ -55,8 +82,9 @@
   margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 4%;
-  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
-    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+  width: 100%;
+  /* box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4); */
 }
 
 .mat-table {
@@ -64,24 +92,8 @@
   overflow-y: auto;
 }
 
-/* .table-container {
-  margin-top: 1%;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 4%;
-
-  max-height: 500px;
-  max-width: 80%;
-  overflow-y: auto;
-  overflow-x: scroll;
-
-  width: 80%;
-  left: 20%;
-  top: 40%;
-} */
-
 .payload-table {
-  position: absolute;
+  position: inline;
 
   top: 50%;
 
@@ -90,18 +102,17 @@
   margin-right: 5%;
   margin-bottom: 4%;
 
-  max-height: 500px;
-  max-width: 80%;
-  overflow-y: auto;
+  /* max-height: 500px;
+  max-width: 80%; */
+  /* overflow-y: auto; */
   overflow-x: scroll;
 
   width: 80%;
-  left: 20%;
+  left: 5%;
   top: 40%;
 }
-
-.metadata-table {
-  position: absolute;
+.payload_select {
+  position: inline;
 
   top: 70%;
 
@@ -110,12 +121,160 @@
   margin-right: 5%;
   margin-bottom: 4%;
 
+  /* max-height: 500px;
+  max-width: 80%; */
+  /* overflow-y: auto; */
+  overflow-x: scroll;
+
+  width: 80%;
+  left: 5%;
+  top: 40%;
+}
+.device_select {
+  position: inline;
+
+  top: 70%;
+
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+
+  /* max-height: 500px;
+  max-width: 80%; */
+  /* overflow-y: auto; */
+  overflow-x: scroll;
+
+  width: 80%;
+  left: 5%;
+  top: 40%;
+}
+.metadata-table {
+  position: inline;
+
+  top: 70%;
+
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 4%;
+
+  /* max-height: 500px;
+  max-width: 80%; */
+  /* overflow-y: auto; */
+  overflow-x: scroll;
+
+  width: 80%;
+  left: 5%;
+  top: 40%;
+}
+.filter {
+  position: inline;
+
+  /* top: 250px; */
+
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  /* margin-bottom: 4%; */
+
   max-height: 500px;
   max-width: 80%;
   overflow-y: auto;
   overflow-x: scroll;
 
   width: 80%;
-  left: 20%;
-  top: 40%;
+  left: 5%;
+  /* top: 40%; */
+}
+
+.example-h2 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.visual-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+}
+.visual-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+}
+.left-section-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: left;
+}
+.right-section-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  align-items: right;
+}
+
+.example-margin {
+  margin: 8px;
+}
+
+.example-width {
+  max-width: 180px;
+  width: 100%;
+}
+
+.mat-mdc-slider {
+  max-width: 300px;
+  width: 100%;
+}
+
+.mat-mdc-card + .mat-mdc-card {
+  margin-top: 8px;
+}
+
+.example-result-card h2 {
+  margin: 0 8px;
+}
+
+.example-label-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 10px 0;
+  max-width: 284px;
+}
+
+.example-result-card .example-value-label {
+  font-weight: 600;
+}
+
+.dev-eui-table {
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: scroll;
+}
+
+th.mat-header-cell {
+  background-color: #eee;
+  color: #333;
+  padding: 8px;
+}
+td.mat-cell {
+  padding: 8px;
+  text-align: left;
+}
+tr.mat-row:hover {
+  background-color: #f5f5f5;
+}
+.highlight{
+  background-color: red;
+  opacity: 50%;
+}
+.highlightlow{
+  background-color: yellow;
+  opacity: 50%;
+
 }

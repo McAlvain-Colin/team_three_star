@@ -16,6 +16,7 @@ import { AddOrganizationComponent } from './add-organization/add-organization.co
 import { ApplicationPageComponent } from './application-page/application-page.component';
 import { AddApplicationComponent } from './add-application/add-application.component';
 import { AddDeviceComponent } from './add-device/add-device.component';
+import { DeviceMapComponent } from './device-map/device-map.component';
 import { InviteUserComponent } from './invite-user/invite-user.component';
 
 // Huy and Colin created the paths and linked the respective components to in order to properly route with Angular's routing
@@ -31,8 +32,9 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'login/:expired', component: LoginComponent },
   { path: 'forgotten-password', component: ForgottenPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
   { path: 'tool-bar', component: ToolBarComponent },
   { path: 'home', component: UserHomeComponent },
   { path: 'home/:user', component: UserHomeComponent }, //:user is dynamic
@@ -41,7 +43,7 @@ const routes: Routes = [
     path: 'add-application/:orgId',
     component: AddApplicationComponent,
   },
-  { path: 'add-device/:appId', component: AddDeviceComponent }, //:user is dynamic
+  { path: 'add-device/:appId/:orgId', component: AddDeviceComponent }, //:user is dynamic
   { path: 'invite-user/:org', component: InviteUserComponent },
   { path: 'organization', component: OrganizationPageComponent },
   { path: 'organization/:org', component: OrganizationPageComponent }, //:org is dynamic
@@ -49,11 +51,12 @@ const routes: Routes = [
   { path: 'application', component: ApplicationPageComponent },
   { path: 'application/:app', component: ApplicationPageComponent },
   {
-    path: 'application/:app/:org/:user',
+    path: 'application/:app/:org',
     component: ApplicationPageComponent,
   },
+  { path: 'map', component: DeviceMapComponent },
   { path: 'device', component: DevicePageComponent },
-  { path: 'device/:app/:dev', component: DevicePageComponent },
+  { path: 'device/:org/:app/:dev', component: DevicePageComponent },
   // { path: 'device/:curDevice', component: DevicePageComponent }, //:curDevice is dynamic
   { path: 'filter/:app', component: FilterPageComponent },
   { path: '**', pathMatch: 'full', component: HomeComponent }, //Star route put at the end for if no path is found, routes back to landing.

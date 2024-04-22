@@ -42,7 +42,12 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { TimerService } from '../login/login.component';
 
 @Component({
@@ -111,9 +116,8 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
     public dialog: MatDialog,
     private http: HttpClient,
     private changeDetector: ChangeDetectorRef,
-    private timerService : TimerService,
-    private snackBar: MatSnackBar,
-
+    private timerService: TimerService,
+    private snackBar: MatSnackBar
   ) {} //makes an instance of the router alsoe creates aaa hhhttp object to use for Requests to backend
   ngOnInit(): void {
     this.http
@@ -143,14 +147,12 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
           this.ownedOrgSource.paginator = this.ownedOrgPaginator;
         },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-          
-        }
+        },
       });
 
     this.http
@@ -182,16 +184,15 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
           this.joinedOrgSource.paginator = this.joinedOrgPaginator;
         },
         error: (error: HttpErrorResponse) => {
-
-          const message = error.error.errorMessage;
-          this.snackBar.open(message, 'Close', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-          });
-          
-        }
+          if (error.status != 422) {
+            const message = error.error.errorMessage;
+            this.snackBar.open(message, 'Close', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+          }
+        },
       });
-    
 
     this.userName = this.route.snapshot.paramMap.get('user'); //From the current route, get the route name, which should be the identifier for what you need to render.
     if (this.userName == null) {

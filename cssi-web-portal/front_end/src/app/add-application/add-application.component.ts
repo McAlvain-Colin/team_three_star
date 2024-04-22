@@ -20,6 +20,7 @@ import {
   HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
+import { BadWordsFilterPipe } from '../badwords.pipe';
 
 @Component({
   selector: 'app-add-application',
@@ -39,6 +40,7 @@ import {
     HttpClientModule,
     TempNavBarComponent,
     NgIf,
+    BadWordsFilterPipe,
   ],
 })
 export class AddApplicationComponent {
@@ -93,7 +95,7 @@ export class AddApplicationComponent {
               verticalPosition: 'top',
             });
           } else {
-            message = 'Failed to add organization, please try again later.';
+            message = 'Failed to add application, please try again later.';
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
@@ -101,14 +103,12 @@ export class AddApplicationComponent {
           }
         },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-          
-        }
+        },
       });
   }
 }

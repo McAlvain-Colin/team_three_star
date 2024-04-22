@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ToolBarComponent } from '../tool-bar/tool-bar.component';
 import { TempNavBarComponent } from '../temp-nav-bar/temp-nav-bar.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-forgot-password',
@@ -37,14 +38,15 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   ],
 })
 export class ForgottenPasswordComponent {
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
   emailField = new FormControl('', [Validators.required, Validators.email]);
   email: string = '';
+  base_url: string = 'http://localhost:5000';
 
   //use the `` to allow connections to the variable in the declaration.
   //This function is developed by Huy, and  is utilized in the HTML tied with the button which will call this function when clicked, it will alert the user based on if all the fields were correct or not when the form is submitted
   submitForm() {
-    var message: string = `Welcome ${this.email}`;
+    var message: string = `An email has been sent to ${this.email}, please check it to reset your password.`;
     if (
       this.emailField.hasError('required') ||
       this.emailField.hasError('email')
@@ -55,10 +57,31 @@ export class ForgottenPasswordComponent {
         verticalPosition: 'top',
       });
     } else {
-      this.snackBar.open(message, 'Close', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
+      this.http
+        .put(
+          this.base_url + '/resetRequest',
+          {
+            email: this.emailField.getRawValue(),
+          },
+          { observe: 'response', responseType: 'json' }
+        )
+        .subscribe({
+          next: (response) => {
+            const res = JSON.stringify(response.body);
+
+            let resp = JSON.parse(res);
+
+            if (resp.emailSent) {
+              this.snackBar.open(message, 'Close', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            }
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
     }
   }
 

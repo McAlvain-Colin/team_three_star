@@ -11,7 +11,36 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getData(): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/data`);
+  getData(devId: string): Observable<any> {
+    console.log(devId)
+    return this.http.get(`${this.BASE_URL}/data/${devId}`);
+  }
+  getAltData(): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/alt_data`);
+  }
+  getDevID(): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/dev_id`);
+  }
+  getMetadata(devId: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/metadata/${devId}`);
+  }
+  getPayload(devId: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/payload/${devId}`);
+  }
+  getLocation(): Observable<any> {
+    // console.log(this.http.get(`${this.BASE_URL}/location`));
+    return this.http.get(`${this.BASE_URL}/location`);
+  }
+  getPayloadStatisticsData(devId: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/payloadStats/${devId}`);
+  }
+  getMetadataStatisticsData(devId: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/metadataStats/${devId}`);
+  }
+  getdevAnnotation(devId: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/getdevAnnotation/${devId}`);
+  }
+  setdevAnnotation(devId: string, data: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/setdevAnnotation/${devId}/${data}`);
   }
 }

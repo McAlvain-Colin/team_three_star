@@ -1,0 +1,4 @@
+.push-button-right {
+  /* This just grows the span so that it takes up the entire flexbox */
+  flex-grow: 1;
+}

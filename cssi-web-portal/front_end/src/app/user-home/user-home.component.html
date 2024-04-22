@@ -13,9 +13,7 @@
     <mat-nav-list>
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
-      <a mat-list-item *ngFor="let item of menuItems" [activated]="true">
-        {{ item }}
-      </a>
+      <a mat-list-item (click)="logout()"> Sign Out </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -139,7 +137,7 @@
               (page)="handlePageEvent($event, 0)"
             ></mat-paginator>
           </mat-tab>
-          <mat-tab label="Favorite Devices">
+          <!--mat-tab label="Favorite Devices">
             <div class="make-flexbox">
               <span class="push-button-right"></span>
               <button
@@ -184,10 +182,9 @@
               [pageIndex]="currentPage"
               (page)="handlePageEvent($event, 0)"
             ></mat-paginator>
-          </mat-tab>
+          </mat-tab-->
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <body class="background"></body>
-    <app-temp-nav-bar></app-temp-nav-bar></mat-sidenav-content
+    <body class="background"></body> </mat-sidenav-content
 ></mat-sidenav-container>
