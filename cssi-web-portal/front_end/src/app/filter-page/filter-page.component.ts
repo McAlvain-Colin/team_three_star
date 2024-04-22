@@ -810,14 +810,22 @@ export class FilterPageComponent {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
-          // scales: {
-          //   y: {
-          //     beginAtZero: true,
-          //   },
-          // },
           responsive: true,
           maintainAspectRatio: false,
         },
+        plugins: [
+          {
+            id: 'customCanvasBackgroundColor',
+            beforeDraw: (chart, args, options) => {
+              const { ctx }= chart;
+              ctx.save();
+              ctx.globalCompositeOperation = 'destination-over';
+              ctx.fillStyle = 'white'
+              ctx.fillRect(0,0, chart.width, chart.height);
+              ctx.restore();
+            },
+          },
+        ],
       });
     }
   }
@@ -863,14 +871,22 @@ export class FilterPageComponent {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
-          // scales: {
-          //   y: {
-          //     beginAtZero: true,
-          //   },
-          // },
           responsive: true,
           maintainAspectRatio: false,
         },
+        plugins: [
+          {
+            id: 'customCanvasBackgroundColor',
+            beforeDraw: (chart, args, options) => {
+              const { ctx }= chart;
+              ctx.save();
+              ctx.globalCompositeOperation = 'destination-over';
+              ctx.fillStyle = '#fffffff'
+              ctx.fillRect(0,0, chart.width, chart.height);
+              ctx.restore();
+            },
+          },
+        ],
       });
     }
   }

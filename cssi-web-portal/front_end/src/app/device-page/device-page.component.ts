@@ -462,6 +462,19 @@ export class DevicePageComponent implements AfterViewInit {
           responsive: true,
           maintainAspectRatio: false,
         },
+        plugins: [
+          {
+            id: 'customCanvasBackgroundColor',
+            beforeDraw: (chart, args, options) => {
+              const { ctx }= chart;
+              ctx.save();
+              ctx.globalCompositeOperation = 'destination-over';
+              ctx.fillStyle = 'white'
+              ctx.fillRect(0,0, chart.width, chart.height);
+              ctx.restore();
+            },
+          },
+        ],
       });
     }
   }
@@ -500,6 +513,19 @@ export class DevicePageComponent implements AfterViewInit {
           responsive: true,
           maintainAspectRatio: false,
         },
+        plugins: [
+          {
+            id: 'customCanvasBackgroundColor',
+            beforeDraw: (chart, args, options) => {
+              const { ctx }= chart;
+              ctx.save();
+              ctx.globalCompositeOperation = 'destination-over';
+              ctx.fillStyle = 'white'
+              ctx.fillRect(0,0, chart.width, chart.height);
+              ctx.restore();
+            },
+          },
+        ],
       });
     }
   }
