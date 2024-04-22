@@ -134,6 +134,13 @@
   margin: 2px;
 }
 
+.remove-icon {
+  background-color: transparent;
+  z-index: 10000;
+  border-color: red;
+  margin-left: 2%;
+}
+
 .devices-content {
   height: 100%;
   overflow-y: scroll;

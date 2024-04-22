@@ -13,9 +13,7 @@
     <mat-nav-list>
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
-      <a mat-list-item *ngFor="let item of menuItems" [activated]="true">
-        {{ item }}
-      </a>
+      <a mat-list-item (click)="logout()"> Sign Out </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

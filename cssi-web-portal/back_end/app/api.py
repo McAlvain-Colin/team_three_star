@@ -1,5 +1,5 @@
 import json
-from flask import Flask, request, jsonify, url_for, make_response
+from flask import Flask, request, jsonify, url_for, make_response, redirect
 from flask_cors import CORS
 import datetime
 from helperFunctions import * 
@@ -361,15 +361,60 @@ def confirm_email(token):
 		db.session.add(newUser)
 		db.session.commit()
 
+		return redirect("http://localhost:4200/login/true", code=302)
 
-		return '<h1>The email confirmation was successful, please login</h1>'
 	except SignatureExpired or exc.SQLAlchemyError:
+		return redirect("http://localhost:4200/login/false", code=302)
+
+@app.route('/resetRequest', methods = ['PUT'])  
+def resetRequest():
+	data = request.get_json()
+	email = data['email']
+
+	emailtoken = s.dumps(email, salt='reset-request')
+
+	msg = Message('CSSI Portal Password Reset', sender='cssiportalconfirmation@gmail.com', recipients= [email])
+
+	link = url_for('reset_email', token = emailtoken, _external = True)
+
+	msg.body = "You've requested to reset the your password! \nClick the link below to start the process for setting a new password. \nIf you didn't request this procedure, feel free to disregard this message.\n"
+	msg.body = msg.body + 'Reset Password Link: {}'.format(link)
+
+	mail.send(msg)
+
+	return jsonify(emailSent = True)
+
+@app.route('/reset_email/<token>')  
+def reset_email(token):
+
+	try:
+		email = s.loads(token, salt='reset-request', max_age = 360)
+
+		resetToken = s.dumps(email, salt='reset-password')
 		
+		return redirect("http://localhost:4200/reset-password/" + resetToken, code=302)
+	except SignatureExpired:
+		return redirect("http://localhost:4200/login/false" , code=302)
+	
+@app.route('/resetPassword', methods = ['PUT'])
+def resetPassword():
+	try:
+		data = request.get_json()
+		token = data['token']
+		newPassword = data['password']
+		email = s.loads(token, salt='reset-password', max_age = 720)
 
-		return '<h1>The email confirmation was unsuccessful, please try again</h1>'
+		newHashed = bcrypt.hashpw(newPassword.encode('utf-8'), bcrypt.gensalt())
 
+		ACCOUNTS = db.metadata.tables[Account.__tablename__]
 
+		updatePassword = update(ACCOUNTS).values(password = newHashed).where(ACCOUNTS.c.email == email)
+		db.session.execute(updatePassword)
+		db.session.commit()
 
+		return jsonify(resetPasswordSuccess = True)
+	except SignatureExpired:
+		return redirect("http://localhost:4200/login/false", code=302)
 
 
 @app.route('/logout', methods = ['DELETE'])  
@@ -500,9 +545,9 @@ def invite_email(token):
 		db.session.execute(userActivate)
 		db.session.commit()
 
-		return '<h1>The organization invite was successful, please check your organizations.</h1>'
+		return redirect("http://localhost:4200/login/true", code=302)
 	except SignatureExpired:
-		return '<h1>The email invitation has expired, please request another invite.</h1>'
+		return redirect("http://localhost:4200/login/false", code=302)
 
 
 @app.route('/deleteOrg', methods = ['PUT'])
@@ -561,7 +606,7 @@ def getOrg():
 		} 
 		return jsonify(res), 200
 
-	except exc.SQLAlchemyError or ValueEr:
+	except exc.SQLAlchemyError or ValueError:
 		return jsonify({'error': "couldn't get your org with name specified"}), 404
 
 
@@ -860,11 +905,25 @@ def addAppDevice():
 
 		return jsonify({'errorMessage': "Couldn't add your device"}), 404
  
- 
+@app.route('/removeOrgAppDevice', methods = ['PUT']) 
+@jwt_required() 
+def removeAppDevice():
 
+	data = request.get_json()
+	appId = data['appId']
+	devEUI = data['devEUI']
+	devName = data['devName']
 
+	try:
+		theDevice = db.session.query(AppSensors).filter(AppSensors.app_id == appId, AppSensors.dev_name == devName, AppSensors.dev_eui == devEUI).first()
 
-
+		if theDevice:
+			db.session.delete(theDevice)
+			db.session.commit()
+			return jsonify({'deviceRemoved': True}), 200
+		
+	except exc.SQLAlchemyError:
+		return jsonify({'errorMessage': "Couldn't find your device"}), 404
 
 @app.route('/userOrgAppDevice', methods = ['GET']) 
 @jwt_required() 

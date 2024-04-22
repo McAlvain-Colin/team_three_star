@@ -372,87 +372,6 @@ export class FilterPageComponent {
     this.deviceSource.paginator = this.devicePaginator;
   }
   private getDataSetup(): void {
-    //console.log('Data Setup: ', this.deviceList[1].name, this.deviceList[1].devEUI);
-    // this.apiService.getAltData().subscribe({
-    //   next: (data: SensorData[]) => {
-    //     const records = data.map((item: SensorData) => ({
-    //       dev_eui: item.dev_eui,
-    //       dev_time: item.dev_time.replace(' GMT', ''),
-    //       payload_dict: JSON.parse(item.payload_dict),
-    //       metadata_dict: JSON.parse(item.metadata_dict),
-    //     }));
-    //     this.payloadDataSource.data = records;
-    //     this.metadataSource.data = records;
-      
-    //     ////console.log(this.payloadDataSource.data[1].dev_time);
-
-    //     if (records.length > 0) {
-    //       this.payloadColumns = Object.keys(records[0].payload_dict);
-    //       this.metadataColumns = Object.keys(records[0].metadata_dict);
-    //       this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
-    //         this.payloadColumns
-    //       );
-    //       this.displayedMetadataColumns = ['Dev_eui', 'Dev_time'].concat(
-    //         this.metadataColumns
-    //       );
-    //     }
-    //   },
-    //   error: (error) => {
-    //     //console.error('Error: ', error);
-    //   },
-    // });
-    // this.apiService.getData(this.deviceList[1].devEUI).subscribe({
-    //   next: (data: SensorData[]) => {
-    //     const records = data.map((item: SensorData) => ({
-    //       dev_eui: item.dev_eui,
-    //       dev_time: item.dev_time.replace(' GMT', ''),
-    //       payload_dict: JSON.parse(item.payload_dict),
-    //       metadata_dict: JSON.parse(item.metadata_dict),
-    //     }));
-    //     this.payloadDataSource.data = records;
-    //     this.metadataSource.data = records;
-
-    //     this.filteredPayloadDataSource.data = [...this.payloadDataSource.data];
-    //     this.filteredMetadataSource.data = [...this.metadataSource.data];
-
-    //     if (records.length > 0) {
-    //       this.payloadColumns = Object.keys(records[0].payload_dict);
-    //       this.metadataColumns = Object.keys(records[0].metadata_dict);
-    //       this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
-    //         this.payloadColumns
-    //       );
-    //       this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
-    //     }
-    //   },
-    //   error: (error) => {
-    //     //console.error('Error: ', error);
-    //   },
-    // });
-    this.apiService.getPayloadStatisticsData(this.deviceList[1].devEUI).subscribe({
-      next: (data: any[]) => {
-        const payloadStatRecord = Object.keys(data).map((key: any) => {
-          const stats = data[key];
-
-          return {
-            column: key,
-            mean: stats.mean,
-            variance: stats.variance,
-            standard_deviation: stats.standardDeviation,
-            median: stats.median,
-            mode: stats.mode,
-          };
-        });
-        // //console.log(payloadStatRecord)
-
-        this.paylaodStatSource.data = payloadStatRecord;
-        
-      },
-
-      error: (error) => {
-        //console.error('Error: ', error);
-      },
-    });
-
     this.displayedPayloadColumns = [];
     this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
     let allPayloadColumns = new Set<string>(this.displayedPayloadColumns);
@@ -477,79 +396,107 @@ export class FilterPageComponent {
           records.forEach(record => {
             Object.keys(record.payload_dict).forEach(key => allPayloadColumns.add(key));
           })
+          console.log('Payload Columns: ', allPayloadColumns)
 
           if (index === this.deviceList.length -1) {
             this.displayedPayloadColumns = Array.from(allPayloadColumns);
           }
-          console.log('Payload Columns: ', this.displayedPayloadColumns)
-          console.log('filteredPayloadDataSource: ', this.filteredPayloadDataSource.data);
-          console.log('Metadata Columns: ', this.displayedMetadataColumns)
-          console.log('filteredMetadataSource: ', this.filteredMetadataSource.data);
-
-          // const testData = this.filteredPayloadDataSource.data;
-          // for (let i = 0; i < testData.length; i++){
-          //   for(const column in this.displayedPayloadColumns){
-          //     console.log('column', column);
-          //     // console.log('test', testData[i].payload_dict[column]);
-          //   }
-          // }
         },
         error: (error) => {
           console.error('Error: ', error);
         },
       });
     });
-    this.apiService.getPayloadStatisticsData(this.deviceList[1].devEUI).subscribe({
-      next: (data: any[]) => {
-        const payloadStatRecord = Object.keys(data).map((key: any) => {
-          const stats = data[key];
+    this.deviceList.forEach((device, index) => { 
+      this.apiService.getPayloadStatisticsData(device.devEUI).subscribe({
+        next: (data: any[]) => {
+          const payloadStatRecord = Object.keys(data).map((key: any) => {
+            const stats = data[key];
 
-          return {
-            column: key,
-            mean: stats.mean,
-            variance: stats.variance,
-            standard_deviation: stats.standardDeviation,
-            median: stats.median,
-            mode: stats.mode,
-          };
-        });
-        // //console.log(payloadStatRecord)
+            return {
+              devEUI: device.devEUI,
+              column: key,
+              mean: stats.mean,
+              variance: stats.variance,
+              standard_deviation: stats.standardDeviation,
+              median: stats.median,
+              mode: stats.mode,
+            };
+          });
+            // console.log('payloadStatRecord: ',payloadStatRecord)
 
-        this.paylaodStatSource.data = payloadStatRecord;
-        
-      },
+            this.paylaodStatSource.data.push(payloadStatRecord);
+            this.paylaodStatSource.data = [...this.paylaodStatSource.data];
+            console.log('Stat: ', this.paylaodStatSource.data)
+            // console.log('index: ', index)
+          
+        },
 
-      error: (error) => {
-        //console.error('Error: ', error);
-      },
+        error: (error) => {
+          //console.error('Error: ', error);
+        },
+      });
+      // console.log('Stat: ', this.paylaodStatSource.data)
     });
-    this.apiService.getMetadataStatisticsData(this.deviceList[1].devEUI).subscribe({
-      next: (data: any[]) => {
-        ////console.log(data);
-        const metadataStatRecord = Object.keys(data).map((key: any) => {
-          const stats = data[key];
+    this.deviceList.forEach((device, index) => {    
+      this.apiService.getMetadataStatisticsData(device.devEUI).subscribe({
+        next: (data: any[]) => {
+          const metadataStatRecord = Object.keys(data).map((key: any) => {
+            const stats = data[key];
 
-          return {
-            column: key,
-            mean: stats.mean,
-            variance: stats.variance,
-            standard_deviation: stats.standardDeviation,
-            median: stats.median,
-            mode: stats.mode,
-          };
-        });
-        ////console.log(metadataStatRecord);
+            return {
+              devEUI: device.devEUI,
+              column: key,
+              mean: stats.mean,
+              variance: stats.variance,
+              standard_deviation: stats.standardDeviation,
+              median: stats.median,
+              mode: stats.mode,
+            };
+          });
+            // console.log('payloadStatRecord: ',payloadStatRecord)
 
-        this.metadataStatSource.data = metadataStatRecord;
-      },
+            this.metadataStatSource.data.push(metadataStatRecord);
+            this.metadataStatSource.data = [...this.metadataStatSource.data];
+            console.log('MetaStat: ', this.metadataStatSource.data)
+            // console.log('index: ', index)
+          
+        },
 
-      error: (error) => {
-        //console.error('Error: ', error);
-      },
+        error: (error) => {
+          //console.error('Error: ', error);
+        },
+      });
     });
+      // console.log('Meta Stat: ', this.metadataStatSource.data) 
+    //   this.apiService.getMetadataStatisticsData(this.deviceList[1].devEUI).subscribe({
+    //     next: (data: any[]) => {
+    //       ////console.log(data);
+    //       const metadataStatRecord = Object.keys(data).map((key: any) => {
+    //         const stats = data[key];
+
+    //         return {
+    //           column: key,
+    //           mean: stats.mean,
+    //           variance: stats.variance,
+    //           standard_deviation: stats.standardDeviation,
+    //           median: stats.median,
+    //           mode: stats.mode,
+    //         };
+    //       });
+    //       ////console.log(metadataStatRecord);
+
+    //       this.metadataStatSource.data = metadataStatRecord;
+    //     },
+
+    //     error: (error) => {
+    //       //console.error('Error: ', error);
+    //     },
+    //   });
+    // });
     // this.fetchDevices();
-    this.createPayloadChart(this.deviceList[1].devEUI);
-    this.createMetadataChart(this.deviceList[1].devEUI);      
+    this.createPayloadChart('0025CA0A00015E62');
+    this.createMetadataChart(this.deviceList[0].devEUI);      
   }
 
   fetchDevices(): void {
@@ -750,15 +697,23 @@ export class FilterPageComponent {
   }
   exportPayloadData() {
     const payloadData = this.payloadDataSource.data.map(
-      (item) => item.payload_dict
+      (item) => ({
+        devEUI: item.dev_eui,
+        devTime: item.dev_time,
+        ...item.payload_dict
+      })
     );
-    this.exportToCSV(payloadData, 'payload_data.csv');
+    this.exportToCSV( payloadData, 'payload_data.csv');
   }
   exportMetadata() {
-    const payloadData = this.payloadDataSource.data.map(
-      (item) => item.metadata_dict
+    const metadata = this.metadataSource.data.map(
+      (item) => ({
+        devEUI: item.dev_eui,
+        devTime: item.dev_time,
+        ...item.metadata_dict
+      })
     );
-    this.exportToCSV(payloadData, 'metadata.csv');
+    this.exportToCSV( metadata, 'metadata_data.csv');
   }
 
   //Chart functions
@@ -782,6 +737,26 @@ export class FilterPageComponent {
     link.download = 'chart.png';
     link.click();
   }
+  // createPayloadChart(devId: string) {
+  //   this.deviceList.forEach((device, index) => {
+  //     this.apiService.getPayload(device.devEUI).subscribe({
+  //       next: (data: PayloadRecord[][]) => {
+  //         this.payloadTimeRecord = [...this.payloadTimeRecord, ...data.map(
+  //           (item: PayloadRecord[]) => item[0] as PayloadRecord
+  //         )];
+  //         this.payloadRecord = [...this.payloadRecord, ...data.map(
+  //           (item: PayloadRecord[]) =>  item[1] as PayloadRecord
+  //         )];
+  //       },
+  //       error: (error) => {
+  //         //console.error('Error fetching payload data:', error);
+  //       },
+  //     });
+  //   });
+  //   console.log('time: ', this.payloadTimeRecord);
+  //   console.log('record: ', this.payloadRecord);
+  //   this.initializePayloadChart();
+  // }
   createPayloadChart(devId: string) {
     this.apiService.getPayload(devId).subscribe({
       next: (data: PayloadRecord[][]) => {
@@ -789,7 +764,7 @@ export class FilterPageComponent {
           (item: PayloadRecord[]) => item[0] as PayloadRecord
         );
         this.payloadRecord = data.map(
-          (item: PayloadRecord[]) => item[1] as PayloadRecord
+          (item: PayloadRecord[]) =>  item[1] as PayloadRecord
         );
         this.initializePayloadChart();
       },
@@ -800,7 +775,7 @@ export class FilterPageComponent {
   }
 
   createMetadataChart(devId: string) {
-    this.apiService.getMetadata(this.deviceList[1].devEUI).subscribe({
+    this.apiService.getMetadata(devId).subscribe({
       next: (data: PayloadRecord[][]) => {
         this.metadataTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
@@ -815,8 +790,23 @@ export class FilterPageComponent {
       },
     });
   }
+  // createMetadataChart(devId: string) {
+  //   this.apiService.getMetadata(devId).subscribe({
+  //     next: (data: PayloadRecord[][]) => {
+  //       this.metadataTimeRecord = data.map(
+  //         (item: PayloadRecord[]) => item[0] as PayloadRecord
+  //       );
+  //       this.metadataRecord = data.map(
+  //         (item: PayloadRecord[]) => item[1] as PayloadRecord
+  //       );
+  //       this.initializeMetadataChart();
+  //     },
+  //     error: (error) => {
+  //       //console.error('Error fetching metadata:', error);
+  //     },
+  //   });
+  // }
   initializePayloadChart() {
-    // console.log('in create payload chart')
     const ctx = document.getElementById('payloadChart') as HTMLCanvasElement;
     if (
       ctx &&

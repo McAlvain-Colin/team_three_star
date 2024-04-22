@@ -9,10 +9,12 @@
     <form class="container" (ngSubmit)="submitForm()" #addOrgForm="ngForm">
       <mat-form-field color="primary" [style.width.px]="250">
         <mat-label>Organization Name</mat-label>
+
         <input
           matInput
           name="orgName"
-          [(ngModel)]="orgName"
+          [ngModel]="orgName | badWordsFilter"
+          (ngModelChange)="orgName = $event"
           #nameInput="ngModel"
           required
         />
@@ -24,7 +26,8 @@
         <input
           matInput
           name="orgDescription"
-          [(ngModel)]="orgDescription"
+          [ngModel]="orgDescription | badWordsFilter"
+          (ngModelChange)="orgDescription = $event"
           #nameInput="ngModel"
         />
       </mat-form-field>

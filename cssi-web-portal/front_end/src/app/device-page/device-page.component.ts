@@ -209,15 +209,21 @@ export class DevicePageComponent implements AfterViewInit {
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
   @ViewChild('metadataPaginator') metadataPaginator!: MatPaginator;
   @ViewChild('devIDPaginator') devIDPaginator!: MatPaginator;
+  @ViewChild('payloadStatsPaginator') payloadStatsPaginator!: MatPaginator;
+  @ViewChild('metadataStatsPaginator') metadataStatsPaginator!: MatPaginator;
 
   payloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
+  paylaodStatSource = new MatTableDataSource<any>([]);
+  metadataStatSource = new MatTableDataSource<any>([]);
 
   ngAfterViewInit() {
     this.payloadDataSource.paginator = this.payloadPaginator;
     this.metadataSource.paginator = this.metadataPaginator;
     this.devIDSource.paginator = this.devIDPaginator;
+    this.paylaodStatSource.paginator = this.payloadStatsPaginator;
+    this.metadataStatSource.paginator = this.metadataStatsPaginator;
   }
 
   addDevice(): void {}
@@ -260,6 +266,54 @@ export class DevicePageComponent implements AfterViewInit {
       this.createPayloadChart(this.deviceEUI);
       this.createMetadataChart(this.deviceEUI);
     }
+    this.apiService.getPayloadStatisticsData(this.deviceEUI).subscribe({
+      next: (data: any[]) => {
+        const payloadStatRecord = Object.keys(data).map((key: any) => {
+          const stats = data[key];
+
+          return {
+            column: key,
+            mean: stats.mean,
+            variance: stats.variance,
+            standard_deviation: stats.standardDeviation,
+            median: stats.median,
+            mode: stats.mode,
+          };
+        });
+        // //console.log(payloadStatRecord)
+
+        this.paylaodStatSource.data = payloadStatRecord;
+        
+      },
+
+      error: (error) => {
+        //console.error('Error: ', error);
+      },
+    });
+    this.apiService.getMetadataStatisticsData(this.deviceEUI).subscribe({
+      next: (data: any[]) => {
+        ////console.log(data);
+        const metadataStatRecord = Object.keys(data).map((key: any) => {
+          const stats = data[key];
+
+          return {
+            column: key,
+            mean: stats.mean,
+            variance: stats.variance,
+            standard_deviation: stats.standardDeviation,
+            median: stats.median,
+            mode: stats.mode,
+          };
+        });
+        ////console.log(metadataStatRecord);
+
+        this.metadataStatSource.data = metadataStatRecord;
+      },
+
+      error: (error) => {
+        //console.error('Error: ', error);
+      },
+    });
   }
 
   //filter function in order to allow users display only realivant data.
@@ -323,15 +377,23 @@ export class DevicePageComponent implements AfterViewInit {
   }
   exportPayloadData() {
     const payloadData = this.payloadDataSource.data.map(
-      (item) => item.payload_dict
+      (item) => ({
+        devEUI: item.dev_eui,
+        devTime: item.dev_time,
+        ...item.payload_dict
+      })
     );
-    this.exportToCSV(payloadData, 'payload_data.csv');
+    this.exportToCSV( payloadData, 'payload_data.csv');
   }
   exportMetadata() {
-    const payloadData = this.payloadDataSource.data.map(
-      (item) => item.metadata_dict
+    const metadata = this.metadataSource.data.map(
+      (item) => ({
+        devEUI: item.dev_eui,
+        devTime: item.dev_time,
+        ...item.metadata_dict
+      })
     );
-    this.exportToCSV(payloadData, 'metadata.csv');
+    this.exportToCSV( metadata, 'metadata_data.csv');
   }
   createPayloadChart(devId: string) {
     this.apiService.getPayload(devId).subscribe({
@@ -439,6 +501,21 @@ export class DevicePageComponent implements AfterViewInit {
           maintainAspectRatio: false,
         },
       });
+    }
+  }
+  shouldHighlightPayload(value: any, key: any): boolean {
+    const dataValues = this.paylaodStatSource.data;
+    const statValues = dataValues[key+1];
+    try{
+      const mean = parseFloat(statValues.mean);
+      const stddev = parseFloat(statValues.standard_deviation);
+      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
+        return true;
+      }
+      return false; 
+    }
+    catch{
+      return false;
     }
   }
 

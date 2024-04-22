@@ -20,6 +20,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
+import { BadWordsFilterPipe } from '../badwords.pipe';
 
 @Component({
   selector: 'app-add-organization',
@@ -39,6 +40,7 @@ import {
     MatSnackBarModule,
     TempNavBarComponent,
     NgIf,
+    BadWordsFilterPipe,
   ],
 })
 export class AddOrganizationComponent {

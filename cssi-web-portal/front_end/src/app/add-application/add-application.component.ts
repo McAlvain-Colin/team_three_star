@@ -20,6 +20,7 @@ import {
   HttpHeaders,
   HttpErrorResponse
 } from '@angular/common/http';
+import { BadWordsFilterPipe } from '../badwords.pipe';
 
 @Component({
   selector: 'app-add-application',
@@ -39,6 +40,7 @@ import {
     HttpClientModule,
     TempNavBarComponent,
     NgIf,
+    BadWordsFilterPipe,
   ],
 })
 export class AddApplicationComponent {
