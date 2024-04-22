@@ -392,11 +392,13 @@ export class FilterPageComponent {
           this.filteredMetadataSource.data = [...this.metadataSource.data];
           this.filteredPayloadDataSource.data.flat()// = this.filteredPayloadDataSource.data.flat(Infinity)
           this.filteredMetadataSource.data.flat()// = this.filteredMetadataSource.data.flat(Infinity);
+          console.log('filteredPayloadDataSource: ', this.filteredPayloadDataSource.data)
+          console.log('filteredMetadataSource: ', this.filteredMetadataSource.data)
 
           records.forEach(record => {
             Object.keys(record.payload_dict).forEach(key => allPayloadColumns.add(key));
           })
-          console.log('Payload Columns: ', allPayloadColumns)
+          // console.log('Payload Columns: ', allPayloadColumns)
 
           if (index === this.deviceList.length -1) {
             this.displayedPayloadColumns = Array.from(allPayloadColumns);
@@ -468,34 +470,8 @@ export class FilterPageComponent {
         },
       });
     });
-      // console.log('Meta Stat: ', this.metadataStatSource.data) 
-    //   this.apiService.getMetadataStatisticsData(this.deviceList[1].devEUI).subscribe({
-    //     next: (data: any[]) => {
-    //       ////console.log(data);
-    //       const metadataStatRecord = Object.keys(data).map((key: any) => {
-    //         const stats = data[key];
-
-    //         return {
-    //           column: key,
-    //           mean: stats.mean,
-    //           variance: stats.variance,
-    //           standard_deviation: stats.standardDeviation,
-    //           median: stats.median,
-    //           mode: stats.mode,
-    //         };
-    //       });
-    //       ////console.log(metadataStatRecord);
-
-    //       this.metadataStatSource.data = metadataStatRecord;
-    //     },
-
-    //     error: (error) => {
-    //       //console.error('Error: ', error);
-    //     },
-    //   });
-    // });
     // this.fetchDevices();
-    this.createPayloadChart('0025CA0A00015E62');
+    this.createPayloadChart(this.deviceList[0].devEUI);
     this.createMetadataChart(this.deviceList[0].devEUI);      
   }
 
@@ -769,7 +745,7 @@ export class FilterPageComponent {
         this.initializePayloadChart();
       },
       error: (error) => {
-        //console.error('Error fetching payload data:', error);
+        console.error('Error fetching payload data:', error);
       },
     });
   }
@@ -786,7 +762,7 @@ export class FilterPageComponent {
         this.initializeMetadataChart();
       },
       error: (error) => {
-        //console.error('Error fetching metadata:', error);
+        console.error('Error fetching metadata:', error);
       },
     });
   }
