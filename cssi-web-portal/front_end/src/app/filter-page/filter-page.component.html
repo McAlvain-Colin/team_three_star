@@ -102,14 +102,14 @@
 
   <!-- device payload data tables -->
   <mat-card class="filter">
-    <mat-accordion class="search-bar">
+    <!-- <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
         (opened)="panelOpenStatePayload = true"
-        (closed)="panelOpenStatePayload = false"
-      >
+        (closed)="panelOpenStatePayload = false" -->
+      <!-- > -->
         <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
-        <mat-expansion-panel-header>
+        <!-- <mat-expansion-panel-header>
           <mat-panel-title> Payload Data </mat-panel-title>
           <mat-panel-description>
             {{
@@ -118,8 +118,8 @@
                 : "Click me!"
             }}
           </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-card class="payload-table">
+        </mat-expansion-panel-header> -->
+        <!-- <mat-card class="payload-table"> -->
           <!-- Filters need to be reintroduced into the tables when I can reliably display data -->
           <!-- Filters need to be refined further -->
 
@@ -202,9 +202,9 @@
               <mat-spinner *ngIf="showSpinner"></mat-spinner>
             </div>
           </mat-card-actions>
-        </mat-card>
-      </mat-expansion-panel>
-    </mat-accordion>
+        <!-- </mat-card> -->
+      <!-- </mat-expansion-panel>
+    </mat-accordion> -->
   </mat-card>
 
   <!-- payload graph -->
@@ -228,12 +228,12 @@
         </mat-expansion-panel-header>
         <!-- code here -->
         <mat-card class="chart">
-          <canvas id="payloadChart"></canvas>
+          <canvas id="payloadChart" width="400" height="300"></canvas>
         </mat-card>
         <mat-card>
           <table
             mat-table
-            [dataSource]="paylaodStatSource"
+            [dataSource]="filteredPayloadStatSource"
             class="mat-elevation-z8"
           >
             <!-- devEUI Column -->
@@ -326,14 +326,14 @@
 
   <!-- device metadata data tables -->
   <mat-card class="filter">
-    <mat-accordion class="search-bar">
+    <!-- <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
         (opened)="panelOpenStateMetadata = true"
         (closed)="panelOpenStateMetadata = false"
-      >
+      > -->
         <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
-        <mat-expansion-panel-header>
+        <!-- <mat-expansion-panel-header>
           <mat-panel-title> Metadata </mat-panel-title>
           <mat-panel-description>
             {{
@@ -342,8 +342,8 @@
                 : "Click me!"
             }}
           </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-card class="metadata-table">
+        </mat-expansion-panel-header> -->
+        <!-- <mat-card class="metadata-table"> -->
           <!-- Filter for Metadata -->
           <mat-form-field>
             <mat-label>Filter</mat-label>
@@ -433,9 +433,9 @@
               <mat-spinner *ngIf="showSpinner"></mat-spinner>
             </div>
           </mat-card-actions>
-        </mat-card>
-      </mat-expansion-panel>
-    </mat-accordion>
+        <!-- </mat-card> -->
+      <!-- </mat-expansion-panel>
+    </mat-accordion> -->
   </mat-card>
 
   <!-- metadata graph -->
@@ -459,12 +459,12 @@
         </mat-expansion-panel-header>
         <!-- code here -->
         <mat-card class="chart">
-          <canvas id="metadataChart" height="500"></canvas>
+          <canvas id="metadataChart"  width="400" height="300"></canvas>
         </mat-card>
         <mat-card>
           <table
             mat-table
-            [dataSource]="metadataStatSource"
+            [dataSource]="filteredMetadataStatSource"
             class="mat-elevation-z8"
           >
           <!-- devEUI Column -->

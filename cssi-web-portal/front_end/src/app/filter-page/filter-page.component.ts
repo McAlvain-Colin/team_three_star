@@ -347,6 +347,8 @@ export class FilterPageComponent {
   @ViewChild('devIDPaginator') devIDPaginator!: MatPaginator;
   @ViewChild('payloadStatsPaginator') payloadStatsPaginator!: MatPaginator;
   @ViewChild('metadataStatsPaginator') metadataStatsPaginator!: MatPaginator;
+  @ViewChild('fileteredPayloadStatsPaginator') fileteredPayloadStatsPaginator!: MatPaginator;
+  @ViewChild('fileteredMetadataStatsPaginator') fileteredMetadataStatsPaginator!: MatPaginator;
   @ViewChild('devicePaginator') devicePaginator!: MatPaginator;
   @ViewChild('filteredPayloadPaginator') filteredPayloadPaginator!: MatPaginator;
   @ViewChild('filteredMetadataPaginator') filteredMetadataPaginator!: MatPaginator;
@@ -356,8 +358,10 @@ export class FilterPageComponent {
   metadataSource = new MatTableDataSource<SensorData>([]);
   filteredMetadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
-  paylaodStatSource = new MatTableDataSource<any>([]);
+  payloadStatSource = new MatTableDataSource<any>([]);
   metadataStatSource = new MatTableDataSource<any>([]);
+  filteredPayloadStatSource = new MatTableDataSource<any>([]);
+  filteredMetadataStatSource = new MatTableDataSource<any>([]);
   deviceSource = new MatTableDataSource<Device>([]);
 
   ngAfterViewInit() {
@@ -367,7 +371,9 @@ export class FilterPageComponent {
     this.metadataSource.paginator = this.metadataPaginator;
     this.filteredMetadataSource.paginator = this.filteredMetadataPaginator;
     this.devIDSource.paginator = this.devIDPaginator;
-    this.paylaodStatSource.paginator = this.payloadStatsPaginator;
+    this.payloadStatSource.paginator = this.payloadStatsPaginator;
+    this.filteredMetadataStatSource.paginator = this.metadataStatsPaginator;
+    this.filteredPayloadStatSource.paginator = this.payloadStatsPaginator;
     this.metadataStatSource.paginator = this.metadataStatsPaginator;
     this.deviceSource.paginator = this.devicePaginator;
   }
@@ -392,8 +398,8 @@ export class FilterPageComponent {
           this.filteredMetadataSource.data = [...this.metadataSource.data];
           this.filteredPayloadDataSource.data.flat()// = this.filteredPayloadDataSource.data.flat(Infinity)
           this.filteredMetadataSource.data.flat()// = this.filteredMetadataSource.data.flat(Infinity);
-          console.log('filteredPayloadDataSource: ', this.filteredPayloadDataSource.data)
-          console.log('filteredMetadataSource: ', this.filteredMetadataSource.data)
+          // console.log('filteredPayloadDataSource: ', this.filteredPayloadDataSource.data)
+          // console.log('filteredMetadataSource: ', this.filteredMetadataSource.data)
 
           records.forEach(record => {
             Object.keys(record.payload_dict).forEach(key => allPayloadColumns.add(key));
@@ -427,9 +433,10 @@ export class FilterPageComponent {
           });
             // console.log('payloadStatRecord: ',payloadStatRecord)
 
-            this.paylaodStatSource.data.push(payloadStatRecord);
-            this.paylaodStatSource.data = [...this.paylaodStatSource.data];
-            console.log('Stat: ', this.paylaodStatSource.data)
+            this.payloadStatSource.data.push(...payloadStatRecord);
+            this.filteredPayloadStatSource.data = [...this.payloadStatSource.data];
+            this.filteredPayloadStatSource.data.flat();
+            // console.log('Stat: ', this.payloadStatSource.data)
             // console.log('index: ', index)
           
         },
@@ -438,14 +445,13 @@ export class FilterPageComponent {
           //console.error('Error: ', error);
         },
       });
-      // console.log('Stat: ', this.paylaodStatSource.data)
+      // console.log('Stat: ', this.payloadStatSource.data)
     });
     this.deviceList.forEach((device, index) => {    
       this.apiService.getMetadataStatisticsData(device.devEUI).subscribe({
         next: (data: any[]) => {
           const metadataStatRecord = Object.keys(data).map((key: any) => {
             const stats = data[key];
-
             return {
               devEUI: device.devEUI,
               column: key,
@@ -454,13 +460,14 @@ export class FilterPageComponent {
               standard_deviation: stats.standardDeviation,
               median: stats.median,
               mode: stats.mode,
-            };
+            };            
           });
             // console.log('payloadStatRecord: ',payloadStatRecord)
 
-            this.metadataStatSource.data.push(metadataStatRecord);
-            this.metadataStatSource.data = [...this.metadataStatSource.data];
-            console.log('MetaStat: ', this.metadataStatSource.data)
+            this.metadataStatSource.data.push(...metadataStatRecord);
+            this.filteredMetadataStatSource.data = [...this.metadataStatSource.data];
+            this.filteredPayloadStatSource.data.flat();
+            // console.log('MetaStat: ', this.metadataStatSource.data)
             // console.log('index: ', index)
           
         },
@@ -713,84 +720,79 @@ export class FilterPageComponent {
     link.download = 'chart.png';
     link.click();
   }
-  // createPayloadChart(devId: string) {
-  //   this.deviceList.forEach((device, index) => {
-  //     this.apiService.getPayload(device.devEUI).subscribe({
-  //       next: (data: PayloadRecord[][]) => {
-  //         this.payloadTimeRecord = [...this.payloadTimeRecord, ...data.map(
-  //           (item: PayloadRecord[]) => item[0] as PayloadRecord
-  //         )];
-  //         this.payloadRecord = [...this.payloadRecord, ...data.map(
-  //           (item: PayloadRecord[]) =>  item[1] as PayloadRecord
-  //         )];
-  //       },
-  //       error: (error) => {
-  //         //console.error('Error fetching payload data:', error);
-  //       },
-  //     });
-  //   });
-  //   console.log('time: ', this.payloadTimeRecord);
-  //   console.log('record: ', this.payloadRecord);
-  //   this.initializePayloadChart();
-  // }
   createPayloadChart(devId: string) {
-    this.apiService.getPayload(devId).subscribe({
-      next: (data: PayloadRecord[][]) => {
-        this.payloadTimeRecord = data.map(
-          (item: PayloadRecord[]) => item[0] as PayloadRecord
-        );
-        this.payloadRecord = data.map(
-          (item: PayloadRecord[]) =>  item[1] as PayloadRecord
-        );
-        this.initializePayloadChart();
-      },
-      error: (error) => {
-        console.error('Error fetching payload data:', error);
-      },
+    let payload: any
+    let payloadTime: any
+    this.deviceList.forEach((device, index) => {
+      this.apiService.getPayload(device.devEUI).subscribe({
+        next: (data: PayloadRecord[][]) => {
+          payloadTime= data.map(
+            (item: PayloadRecord[]) => item[0] as PayloadRecord
+          );
+          payload = data.map(
+            (item: PayloadRecord[]) =>  item[1] as PayloadRecord
+          );
+
+          this.payloadTimeRecord.push(...payloadTime)
+          this.payloadRecord.push(...payload)
+
+          this.payloadTimeRecord.flat();
+          this.payloadRecord.flat();
+
+          // console.log('time: ', this.payloadTimeRecord);
+          // console.log('record 1: ', this.payloadRecord);
+
+          this.initializePayloadChart();
+        },
+        error: (error) => {
+          //console.error('Error fetching payload data:', error);
+        },
+      });
     });
   }
 
   createMetadataChart(devId: string) {
-    this.apiService.getMetadata(devId).subscribe({
-      next: (data: PayloadRecord[][]) => {
-        this.metadataTimeRecord = data.map(
-          (item: PayloadRecord[]) => item[0] as PayloadRecord
-        );
-        this.metadataRecord = data.map(
-          (item: PayloadRecord[]) => item[1] as PayloadRecord
-        );
-        this.initializeMetadataChart();
-      },
-      error: (error) => {
-        console.error('Error fetching metadata:', error);
-      },
+    this.deviceList.forEach((device, index) => {
+      this.apiService.getMetadata(device.devEUI).subscribe({
+        next: (data: PayloadRecord[][]) => {
+          this.metadataTimeRecord = data.map(
+            (item: PayloadRecord[]) => item[0] as PayloadRecord
+          );
+          this.metadataRecord = data.map(
+            (item: PayloadRecord[]) =>  item[1] as PayloadRecord
+          );
+
+          this.metadataTimeRecord.push(...this.metadataTimeRecord)
+          this.metadataRecord.push(...this.metadataRecord)
+
+          this.metadataTimeRecord.flat();
+          this.metadataRecord.flat();
+
+          // console.log('time: ', this.metadataTimeRecord);
+          // console.log('record 1: ', this.metadataRecord);
+
+          this.initializeMetadataChart();
+        },
+        error: (error) => {
+          //console.error('Error fetching payload data:', error);
+        },
+      });
     });
   }
-  // createMetadataChart(devId: string) {
-  //   this.apiService.getMetadata(devId).subscribe({
-  //     next: (data: PayloadRecord[][]) => {
-  //       this.metadataTimeRecord = data.map(
-  //         (item: PayloadRecord[]) => item[0] as PayloadRecord
-  //       );
-  //       this.metadataRecord = data.map(
-  //         (item: PayloadRecord[]) => item[1] as PayloadRecord
-  //       );
-  //       this.initializeMetadataChart();
-  //     },
-  //     error: (error) => {
-  //       //console.error('Error fetching metadata:', error);
-  //     },
-  //   });
-  // }
   initializePayloadChart() {
+    // console.log('time: ', this.payloadTimeRecord);
+    console.log('record 2: ', this.payloadRecord);
+    console.log('columns: ', this.displayedPayloadColumns);
+    let labels: any;
+    let datasets: any;
     const ctx = document.getElementById('payloadChart') as HTMLCanvasElement;
     if (
       ctx &&
       this.payloadTimeRecord.length > 0 &&
       this.payloadRecord.length > 0
     ) {
-      const labels = this.payloadTimeRecord;
-      const datasets = this.payloadColumns.map((col) => {
+      labels = this.payloadTimeRecord;
+      datasets = this.displayedPayloadColumns.map((col) => {
         return {
           label: col,
           data: this.payloadRecord.map((record) => +record[col]),
@@ -804,15 +806,18 @@ export class FilterPageComponent {
         this.payloadChart.destroy();
       }
 
+      // console.log('labels: ', labels);
+      // console.log('datasets: ', datasets);
+
       this.payloadChart = new Chart(ctx, {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
+          // scales: {
+          //   y: {
+          //     beginAtZero: true,
+          //   },
+          // },
           responsive: true,
           maintainAspectRatio: false,
         },
@@ -820,22 +825,36 @@ export class FilterPageComponent {
     }
   }
   initializeMetadataChart() {
+    // console.log('time: ', this.metadataTimeRecord);
+    // console.log('record 2: ', this.metadataRecord);
+    let labels: any;
+    let datasets: any = [];
     const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
     if (
       meta_ctx &&
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
-      const labels = this.metadataTimeRecord;
+      labels = this.metadataTimeRecord;
       const dataKeys = ['snr','rssi','channel_rssi'];
-      const datasets = dataKeys.map((key) => {
-        return {
-          label: key,
-          data: this.metadataRecord.map((record) => +record[key]),
-          fill: false,
-          borderColor: this.getRandomColor(),
-          tension: 0.1,
-        };
+      const ids = this.deviceList.map(record => record.devEUI);
+      // console.log('ids: ', ids);
+      // console.log('dataKeys: ', dataKeys);
+
+      // console.log('data: ', this.metadataRecord);
+
+      ids.forEach(id => {
+        dataKeys.forEach(key => {
+          const dataset = {
+            label: '${id}: ${key}',
+            data: this.metadataRecord.map(record => +record[key]),
+            fill: false,
+            borderColor: this.getRandomColor(),
+            tension: 0.1,            
+          };
+          // console.log('dataset: ', dataset);
+          datasets.push(dataset);
+        });
       });
 
       if (this.metadataChart) {
@@ -846,11 +865,11 @@ export class FilterPageComponent {
         type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
+          // scales: {
+          //   y: {
+          //     beginAtZero: true,
+          //   },
+          // },
           responsive: true,
           maintainAspectRatio: false,
         },
@@ -906,7 +925,7 @@ export class FilterPageComponent {
     return '';
   }
   shouldHighlightPayload(value: any, key: any): boolean {
-    const dataValues = this.paylaodStatSource.data;
+    const dataValues = this.payloadStatSource.data;
     const statValues = dataValues[key+1];
     try{
       const mean = parseFloat(statValues.mean);
