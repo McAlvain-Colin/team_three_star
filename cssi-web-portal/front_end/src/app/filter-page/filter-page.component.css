@@ -99,7 +99,7 @@
   top: 50%;
 
   margin-top: 1%;
-  margin-left: 5%;
+  /* margin-left: 5%; */
   margin-right: 5%;
   margin-bottom: 4%;
 
@@ -108,8 +108,8 @@
   /* overflow-y: auto; */
   overflow-x: scroll;
 
-  width: 80%;
-  left: 5%;
+  width: 100%;
+  /* left: 5%; */
   top: 40%;
 }
 .payload_select {
@@ -156,7 +156,7 @@
   top: 70%;
 
   margin-top: 1%;
-  margin-left: 5%;
+  /* margin-left: 5%; */
   margin-right: 5%;
   margin-bottom: 4%;
 
@@ -165,8 +165,8 @@
   /* overflow-y: auto; */
   overflow-x: scroll;
 
-  width: 80%;
-  left: 5%;
+  width: 100%;
+  /* left: 5%; */
   top: 40%;
 }
 .filter {
