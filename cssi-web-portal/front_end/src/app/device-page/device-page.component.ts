@@ -435,7 +435,7 @@ export class DevicePageComponent implements AfterViewInit {
       this.payloadTimeRecord.length > 0 &&
       this.payloadRecord.length > 0
     ) {
-      const labels = this.payloadTimeRecord;
+      const labels = Array.from({length: this.payloadTimeRecord.length }, (_,i) =>i+1);
       const datasets = this.payloadColumns.map((col) => {
         return {
           label: col,
@@ -485,7 +485,7 @@ export class DevicePageComponent implements AfterViewInit {
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
-      const labels = this.metadataTimeRecord;
+      const labels = Array.from({length: this.metadataTimeRecord.length }, (_,i) =>i+1); 
       const dataKeys = ['snr','rssi','channel_rssi'];
       const datasets = dataKeys.map((key) => {
         return {

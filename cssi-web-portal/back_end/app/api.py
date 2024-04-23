@@ -993,7 +993,7 @@ def getOrgAppDeviceList():
 def get_data(dev_id, numEnt):
 	print('\n\nIn Get Data')
 	try:
-		records = read_records('lab_sensor_json', None,  f"dev_eui = '{dev_id}'", numEnt ) #hard coded for test
+		records = read_records('lab_sensor_json', f"dev_eui = '{dev_id}'", None , numEnt ) #hard coded for test
 		data = parse_data(records)
 		print(f'\tdata : {data}')
 		print('\n\nExit Get Data')

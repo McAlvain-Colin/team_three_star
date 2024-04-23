@@ -50,6 +50,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, shareReplay } from 'rxjs';
+import { DatasetController } from 'chart.js/dist';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -372,7 +373,7 @@ export class FilterPageComponent {
             this.filteredPayloadDataSource.data.flat()// = this.filteredPayloadDataSource.data.flat(Infinity)
             this.filteredMetadataSource.data.flat()// = this.filteredMetadataSource.data.flat(Infinity);
           }
-          console.log('filteredPayloadDataSource: ', this.filteredPayloadDataSource.data)
+          // console.log('filteredPayloadDataSource: ', this.filteredPayloadDataSource.data)
           // console.log('filteredMetadataSource: ', this.filteredMetadataSource.data)
 
           records.forEach(record => {
@@ -747,104 +748,104 @@ export class FilterPageComponent {
     link.download = 'chart.png';
     link.click();
   }
+  
   createPayloadChart(devId: string) {
     let number = this.filterForm.value.range.value;
-    let payload: any
-    let payloadTime: any
-    this.deviceList.forEach((device, index) => {
-      this.apiService.getPayload(device.devEUI, number).subscribe({
-        next: (data: PayloadRecord[][]) => {
-          payloadTime= data.map(
-            (item: PayloadRecord[]) => item[0] as PayloadRecord
-          );
-          payload = data.map(
-            (item: PayloadRecord[]) =>  item[1] as PayloadRecord
-          );
+    this.apiService.getPayload(this.deviceList[0].devEUI, number).subscribe({
+      next: (data: PayloadRecord[][]) => {
+        this.payloadTimeRecord = data.map(item => item[0]);
+        this.payloadRecord = data.map(item => item[1]);
 
-          this.payloadTimeRecord.push(...payloadTime)
-          this.payloadRecord.push(...payload)
+        this.payloadTimeRecord.push(...this.payloadTimeRecord)
+        this.payloadRecord.push(...this.payloadRecord)
 
-          this.payloadTimeRecord.flat();
-          this.payloadRecord.flat();
-          this.payloadTimeRecord.reverse();
-
-          // console.log('time: ', this.payloadTimeRecord);
-          // console.log('record 1: ', this.payloadRecord);
-
-          this.initializePayloadChart();
-        },
-        error: (error) => {
-          //console.error('Error fetching payload data:', error);
-        },
-      });
-    });
+        this.initializePayloadChart();
+      },
+      error: (error) => {
+        console.error('Error fetching payload data:', error);
+      },
+    });    
   }
-
   createMetadataChart(devId: string) {
     let number = this.filterForm.value.range.value;
+    this.apiService.getMetadata(this.deviceList[0].devEUI, number).subscribe({
+      next: (data: PayloadRecord[][]) => {
+        this.metadataTimeRecord = data.map(item => item[0]);
+        this.metadataRecord = data.map(item => item[1]);
+
+        // this.metadataTimeRecord.push(...this.metadataTimeRecord)
+        // this.metadataRecord.push(...this.metadataRecord)
+
+        this.initializeMetadataChart();
+      },
+      error: (error) => {
+        console.error('Error fetching payload data:', error);
+      },
+    }); 
     this.deviceList.forEach((device, index) => {
       this.apiService.getMetadata(device.devEUI, number).subscribe({
         next: (data: PayloadRecord[][]) => {
-          this.metadataTimeRecord = data.map(
-            (item: PayloadRecord[]) => item[0] as PayloadRecord
-          );
-          this.metadataRecord = data.map(
-            (item: PayloadRecord[]) =>  item[1] as PayloadRecord
-          );
-
-          this.metadataTimeRecord.push(...this.metadataTimeRecord)
-          this.metadataRecord.push(...this.metadataRecord)
-
-          this.metadataTimeRecord.flat();
-          this.metadataRecord.flat();
-          this.metadataTimeRecord.reverse();
-
-          // console.log('time: ', this.metadataTimeRecord);
-          // console.log('record 1: ', this.metadataRecord);
-
-          this.initializeMetadataChart();
+          this.metadataTimeRecord.push(...data.map(item => item[0]));
+          this.metadataRecord.push(...data.map(item => item[1]));
+          
+          this.updateMetadatChart(device.devEUI, this.metadataTimeRecord, this.metadataRecord);
         },
         error: (error) => {
-          //console.error('Error fetching payload data:', error);
+          console.error('Error fetching payload data:', error);
         },
-      });
+      });        
     });
   }
+
+
+  
   initializePayloadChart() {
-    // console.log('time: ', this.payloadTimeRecord);
-    // console.log('record 2: ', this.payloadRecord);
-    // console.log('columns: ', this.displayedPayloadColumns);
-    let labels: any;
-    let datasets: any;
-    // const dataKeys = this.payloadRecord.map(record => Object.keys(record));
-    // console.log('dataKeys: ', dataKeys);
-    const ids = this.deviceList.map(record => record.devEUI);
+    let datasets: any = [];
     const ctx = document.getElementById('payloadChart') as HTMLCanvasElement;
     if (
       ctx &&
       this.payloadTimeRecord.length > 0 &&
       this.payloadRecord.length > 0
     ) {
-      labels = this.payloadTimeRecord;
+      const dataKeys = this.displayedPayloadColumns
+      const ids = this.deviceList.map(item => item.devEUI);
+      const labels = [0, this.filterForm.value.range.value];
 
-      // ids.forEach(id => {
-      datasets = this.displayedPayloadColumns.map((col) => {
-        return {
-          label: col,
-          data: this.payloadRecord.map((record) => +record[col]),
+      // console.log('payload data: ',this.payloadRecord)
+      const test = this.payloadDataSource.data
+      // const label = ids.map( (id, index) => {
+      //   return this.displayedPayloadColumns.map(key => {
+      //     return `${id}: ${key}`;
+      //   });
+      // }).flat();
+      const label = this.filteredPayloadDataSource.data.flatMap(payloadColumns => {
+        const keys = Object.keys(payloadColumns.payload_dict);
+
+        return keys.map(key => `${payloadColumns.dev_eui}: ${key}`)
+      })
+      const uniqueLabel = Array.from(new Set(label));
+      uniqueLabel.flat();
+      console.log('payload label: ',uniqueLabel)
+
+      // // ids.forEach(id => {
+      // dataKeys.forEach(key => {
+      const datasets = uniqueLabel.map(lab => {
+        return{
+          label: lab,//`${id}: ${key}`,
+          data: [],//this.payloadRecord.map(record => +record[key]),
           fill: false,
           borderColor: this.getRandomColor(),
-          tension: 0.1,
-        };
+          tension: 0.1, 
+        }           
       });
+        // console.log('dataset: ', dataset);
+      //   datasets.push( dataset);
+      // });
       // });
 
       if (this.payloadChart) {
         this.payloadChart.destroy();
       }
-
-      // console.log('labels: ', labels);
-      // console.log('datasets: ', datasets);
 
       this.payloadChart = new Chart(ctx, {
         type: 'line',
@@ -878,36 +879,26 @@ export class FilterPageComponent {
       this.metadataRecord.length > 0
     ) {
       const dataKeys = ['snr','rssi','channel_rssi'];
-      const ids = this.deviceList.map(record => record.devEUI);
-      let number = this.filterForm.value.range.value;
-      const labels = this.metadataTimeRecord
+      // const ids = this.deviceList(item => item.devEUI)
+      const labels = [0, this.filterForm.value.range.value];
 
-
-      ids.forEach((id, index) => {
-        const start = (index * (+number));
-        const end = (start + (+number));
-
+      this.deviceList.forEach(id => {
         dataKeys.forEach(key => {
           const dataset = {
-            label: `${id}: ${key}`,
-            data: this.metadataRecord.slice(0, ((index+1)*number)).map(record => +record[key]),
+            label: `${id.devEUI}: ${key}`,
+            data: [],
             fill: false,
             borderColor: this.getRandomColor(),
             tension: 0.1,            
           };
           // console.log('dataset: ', dataset);
-          datasets.push(dataset);
+          datasets.push( dataset);
         });
       });
 
       if (this.metadataChart) {
         this.metadataChart.destroy();
       }
-      
-      console.log('datasets: ', datasets)
-      datasets = datasets.flat();
-
-      console.log('datasets: ', datasets)
 
       this.metadataChart = new Chart(meta_ctx, {
         type: 'line',
@@ -932,6 +923,26 @@ export class FilterPageComponent {
       });
     }
   }
+  updateMetadatChart(id: any, time: any, record: any){   
+    // console.log('id: ', id, 'time3: ', time, 'record: ', record) 
+    const dataKeys: any = ['snr','rssi','channel_rssi'];
+    
+
+    this.metadataChart.update();   
+  }
+  updatePayloadChart(data: any){
+    // console.log('in update payload chart')
+    // if(this.payloadChart && this.payloadChart.data && this.payloadChart.data.labels){
+    //   this.payloadChart.data.labels.push(this.payloadTimeRecord);
+    //   if (this.payloadChart.data.datasets){
+    //     this.payloadRecord.forEach((dataset: any) => {
+    //       dataset.data.push(data);
+    //     });
+    //   };
+    //   this.payloadChart.update();   
+    // };
+  }
+
 
   //since the jsons are dynamic we assin chart element colors randomly
   getRandomColor() {
@@ -942,13 +953,6 @@ export class FilterPageComponent {
     }
     return color;
   }
-
-
-  // createChart(devId: string) {
-  //   this.loadSpinner();
-  //   this.createPayloadChart(devId);
-  //   this.createMetadataChart(devId);
-  // }
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
