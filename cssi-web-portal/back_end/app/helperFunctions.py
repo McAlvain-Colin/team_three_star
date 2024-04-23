@@ -49,12 +49,15 @@ def create_record(table, data):
             cursor.close()
         close_db_connection(conn)
 
-def read_records(table, conditions=None, dev_eui=None):
+def read_records(table, conditions=None, dev_eui=None, numEnt=100):
     conn = None
     cursor = None
-    print(table)
-    print(conditions)
-    print(dev_eui)
+    print('\nRead Records:')
+    print(f'\t{table}')
+    print(f'\t{conditions}')
+    print(f'\t{dev_eui}')
+    print(f'\t{numEnt}')
+    print('---------------------------')
     try:
         conn = get_db_connection()
         if conn is None:
@@ -67,19 +70,19 @@ def read_records(table, conditions=None, dev_eui=None):
             print(sql)
             cursor.execute(sql)
         elif conditions == 'payload':
-            sql = f"SELECT time, payload FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT 100"
+            sql = f"SELECT time, payload FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT {numEnt}"
             print(sql)
             cursor.execute(sql)
         elif conditions == 'payloadStats':
-            sql = f"SELECT payload FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT 100"
+            sql = f"SELECT payload FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT {numEnt}"
             print(sql)
             cursor.execute(sql)
         elif conditions == 'metadataStats':
-            sql = f"SELECT metadata FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT 100"
+            sql = f"SELECT metadata FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT {numEnt}"
             print(sql)
             cursor.execute(sql)
         elif conditions == 'metadata':
-            sql = f"SELECT time, metadata FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT 100"
+            sql = f"SELECT time, metadata FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT {numEnt}"
             print(sql)
             cursor.execute(sql)
         elif conditions == 'location':
@@ -91,15 +94,16 @@ def read_records(table, conditions=None, dev_eui=None):
             print(sql)
             cursor.execute(sql)
         elif conditions:
-            sql += " WHERE " + conditions + ' ORDER BY time DESC LIMIT 100' 
+            sql += " WHERE " + conditions + f" ORDER BY time DESC LIMIT {numEnt}" 
             print(sql)
             cursor.execute(sql)
         else:
-            sql += ' ORDER BY time DESC LIMIT 100'
+            sql += f" ORDER BY time DESC LIMIT {numEnt}"
             print(sql)
             cursor.execute(sql)
         records = cursor.fetchall()
-        # print(records)
+        print('Read Records Complete')
+        print('--------------------------------\n\n')
         return records
     except Exception as e:
         log.error(f'Failed to read records: {e}')

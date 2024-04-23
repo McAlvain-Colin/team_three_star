@@ -231,7 +231,7 @@ export class DevicePageComponent implements AfterViewInit {
 
   private getDataSetup(): void {
     if(this.deviceEUI) {
-      this.apiService.getData(this.deviceEUI).subscribe({
+      this.apiService.getData(this.deviceEUI, '100').subscribe({
         next: (data: SensorData[]) => {
           const records = data.map((item: SensorData) => ({
             dev_eui: item.dev_eui,
@@ -266,7 +266,7 @@ export class DevicePageComponent implements AfterViewInit {
       this.createPayloadChart(this.deviceEUI);
       this.createMetadataChart(this.deviceEUI);
     }
-    this.apiService.getPayloadStatisticsData(this.deviceEUI).subscribe({
+    this.apiService.getPayloadStatisticsData(this.deviceEUI, '100').subscribe({
       next: (data: any[]) => {
         const payloadStatRecord = Object.keys(data).map((key: any) => {
           const stats = data[key];
@@ -290,7 +290,7 @@ export class DevicePageComponent implements AfterViewInit {
         //console.error('Error: ', error);
       },
     });
-    this.apiService.getMetadataStatisticsData(this.deviceEUI).subscribe({
+    this.apiService.getMetadataStatisticsData(this.deviceEUI, '100').subscribe({
       next: (data: any[]) => {
         ////console.log(data);
         const metadataStatRecord = Object.keys(data).map((key: any) => {
@@ -396,7 +396,7 @@ export class DevicePageComponent implements AfterViewInit {
     this.exportToCSV( metadata, 'metadata_data.csv');
   }
   createPayloadChart(devId: string) {
-    this.apiService.getPayload(devId).subscribe({
+    this.apiService.getPayload(devId, '100').subscribe({
       next: (data: PayloadRecord[][]) => {
         this.payloadTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
@@ -413,7 +413,7 @@ export class DevicePageComponent implements AfterViewInit {
   }
 
   createMetadataChart(devId: string) {
-    this.apiService.getMetadata(this.deviceEUI).subscribe({
+    this.apiService.getMetadata(this.deviceEUI, '100').subscribe({
       next: (data: PayloadRecord[][]) => {
         this.metadataTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
@@ -435,7 +435,7 @@ export class DevicePageComponent implements AfterViewInit {
       this.payloadTimeRecord.length > 0 &&
       this.payloadRecord.length > 0
     ) {
-      const labels = this.payloadTimeRecord;
+      const labels = Array.from({length: this.payloadTimeRecord.length }, (_,i) =>i+1);
       const datasets = this.payloadColumns.map((col) => {
         return {
           label: col,
@@ -462,6 +462,19 @@ export class DevicePageComponent implements AfterViewInit {
           responsive: true,
           maintainAspectRatio: false,
         },
+        plugins: [
+          {
+            id: 'customCanvasBackgroundColor',
+            beforeDraw: (chart, args, options) => {
+              const { ctx }= chart;
+              ctx.save();
+              ctx.globalCompositeOperation = 'destination-over';
+              ctx.fillStyle = 'white'
+              ctx.fillRect(0,0, chart.width, chart.height);
+              ctx.restore();
+            },
+          },
+        ],
       });
     }
   }
@@ -472,7 +485,7 @@ export class DevicePageComponent implements AfterViewInit {
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
-      const labels = this.metadataTimeRecord;
+      const labels = Array.from({length: this.metadataTimeRecord.length }, (_,i) =>i+1); 
       const dataKeys = ['snr','rssi','channel_rssi'];
       const datasets = dataKeys.map((key) => {
         return {
@@ -500,6 +513,19 @@ export class DevicePageComponent implements AfterViewInit {
           responsive: true,
           maintainAspectRatio: false,
         },
+        plugins: [
+          {
+            id: 'customCanvasBackgroundColor',
+            beforeDraw: (chart, args, options) => {
+              const { ctx }= chart;
+              ctx.save();
+              ctx.globalCompositeOperation = 'destination-over';
+              ctx.fillStyle = 'white'
+              ctx.fillRect(0,0, chart.width, chart.height);
+              ctx.restore();
+            },
+          },
+        ],
       });
     }
   }
@@ -561,5 +587,17 @@ export class DevicePageComponent implements AfterViewInit {
     else {
       console.error('No notes to submit');
     }
+  }
+  getDownloadPayloadChart() {
+    let link = document.createElement('a');
+    link.href = this.payloadChart.toBase64Image();
+    link.download = 'chart.png';
+    link.click();
+  }
+  getDownloadMetadataChart() {
+    let link = document.createElement('a');
+    link.href = this.metadataChart.toBase64Image();
+    link.download = 'chart.png';
+    link.click();
   }
 }
