@@ -133,7 +133,7 @@ body {
 
 .group-button {
   position: relative;
-  margin: 2px;
+  margin-top: 1%;
 }
 
 .remove-icon {
@@ -162,12 +162,31 @@ body {
   overflow-y: scroll;
 }
 
+.empty-text1 {
+  text-align: center;
+  color: #3f51b5;
+  padding-top: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
+  left: 40%;
+}
+
+.empty-text2 {
+  text-align: center;
+  color: #3f51b5;
+  padding-top: 1%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 5%;
+  left: 40%;
+}
+
 .member-box {
   position: relative;
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 3%;
-  margin-bottom: 10%;
+  margin-bottom: 3%;
   height: fit-content;
   max-height: fit-content;
   width: 90%;

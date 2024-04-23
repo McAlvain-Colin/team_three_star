@@ -217,6 +217,7 @@ export class OrganizationPageComponent implements OnInit {
               id: resp.body.list[i].a_id,
               name: resp.body.list[i].name,
               role: resp.body.list[i].r_id,
+              email: resp.body.list[i].email,
             });
           }
           this.memberSource.paginator = this.membersPaginator;

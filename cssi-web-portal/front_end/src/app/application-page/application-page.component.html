@@ -52,7 +52,8 @@
                 <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
                 <button
                   mat-raised-button
-                  color="accent"
+                  [style.background-color]="'#4CAF50'"
+                  [style.color]="'white'"
                   class="group-button"
                   *ngIf="userRole != 3 || userRole <= 0"
                   routerLink="/add-device/{{ appId }}/{{ orgId }}"

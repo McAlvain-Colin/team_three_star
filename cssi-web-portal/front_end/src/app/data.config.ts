@@ -15,6 +15,7 @@ export interface Member {
   name: string;
   id: number;
   role: number;
+  email: string;
 }
 
 export interface Device {

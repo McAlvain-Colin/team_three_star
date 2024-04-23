@@ -51,7 +51,7 @@ mail = Mail()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Locomexican22@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:cssiwebportal2024@localhost/postgres'
 db.init_app(app)
 
 
@@ -622,7 +622,7 @@ def getOrgMembers():
 	try:
 		orgId = int(orgId)
 
-		users = select(Account.id, Account.name, OrgAccount.r_id).join(OrgAccount).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)
+		users = select(Account.id, Account.name, Account.email, OrgAccount.r_id).join(OrgAccount).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)
 
 		page = db.session.execute(users).all()
 
@@ -631,7 +631,8 @@ def getOrgMembers():
 				{
 				'a_id' : p.id,
 				'name': p.name,
-				'r_id' : p.r_id
+				'r_id' : p.r_id,
+				'email' : p.email
 				} for p in page
 			]
 		}
