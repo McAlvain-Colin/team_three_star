@@ -588,4 +588,16 @@ export class DevicePageComponent implements AfterViewInit {
       console.error('No notes to submit');
     }
   }
+  getDownloadPayloadChart() {
+    let link = document.createElement('a');
+    link.href = this.payloadChart.toBase64Image();
+    link.download = 'chart.png';
+    link.click();
+  }
+  getDownloadMetadataChart() {
+    let link = document.createElement('a');
+    link.href = this.metadataChart.toBase64Image();
+    link.download = 'chart.png';
+    link.click();
+  }
 }

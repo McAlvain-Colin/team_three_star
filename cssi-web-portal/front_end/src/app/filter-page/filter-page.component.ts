@@ -735,9 +735,15 @@ export class FilterPageComponent {
   // getDownload will called once the user clicks on the export data button in the webpage, it will first create a anchor element assigned to a variable "link", the user will then use a chartJS method called toBase64Image, which will create a base 64 string which has the current chart visualization
   // The download method from the anchor element is used to indicate that the element should be downloaded rather then displayed to the screen. the click method also indicates that the a simulation of a click so that the download of the chart visualization can begin. click method documentation is here: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click
   // use of chart JS method toBase64Image is here: https://www.chartjs.org/docs/latest/developers/api.html http://www.java2s.com/example/javascript/chart.js/chartjs-to-update-and-exporting-chart-as-png.html, download method documentation: https://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement/download.
-  getDownload() {
+  getDownloadPayloadChart() {
     let link = document.createElement('a');
     link.href = this.payloadChart.toBase64Image();
+    link.download = 'chart.png';
+    link.click();
+  }
+  getDownloadMetadataChart() {
+    let link = document.createElement('a');
+    link.href = this.metadataChart.toBase64Image();
     link.download = 'chart.png';
     link.click();
   }
