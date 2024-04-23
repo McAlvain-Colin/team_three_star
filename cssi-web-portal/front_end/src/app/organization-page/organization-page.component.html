@@ -128,27 +128,11 @@
                   </button>
                 </div>
               </a>
-              <h1
-                class="empty-text1"
-                *ngIf="
-                  !appsSource.data.slice(
-                    appsPaginator.pageIndex * appsPaginator.pageSize,
-                    (appsPaginator.pageIndex + 1) * appsPaginator.pageSize
-                  ).length
-                "
-              >
+              <h1 class="empty-text1" *ngIf="!appsSource.data.length">
                 You have no applications, to add one to your organization,
                 please hit Add in the upper left of this panel.
               </h1>
-              <h1
-                class="empty-text2"
-                *ngIf="
-                  !appsSource.data.slice(
-                    appsPaginator.pageIndex * appsPaginator.pageSize,
-                    (appsPaginator.pageIndex + 1) * appsPaginator.pageSize
-                  ).length
-                "
-              >
+              <h1 class="empty-text2" *ngIf="!appsSource.data.length">
                 An application is a group of devices assigned for a specific
                 task, after creation, an admin or PI can add devices to the
                 application.

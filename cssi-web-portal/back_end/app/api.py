@@ -691,7 +691,9 @@ def getOwnedOrgList():
 				{
 					'o_id' : p.id,
 					'name': p.name,
-					'description': p.description
+					'description': p.description,
+					'num_apps': db.session.query(OrgApplication).where(OrgApplication.o_id == p.id, OrgApplication.active == True).count(),
+					'total_members': db.session.query(OrgAccount).where(OrgAccount.o_id == p.id, OrgAccount.active == True).count()
 				} for p in page.all()
 			]
 		}
@@ -717,7 +719,8 @@ def getJoinedOrgList():
 				{
 					'o_id' : p.id,
 					'name': p.name,
-					'description': p.description
+					'description': p.description,
+					'num_apps': db.session.query(OrgApplication).where(OrgApplication.o_id == p.id, OrgApplication.active == True).count()
 				} for p in page.all()
 			]
 		}
@@ -728,7 +731,8 @@ def getJoinedOrgList():
 	except exc.SQLAlchemyError:
 
 		return jsonify({'errorMessage': "Couldn't get your Joined Organizations"}), 404
-	
+
+
 @app.route('/getOrgInfo', methods = ['GET'])
 @jwt_required()
 def getOrgInfo():

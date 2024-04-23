@@ -134,6 +134,7 @@ body {
 .group-button {
   position: relative;
   margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 .remove-icon {

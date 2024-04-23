@@ -116,8 +116,8 @@ export class AddDeviceComponent {
           next: (response) => {
             const responseString = JSON.stringify(response);
             let parsedRes = JSON.parse(responseString);
-            if (parsedRes.body.DeviceAdded) {
-              this.snackBar.open('device added', 'Close', {
+            if (parsedRes.DeviceAdded) {
+              this.snackBar.open(this.deviceName + ' has been added', 'Close', {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
               });

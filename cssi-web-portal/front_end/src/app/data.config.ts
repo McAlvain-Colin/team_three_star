@@ -2,6 +2,8 @@ export interface Organization {
   o_id: number;
   name: string;
   description: string;
+  num_apps: number;
+  total_members: number;
 }
 
 // an interface for describing json data in request

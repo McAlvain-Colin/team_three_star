@@ -106,6 +106,7 @@ body {
 .group-button {
   position: relative;
   margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 .organization-box {
@@ -132,6 +133,7 @@ body {
   background-color: transparent;
   z-index: 10000;
   border-color: red;
+  margin-left: 1%;
 }
 
 .empty-text1 {
