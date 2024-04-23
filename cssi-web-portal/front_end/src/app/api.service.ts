@@ -11,9 +11,9 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getData(devId: string): Observable<any> {
-    console.log(devId)
-    return this.http.get(`${this.BASE_URL}/data/${devId}`);
+  getData(devId: string, numEnt: string): Observable<any> {
+    console.log('api numEnt: ', numEnt)
+    return this.http.get(`${this.BASE_URL}/data/${devId}/${numEnt}`);
   }
   getAltData(): Observable<any> {
     return this.http.get(`${this.BASE_URL}/alt_data`);
@@ -21,21 +21,21 @@ export class ApiService {
   getDevID(): Observable<any> {
     return this.http.get(`${this.BASE_URL}/dev_id`);
   }
-  getMetadata(devId: string): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/metadata/${devId}`);
+  getMetadata(devId: string, numEnt: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/metadata/${devId}/${numEnt}`);
   }
-  getPayload(devId: string): Observable<any> {
-    return this.http.get(`${this.BASE_URL}/payload/${devId}`);
+  getPayload(devId: string, numEnt: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/payload/${devId}/${numEnt}`);
   }
   getLocation(): Observable<any> {
     // console.log(this.http.get(`${this.BASE_URL}/location`));
     return this.http.get(`${this.BASE_URL}/location`);
   }
-  getPayloadStatisticsData(devId: string) :Observable<any>{
-    return this.http.get(`${this.BASE_URL}/payloadStats/${devId}`);
+  getPayloadStatisticsData(devId: string, numEnt: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/payloadStats/${devId}/${numEnt}`);
   }
-  getMetadataStatisticsData(devId: string) :Observable<any>{
-    return this.http.get(`${this.BASE_URL}/metadataStats/${devId}`);
+  getMetadataStatisticsData(devId: string, numEnt: string) :Observable<any>{
+    return this.http.get(`${this.BASE_URL}/metadataStats/${devId}/${numEnt}`);
   }
   getdevAnnotation(devId: string) :Observable<any>{
     return this.http.get(`${this.BASE_URL}/getdevAnnotation/${devId}`);

@@ -988,13 +988,16 @@ def getOrgAppDeviceList():
 #Colins works from __init__ file###################################################################################################
 
 
-@app.route('/data/<string:dev_id>', methods=['GET'])
+@app.route('/data/<string:dev_id>/<string:numEnt>', methods=['GET'])
 @jwt_required()
-def get_data(dev_id):
-	print(f'dev_id: "{dev_id}"')
+def get_data(dev_id, numEnt):
+	print('\n\nIn Get Data')
 	try:
-		records = read_records('lab_sensor_json', f"dev_eui = '{dev_id}'") #hard coded for test
+		records = read_records('lab_sensor_json', None,  f"dev_eui = '{dev_id}'", numEnt ) #hard coded for test
 		data = parse_data(records)
+		print(f'\tdata : {data}')
+		print('\n\nExit Get Data')
+		print('------------------------\n\n')
 		return jsonify(data), 200 #200 shows correct  http responses
 	except Exception as e:
 		print('error')
@@ -1003,38 +1006,50 @@ def get_data(dev_id):
 @app.route('/alt_data', methods=['GET'])
 @jwt_required()
 def get_alt_data():
-    try:
-        records = read_records('lab_sensor_json') #hard coded for test
-        data = parse_data(records)
-        return jsonify(data), 200 #200 shows correct  http responses
-    except Exception as e:
-        print('error')
-        return jsonify({'Error': str(e)}), 500 #500 shows server error
+	print('\n\nIn Get Alt Data')
+	try:
+		records = read_records('lab_sensor_json') #hard coded for test
+		data = parse_data(records)
+		print('\n\nExit Get Alt Data')
+		print('------------------------\n\n')
+		return jsonify(data), 200 #200 shows correct  http responses
+	except Exception as e:
+		print('error')
+		return jsonify({'Error': str(e)}), 500 #500 shows server error
     
 @app.route('/dev_id', methods=['GET'])
 @jwt_required()
 def get_dev_id():
-    try:
-        records = read_records('lab_sensor_json', 'distinct') #hard coded for test
-        # data = parse_data(records
-        return jsonify(records), 200 #200 shows correct  http responses
-    except Exception as e:
-        print('error')
-        return jsonify({'Error': str(e)}), 500 #500 shows server error
-@app.route('/metadata/<string:dev_id>', methods=['GET'])
-@jwt_required()
-def get_metadata(dev_id):
+	print('\n\nIn Get Dev Id')
 	try:
-		records = read_records('lab_sensor_json', 'metadata', dev_id) #hard coded for test
+		records = read_records('lab_sensor_json', 'distinct') #hard coded for test
+		# data = parse_data(records
+		print('\n\nExit Get Dev Id')
+		print('------------------------\n\n')
 		return jsonify(records), 200 #200 shows correct  http responses
 	except Exception as e:
 		print('error')
 		return jsonify({'Error': str(e)}), 500 #500 shows server error
-@app.route('/payload/<string:dev_id>', methods=['GET'])
+@app.route('/metadata/<string:dev_id>/<string:numEnt>', methods=['GET'])
 @jwt_required()
-def get_payload(dev_id):
+def get_metadata(dev_id, numEnt):
+	print('\n\nIn Get Metadata')
 	try:
-		records = read_records('lab_sensor_json', 'payload', dev_id) #hard coded for test
+		records = read_records('lab_sensor_json', 'metadata', dev_id, numEnt) #hard coded for test
+		print('\n\nExit Get Metadata')
+		print('------------------------\n\n')
+		return jsonify(records), 200 #200 shows correct  http responses
+	except Exception as e:
+		print('error')
+		return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/payload/<string:dev_id>/<string:numEnt>', methods=['GET'])
+@jwt_required()
+def get_payload(dev_id, numEnt):
+	print('\n\nIn Get Payload')
+	try:
+		records = read_records('lab_sensor_json', 'payload', dev_id, numEnt) #hard coded for test
+		print('\n\nExit Get Payload')
+		print('------------------------\n\n')
 		return jsonify(records), 200 #200 shows correct  http responses
 	except Exception as e:
 		print('error')
@@ -1042,31 +1057,40 @@ def get_payload(dev_id):
 @app.route('/location', methods=['GET'])
 @jwt_required()
 def get_location():
-    try:
-        records = read_records('device_location', 'location') #hard coded for test
-        # data = parse_data(records)
-        return jsonify(records), 200 #200 shows correct  http responses
-    except Exception as e:
-        print('error')
-        return jsonify({'Error': str(e)}), 500 #500 shows server error
-@app.route('/payloadStats/<string:dev_id>', methods=['GET'])
-@jwt_required()
-def get_payloadStats(dev_id):
+	print('\n\nIn Get Location')
 	try:
-		records = read_records('lab_sensor_json', 'payloadStats', dev_id) #hard coded for test
+		records = read_records('device_location', 'location') #hard coded for test
+		# data = parse_data(records)
+		print('\n\nExit Get Location')
+		print('------------------------\n\n')
+		return jsonify(records), 200 #200 shows correct  http responses
+	except Exception as e:
+		print('error')
+		return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/payloadStats/<string:dev_id>/<string:numEnt>', methods=['GET'])
+@jwt_required()
+def get_payloadStats(dev_id, numEnt):
+	print('\n\nIn Get Payload Stats')
+	try:
+		records = read_records('lab_sensor_json', 'payloadStats', dev_id, numEnt) #hard coded for test
 		data= getStats(records)
-		print(data)
+		print('\n\nExit Get Payload Stats')
+		print('------------------------\n\n')
+		# print(data)
 		return jsonify(data), 200 #200 shows correct  http responses
 	except Exception as e:
 		print('error')
 		return jsonify({'Error': str(e)}), 500 #500 shows server error
-@app.route('/metadataStats/<string:dev_id>', methods=['GET'])
+@app.route('/metadataStats/<string:dev_id>/<string:numEnt>', methods=['GET'])
 @jwt_required()
-def get_metadataStats(dev_id):
+def get_metadataStats(dev_id, numEnt):
+	print('\n\nIn Get Metadata Stats')
 	try:
-		records = read_records('lab_sensor_json', 'metadataStats', dev_id) #hard coded for test
+		records = read_records('lab_sensor_json', 'metadataStats', dev_id, numEnt) #hard coded for test
 		data= getStats(records)
-		print(data)
+		# print(data)
+		print('\n\nExit Get Metadata Stats')
+		print('------------------------\n\n')
 		return jsonify(data), 200 #200 shows correct  http responses
 	except Exception as e:
 		print('error')
@@ -1074,10 +1098,13 @@ def get_metadataStats(dev_id):
 @app.route('/getdevAnnotation/<string:dev_id>', methods=['GET'])
 # @jwt_required()
 def get_devAnnotation(dev_id):
+	print('\n\nIn Get Device Annotations')
 	print(f'get annotation dev_id {dev_id}')
 	try:
 		records = read_records('annotation', 'annotation', dev_id) #hard coded for test
 		print(records)
+		print('\n\nExit Get Device Annotations')
+		print('------------------------\n\n')
 		return jsonify(records), 200 #200 shows correct  http responses
 	except Exception as e:
 		print('error')
@@ -1085,11 +1112,14 @@ def get_devAnnotation(dev_id):
 @app.route('/setdevAnnotation/<string:dev_id>/<string:data>', methods=['GET'])
 @jwt_required()
 def set_devAnnotation(dev_id, data):
+	print('\n\nIn Set Device Annotations')
 	print(f'dev_id: {dev_id}, Data: {data}')
 	try:
 		update_record('annotation', 'annotation', dev_id, data) #hard coded for test
 		records = read_records('annotation', 'annotation', dev_id)
-		print(records)
+		# print(records)
+		print('\n\nExit Set Device Annotations')
+		print('------------------------\n\n')
 		return jsonify(records), 200 #200 shows correct  http responses
 	except Exception as e:
 		print(f'error: {e}')

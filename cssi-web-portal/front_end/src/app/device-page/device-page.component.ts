@@ -231,7 +231,7 @@ export class DevicePageComponent implements AfterViewInit {
 
   private getDataSetup(): void {
     if(this.deviceEUI) {
-      this.apiService.getData(this.deviceEUI).subscribe({
+      this.apiService.getData(this.deviceEUI, '100').subscribe({
         next: (data: SensorData[]) => {
           const records = data.map((item: SensorData) => ({
             dev_eui: item.dev_eui,
@@ -266,7 +266,7 @@ export class DevicePageComponent implements AfterViewInit {
       this.createPayloadChart(this.deviceEUI);
       this.createMetadataChart(this.deviceEUI);
     }
-    this.apiService.getPayloadStatisticsData(this.deviceEUI).subscribe({
+    this.apiService.getPayloadStatisticsData(this.deviceEUI, '100').subscribe({
       next: (data: any[]) => {
         const payloadStatRecord = Object.keys(data).map((key: any) => {
           const stats = data[key];
@@ -290,7 +290,7 @@ export class DevicePageComponent implements AfterViewInit {
         //console.error('Error: ', error);
       },
     });
-    this.apiService.getMetadataStatisticsData(this.deviceEUI).subscribe({
+    this.apiService.getMetadataStatisticsData(this.deviceEUI, '100').subscribe({
       next: (data: any[]) => {
         ////console.log(data);
         const metadataStatRecord = Object.keys(data).map((key: any) => {
@@ -396,7 +396,7 @@ export class DevicePageComponent implements AfterViewInit {
     this.exportToCSV( metadata, 'metadata_data.csv');
   }
   createPayloadChart(devId: string) {
-    this.apiService.getPayload(devId).subscribe({
+    this.apiService.getPayload(devId, '100').subscribe({
       next: (data: PayloadRecord[][]) => {
         this.payloadTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord
@@ -413,7 +413,7 @@ export class DevicePageComponent implements AfterViewInit {
   }
 
   createMetadataChart(devId: string) {
-    this.apiService.getMetadata(this.deviceEUI).subscribe({
+    this.apiService.getMetadata(this.deviceEUI, '100').subscribe({
       next: (data: PayloadRecord[][]) => {
         this.metadataTimeRecord = data.map(
           (item: PayloadRecord[]) => item[0] as PayloadRecord

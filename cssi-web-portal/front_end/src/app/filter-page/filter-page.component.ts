@@ -229,6 +229,29 @@ export class FilterPageComponent {
       'app',
       this.appId != null ? this.appId : '-1'
     );
+    this.filterForm = this.fb.group({
+      range: this.fb.group({
+        value: '100',
+        min: [this.min],
+        max: [this.max],
+        step: [this.step],
+        showTicks: [this.showTicks],
+        thumbLabel: [this.thumbLabel],
+        disabled: [this.disabled],
+        startValue: [{ value: this.defaultValue[0], disabled: true }],
+        endValue: [{ value: this.defaultValue[1], disable: true }],
+        metadataSelect: false,
+        payloadSelect: false,
+        startTime: '',
+        endTime: '',
+        deviceId: '',
+        dateInfo: '',
+        dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
+        applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
+        location: [''] //, Validators.pattern('[a-zA-Z ]*')]
+      }),
+
+    });
 
     // this request is for getting application name, id, and description
     this.http
@@ -251,29 +274,6 @@ export class FilterPageComponent {
           //console.error(error);
         },
       });
-     // this is for giving one device EUI from the given dev name from the user.
-    // this.http
-    // .get(this.base_url + '/userOrgAppDevice', {
-    //   observe: 'response',
-    //   responseType: 'json',
-    //   params: param,
-    // })
-    // .subscribe({
-    //   next: (response) => {
-    //     const res = JSON.stringify(response);
-
-    //     let resp = JSON.parse(res);
-
-    //     //console.log('resp is in app page', resp.body.dev_eui);
-    //     this.deviceList[1].devEUI = resp.body.dev_eui;
-    //     //console.log('DEV_EUI', this.deviceList[1].devEUI);
-    //     this.getDataSetup();
-    //   },
-    //   error: (error) => {
-    //     //console.error(error);
-    //   },
-    // });
-    // this is for getting the organizations's applications associated with it
 
     this.http
       .get(this.base_url + '/userOrgAppDeviceList', {
@@ -295,7 +295,7 @@ export class FilterPageComponent {
               devEUI: resp.body.list[i].dev,
             });
           } 
-          this.getDataSetup();
+          this.getDataSetup('100');
         },
         error: (error) => {
           //console.error(error);
@@ -305,30 +305,6 @@ export class FilterPageComponent {
       this.deviceSource.data = this.deviceList;
       this.deviceSource.filter = '';
       this.deviceSource._updateChangeSubscription();
-
-    this.filterForm = this.fb.group({
-      range: this.fb.group({
-        value: [this.value],
-        min: [this.min],
-        max: [this.max],
-        step: [this.step],
-        showTicks: [this.showTicks],
-        thumbLabel: [this.thumbLabel],
-        disabled: [this.disabled],
-        startValue: [{ value: this.defaultValue[0], disabled: true }],
-        endValue: [{ value: this.defaultValue[1], disable: true }],
-        metadataSelect: false,
-        payloadSelect: false,
-        startTime: '',
-        endTime: '',
-        deviceId: '',
-        dateInfo: '',
-        dataType: [''], //, Validators.pattern('[a-zA-Z ]*')],
-        applicationID: [''], //, Validators.pattern('[a-zA-Z0-9]**')],
-        location: [''] //, Validators.pattern('[a-zA-Z ]*')]
-      }),
-
-    });
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -366,14 +342,18 @@ export class FilterPageComponent {
     this.metadataStatSource.paginator = this.metadataStatsPaginator;
     this.deviceSource.paginator = this.devicePaginator;
   }
-  private getDataSetup(): void {
+  private getDataSetup(numEnt: string): void {
     this.displayedPayloadColumns = [];
     this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
     let allPayloadColumns = new Set<string>(this.displayedPayloadColumns);
 
+    console.log('numEnt1: ', numEnt)
     this.deviceList.forEach((device, index) => { 
-      this.apiService.getData(device.devEUI).subscribe({
+      this.apiService.getData(device.devEUI, numEnt).subscribe({
         next: (data: SensorData[]) => {
+
+          console.log('numEnt2: ', numEnt)
+          console.log('data length: ', data.length)
           const records = data.map((item: SensorData) => ({
             dev_eui: item.dev_eui,
             dev_time: item.dev_time.replace(' GMT', ''),
@@ -410,7 +390,7 @@ export class FilterPageComponent {
       });
     });
     this.deviceList.forEach((device, index) => { 
-      this.apiService.getPayloadStatisticsData(device.devEUI).subscribe({
+      this.apiService.getPayloadStatisticsData(device.devEUI, numEnt).subscribe({
         next: (data: any[]) => {
           const payloadStatRecord = Object.keys(data).map((key: any) => {
             const stats = data[key];
@@ -442,7 +422,7 @@ export class FilterPageComponent {
       // console.log('Stat: ', this.payloadStatSource.data)
     });
     this.deviceList.forEach((device, index) => {    
-      this.apiService.getMetadataStatisticsData(device.devEUI).subscribe({
+      this.apiService.getMetadataStatisticsData(device.devEUI, numEnt).subscribe({
         next: (data: any[]) => {
           const metadataStatRecord = Object.keys(data).map((key: any) => {
             const stats = data[key];
@@ -584,8 +564,19 @@ export class FilterPageComponent {
   filterSensorData() {
     //console.log("this worked")
     const formValues = this.filterForm.value.range;
-    console.log("form Values: ", formValues);
+    console.log("form Values: ", formValues.value);
     //console.log("payloadDataSource: ", this.payloadDataSource.data);
+    this.payloadDataSource.data = [];
+    this.filteredPayloadDataSource.data = [];
+    this.metadataSource.data = [];
+    this.filteredMetadataSource.data = [];
+    this.payloadStatSource.data = [];
+    this.filteredPayloadStatSource.data = [];
+    this.metadataStatSource.data = [];
+    this.filteredMetadataStatSource.data = [];
+    // console.log('cleared source: ', this.filteredPayloadDataSource.data)
+    this.getDataSetup(formValues.value)
+
     const dict = this.payloadDataSource.data;
     //console.log("object keys:  ", Object.keys(dict[1].payload_dict));
 
@@ -598,11 +589,11 @@ export class FilterPageComponent {
 
     try{
       if (formValues.payloadSelect == true) {
-        console.log("in payload filter")
+        // console.log("in payload filter")
         this.filteredPayloadDataSource.data = this.payloadDataSource.data.filter((item) => {
 
           if(formValues.dataType){
-            console.log("in dataType", formValues.dataType)
+            // console.log("in dataType", formValues.dataType)
             const dataTypeKey = formValues.dataType;
             dataValue = +item.payload_dict[dataTypeKey];
 
@@ -627,7 +618,7 @@ export class FilterPageComponent {
           )
         });
       }      
-      console.log("filteredPayloadDataSource", this.filteredPayloadDataSource.data)
+      // console.log("filteredPayloadDataSource", this.filteredPayloadDataSource.data)
       if(this.filteredPayloadDataSource.paginator){
         this.filteredPayloadDataSource.paginator.firstPage();
       }
@@ -642,7 +633,7 @@ export class FilterPageComponent {
         this.filteredMetadataSource.data = this.metadataSource.data.filter((item) => {
 
           if(formValues.dataType){
-            console.log("in dataType", formValues.dataType)
+            // console.log("in dataType", formValues.dataType)
             const dataTypeKey = formValues.dataType;
             dataValue = +item.payload_dict[dataTypeKey];
 
@@ -751,10 +742,11 @@ export class FilterPageComponent {
     link.click();
   }
   createPayloadChart(devId: string) {
+    let number = this.filterForm.value.range.value;
     let payload: any
     let payloadTime: any
     this.deviceList.forEach((device, index) => {
-      this.apiService.getPayload(device.devEUI).subscribe({
+      this.apiService.getPayload(device.devEUI, number).subscribe({
         next: (data: PayloadRecord[][]) => {
           payloadTime= data.map(
             (item: PayloadRecord[]) => item[0] as PayloadRecord
@@ -783,8 +775,9 @@ export class FilterPageComponent {
   }
 
   createMetadataChart(devId: string) {
+    let number = this.filterForm.value.range.value;
     this.deviceList.forEach((device, index) => {
-      this.apiService.getMetadata(device.devEUI).subscribe({
+      this.apiService.getMetadata(device.devEUI, number).subscribe({
         next: (data: PayloadRecord[][]) => {
           this.metadataTimeRecord = data.map(
             (item: PayloadRecord[]) => item[0] as PayloadRecord
@@ -886,15 +879,20 @@ export class FilterPageComponent {
       const ids = this.deviceList.map(record => record.devEUI);
       // console.log('ids: ', ids);
       // console.log('dataKeys: ', dataKeys);
+      let number = this.filterForm.value.range.value;
 
-      // console.log('data: ', this.metadataRecord);
+      // console.log('Id length: ', ids.length);
 
       ids.forEach((id, index) => {
+        const start = (index * (+number));
+        const end = (start + (+number));
+        // console.log('id: ', id);
         // console.log('index: ', index)
+        // console.log('Start: ', start, 'End: ', end);
         dataKeys.forEach(key => {
           const dataset = {
             label: `${id}: ${key}`,
-            data: this.metadataRecord.slice(((index+1)*1)-((index+1)*100)).map(record => +record[key]),
+            data: this.metadataRecord.slice(start, end).map(record => +record[key]),
             fill: false,
             borderColor: this.getRandomColor(),
             tension: 0.1,            
@@ -943,11 +941,11 @@ export class FilterPageComponent {
   }
 
 
-  createChart(devId: string) {
-    this.loadSpinner();
-    this.createPayloadChart(devId);
-    this.createMetadataChart(devId);
-  }
+  // createChart(devId: string) {
+  //   this.loadSpinner();
+  //   this.createPayloadChart(devId);
+  //   this.createMetadataChart(devId);
+  // }
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
