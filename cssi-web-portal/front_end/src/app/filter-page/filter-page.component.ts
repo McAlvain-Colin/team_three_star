@@ -870,9 +870,6 @@ export class FilterPageComponent {
     }
   }
   initializeMetadataChart() {
-    // console.log('time: ', this.metadataTimeRecord);
-    // console.log('record 2: ', this.metadataRecord[100]);
-    let labels: any;
     let datasets: any = [];
     const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
     if (
@@ -880,25 +877,20 @@ export class FilterPageComponent {
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
-      labels = this.metadataTimeRecord;
       const dataKeys = ['snr','rssi','channel_rssi'];
       const ids = this.deviceList.map(record => record.devEUI);
-      // console.log('ids: ', ids);
-      // console.log('dataKeys: ', dataKeys);
       let number = this.filterForm.value.range.value;
+      const labels = this.metadataTimeRecord
 
-      // console.log('Id length: ', ids.length);
 
       ids.forEach((id, index) => {
         const start = (index * (+number));
         const end = (start + (+number));
-        // console.log('id: ', id);
-        // console.log('index: ', index)
-        // console.log('Start: ', start, 'End: ', end);
+
         dataKeys.forEach(key => {
           const dataset = {
             label: `${id}: ${key}`,
-            data: this.metadataRecord.slice(start, end).map(record => +record[key]),
+            data: this.metadataRecord.slice(0, ((index+1)*number)).map(record => +record[key]),
             fill: false,
             borderColor: this.getRandomColor(),
             tension: 0.1,            
@@ -911,6 +903,11 @@ export class FilterPageComponent {
       if (this.metadataChart) {
         this.metadataChart.destroy();
       }
+      
+      console.log('datasets: ', datasets)
+      datasets = datasets.flat();
+
+      console.log('datasets: ', datasets)
 
       this.metadataChart = new Chart(meta_ctx, {
         type: 'line',
