@@ -175,40 +175,57 @@
   top: 50%;
 
   margin-top: 1%;
-  margin-left: 5%;
+  /* margin-left: 5%; */
   margin-right: 5%;
   margin-bottom: 4%;
 
   max-height: 500px;
-  max-width: 80%;
+  max-width: 100%;
   overflow-y: auto;
   overflow-x: scroll;
 
-  width: 80%;
-  left: 5%;
+  width: 100%;
+  /* left: 5%; */
   top: 40%;
 }
 
 .metadata-table {
   /* position: absolute; */
   position: relative;
+
   
-  top: 70%;
+  top: 50%;
 
   margin-top: 1%;
-  margin-left: 5%;
+  /* margin-left: 5%; */
   margin-right: 5%;
   margin-bottom: 4%;
 
   max-height: 500px;
-  max-width: 80%;
+  max-width: 100%;
   overflow-y: auto;
   overflow-x: scroll;
 
-  width: 80%;
-  left: 5%;
+  width: 100%;
+  /* left: 5%; */
   top: 40%;
 }
 .Annotations{
-  width: 100%;
+  margin-left: 5%;
+  margin-top: 10px;;
+  width: 90%;
+  height: 100px;
+  max-width: 100%;
+}
+.textarea{
+  /* margin-top: 10px; */
+  margin-left: 0%;
+  width: 90%;
+  height: 80px;
+  max-width: 100%;
+}
+.graph{
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 10px;
 }

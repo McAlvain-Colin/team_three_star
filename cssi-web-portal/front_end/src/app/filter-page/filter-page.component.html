@@ -82,13 +82,19 @@
             </mat-form-field>
           <!-- </mat-card> -->
 
-          <!-- Data ID -->
-          <!-- <mat-card class="id-filter"> -->
+          <!-- Date -->
             <mat-form-field>
               <mat-label>Date Information: ie 'Thu, 28 Dec 2023 05:21:39' </mat-label>
               <input matInput formControlName="dateInfo" />
               <mat-icon matSuffix>text_fields</mat-icon>
               <mat-hint>Enter Data Informatin</mat-hint>
+            </mat-form-field>
+          <!-- Num Entries -->
+            <mat-form-field>
+              <mat-label>Number Of Entries: e.g. 100' </mat-label>
+              <input matInput formControlName="value" />
+              <mat-icon matSuffix>text_fields</mat-icon>
+              <mat-hint>Enter Number of Entries to View</mat-hint>
             </mat-form-field>
           </mat-card>
 
@@ -119,7 +125,7 @@
             }}
           </mat-panel-description>
         </mat-expansion-panel-header> -->
-        <!-- <mat-card class="payload-table"> -->
+        <mat-card class="payload-table">
           <!-- Filters need to be reintroduced into the tables when I can reliably display data -->
           <!-- Filters need to be refined further -->
 
@@ -190,6 +196,8 @@
             aria-label="Select page of Payload Data"
           ></mat-paginator>
 
+        
+        </mat-card>
           <mat-card-actions>
             <div class="button-container">
               <button
@@ -202,7 +210,6 @@
               <mat-spinner *ngIf="showSpinner"></mat-spinner>
             </div>
           </mat-card-actions>
-        <!-- </mat-card> -->
       <!-- </mat-expansion-panel>
     </mat-accordion> -->
   </mat-card>
@@ -313,7 +320,7 @@
               mat-raised-button
               color="accent"
               (click)="loadSpinner()"
-              (click)="getDownload()"
+              (click)="getDownloadPayloadChart()"
             >
               Export Data
             </button>
@@ -343,7 +350,7 @@
             }}
           </mat-panel-description>
         </mat-expansion-panel-header> -->
-        <!-- <mat-card class="metadata-table"> -->
+        <mat-card class="metadata-table">
           <!-- Filter for Metadata -->
           <mat-form-field>
             <mat-label>Filter</mat-label>
@@ -421,6 +428,8 @@
             aria-label="Select page of Metadata Data"
           ></mat-paginator>
 
+          
+        </mat-card>
           <mat-card-actions>
             <div class="button-container">
               <button
@@ -433,7 +442,6 @@
               <mat-spinner *ngIf="showSpinner"></mat-spinner>
             </div>
           </mat-card-actions>
-        <!-- </mat-card> -->
       <!-- </mat-expansion-panel>
     </mat-accordion> -->
   </mat-card>
@@ -547,7 +555,7 @@
               mat-raised-button
               color="accent"
               (click)="loadSpinner()"
-              (click)="getDownload()"
+              (click)="getDownloadMetadataChart()"
             >
               Export Data
             </button>
@@ -557,4 +565,12 @@
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card>
+  <button
+    mat-raised-button
+    color="accent"
+    class="map-button"
+    [routerLink]="['/map']"
+  >
+    Check Map
+  </button>
 </body>

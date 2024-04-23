@@ -1,7 +1,8 @@
 .background {
   width: 100%;
   height: 90% !important;
-  background-image: url("../../assets/Home-page-2.jpg") !important;
+  background-color: aliceblue !important;
+  /* background-image: url("../../assets/Home-page-2.jpg") !important; */
   background-size: cover !important;
   background-position: center;
   background-repeat: no-repeat;
@@ -98,7 +99,7 @@
   top: 50%;
 
   margin-top: 1%;
-  margin-left: 5%;
+  /* margin-left: 5%; */
   margin-right: 5%;
   margin-bottom: 4%;
 
@@ -107,8 +108,8 @@
   /* overflow-y: auto; */
   overflow-x: scroll;
 
-  width: 80%;
-  left: 5%;
+  width: 100%;
+  /* left: 5%; */
   top: 40%;
 }
 .payload_select {
@@ -155,7 +156,7 @@
   top: 70%;
 
   margin-top: 1%;
-  margin-left: 5%;
+  /* margin-left: 5%; */
   margin-right: 5%;
   margin-bottom: 4%;
 
@@ -164,8 +165,8 @@
   /* overflow-y: auto; */
   overflow-x: scroll;
 
-  width: 80%;
-  left: 5%;
+  width: 100%;
+  /* left: 5%; */
   top: 40%;
 }
 .filter {
@@ -277,4 +278,10 @@ tr.mat-row:hover {
   background-color: yellow;
   opacity: 50%;
 
+}
+.map-button {
+  position: relative;
+  left: 45%;
+  top: 45%;
+  margin-top: 4%;
 }
