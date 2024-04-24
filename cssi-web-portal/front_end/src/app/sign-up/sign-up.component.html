@@ -14,8 +14,8 @@
             matInput
             name="name"
             placeholder="John Joestar"
-            [ngModel]="name | badWordsFilter"
-            (ngModelChange)="name = $event"
+            [ngModel]="name"
+            (ngModelChange)="checkBadWords($event)"
             #nameInput="ngModel"
             required
           />

@@ -52,10 +52,11 @@
                 <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
                 <button
                   mat-raised-button
-                  color="accent"
+                  [style.background-color]="'#4CAF50'"
+                  [style.color]="'white'"
                   class="group-button"
                   *ngIf="userRole != 3 || userRole <= 0"
-                  routerLink="/add-device/{{ appId }}/{{orgId}}"
+                  routerLink="/add-device/{{ appId }}/{{ orgId }}"
                 >
                   Add
                 </button>
@@ -92,6 +93,15 @@
                   </button>
                 </div>
               </a>
+              <h1 class="empty-text1" *ngIf="!deviceSource.data.length">
+                You have no applications, to add one to your organization,
+                please hit Add in the upper left of this panel.
+              </h1>
+              <h1 class="empty-text2" *ngIf="!deviceSource.data.length">
+                An application is a group of devices assigned for a specific
+                task, after creation, an admin or PI can add devices to the
+                application.
+              </h1>
             </mat-nav-list>
             <mat-paginator
               #devicePaginator

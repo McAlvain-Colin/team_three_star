@@ -17,10 +17,11 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   HttpClient,
   HttpClientModule,
-  HttpHeaders,
   HttpErrorResponse,
+  HttpHeaders,
 } from '@angular/common/http';
 import { BadWordsFilterPipe } from '../badwords.pipe';
+import Filter from 'bad-words';
 
 @Component({
   selector: 'app-add-device',
@@ -55,12 +56,25 @@ export class AddDeviceComponent {
   joinEUI: string = '';
   devEUI: string = '';
   appKey: string = '';
+  nameBadWords: boolean = false;
 
   baseUrl: string = 'http://localhost:5000';
 
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('appId'); //From the current route, get the route name, which should be the identifier for what you need to render.
     this.orgId = this.route.snapshot.paramMap.get('orgId');
+  }
+
+  checkBadWords(checkWord: string) {
+    var filter = new Filter();
+
+    if (filter.isProfane(checkWord)) {
+      this.nameBadWords = true;
+      this.deviceName = filter.clean(checkWord);
+    } else {
+      this.nameBadWords = false;
+      this.deviceName = checkWord;
+    }
   }
 
   //use the `` to allow connections to the variable in the declaration.
@@ -78,43 +92,51 @@ export class AddDeviceComponent {
     //Retrive user id from the link, and then Post message with orgData and userID to backend for adding to the table
     var message: string = `${this.deviceName} is added to your Organization!`;
 
-    //Post stuff cuz we're creating things
-    this.http
-      .post(
-        this.baseUrl + '/addOrgAppDevice',
-        {
-          appId: this.appId,
-          devEUI: this.devEUI,
-          joinEui: this.joinEUI,
-          appKey: this.appKey,
-          devName: this.deviceName,
-        },
-        httpOptions
-      )
-      .subscribe({
-        next: (response) => {
-          const responseString = JSON.stringify(response);
-          let parsedRes = JSON.parse(responseString);
-          if (parsedRes.body.DeviceAdded) {
-            this.snackBar.open('device added', 'Close', {
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            });
-          } else {
-            message = 'Failed to find device, please try again later.';
+    if (this.nameBadWords) {
+      message = "Please don't use bad words in your inputs.";
+      this.snackBar.open(message, 'Close', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+    } else {
+      //Post stuff cuz we're creating things
+      this.http
+        .post(
+          this.baseUrl + '/addOrgAppDevice',
+          {
+            appId: this.appId,
+            devEUI: this.devEUI,
+            joinEui: this.joinEUI,
+            appKey: this.appKey,
+            devName: this.deviceName,
+          },
+          httpOptions
+        )
+        .subscribe({
+          next: (response) => {
+            const responseString = JSON.stringify(response);
+            let parsedRes = JSON.parse(responseString);
+            if (parsedRes.DeviceAdded) {
+              this.snackBar.open(this.deviceName + ' has been added', 'Close', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            } else {
+              message = 'Failed to find device, please try again later.';
+              this.snackBar.open(message, 'Close', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            }
+          },
+          error: (error: HttpErrorResponse) => {
+            const message = error.error.errorMessage;
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          const message = error.error.errorMessage;
-          this.snackBar.open(message, 'Close', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-          });
-        },
-      });
+          },
+        });
+    }
   }
 }

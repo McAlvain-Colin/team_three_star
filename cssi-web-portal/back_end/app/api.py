@@ -28,7 +28,7 @@ from typing_extensions import Annotated
 from typing import List
 
 #for query paramters
-from urllib.parse import unquote
+# from urllib.parse import unquote
 
 
 #db things###########################
@@ -75,8 +75,9 @@ s = URLSafeTimedSerializer('email-secret')
 
 
 
-#models.py db things
 #REQUIRED#############################
+
+
 
 
 
@@ -173,6 +174,7 @@ class OrgApplication(Base):
 
 	active: Mapped[bool] = mapped_column(unique=False)
 
+
 	# dev_eui: Mapped[str] = mapped_column(ForeignKey('Devices.dev_eui'))
 	# device: Mapped['Device'] = mapped_column(back_populates= 'appDevice')
 	def __repr__(self):
@@ -217,9 +219,9 @@ class Device(Base):
 
 
 			
+# NEED TO REMOVE THE INDEX ROUTE, 
 
-
-###############################
+##############################
 
 @app.route('/')
 def index():
@@ -255,10 +257,8 @@ def refresh():
 
 
 
-
 #using flask JWT extended based on the example provided in docs using JWT tokens.
 @app.route('/login', methods = ['POST'])
-# @cross_origin()
 def login_user():
 
 	data = request.get_json()
@@ -435,10 +435,6 @@ def logout_user():
 	return response, 200
 
 
-
-
-
-
 @app.route('/createOrg', methods = ['POST'])  
 @jwt_required()
 def createOrganization():
@@ -469,6 +465,11 @@ def createOrganization():
 
 	#database code
 	try:
+		if ( db.session.execute(db.select(Organization.name).where(Organization.name == orgName).where(Organization.active == True)).scalar() is not None):
+			return jsonify({'errorMessage': 'A organization with this organization title is already present'}), 409
+		
+
+
 		newOrg = Organization(name= orgName, description= descript, active= True)
 		user = db.session.execute(db.select(Account).filter_by(id = userId)).scalar()
 
@@ -621,7 +622,7 @@ def getOrgMembers():
 	try:
 		orgId = int(orgId)
 
-		users = select(Account.id, Account.name, OrgAccount.r_id).join(OrgAccount).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)
+		users = select(Account.id, Account.name, Account.email, OrgAccount.r_id).join(OrgAccount).where(OrgAccount.o_id == orgId).where(OrgAccount.active == True).where(Account.verified  == True).where(Account.active == True)
 
 		page = db.session.execute(users).all()
 
@@ -630,7 +631,8 @@ def getOrgMembers():
 				{
 				'a_id' : p.id,
 				'name': p.name,
-				'r_id' : p.r_id
+				'r_id' : p.r_id,
+				'email' : p.email
 				} for p in page
 			]
 		}
@@ -689,7 +691,9 @@ def getOwnedOrgList():
 				{
 					'o_id' : p.id,
 					'name': p.name,
-					'description': p.description
+					'description': p.description,
+					'num_apps': db.session.query(OrgApplication).where(OrgApplication.o_id == p.id, OrgApplication.active == True).count(),
+					'total_members': db.session.query(OrgAccount).where(OrgAccount.o_id == p.id, OrgAccount.active == True).count()
 				} for p in page.all()
 			]
 		}
@@ -715,7 +719,8 @@ def getJoinedOrgList():
 				{
 					'o_id' : p.id,
 					'name': p.name,
-					'description': p.description
+					'description': p.description,
+					'num_apps': db.session.query(OrgApplication).where(OrgApplication.o_id == p.id, OrgApplication.active == True).count()
 				} for p in page.all()
 			]
 		}
@@ -726,7 +731,8 @@ def getJoinedOrgList():
 	except exc.SQLAlchemyError:
 
 		return jsonify({'errorMessage': "Couldn't get your Joined Organizations"}), 404
-	
+
+
 @app.route('/getOrgInfo', methods = ['GET'])
 @jwt_required()
 def getOrgInfo():
@@ -748,19 +754,18 @@ def getOrgInfo():
 			]
 		}
 		res = json.dumps(res)
-		print(res)
 		return make_response(res, 200)
 	
-	except Exception as e:
+	except exc.SQLAlchemyError:
 
-		return make_response({'error': str(e)}, 404)
+		return jsonify({'errorMessage': "Couldn't get your Org info"}), 404
 
 
 @app.route('/createOrgApp', methods = ['POST'])  
 @jwt_required()
 def createOrgApplication():
 
-	data = request.get_json() #uid, org titel, org descritpion
+	data = request.get_json()
 	orgId = data['orgId']
 	appName = data['appName']
 	appDescript = data['appDescript']
@@ -768,36 +773,48 @@ def createOrgApplication():
 	APPS = db.metadata.tables[Application.__tablename__]
 	ORGAPPS = db.metadata.tables[OrgApplication.__tablename__]
 
-	checkApp = select(APPS).where(
+	getApp = select(APPS).where(
 		APPS.c.name == appName,
 	)
-	theApp = db.session.execute(checkApp).first()
+	theApp = db.session.execute(getApp).first()
 
 	if theApp:
-		updateOrgApp = update(ORGAPPS).values(active = True).where(ORGAPPS.c.app_id == theApp.id).where(ORGAPPS.c.o_id == orgId)
-		db.session.execute(updateOrgApp)
-		db.session.commit()
-		return jsonify(orgCreated = True)
+		checkOrgApp = select(ORGAPPS).where(
+			ORGAPPS.c.app_id == theApp.id,
+			ORGAPPS.c.active == False
+		)
+
+		theOrgApp = db.session.execute(checkOrgApp).first()
+
+		if theOrgApp:
+			updateOrgApp = update(ORGAPPS).values(active = True).where(ORGAPPS.c.app_id == theApp.id).where(ORGAPPS.c.o_id == orgId)
+			db.session.execute(updateOrgApp)
+			db.session.commit()
+			return jsonify(orgCreated = True)
 
 	#link the app with the org
-	# try:
-	orgId = int(orgId)
-	newApp= Application(name= appName, description= appDescript)
-	org = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
+	try:
+		if ( db.session.execute(db.select(Application.name).join(Application.orgs).where(Application.name == appName).where(OrgApplication.active == True)).scalar() is not None):
+			return jsonify({'errorMessage': 'A application with this application name is already present'}), 409
+		
+
+		orgId = int(orgId)
+		newApp= Application(name= appName, description= appDescript)
+		org = db.session.execute(db.select(Organization).where(Organization.id == orgId)).scalar()
 
 
-	orgApp = OrgApplication(app= newApp, org= org, active=True)
+		orgApp = OrgApplication(app= newApp, org= org, active=True)
 
-	db.session.add(newApp)
-	db.session.commit()
-	db.session.add(orgApp)
-	db.session.commit()
+		db.session.add(newApp)
+		db.session.commit()
+		db.session.add(orgApp)
+		db.session.commit()
 
-	return jsonify(orgCreated = True), 200
+		return jsonify(orgCreated = True), 200
 
-	# except exc.SQLAlchemyError or ValueError:
+	except exc.SQLAlchemyError or ValueError:
 
-	# 	return jsonify({'errorMessage': "Couldn't add your application"}), 404
+		return jsonify({'errorMessage': "Couldn't add your application"}), 404
 
 @app.route('/deleteOrgApp', methods = ['PUT'])
 @jwt_required()
@@ -827,6 +844,9 @@ def getOrgApp():
 
 
 	try:
+
+
+
 		app_id = int(app_id)
 
 		app = db.session.execute(db.select(Application).where(Application.id == app_id)).scalar()
@@ -886,8 +906,14 @@ def addAppDevice():
 	appId = data['appId']
 	devEUI = data['devEUI']
 	devName = data['devName']
+	devName = data['devName']
 
 	try:
+		if ( db.session.execute(db.select(AppSensors).where(AppSensors.dev_eui == devEUI).where(AppSensors.app_id == appId)).scalar() is not None):
+			return jsonify({'errorMessage': 'A device with this DEVICE EUI is already present'}), 409
+		
+		if(db.session.execute(db.select(AppSensors).where(AppSensors.dev_name == devName).where(AppSensors.app_id == appId)).scalar() is not None):
+			return jsonify({'errorMessage': 'A device with this device name is already present, please choose a new name'}), 409
 
 		if (db.session.execute(db.select(Device).where(Device.dev_eui == devEUI)).scalar() is not None ):
 			

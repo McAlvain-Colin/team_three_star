@@ -40,8 +40,7 @@ import {
 
 import { Observable, catchError, map, mergeMap, throwError } from 'rxjs';
 
-// import { CookieService } from 'ngx-cookie-service';
-import { Browser } from 'leaflet';
+// import { Browser } rom 'leaflet';
 
 // import { CanActivateFn, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
@@ -390,75 +389,6 @@ export class LoginComponent {
           },
         });
     }
-    // else {
-    //   alert(message);
-    // }
-
-    // console.log("the form is: ", {email  : this.emailField.getRawValue(),  password : this.password})
-
-    //this code for sending get requests and saving response in a variable
-    // this.http.get(this.base_url,{responseType : 'text'}).subscribe(
-    // {
-    //   next: (response) =>
-    //   {
-    //     this.backendResponse = response;
-    //     console.log("this post is : " + this.backendResponse);
-    //   },
-    //   error: (error) =>
-    //   {
-    //     console.error(error);
-    //   },
-    // }
-
-    // )
-
-    //===================================================
-    //send to the backend so to check if user is valid
-    // this.http.post(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'text'}).subscribe(
-    //   {
-    //     next: (response) =>
-    //     {
-    //       this.backendResponse = response;
-    //       console.log("this post is :" + this.backendResponse + "space");
-    //       console.log("this post is : " + typeof(this.backendResponse));
-    //       this.checkResponse(this.backendResponse);
-
-    //     },
-    //     error: (error) =>
-    //     {
-    //       console.error(error);
-    //     },
-    //   }
-    // );
-    //========================================================
-    //new implementation returning json data saved to an TS interface instance
-    // this.http.post<Resp>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
-    //   {
-    //     next: (response) =>
-    //     {
-    //       this.checkResponse(response.success);
-
-    //     },
-    //     error: (error) =>
-    //     {
-    //       console.error(error);
-    //     },
-    //   }
-    // );
-    // ==================
-    // this.http.post <httpResponse<Resp>>(this.base_url + '/handle_post', {email  : this.emailField.getRawValue(), password : this.password}, {responseType : 'json'}).subscribe(
-    //   {
-    //     next: (response) =>
-    //     {
-    //       this.checkResponse(response.success);
-
-    //     },
-    //     error: (error) =>
-    //     {
-    //       console.error(error);
-    //     },
-    //   }
-    // );
   }
 
   //check value retunred from the backend response, not sure if else condition works

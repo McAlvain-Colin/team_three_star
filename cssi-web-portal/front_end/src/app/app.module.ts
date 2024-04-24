@@ -44,6 +44,8 @@ import { InviteUserComponent } from './invite-user/invite-user.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BadWordsFilterPipe } from './badwords.pipe';
 
+
+
 @NgModule({
   declarations: [AppComponent, UserPageComponent],
   imports: [
