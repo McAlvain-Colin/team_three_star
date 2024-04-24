@@ -60,6 +60,22 @@
           </mat-card-content>
         </mat-card-content>
       </mat-card>
+      <button
+      mat-raised-button
+      color="accent"
+      class="data-button"
+      routerLink='/filter/{{appId}}/{{orgId}}/{{devName}}'
+    >
+      Filter Device Data
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      class="map-button"
+      routerLink='/map/{{ orgId }}/{{appId}}/{{devName}}'
+    >
+      Check Map
+    </button>
       <mat-card class="device-data-box">
         <mat-card-content class="device-data">
           <!-- <mat-accordion class="search-bar">
@@ -546,22 +562,7 @@
             <!-- <p>Notes: {{ form.value.notes }}</p> -->
           </form>
         </mat-card>
-      <button
-        mat-raised-button
-        color="accent"
-        class="data-button"
-        routerLink='/filter/{{appId}}/{{orgId}}/{{devName}}'
-      >
-        Filter Device Data
-      </button>
-      <button
-        mat-raised-button
-        color="accent"
-        class="map-button"
-        routerLink='/map/{{ orgId }}/{{appId}}/{{devName}}'
-      >
-        Check Map
-      </button>
+     
     </body>
   </mat-sidenav-content>
 </mat-sidenav-container>

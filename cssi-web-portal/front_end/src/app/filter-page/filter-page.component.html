@@ -47,6 +47,14 @@
           Sign Out <mat-icon class="leave-icon" aria-label="Sign Out icon">logout</mat-icon>
         </button></mat-toolbar
     >
+    <button
+    mat-raised-button
+    color="accent"
+    class="map-button"
+    routerLink='/map/{{ orgId }}/{{appId}}/{{devName}}'
+  >
+    Check Map
+  </button>
 <body class="background">
   <!-- <mat-card class="filter"> -->
   <!-- <p class="header-text">Select Data</p> -->
@@ -170,7 +178,7 @@
             }}
           </mat-panel-description>
         </mat-expansion-panel-header> -->
-        <mat-card class="payload-table">
+        <!-- <mat-card class="payload-table"> -->
           <!-- Filters need to be reintroduced into the tables when I can reliably display data -->
           <!-- Filters need to be refined further -->
 
@@ -242,7 +250,7 @@
           ></mat-paginator>
 
         
-        </mat-card>
+        <!-- </mat-card> -->
           <mat-card-actions>
             <div class="button-container">
               <button
@@ -260,7 +268,7 @@
   </mat-card>
 
   <!-- payload graph -->
-  <mat-card class="graph">
+  <!-- <mat-card class="graph"> -->
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -374,7 +382,7 @@
         </mat-card-actions>
       </mat-expansion-panel>
     </mat-accordion>
-  </mat-card>
+  <!-- </mat-card> -->
 
   <!-- device metadata data tables -->
   <mat-card class="filter">
@@ -492,7 +500,7 @@
   </mat-card>
 
   <!-- metadata graph -->
-  <mat-card class="graph">
+  <!-- <mat-card class="graph"> -->
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -501,7 +509,7 @@
       >
         <!--This block indicates if the panel is open or not and adjusts the variable panelOpenState to the appropriate state-->
         <mat-expansion-panel-header>
-          <mat-panel-title> Metadata Graph </mat-panel-title>
+          <mat-panel-title> Metadata Statistics </mat-panel-title>
           <mat-panel-description>
             {{
               panelOpenState
@@ -511,9 +519,9 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- code here -->
-        <mat-card class="chart">
-          <canvas id="metadataChart"  width="400" height="300"></canvas>
-        </mat-card>
+        <!-- <mat-card class="chart">
+          <canvas id="metadataChart"  width="400" height="200"></canvas>
+        </mat-card> -->
         <mat-card>
           <table
             mat-table
@@ -609,15 +617,7 @@
         </mat-card-actions>
       </mat-expansion-panel>
     </mat-accordion>
-  </mat-card>
-  <button
-    mat-raised-button
-    color="accent"
-    class="map-button"
-    routerLink='/map/{{ orgId }}/{{appId}}/{{devName}}'
-  >
-    Check Map
-  </button>
+  <!-- </mat-card> -->
 </body>
 </mat-sidenav-content>
 </mat-sidenav-container>

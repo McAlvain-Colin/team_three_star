@@ -816,39 +816,33 @@ export class FilterPageComponent {
     ) {
       const dataKeys = this.displayedPayloadColumns
       const ids = this.deviceList.map(item => item.devEUI);
-      const labels = [0, this.filterForm.value.range.value];
 
-      // console.log('payload data: ',this.payloadRecord)
-      const test = this.payloadDataSource.data
-      // const label = ids.map( (id, index) => {
-      //   return this.displayedPayloadColumns.map(key => {
-      //     return `${id}: ${key}`;
-      //   });
-      // }).flat();
-      const label = this.filteredPayloadDataSource.data.flatMap(payloadColumns => {
-        const keys = Object.keys(payloadColumns.payload_dict);
-
-        return keys.map(key => `${payloadColumns.dev_eui}: ${key}`)
+      const test = this.filteredPayloadDataSource.data
+      const test2 = test.map(item => item.payload_dict)
+      let testData: any = {};
+      test2.forEach((item: any) => {
+        Object.keys(item).forEach(record =>{
+          if(!testData[record]) {
+            testData[record] = [];
+          }
+          testData[record].push(item[record]);
+        })
       })
-      const uniqueLabel = Array.from(new Set(label));
-      uniqueLabel.flat();
-      console.log('payload label: ',uniqueLabel)
 
-      // // ids.forEach(id => {
-      // dataKeys.forEach(key => {
-      const datasets = uniqueLabel.map(lab => {
-        return{
-          label: lab,//`${id}: ${key}`,
-          data: [],//this.payloadRecord.map(record => +record[key]),
-          fill: false,
+      const labels = Array.from(new Set(this.payloadTimeRecord));
+      const datasets: any = [];
+
+      Object.keys(testData).forEach((key, index) => {
+        const dataset = {
+          label: key,
+          data: testData[key],
           borderColor: this.getRandomColor(),
-          tension: 0.1, 
-        }           
-      });
-        // console.log('dataset: ', dataset);
-      //   datasets.push( dataset);
-      // });
-      // });
+          fill:false
+        }
+        datasets.push(dataset);
+      })
+
+      console.log('test: ',testData)
 
       if (this.payloadChart) {
         this.payloadChart.destroy();
@@ -878,30 +872,45 @@ export class FilterPageComponent {
     }
   }
   initializeMetadataChart() {
-    let datasets: any = [];
     const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
     if (
       meta_ctx &&
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
-      const dataKeys = ['snr','rssi','channel_rssi'];
-      // const ids = this.deviceList(item => item.devEUI)
-      const labels = [0, this.filterForm.value.range.value];
 
-      this.deviceList.forEach(id => {
-        dataKeys.forEach(key => {
-          const dataset = {
-            label: `${id.devEUI}: ${key}`,
-            data: [],
-            fill: false,
-            borderColor: this.getRandomColor(),
-            tension: 0.1,            
-          };
-          // console.log('dataset: ', dataset);
-          datasets.push( dataset);
+      const dataKeys = ['snr','rssi','channel_rssi'];
+      const keysNotDisplayed = ['timestamp', 'gateway_ids', 'received_at', 'uplink_token'];
+
+      const test = this.filteredMetadataSource.data
+      const test2 = test.map(item => item.metadata_dict)
+      console.log('test2', test2[this.filterForm.value.range.value]);
+      let testData: any = {};
+      test2.forEach((item: any) => {
+        Object.keys(item).forEach(record =>{
+          if(!keysNotDisplayed.includes(record)) {
+            if(!testData[record]) {
+              testData[record] = [];
+            }
+            testData[record].push(item[record]);
+          }
         });
       });
+
+      const labels = Array.from(new Set(this.metadataTimeRecord));
+      const datasets: any = [];
+
+      Object.keys(testData).forEach((key, index) => {
+        const dataset = {
+          label: key,
+          data: testData[key],
+          // data: testData[key],
+          borderColor: this.getRandomColor(),
+          fill:false
+        }
+        datasets.push(dataset);
+      })
+
 
       if (this.metadataChart) {
         this.metadataChart.destroy();
