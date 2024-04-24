@@ -485,7 +485,7 @@ export class DevicePageComponent implements AfterViewInit {
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
-      const labels = Array.from({length: this.metadataTimeRecord.length }, (_,i) =>i+1); 
+      const labels = this.metadataTimeRecord;//Array.from({length: this.metadataTimeRecord.length }, (_,i) =>i+1); 
       const dataKeys = ['snr','rssi','channel_rssi'];
       const datasets = dataKeys.map((key) => {
         return {
