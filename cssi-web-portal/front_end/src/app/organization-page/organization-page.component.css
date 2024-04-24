@@ -160,7 +160,7 @@ body {
 
 .apps-content {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .empty-text1 {
@@ -197,7 +197,7 @@ body {
 
 .member-content {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .select-role {
