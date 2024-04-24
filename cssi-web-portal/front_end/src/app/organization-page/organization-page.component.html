@@ -14,6 +14,7 @@
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
       <a mat-list-item routerLink="/home">Home</a>
+      <a mat-list-item (click)="logout()"> Sign Out </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -25,8 +26,12 @@
         (click)="drawer.toggle()"
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
-      ><a routerLink="/home" class="color-white">Home ></a>
-      Organization</mat-toolbar
+      ><a routerLink="/home" class="color-white"><mat-icon class="home-icon" aria-label="Home icon">home</mat-icon><span class="home-text">Home</span></a><mat-icon aria-label="next arrow">navigate_next</mat-icon>
+      Organization
+      <span class="push-button-right"></span
+        ><button mat-raised-button color="warn" (click)="logout()">
+          Sign Out <mat-icon class="leave-icon" aria-label="Sign Out icon">logout</mat-icon>
+        </button></mat-toolbar
     >
     <mat-card class="organization-box">
       <mat-card-content class="organization-content">

@@ -54,11 +54,11 @@ const routes: Routes = [
     path: 'application/:app/:org',
     component: ApplicationPageComponent,
   },
-  { path: 'map', component: DeviceMapComponent },
+  { path: 'map/:org/:app/:dev', component: DeviceMapComponent },
   { path: 'device', component: DevicePageComponent },
   { path: 'device/:org/:app/:dev', component: DevicePageComponent },
   // { path: 'device/:curDevice', component: DevicePageComponent }, //:curDevice is dynamic
-  { path: 'filter/:app', component: FilterPageComponent },
+  { path: 'filter/:app/:org/:dev', component: FilterPageComponent },
   { path: '**', pathMatch: 'full', component: HomeComponent }, //Star route put at the end for if no path is found, routes back to landing.
 ];
 

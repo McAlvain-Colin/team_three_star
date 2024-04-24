@@ -12,7 +12,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -36,6 +36,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { TimerService } from '../login/login.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 export interface DeviceLocation {
@@ -59,7 +63,9 @@ export interface DeviceLocation {
     MatButtonModule,
     TempNavBarComponent,
     MatPaginatorModule,
-
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
     RouterModule,
     MatToolbarModule,
     MatGridListModule,
@@ -93,7 +99,7 @@ export interface DeviceLocation {
 // and pixel size of the for the icon shadow. Boolean variables are also defined for logging what is currently being presented to the user. arrays of type Marker class objects
 // and one for type of class Circle objects. Leaflet Documentation on Icons was found here https://leafletjs.com/examples/custom-icons/
 export class DeviceMapComponent implements AfterViewInit {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private timerService: TimerService) {}
 
   @Input() locationRecord!: DeviceLocation[];
 
@@ -115,11 +121,21 @@ export class DeviceMapComponent implements AfterViewInit {
   // locationRecord: DeviceLocation[] = [];
   // locationData: DeviceLocation[] = [];
 
+  orgId: string | null = "";
+  appId: string | null = "";
+  devName: string | null = "";
+
+  logout() {
+    this.timerService.logout();
+  }
   // This is a lifecycle hook used by Angular, it allows for defining which properties should be initialized upon when the component is being used,documentation is found here https://angular.io/api/core/OnInit. Here the lifecycle will
   // initialize the map by creating a html element with the id = map, the set view method indicates the location coordinates should be displaying in the map. The map will be using OpenStreetMap tile layer which is a geographic database of map
   // user contributed tiles,using the URL template to the OpenStreetMap, the x, y indicate the tile coordinates to be used, z indicates the zoom level to be used, s indicates the sub domain to be used. The code was based on the Leaflet documentationfor initialization
   // as well as understanding providing credit for usage of both Leaflet and OpenStreetMap https://leafletjs.com/examples/quick-start/. Upon initialization, markers of all the devices will be displayed.
   ngOnInit(): void {
+    this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
+    this.orgId = this.route.snapshot.paramMap.get('org');
+    this.devName = this.route.snapshot.paramMap.get('dev');
     this.apiService.getLocation().subscribe({
       next: (data: any[]) => {
         const locationRecord = data.map((item: any) => ({

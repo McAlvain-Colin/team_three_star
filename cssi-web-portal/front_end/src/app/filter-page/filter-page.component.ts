@@ -51,6 +51,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, shareReplay } from 'rxjs';
 import { DatasetController } from 'chart.js/dist';
+import { TimerService } from '../login/login.component';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -210,7 +211,8 @@ export class FilterPageComponent {
     private apiService: ApiService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private timerService: TimerService
   ) {
     Chart.register(...registerables); // ...registerables is an array that contains all the components Chart.js offers
   }
@@ -222,6 +224,7 @@ export class FilterPageComponent {
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
     this.orgId = this.route.snapshot.paramMap.get('org');
+    this.devName = this.route.snapshot.paramMap.get('dev');
     if (this.appId == null) {
       this.appName = 'Cat Patting';
     }
@@ -306,6 +309,10 @@ export class FilterPageComponent {
       this.deviceSource.data = this.deviceList;
       this.deviceSource.filter = '';
       this.deviceSource._updateChangeSubscription();
+  }
+
+  logout() {
+    this.timerService.logout();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;

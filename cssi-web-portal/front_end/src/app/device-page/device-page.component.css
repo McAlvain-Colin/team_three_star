@@ -1,5 +1,6 @@
 .toolbar {
   opacity: 0.9;
+  z-index: 10;
 }
 
 .absorb {
@@ -56,7 +57,7 @@
 
 .background {
   background-color: aliceblue;
-  height: 90%;
+  height: 100%;
   width: 100%;
 }
 
@@ -73,7 +74,19 @@
 .color-white {
   text-decoration: none;
   color: white;
-  padding-right: 6px;
+}
+
+.push-button-right {
+  /* This just grows the span so that it takes up the entire flexbox */
+  flex-grow: 1;
+}
+
+.home-icon {
+  transform: translate(-22%, 18%);
+}
+
+.home-text {
+  transform: translate(0%, -10%);
 }
 
 .device-title {
@@ -97,7 +110,7 @@
   margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 4%;
-  height: 32%;
+  height: 25%;
   max-height: 32%;
   width: 90%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
@@ -142,7 +155,7 @@
 
 .device-data {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .device-metadata-box {
@@ -158,7 +171,7 @@
 
 .device-metadata {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .metadata-search-bar {

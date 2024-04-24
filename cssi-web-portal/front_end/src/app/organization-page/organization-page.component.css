@@ -75,10 +75,17 @@ body {
   top: 100%;
 }
 
+.home-icon {
+  transform: translate(-22%, 18%);
+}
+
+.home-text {
+  transform: translate(0%, -10%);
+}
+
 .color-white {
   text-decoration: none;
   color: white;
-  padding-right: 6px;
 }
 
 .organization-title {

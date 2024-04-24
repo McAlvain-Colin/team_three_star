@@ -42,6 +42,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { SelectionChange } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TimerService } from '../login/login.component';
 
 @Component({
   selector: 'app-organization-page',
@@ -107,7 +108,8 @@ export class OrganizationPageComponent implements OnInit {
     public dialog: MatDialog,
     private http: HttpClient,
     private changeDetector: ChangeDetectorRef,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private timerService: TimerService
   ) {} //makes an instance of the router
   ngOnInit(): void {
     this.orgId = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -293,5 +295,9 @@ export class OrganizationPageComponent implements OnInit {
       this.applications.push('Application ' + i);
       this.members.push('Member ' + i);
     }
+  }
+  
+  logout() {
+    this.timerService.logout();
   }
 }

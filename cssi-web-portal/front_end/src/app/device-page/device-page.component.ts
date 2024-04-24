@@ -47,6 +47,7 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TimerService } from '../login/login.component';
 
 //using code from the filter page here since it is essentiall the same
 //I want to redo this code if theres time using the pageinate module.
@@ -143,7 +144,8 @@ export class DevicePageComponent implements AfterViewInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private timerService: TimerService
   ) {
     Chart.register(...registerables); // ...registerables is an array that contains all the components Chart.js offers
   }
@@ -206,6 +208,10 @@ export class DevicePageComponent implements AfterViewInit {
           });
         },
       });
+  }
+
+  logout() {
+    this.timerService.logout();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;

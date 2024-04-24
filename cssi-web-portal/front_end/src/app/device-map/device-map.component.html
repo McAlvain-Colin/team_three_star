@@ -8,11 +8,57 @@
 <!-- The Table used in the device-map.html will appear once selector of the component is used in the dashboard component and will -->
 <!-- present the device EUI (identifier) as well as the gateway EUI (identifier), once a row in the table is selected the respective row's -->
 <!-- location data is presented with respect to how which button has been pressed, the map will region of Lake Tahoe initially by Default. -->
-<mat-toolbar color="primary" class="toolbar"
-  >Filter Data<span class="push-links-right"></span
-  ><a routerLink="/home" class="color-white">Go Home</a></mat-toolbar
->
-<mat-card>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="false"
+    [mode]="'over'"
+    [opened]="false"
+  >
+    <mat-toolbar class="sidenav-toolbar"
+      ><p class="sidenav-title">Menu</p></mat-toolbar
+    >
+    <mat-nav-list>
+      <button class="absorb" mat-button></button>
+      <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
+      <a mat-list-item routerLink="/home">Home</a>
+      <a mat-list-item routerLink="/organization/{{ orgId }}">Organization</a>
+      <a mat-list-item routerLink="/application/{{ appId }}/{{ orgId }}"
+        >Application</a
+      >
+      <a mat-list-item routerLink="/device/{{ orgId }}/{{ appId }}/{{ devName }}">
+        Device</a>
+      <a mat-list-item (click)="logout()"> Sign Out </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
+      ><a routerLink="/home" class="color-white"><mat-icon class="home-icon" aria-label="Home icon">home</mat-icon><span class="home-text">Home</span></a><mat-icon aria-label="next arrow">navigate_next</mat-icon>
+      <a routerLink="/organization/{{ orgId }}" class="color-white"
+        >Organization</a
+      ><mat-icon aria-label="next arrow">navigate_next</mat-icon>
+      <a routerLink="/application/{{ appId }}/{{ orgId }}" class="color-white"
+        >Application
+      </a><mat-icon aria-label="next arrow">navigate_next</mat-icon>
+      <a routerLink="/device/{{ orgId }}/{{ appId }}/{{ devName }}" class="color-white"
+      >Device
+    </a><mat-icon aria-label="next arrow">navigate_next</mat-icon>
+    View Map
+      <span class="push-button-right"></span
+        ><button mat-raised-button color="warn" (click)="logout()">
+          Sign Out <mat-icon class="leave-icon" aria-label="Sign Out icon">logout</mat-icon>
+        </button></mat-toolbar
+    >
+<body class="background">
+<mat-card class="dev-map">
   <mat-card-title>Device Map</mat-card-title>
   <mat-card-header>Device List</mat-card-header>
   <mat-card-content>
@@ -120,3 +166,6 @@
 <!-- <mat-card>
     <div class="grid-child" id='map' style="height: 750px; border-radius: 5%;"></div>
 </mat-card> -->
+</body>
+</mat-sidenav-content>
+</mat-sidenav-container>

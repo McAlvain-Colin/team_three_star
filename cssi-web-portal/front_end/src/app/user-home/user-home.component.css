@@ -98,9 +98,23 @@ body {
   flex-grow: 1;
 }
 
+.home-icon {
+  margin-right: .25%;
+}
+
 .make-flexbox {
   display: flex;
   flex-direction: row;
+}
+
+.make-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  align-items: center;
+}
+
+.grid-item {
+  padding: 1%;
 }
 
 .group-button {
