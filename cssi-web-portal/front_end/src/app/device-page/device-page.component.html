@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [style.height]="'100vh'">
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -57,25 +57,25 @@
             <p>
               {{ deviceAnnotation }}
             </p>
+            <button
+            mat-raised-button
+            color="accent"
+            class="data-button"
+            routerLink='/filter/{{appId}}/{{orgId}}/{{devName}}'
+          >
+            Filter Device Data
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            class="map-button"
+            routerLink='/map/{{ orgId }}/{{appId}}/{{devName}}'
+          >
+            Check Map
+          </button>
           </mat-card-content>
         </mat-card-content>
       </mat-card>
-      <button
-      mat-raised-button
-      color="accent"
-      class="data-button"
-      routerLink='/filter/{{appId}}/{{orgId}}/{{devName}}'
-    >
-      Filter Device Data
-    </button>
-    <button
-      mat-raised-button
-      color="accent"
-      class="map-button"
-      routerLink='/map/{{ orgId }}/{{appId}}/{{devName}}'
-    >
-      Check Map
-    </button>
       <mat-card class="device-data-box">
         <mat-card-content class="device-data">
           <!-- <mat-accordion class="search-bar">

@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [style.height]="'100vh'">
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -33,13 +33,16 @@
           Sign Out <mat-icon class="leave-icon" aria-label="Sign Out icon">logout</mat-icon>
         </button></mat-toolbar
     >
+    <body class="background">
+    <div class="check-expandable">
+    <div class="make-side-by-side">
     <mat-card class="organization-box">
       <mat-card-content class="organization-content">
-        <img
+        <!--img
           class="organization-image"
           src="{{ '../../assets/' + imgName + '.jpg' }}"
           alt="Grey cat sitting on couch"
-        />
+        /-->
         <mat-card-content class="about-org-box">
           <mat-card-header
             ><h3 class="organization-title">About {{ orgName }}</h3>
@@ -74,10 +77,7 @@
           <h4>
             Total members in {{ orgName }}:
             {{
-              memberSource.data.slice(
-                membersPaginator.pageIndex * membersPaginator.pageSize,
-                (membersPaginator.pageIndex + 1) * membersPaginator.pageSize
-              ).length
+              memberSource.data.length
             }}
           </h4>
         </mat-card-content>
@@ -85,8 +85,8 @@
     </mat-card>
     <mat-card class="apps-box">
       <mat-card-content class="apps-content">
-        <mat-tab-group [style.position]="'sticky'">
-          <mat-tab label="{{ orgName }}'s Applications">
+        <mat-tab-group class="no-hover" [disableRipple]="true">
+          <mat-tab label="{{ orgName }} Applications">
             <mat-nav-list>
               <div class="make-flexbox">
                 <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
@@ -155,11 +155,12 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
+  </div>
     <mat-card class="member-box" [style.display]="!isAdmin ? 'none' : 'block'">
       <!--Created hidden instead of ngIF because of some weird properties of Angular that causes it not initialize the paginator, and thus no items are registered-->
       <mat-card-content class="member-content">
-        <mat-tab-group [style.position]="'sticky'">
-          <mat-tab label="{{ orgName }}'s Members">
+        <mat-tab-group class="no-hover" [disableRipple]="true">
+          <mat-tab label="{{ orgName }} Members">
             <mat-nav-list>
               <div class="make-flexbox">
                 <button
@@ -231,7 +232,8 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <body class="background"></body>
+  </div>
+</body>
     <!--app-temp-nav-bar></app-temp-nav-bar-->
   </mat-sidenav-content>
 </mat-sidenav-container>

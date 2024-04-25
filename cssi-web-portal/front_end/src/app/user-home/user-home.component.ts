@@ -180,7 +180,9 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
           //   );
           // }
 
+          console.log(response.body?.list)
           this.joinedOrgSource = new MatTableDataSource(response.body?.list);
+          console.log(this.joinedOrgSource)
           this.joinedOrgSource.paginator = this.joinedOrgPaginator;
         },
         error: (error: HttpErrorResponse) => {

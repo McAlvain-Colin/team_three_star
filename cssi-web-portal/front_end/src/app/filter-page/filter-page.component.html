@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [style.height]="'100vh'">
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -47,18 +47,11 @@
           Sign Out <mat-icon class="leave-icon" aria-label="Sign Out icon">logout</mat-icon>
         </button></mat-toolbar
     >
-    <button
-    mat-raised-button
-    color="accent"
-    class="map-button"
-    routerLink='/map/{{ orgId }}/{{appId}}/{{devName}}'
-  >
-    Check Map
-  </button>
 <body class="background">
   <!-- <mat-card class="filter"> -->
   <!-- <p class="header-text">Select Data</p> -->
   <!-- <mat-card class="filter"> -->
+    <mat-card class="graph">
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -157,6 +150,7 @@
         </form>
       </mat-expansion-panel>
     </mat-accordion>
+  </mat-card>
   <!-- </mat-card> -->
 
   <!-- device payload data tables -->
@@ -262,6 +256,7 @@
               </button>
               <mat-spinner *ngIf="showSpinner"></mat-spinner>
             </div>
+
           </mat-card-actions>
       <!-- </mat-expansion-panel>
     </mat-accordion> -->
@@ -269,6 +264,7 @@
 
   <!-- payload graph -->
   <!-- <mat-card class="graph"> -->
+    <mat-card class="graph">
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -382,6 +378,7 @@
         </mat-card-actions>
       </mat-expansion-panel>
     </mat-accordion>
+    </mat-card>
   <!-- </mat-card> -->
 
   <!-- device metadata data tables -->
@@ -501,6 +498,7 @@
 
   <!-- metadata graph -->
   <!-- <mat-card class="graph"> -->
+    <mat-card class="graph">
     <mat-accordion class="search-bar">
       <mat-expansion-panel
         class="search-expansion-box"
@@ -617,6 +615,7 @@
         </mat-card-actions>
       </mat-expansion-panel>
     </mat-accordion>
+    </mat-card>
   <!-- </mat-card> -->
 </body>
 </mat-sidenav-content>

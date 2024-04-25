@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [style.height]="'100vh'">
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -39,7 +39,7 @@
     <mat-card class="app-box">
       <div class="app-content">
         <mat-card-header
-          ><h3 class="app-title">{{ appName }}</h3>
+          ><h3 class="app-title">About {{ appName }}</h3>
         </mat-card-header>
         <mat-divider class="app-divider"></mat-divider>
         <p>
@@ -49,8 +49,8 @@
     </mat-card>
     <mat-card class="devices-box">
       <mat-card-content class="devices-content">
-        <mat-tab-group [style.position]="'sticky'">
-          <mat-tab label="{{ appName }} Devices">
+        <mat-tab-group [disableRipple]="true">
+          <mat-tab class="no-hover" label="{{ appName }} Devices">
             <mat-nav-list>
               <div class="make-flexbox">
                 <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->

@@ -57,8 +57,8 @@ db.init_app(app)
 
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR PRIVACY
 app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
 
@@ -720,12 +720,13 @@ def getJoinedOrgList():
 					'o_id' : p.id,
 					'name': p.name,
 					'description': p.description,
-					'num_apps': db.session.query(OrgApplication).where(OrgApplication.o_id == p.id, OrgApplication.active == True).count()
+					'num_apps': db.session.query(OrgApplication).where(OrgApplication.o_id == p.id, OrgApplication.active == True).count(),
+					'total_members': db.session.query(OrgAccount).where(OrgAccount.o_id == p.id, OrgAccount.active == True).count()
 				} for p in page.all()
 			]
 		}
 		print(res)
-		res = json.dumps(res)
+		#res = json.dumps(res)
 		return jsonify(res), 200
 	
 	except exc.SQLAlchemyError:

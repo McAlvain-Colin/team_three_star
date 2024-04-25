@@ -56,31 +56,28 @@
 }
 
 .background {
-  width: 100%;
-  height: 90% !important;
-  background-color: aliceblue !important;
-  /* background-image: url("../../assets/Home-page-2.jpg") !important; */
-  background-size: cover !important;
+  position: absolute;
+  background-image: url("../../assets/dirtWDevice.jpg") !important;
   background-position: center;
-  background-repeat: no-repeat;
   background-attachment: fixed;
-  padding: 20px;
-  z-index: 1;
+  z-index: -1;
+  width: 100%;
 
   /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
   &:before {
     content: "";
-    position: inline;
+    position: absolute;
     width: 100%;
-    height: 91.5%;
-    top: 8.5%;
+    height: 100%;
+    top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     background-image: linear-gradient(to bottom right, #000000, #000000);
-    opacity: 0.27;
+    opacity: 0.4;
   }
 }
+
 
 .push-links-right {
   /* The three values are grow, shrink, and basis, the span will grow or shrink to fill the container, in this case the toolbar */
@@ -116,7 +113,7 @@
 
 .search-expansion-box {
   position: inline;
-  width: 90%;
+  width: 100%;
   /* left: 10%; */
   top: 40%;
   border: 1px solid #e0e0e0;
@@ -124,6 +121,7 @@
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
+
 .graph {
   position: inline;
   width: 80%;
@@ -148,15 +146,16 @@
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.search-bar {
+/*.search-bar {
   margin-top: 1%;
   margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 4%;
   width: 100%;
   /* box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
-    0 1px 10px 0 rgba(0, 0, 0, 0.4); */
-}
+    0 1px 10px 0 rgba(0, 0, 0, 0.4); 
+}*/
+
 
 .mat-table {
   max-height: 500px;
