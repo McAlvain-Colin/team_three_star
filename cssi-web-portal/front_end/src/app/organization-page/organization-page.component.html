@@ -51,7 +51,12 @@
           <h4>
             {{ orgDescription }}
           </h4>
-
+          <h4>
+            Total members in {{ orgName }}:
+            {{
+              memberSource.data.length
+            }}
+          </h4>
           <mat-list>
             <h4>
               <b><u>Admins</u></b>
@@ -74,12 +79,6 @@
               </h4>
             </div>
           </mat-list>
-          <h4>
-            Total members in {{ orgName }}:
-            {{
-              memberSource.data.length
-            }}
-          </h4>
         </mat-card-content>
       </mat-card-content>
     </mat-card>

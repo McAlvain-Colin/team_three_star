@@ -99,6 +99,7 @@
 .app-divider {
   border-top-color: rgba(63, 81, 181, 0.6);
   border-top-width: 3px;
+  margin-bottom: 1%;
 }
 
 .app-box {

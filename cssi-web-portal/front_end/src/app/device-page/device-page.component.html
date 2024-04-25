@@ -46,7 +46,7 @@
         <mat-card-content class="device-content">
           <img
             class="device-image"
-            src="../../assets/placeholder_cat2.jpg"
+            src="../../assets/lora_temp_probe.jpeg"
             alt="Grey cat sitting on couch"
           />
           <mat-card-content class="about-device-box">
@@ -54,9 +54,15 @@
               ><h3 class="device-title">About {{ devName }}</h3>
             </mat-card-header>
             <mat-divider class="device-divider"></mat-divider>
-            <p>
-              {{ deviceAnnotation }}
-            </p>
+            <h4>
+              Notes: {{ deviceAnnotation }}
+            </h4>
+            <h4>
+              Date Created: Tue, 14 Nov 2023 14:54:03<br>
+              Frequency Plan: United States 902-928, FSB 1<br>
+              Brand: Laird<br>
+              Model: rs1xx-ext-temp-1w-sensor<br>
+            </h4>
             <button
             mat-raised-button
             color="accent"
