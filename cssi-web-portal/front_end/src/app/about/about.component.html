@@ -92,7 +92,10 @@
 
       <mat-card class="box">
         <mat-card-title class="content">Project Video</mat-card-title>
-        <mat-card-header class="content">TBD</mat-card-header>
+          <video controls class="video_player">
+            <source [src]="project_video[0].url" type="video/mp4">
+          </video>
+        <mat-card-header class="content">src="{{project_video}}"</mat-card-header>
       </mat-card>
 
       <mat-card class="box">

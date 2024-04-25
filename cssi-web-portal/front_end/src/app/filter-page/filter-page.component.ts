@@ -187,7 +187,7 @@ export class FilterPageComponent {
 
   chart!: Chart;
   payloadChart!: Chart;
-  metadataChart!: Chart;
+  // metadataChart!: Chart;
 
   chartData!: number[];
   deviceList: Device[] = [];
@@ -459,9 +459,9 @@ export class FilterPageComponent {
         },
       });
     });
-    // this.fetchDevices();
+    this.fetchDevices();
     this.createPayloadChart(this.deviceList[0].devEUI);
-    this.createMetadataChart(this.deviceList[0].devEUI);      
+    // this.createMetadataChart(this.deviceList[0].devEUI);      
   }
 
   fetchDevices(): void {
@@ -749,12 +749,12 @@ export class FilterPageComponent {
     link.download = 'chart.png';
     link.click();
   }
-  getDownloadMetadataChart() {
-    let link = document.createElement('a');
-    link.href = this.metadataChart.toBase64Image();
-    link.download = 'chart.png';
-    link.click();
-  }
+  // getDownloadMetadataChart() {
+  //   let link = document.createElement('a');
+  //   link.href = this.metadataChart.toBase64Image();
+  //   link.download = 'chart.png';
+  //   link.click();
+  // }
   
   createPayloadChart(devId: string) {
     let number = this.filterForm.value.range.value;
@@ -773,36 +773,36 @@ export class FilterPageComponent {
       },
     });    
   }
-  createMetadataChart(devId: string) {
-    let number = this.filterForm.value.range.value;
-    this.apiService.getMetadata(this.deviceList[0].devEUI, number).subscribe({
-      next: (data: PayloadRecord[][]) => {
-        this.metadataTimeRecord = data.map(item => item[0]);
-        this.metadataRecord = data.map(item => item[1]);
+  // createMetadataChart(devId: string) {
+  //   let number = this.filterForm.value.range.value;
+  //   this.apiService.getMetadata(this.deviceList[0].devEUI, number).subscribe({
+  //     next: (data: PayloadRecord[][]) => {
+  //       this.metadataTimeRecord = data.map(item => item[0]);
+  //       this.metadataRecord = data.map(item => item[1]);
 
-        // this.metadataTimeRecord.push(...this.metadataTimeRecord)
-        // this.metadataRecord.push(...this.metadataRecord)
+  //       // this.metadataTimeRecord.push(...this.metadataTimeRecord)
+  //       // this.metadataRecord.push(...this.metadataRecord)
 
-        this.initializeMetadataChart();
-      },
-      error: (error) => {
-        console.error('Error fetching payload data:', error);
-      },
-    }); 
-    this.deviceList.forEach((device, index) => {
-      this.apiService.getMetadata(device.devEUI, number).subscribe({
-        next: (data: PayloadRecord[][]) => {
-          this.metadataTimeRecord.push(...data.map(item => item[0]));
-          this.metadataRecord.push(...data.map(item => item[1]));
+  //       this.initializeMetadataChart();
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching payload data:', error);
+  //     },
+  //   }); 
+  //   this.deviceList.forEach((device, index) => {
+  //     this.apiService.getMetadata(device.devEUI, number).subscribe({
+  //       next: (data: PayloadRecord[][]) => {
+  //         this.metadataTimeRecord.push(...data.map(item => item[0]));
+  //         this.metadataRecord.push(...data.map(item => item[1]));
           
-          this.updateMetadatChart(device.devEUI, this.metadataTimeRecord, this.metadataRecord);
-        },
-        error: (error) => {
-          console.error('Error fetching payload data:', error);
-        },
-      });        
-    });
-  }
+  //         this.updateMetadatChart(device.devEUI, this.metadataTimeRecord, this.metadataRecord);
+  //       },
+  //       error: (error) => {
+  //         console.error('Error fetching payload data:', error);
+  //       },
+  //     });        
+  //   });
+  // }
 
 
   
@@ -871,81 +871,81 @@ export class FilterPageComponent {
       });
     }
   }
-  initializeMetadataChart() {
-    const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
-    if (
-      meta_ctx &&
-      this.metadataTimeRecord.length > 0 &&
-      this.metadataRecord.length > 0
-    ) {
+  // initializeMetadataChart() {
+  //   const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
+  //   if (
+  //     meta_ctx &&
+  //     this.metadataTimeRecord.length > 0 &&
+  //     this.metadataRecord.length > 0
+  //   ) {
 
-      const dataKeys = ['snr','rssi','channel_rssi'];
-      const keysNotDisplayed = ['timestamp', 'gateway_ids', 'received_at', 'uplink_token'];
+  //     const dataKeys = ['snr','rssi','channel_rssi'];
+  //     const keysNotDisplayed = ['timestamp', 'gateway_ids', 'received_at', 'uplink_token'];
 
-      const test = this.filteredMetadataSource.data
-      const test2 = test.map(item => item.metadata_dict)
-      console.log('test2', test2[this.filterForm.value.range.value]);
-      let testData: any = {};
-      test2.forEach((item: any) => {
-        Object.keys(item).forEach(record =>{
-          if(!keysNotDisplayed.includes(record)) {
-            if(!testData[record]) {
-              testData[record] = [];
-            }
-            testData[record].push(item[record]);
-          }
-        });
-      });
+  //     const test = this.filteredMetadataSource.data
+  //     const test2 = test.map(item => item.metadata_dict)
+  //     console.log('test2', test2[this.filterForm.value.range.value]);
+  //     let testData: any = {};
+  //     test2.forEach((item: any) => {
+  //       Object.keys(item).forEach(record =>{
+  //         if(!keysNotDisplayed.includes(record)) {
+  //           if(!testData[record]) {
+  //             testData[record] = [];
+  //           }
+  //           testData[record].push(item[record]);
+  //         }
+  //       });
+  //     });
 
-      const labels = Array.from(new Set(this.metadataTimeRecord));
-      const datasets: any = [];
+  //     const labels = Array.from(new Set(this.metadataTimeRecord));
+  //     const datasets: any = [];
 
-      Object.keys(testData).forEach((key, index) => {
-        const dataset = {
-          label: key,
-          data: testData[key],
-          // data: testData[key],
-          borderColor: this.getRandomColor(),
-          fill:false
-        }
-        datasets.push(dataset);
-      })
+  //     Object.keys(testData).forEach((key, index) => {
+  //       const dataset = {
+  //         label: key,
+  //         data: testData[key],
+  //         // data: testData[key],
+  //         borderColor: this.getRandomColor(),
+  //         fill:false
+  //       }
+  //       datasets.push(dataset);
+  //     })
 
 
-      if (this.metadataChart) {
-        this.metadataChart.destroy();
-      }
+  //     if (this.metadataChart) {
+  //       this.metadataChart.destroy();
+  //     }
 
-      this.metadataChart = new Chart(meta_ctx, {
-        type: 'line',
-        data: { labels: labels, datasets: datasets },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-        },
-        plugins: [
-          {
-            id: 'customCanvasBackgroundColor',
-            beforeDraw: (chart, args, options) => {
-              const { ctx }= chart;
-              ctx.save();
-              ctx.globalCompositeOperation = 'destination-over';
-              ctx.fillStyle = 'white'
-              ctx.fillRect(0,0, chart.width, chart.height);
-              ctx.restore();
-            },
-          },
-        ],
-      });
-    }
-  }
-  updateMetadatChart(id: any, time: any, record: any){   
-    // console.log('id: ', id, 'time3: ', time, 'record: ', record) 
-    const dataKeys: any = ['snr','rssi','channel_rssi'];
+  //     this.metadataChart = new Chart(meta_ctx, {
+  //       type: 'line',
+  //       data: { labels: labels, datasets: datasets },
+  //       options: {
+  //         responsive: true,
+  //         maintainAspectRatio: false,
+  //       },
+  //       plugins: [
+  //         {
+  //           id: 'customCanvasBackgroundColor',
+  //           beforeDraw: (chart, args, options) => {
+  //             const { ctx }= chart;
+  //             ctx.save();
+  //             ctx.globalCompositeOperation = 'destination-over';
+  //             ctx.fillStyle = 'white'
+  //             ctx.fillRect(0,0, chart.width, chart.height);
+  //             ctx.restore();
+  //           },
+  //         },
+  //       ],
+  //     });
+  //   }
+  // }
+  // updateMetadatChart(id: any, time: any, record: any){   
+  //   // console.log('id: ', id, 'time3: ', time, 'record: ', record) 
+  //   const dataKeys: any = ['snr','rssi','channel_rssi'];
     
 
-    this.metadataChart.update();   
-  }
+  //   this.metadataChart.update();   
+  // }
   updatePayloadChart(data: any){
     // console.log('in update payload chart')
     // if(this.payloadChart && this.payloadChart.data && this.payloadChart.data.labels){
@@ -1000,13 +1000,42 @@ export class FilterPageComponent {
     ////console.warn('checkboxLabel wa called without a row or index.');
     return '';
   }
+  // shouldHighlightPayload(value: any, key: any): boolean {
+  //   const dataValues = this.filteredPayloadStatSource.data;
+  //   const statValues = dataValues[key+1];
+  //   try{
+  //     const mean = parseFloat(statValues.mean);
+  //     const stddev = parseFloat(statValues.standard_deviation);
+  //     if(value === undefined){
+  //       return false;
+  //     }
+  //     if(value === 1){ 
+  //       return false;
+  //     }
+  //     if( (value > (mean + stddev)) || (value < (mean - stddev))){ 
+  //       return true;
+  //     }
+  //     return false; 
+  //   }
+  //   catch{
+  //     return false;
+  //   }
+  // }
   shouldHighlightPayload(value: any, key: any): boolean {
-    const dataValues = this.payloadStatSource.data;
+    const dataValues = this.filteredPayloadStatSource.data;
     const statValues = dataValues[key+1];
     try{
       const mean = parseFloat(statValues.mean);
       const stddev = parseFloat(statValues.standard_deviation);
-      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
+      if(value === undefined || value  === (mean + stddev) || value === 0){
+        return false;
+      }
+      if(value === 1){ 
+        return false;
+      }
+      if( (value > (mean + stddev)) || (value < (mean - stddev))){ 
+        console.log('value: ', value)
+        console.log('(mean + stddev): ', (mean + stddev))
         return true;
       }
       return false; 
@@ -1016,20 +1045,20 @@ export class FilterPageComponent {
     }
   }
 
-  shouldHighlightMetadata(value: any, key: any): boolean {
-    const dataValues = this.metadataStatSource.data;
-    const statValues = dataValues[key+1];
-    try{
-      const mean = parseFloat(statValues.mean);
-      const stddev = parseFloat(statValues.standard_deviation);
-      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
-        return true;
-      }
-      return false; 
-    }
-    catch{
-      return false;
-    }
-  }
+  // shouldHighlightMetadata(value: any, key: any): boolean {
+  //   const dataValues = this.metadataStatSource.data;
+  //   const statValues = dataValues[key+1];
+  //   try{
+  //     const mean = parseFloat(statValues.mean);
+  //     const stddev = parseFloat(statValues.standard_deviation);
+  //     if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
+  //       return true;
+  //     }
+  //     return false; 
+  //   }
+  //   catch{
+  //     return false;
+  //   }
+  // }
 }
 
