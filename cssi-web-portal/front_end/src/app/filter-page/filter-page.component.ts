@@ -572,19 +572,8 @@ export class FilterPageComponent {
   filterSensorData() {
     //console.log("this worked")
     const formValues = this.filterForm.value.range;
-    console.log("form Values: ", formValues.value);
+    console.log("form Values: ", formValues);
     //console.log("payloadDataSource: ", this.payloadDataSource.data);
-    this.payloadDataSource.data = [];
-    this.filteredPayloadDataSource.data = [];
-    this.metadataSource.data = [];
-    this.filteredMetadataSource.data = [];
-    this.payloadStatSource.data = [];
-    this.filteredPayloadStatSource.data = [];
-    this.metadataStatSource.data = [];
-    this.filteredMetadataStatSource.data = [];
-    // console.log('cleared source: ', this.filteredPayloadDataSource.data)
-    this.getDataSetup(formValues.value)
-
     const dict = this.payloadDataSource.data;
     //console.log("object keys:  ", Object.keys(dict[1].payload_dict));
 
@@ -597,11 +586,11 @@ export class FilterPageComponent {
 
     try{
       if (formValues.payloadSelect == true) {
-        // console.log("in payload filter")
+        console.log("in payload filter")
         this.filteredPayloadDataSource.data = this.payloadDataSource.data.filter((item) => {
 
           if(formValues.dataType){
-            // console.log("in dataType", formValues.dataType)
+            console.log("in dataType", formValues.dataType)
             const dataTypeKey = formValues.dataType;
             dataValue = +item.payload_dict[dataTypeKey];
 
@@ -626,7 +615,7 @@ export class FilterPageComponent {
           )
         });
       }      
-      // console.log("filteredPayloadDataSource", this.filteredPayloadDataSource.data)
+      console.log("filteredPayloadDataSource", this.filteredPayloadDataSource.data)
       if(this.filteredPayloadDataSource.paginator){
         this.filteredPayloadDataSource.paginator.firstPage();
       }
@@ -641,7 +630,7 @@ export class FilterPageComponent {
         this.filteredMetadataSource.data = this.metadataSource.data.filter((item) => {
 
           if(formValues.dataType){
-            // console.log("in dataType", formValues.dataType)
+            console.log("in dataType", formValues.dataType)
             const dataTypeKey = formValues.dataType;
             dataValue = +item.payload_dict[dataTypeKey];
 
@@ -1034,8 +1023,8 @@ export class FilterPageComponent {
         return false;
       }
       if( (value > (mean + stddev)) || (value < (mean - stddev))){ 
-        console.log('value: ', value)
-        console.log('(mean + stddev): ', (mean + stddev))
+        // console.log('value: ', value)
+        // console.log('(mean + stddev): ', (mean + stddev))
         return true;
       }
       return false; 
