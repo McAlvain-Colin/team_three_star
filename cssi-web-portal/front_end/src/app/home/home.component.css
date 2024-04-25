@@ -8,13 +8,16 @@
 }
 
 .window-pane-2 {
+  position: relative;
   width: fit-content;
   height: fit-content;
+  top: 40%;
   max-height: 140px;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
 .center {
+  position: relative;
   height: 25vh;
   display: flex;
   justify-content: center;
@@ -25,6 +28,8 @@
   /* This is the home text style which will act as the main view and type that the user sees upon initial visit of the web portal */
   padding-top: 35px;
   padding-bottom: 35px;
+  padding-left: 40px;
+  padding-right: 40px;
   line-height: 1.2;
   font-size: 5vw;
   font-weight: bolder;
@@ -34,10 +39,15 @@
   color: white;
 }
 
+.body-description {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 40%;
+}
+
 .body-text {
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: rgba(0, 0, 0, 0.5);
   line-height: 1.3;
   font-size: 2vw;
   font-weight: bold;
@@ -58,7 +68,8 @@
   justify-content: center;
   text-align: center;
   display: inline-block;
-  left: 58%;
+  top: 67%;
+  left: 60%;
 }
 
 .sign-up-box {
@@ -72,10 +83,12 @@
   justify-content: center;
   text-align: center;
   display: inline-block;
-  left: 40%;
+  top: 67%;
+  left: 34%;
 }
 
 .background {
+  position: relative;
   background-image: url("../../assets/home-background.jpg");
   /*Adjust height in order to keep contents within page without a nescessary scroll wheel*/
   min-height: 100vh;

@@ -5,11 +5,24 @@ html {
 body {
   min-height: 100%;
   position: absolute;
-  background-color: aliceblue;
+  background-image: url("../../assets/just_forest.jpeg") !important;
   top: 0;
   left: 0;
   z-index: -1;
   width: 100%;
+  /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, #000000, #000000);
+    opacity: 0.4;
+  }
 }
 
 .toolbar {
@@ -75,14 +88,23 @@ body {
   top: 100%;
 }
 
+.home-icon {
+  transform: translate(-22%, 18%);
+}
+
+.home-text {
+  transform: translate(0%, -10%);
+}
+
 .color-white {
   text-decoration: none;
   color: white;
-  padding-right: 6px;
 }
 
 .organization-title {
   color: rgba(63, 81, 181, 1);
+  font-size: 12pt;
+  font-weight: 400;
 }
 
 .organization-divider {
@@ -98,12 +120,11 @@ body {
 .organization-box {
   display: flex;
   position: relative;
-  margin-top: 1%;
+  margin-top: 2%;
   margin-left: 5%;
-  margin-right: 5%;
-  height: 32%;
-  max-height: 32%;
-  width: 90%;
+  margin-right: 2.5%;
+  flex-grow: 1;
+  width: 45%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
   z-index: 2;
@@ -118,7 +139,6 @@ body {
 
 .about-org-box {
   width: 100%;
-  height: 100%;
 }
 
 .push-button-right {
@@ -131,9 +151,19 @@ body {
   flex-direction: row;
 }
 
+.make-side-by-side {
+  display: flex;
+  flex-direction: row;
+  margin-top: 4%;
+  height: 100%;
+  width: 100%;
+  flex-grow: 1;
+}
+
 .group-button {
   position: relative;
-  margin: 2px;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 .remove-icon {
@@ -143,23 +173,52 @@ body {
   margin-left: 2%;
 }
 
+.no-hover {
+  background-color: transparent !important;
+}
+
 .apps-box {
   display: flex;
   position: relative;
-  margin-left: 5%;
+  margin-left: 2.5%;
   margin-right: 5%;
-  margin-top: 3%;
-  margin-bottom: 3%;
-  height: fit-content;
-  max-height: fit-content;
-  width: 90%;
+  margin-top: 2%;
+  flex-grow: 1;
+  overflow-y: auto;
+  width: 60%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
 }
 
 .apps-content {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+
+.empty-text1 {
+  text-align: center;
+  color: #3f51b5;
+  padding-top: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
+  left: 40%;
+}
+
+.empty-text2 {
+  text-align: center;
+  color: #3f51b5;
+  padding-top: 1%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 5%;
+  left: 40%;
+}
+
+.check-expandable {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
 }
 
 .member-box {
@@ -167,7 +226,7 @@ body {
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 3%;
-  margin-bottom: 10%;
+  top: 50%;
   height: fit-content;
   max-height: fit-content;
   width: 90%;
@@ -177,7 +236,7 @@ body {
 
 .member-content {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .select-role {

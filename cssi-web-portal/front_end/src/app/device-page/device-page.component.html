@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [style.height]="'100vh'">
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -12,11 +12,12 @@
     <mat-nav-list>
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
-      <a mat-list-item routerLink="/home">Link 1</a>
+      <a mat-list-item routerLink="/home">Home</a>
       <a mat-list-item routerLink="/organization/{{ orgId }}">Organization</a>
       <a mat-list-item routerLink="/application/{{ appId }}/{{ orgId }}"
         >Application</a
       >
+      <a mat-list-item (click)="logout()"> Sign Out </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -28,14 +29,17 @@
         (click)="drawer.toggle()"
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
-      ><a routerLink="/home" class="color-white">Home ></a>
+      ><a routerLink="/home" class="color-white"><mat-icon class="home-icon" aria-label="Home icon">home</mat-icon><span class="home-text">Home</span></a><mat-icon aria-label="next arrow">navigate_next</mat-icon>
       <a routerLink="/organization/{{ orgId }}" class="color-white"
-        >Organization ></a
-      >
+        >Organization</a
+      ><mat-icon aria-label="next arrow">navigate_next</mat-icon>
       <a routerLink="/application/{{ appId }}/{{ orgId }}" class="color-white"
         >Application
-      </a>
-      > Device</mat-toolbar
+      </a><mat-icon aria-label="next arrow">navigate_next</mat-icon>
+      Device<span class="push-button-right"></span
+        ><button mat-raised-button color="warn" (click)="logout()">
+          Sign Out <mat-icon class="leave-icon" aria-label="Sign Out icon">logout</mat-icon>
+        </button></mat-toolbar
     >
     <body class="background">
       <mat-card class="device-box">
@@ -53,6 +57,22 @@
             <p>
               {{ deviceAnnotation }}
             </p>
+            <button
+            mat-raised-button
+            color="accent"
+            class="data-button"
+            routerLink='/filter/{{appId}}/{{orgId}}/{{devName}}'
+          >
+            Filter Device Data
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            class="map-button"
+            routerLink='/map/{{ orgId }}/{{appId}}/{{devName}}'
+          >
+            Check Map
+          </button>
           </mat-card-content>
         </mat-card-content>
       </mat-card>
@@ -542,22 +562,7 @@
             <!-- <p>Notes: {{ form.value.notes }}</p> -->
           </form>
         </mat-card>
-      <button
-        mat-raised-button
-        color="accent"
-        class="data-button"
-        [routerLink]="['/filter', appId]"
-      >
-        Filter Device Data
-      </button>
-      <button
-        mat-raised-button
-        color="accent"
-        class="map-button"
-        [routerLink]="['/map']"
-      >
-        Check Map
-      </button>
+     
     </body>
   </mat-sidenav-content>
 </mat-sidenav-container>

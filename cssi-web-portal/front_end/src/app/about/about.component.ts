@@ -45,4 +45,5 @@ export class AboutComponent {
     { url: '../../assets/lora_gateway.jpeg', alt: 'LoRa Gateway' },
     { url: '../../assets/nevada_google_map.jpeg', alt: 'Nevada Toplogical Map' },
   ];
+  project_video = [{url:'../../assets/CS426_T05_Video.mp4', alt: 'Project Video'}];
 }

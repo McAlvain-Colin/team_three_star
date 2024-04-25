@@ -53,6 +53,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, shareReplay } from 'rxjs';
 import { DatasetController } from 'chart.js/dist';
+import { TimerService } from '../login/login.component';
 
 //testing the inteface as a solution next to several individual declations
 export interface SensorData {
@@ -197,7 +198,7 @@ export class FilterPageComponent {
 
   chart!: Chart;
   payloadChart!: Chart;
-  metadataChart!: Chart;
+  // metadataChart!: Chart;
 
   chartData!: number[];
   deviceList: Device[] = [];
@@ -221,7 +222,8 @@ export class FilterPageComponent {
     private apiService: ApiService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private timerService: TimerService
   ) {
     Chart.register(...registerables); // ...registerables is an array that contains all the components Chart.js offers
   }
@@ -233,6 +235,7 @@ export class FilterPageComponent {
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
     this.orgId = this.route.snapshot.paramMap.get('org');
+    this.devName = this.route.snapshot.paramMap.get('dev');
     if (this.appId == null) {
       this.appName = 'Cat Patting';
     }
@@ -317,6 +320,10 @@ export class FilterPageComponent {
       this.deviceSource.data = this.deviceList;
       this.deviceSource.filter = '';
       this.deviceSource._updateChangeSubscription();
+  }
+
+  logout() {
+    this.timerService.logout();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -463,9 +470,9 @@ export class FilterPageComponent {
         },
       });
     });
-    // this.fetchDevices();
+    this.fetchDevices();
     this.createPayloadChart(this.deviceList[0].devEUI);
-    this.createMetadataChart(this.deviceList[0].devEUI);      
+    // this.createMetadataChart(this.deviceList[0].devEUI);      
   }
 
   fetchDevices(): void {
@@ -753,12 +760,12 @@ export class FilterPageComponent {
     link.download = 'chart.png';
     link.click();
   }
-  getDownloadMetadataChart() {
-    let link = document.createElement('a');
-    link.href = this.metadataChart.toBase64Image();
-    link.download = 'chart.png';
-    link.click();
-  }
+  // getDownloadMetadataChart() {
+  //   let link = document.createElement('a');
+  //   link.href = this.metadataChart.toBase64Image();
+  //   link.download = 'chart.png';
+  //   link.click();
+  // }
   
   createPayloadChart(devId: string) {
     let number = this.filterForm.value.range.value;
@@ -777,36 +784,36 @@ export class FilterPageComponent {
       },
     });    
   }
-  createMetadataChart(devId: string) {
-    let number = this.filterForm.value.range.value;
-    this.apiService.getMetadata(this.deviceList[0].devEUI, number).subscribe({
-      next: (data: PayloadRecord[][]) => {
-        this.metadataTimeRecord = data.map(item => item[0]);
-        this.metadataRecord = data.map(item => item[1]);
+  // createMetadataChart(devId: string) {
+  //   let number = this.filterForm.value.range.value;
+  //   this.apiService.getMetadata(this.deviceList[0].devEUI, number).subscribe({
+  //     next: (data: PayloadRecord[][]) => {
+  //       this.metadataTimeRecord = data.map(item => item[0]);
+  //       this.metadataRecord = data.map(item => item[1]);
 
-        // this.metadataTimeRecord.push(...this.metadataTimeRecord)
-        // this.metadataRecord.push(...this.metadataRecord)
+  //       // this.metadataTimeRecord.push(...this.metadataTimeRecord)
+  //       // this.metadataRecord.push(...this.metadataRecord)
 
-        this.initializeMetadataChart();
-      },
-      error: (error) => {
-        console.error('Error fetching payload data:', error);
-      },
-    }); 
-    this.deviceList.forEach((device, index) => {
-      this.apiService.getMetadata(device.devEUI, number).subscribe({
-        next: (data: PayloadRecord[][]) => {
-          this.metadataTimeRecord.push(...data.map(item => item[0]));
-          this.metadataRecord.push(...data.map(item => item[1]));
+  //       this.initializeMetadataChart();
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching payload data:', error);
+  //     },
+  //   }); 
+  //   this.deviceList.forEach((device, index) => {
+  //     this.apiService.getMetadata(device.devEUI, number).subscribe({
+  //       next: (data: PayloadRecord[][]) => {
+  //         this.metadataTimeRecord.push(...data.map(item => item[0]));
+  //         this.metadataRecord.push(...data.map(item => item[1]));
           
-          this.updateMetadatChart(device.devEUI, this.metadataTimeRecord, this.metadataRecord);
-        },
-        error: (error) => {
-          console.error('Error fetching payload data:', error);
-        },
-      });        
-    });
-  }
+  //         this.updateMetadatChart(device.devEUI, this.metadataTimeRecord, this.metadataRecord);
+  //       },
+  //       error: (error) => {
+  //         console.error('Error fetching payload data:', error);
+  //       },
+  //     });        
+  //   });
+  // }
 
 
   
@@ -820,39 +827,33 @@ export class FilterPageComponent {
     ) {
       const dataKeys = this.displayedPayloadColumns
       const ids = this.deviceList.map(item => item.devEUI);
-      const labels = [0, this.filterForm.value.range.value];
 
-      // console.log('payload data: ',this.payloadRecord)
-      const test = this.payloadDataSource.data
-      // const label = ids.map( (id, index) => {
-      //   return this.displayedPayloadColumns.map(key => {
-      //     return `${id}: ${key}`;
-      //   });
-      // }).flat();
-      const label = this.filteredPayloadDataSource.data.flatMap(payloadColumns => {
-        const keys = Object.keys(payloadColumns.payload_dict);
-
-        return keys.map(key => `${payloadColumns.dev_eui}: ${key}`)
+      const test = this.filteredPayloadDataSource.data
+      const test2 = test.map(item => item.payload_dict)
+      let testData: any = {};
+      test2.forEach((item: any) => {
+        Object.keys(item).forEach(record =>{
+          if(!testData[record]) {
+            testData[record] = [];
+          }
+          testData[record].push(item[record]);
+        })
       })
-      const uniqueLabel = Array.from(new Set(label));
-      uniqueLabel.flat();
-      console.log('payload label: ',uniqueLabel)
 
-      // // ids.forEach(id => {
-      // dataKeys.forEach(key => {
-      const datasets = uniqueLabel.map(lab => {
-        return{
-          label: lab,//`${id}: ${key}`,
-          data: [],//this.payloadRecord.map(record => +record[key]),
-          fill: false,
+      const labels = Array.from(new Set(this.payloadTimeRecord));
+      const datasets: any = [];
+
+      Object.keys(testData).forEach((key, index) => {
+        const dataset = {
+          label: key,
+          data: testData[key],
           borderColor: this.getRandomColor(),
-          tension: 0.1, 
-        }           
-      });
-        // console.log('dataset: ', dataset);
-      //   datasets.push( dataset);
-      // });
-      // });
+          fill:false
+        }
+        datasets.push(dataset);
+      })
+
+      console.log('test: ',testData)
 
       if (this.payloadChart) {
         this.payloadChart.destroy();
@@ -881,66 +882,81 @@ export class FilterPageComponent {
       });
     }
   }
-  initializeMetadataChart() {
-    let datasets: any = [];
-    const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
-    if (
-      meta_ctx &&
-      this.metadataTimeRecord.length > 0 &&
-      this.metadataRecord.length > 0
-    ) {
-      const dataKeys = ['snr','rssi','channel_rssi'];
-      // const ids = this.deviceList(item => item.devEUI)
-      const labels = [0, this.filterForm.value.range.value];
+  // initializeMetadataChart() {
+  //   const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
+  //   if (
+  //     meta_ctx &&
+  //     this.metadataTimeRecord.length > 0 &&
+  //     this.metadataRecord.length > 0
+  //   ) {
 
-      this.deviceList.forEach(id => {
-        dataKeys.forEach(key => {
-          const dataset = {
-            label: `${id.devEUI}: ${key}`,
-            data: [],
-            fill: false,
-            borderColor: this.getRandomColor(),
-            tension: 0.1,            
-          };
-          // console.log('dataset: ', dataset);
-          datasets.push( dataset);
-        });
-      });
+  //     const dataKeys = ['snr','rssi','channel_rssi'];
+  //     const keysNotDisplayed = ['timestamp', 'gateway_ids', 'received_at', 'uplink_token'];
 
-      if (this.metadataChart) {
-        this.metadataChart.destroy();
-      }
+  //     const test = this.filteredMetadataSource.data
+  //     const test2 = test.map(item => item.metadata_dict)
+  //     console.log('test2', test2[this.filterForm.value.range.value]);
+  //     let testData: any = {};
+  //     test2.forEach((item: any) => {
+  //       Object.keys(item).forEach(record =>{
+  //         if(!keysNotDisplayed.includes(record)) {
+  //           if(!testData[record]) {
+  //             testData[record] = [];
+  //           }
+  //           testData[record].push(item[record]);
+  //         }
+  //       });
+  //     });
 
-      this.metadataChart = new Chart(meta_ctx, {
-        type: 'line',
-        data: { labels: labels, datasets: datasets },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-        },
-        plugins: [
-          {
-            id: 'customCanvasBackgroundColor',
-            beforeDraw: (chart, args, options) => {
-              const { ctx }= chart;
-              ctx.save();
-              ctx.globalCompositeOperation = 'destination-over';
-              ctx.fillStyle = 'white'
-              ctx.fillRect(0,0, chart.width, chart.height);
-              ctx.restore();
-            },
-          },
-        ],
-      });
-    }
-  }
-  updateMetadatChart(id: any, time: any, record: any){   
-    // console.log('id: ', id, 'time3: ', time, 'record: ', record) 
-    const dataKeys: any = ['snr','rssi','channel_rssi'];
+  //     const labels = Array.from(new Set(this.metadataTimeRecord));
+  //     const datasets: any = [];
+
+  //     Object.keys(testData).forEach((key, index) => {
+  //       const dataset = {
+  //         label: key,
+  //         data: testData[key],
+  //         // data: testData[key],
+  //         borderColor: this.getRandomColor(),
+  //         fill:false
+  //       }
+  //       datasets.push(dataset);
+  //     })
+
+
+  //     if (this.metadataChart) {
+  //       this.metadataChart.destroy();
+  //     }
+
+  //     this.metadataChart = new Chart(meta_ctx, {
+  //       type: 'line',
+  //       data: { labels: labels, datasets: datasets },
+  //       options: {
+  //         responsive: true,
+  //         maintainAspectRatio: false,
+  //       },
+  //       plugins: [
+  //         {
+  //           id: 'customCanvasBackgroundColor',
+  //           beforeDraw: (chart, args, options) => {
+  //             const { ctx }= chart;
+  //             ctx.save();
+  //             ctx.globalCompositeOperation = 'destination-over';
+  //             ctx.fillStyle = 'white'
+  //             ctx.fillRect(0,0, chart.width, chart.height);
+  //             ctx.restore();
+  //           },
+  //         },
+  //       ],
+  //     });
+  //   }
+  // }
+  // updateMetadatChart(id: any, time: any, record: any){   
+  //   // console.log('id: ', id, 'time3: ', time, 'record: ', record) 
+  //   const dataKeys: any = ['snr','rssi','channel_rssi'];
     
 
-    this.metadataChart.update();   
-  }
+  //   this.metadataChart.update();   
+  // }
   updatePayloadChart(data: any){
     // console.log('in update payload chart')
     // if(this.payloadChart && this.payloadChart.data && this.payloadChart.data.labels){
@@ -995,13 +1011,42 @@ export class FilterPageComponent {
     ////console.warn('checkboxLabel wa called without a row or index.');
     return '';
   }
+  // shouldHighlightPayload(value: any, key: any): boolean {
+  //   const dataValues = this.filteredPayloadStatSource.data;
+  //   const statValues = dataValues[key+1];
+  //   try{
+  //     const mean = parseFloat(statValues.mean);
+  //     const stddev = parseFloat(statValues.standard_deviation);
+  //     if(value === undefined){
+  //       return false;
+  //     }
+  //     if(value === 1){ 
+  //       return false;
+  //     }
+  //     if( (value > (mean + stddev)) || (value < (mean - stddev))){ 
+  //       return true;
+  //     }
+  //     return false; 
+  //   }
+  //   catch{
+  //     return false;
+  //   }
+  // }
   shouldHighlightPayload(value: any, key: any): boolean {
-    const dataValues = this.payloadStatSource.data;
+    const dataValues = this.filteredPayloadStatSource.data;
     const statValues = dataValues[key+1];
     try{
       const mean = parseFloat(statValues.mean);
       const stddev = parseFloat(statValues.standard_deviation);
-      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
+      if(value === undefined || value  === (mean + stddev) || value === 0){
+        return false;
+      }
+      if(value === 1){ 
+        return false;
+      }
+      if( (value > (mean + stddev)) || (value < (mean - stddev))){ 
+        console.log('value: ', value)
+        console.log('(mean + stddev): ', (mean + stddev))
         return true;
       }
       return false; 
@@ -1011,20 +1056,20 @@ export class FilterPageComponent {
     }
   }
 
-  shouldHighlightMetadata(value: any, key: any): boolean {
-    const dataValues = this.metadataStatSource.data;
-    const statValues = dataValues[key+1];
-    try{
-      const mean = parseFloat(statValues.mean);
-      const stddev = parseFloat(statValues.standard_deviation);
-      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
-        return true;
-      }
-      return false; 
-    }
-    catch{
-      return false;
-    }
-  }
+  // shouldHighlightMetadata(value: any, key: any): boolean {
+  //   const dataValues = this.metadataStatSource.data;
+  //   const statValues = dataValues[key+1];
+  //   try{
+  //     const mean = parseFloat(statValues.mean);
+  //     const stddev = parseFloat(statValues.standard_deviation);
+  //     if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
+  //       return true;
+  //     }
+  //     return false; 
+  //   }
+  //   catch{
+  //     return false;
+  //   }
+  // }
 }
 

@@ -12,8 +12,8 @@
         <input
           matInput
           name="deviceName"
-          [ngModel]="deviceName | badWordsFilter"
-          (ngModelChange)="deviceName = $event"
+          [ngModel]="deviceName"
+          (ngModelChange)="checkBadWords($event)"
           #nameInput="ngModel"
           required
         />

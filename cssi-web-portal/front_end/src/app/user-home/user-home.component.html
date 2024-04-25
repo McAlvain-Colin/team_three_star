@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [style.height]="'100vh'">
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -26,9 +26,9 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      Welcome Home<span class="push-button-right"></span
+      <mat-icon class="home-icon" aria-label="Home icon">home</mat-icon> Home<span class="push-button-right"></span
       ><button mat-raised-button color="warn" (click)="logout()">
-        Sign Out
+        Sign Out <mat-icon class="leave-icon" aria-label="Sign Out icon">logout</mat-icon>
       </button></mat-toolbar
     >
     <mat-card class="organization-box">
@@ -39,7 +39,8 @@
               <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
               <button
                 mat-raised-button
-                color="accent"
+                [style.background-color]="'#4CAF50'"
+                [style.color]="'white'"
                 class="group-button"
                 routerLink="/add-organization/{{ userName }}"
               >
@@ -68,9 +69,25 @@
                   )
                 "
               >
-                <div class="make-flexbox">
-                  {{ organization.name }}
+                <!--div class="make-flexbox">
+                  Name: {{ organization.name }}
                   <span class="push-button-right"></span>
+                  Total Members: {{ organization.total_members }}
+                  <span class="push-button-right"></span>
+                  Total Apps: {{ organization.num_apps }}
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeOrgs"
+                    (click)="confirmRemoval(0, organization)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div-->
+                <div class="make-grid">
+                  <div class="grid-item">Name: {{ organization.name }}</div>
+                  <div class="grid-item">Members: {{ organization.total_members }}</div>
+                  <div class="grid-item">Total Apps: {{ organization.num_apps }}</div>
+                  <div class="grid-item">
                   <button
                     class="remove-icon"
                     *ngIf="removeOrgs"
@@ -79,7 +96,16 @@
                     <mat-icon fontIcon="remove" color="warn"></mat-icon>
                   </button>
                 </div>
+                </div>
               </a>
+              <h1 class="empty-text1" *ngIf="!ownedOrgSource.data.length">
+                It appears you don't have any organizations why not start by
+                creating your own?
+              </h1>
+              <h1 class="empty-text2" *ngIf="!ownedOrgSource.data.length">
+                You'll need an organization name to start, use the Add Button in
+                the top left of this panel to begin the creation process.
+              </h1>
             </mat-nav-list>
             <mat-paginator
               #ownedOrgPaginator
@@ -115,7 +141,7 @@
                   )
                 "
               >
-                <div class="make-flexbox">
+                <!--div class="make-flexbox">
                   {{ organization.name }}
                   <span class="push-button-right"></span>
                   <button
@@ -125,8 +151,32 @@
                   >
                     <mat-icon fontIcon="remove" color="warn"></mat-icon>
                   </button>
+                </div-->
+                <div class="make-grid">
+                  <div class="grid-item">Name: {{ organization.name }}</div>
+                  <div class="grid-item">Members: {{ organization.total_members }}</div>
+                  <div class="grid-item">Total Apps: {{ organization.num_apps }}</div>
+                  <div class="grid-item">
+                  <button
+                    class="remove-icon"
+                    *ngIf="removeOrgs"
+                    (click)="confirmRemoval(0, organization)"
+                  >
+                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                  </button>
+                </div>
                 </div>
               </a>
+              <h1 class="empty-text1" *ngIf="!joinedOrgSource.data.length">
+                On this page you'll be able to check out the organizations
+                you've joined, you can press the Leave button to remove yourself
+                from these organizations.
+              </h1>
+              <h1 class="empty-text2" *ngIf="!joinedOrgSource.data.length">
+                It appears you haven't joined any organizations yet, request an
+                invite from an admin member, the request will be sent in your
+                email!
+              </h1>
             </mat-nav-list>
             <mat-paginator
               #joinedOrgPaginator

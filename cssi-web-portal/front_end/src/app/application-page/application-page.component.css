@@ -56,9 +56,27 @@
 }
 
 .background {
-  background-color: aliceblue;
-  height: 100%;
+  min-height: 100%;
+  position: absolute;
+  background-image: url("../../assets/forrest_ground.jpeg") !important;
+  top: 0;
+  left: 0;
+  z-index: -1;
   width: 100%;
+
+  /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, #000000, #000000);
+    opacity: 0.4;
+  }
 }
 
 .device-button {
@@ -70,11 +88,12 @@
 .color-white {
   text-decoration: none;
   color: white;
-  padding-right: 6px;
 }
 
 .app-title {
   color: rgba(63, 81, 181, 1);
+  font-size: 12pt;
+  font-weight: 400;
 }
 
 .app-divider {
@@ -124,6 +143,14 @@
   flex-grow: 1;
 }
 
+.home-icon {
+  transform: translate(-22%, 18%);
+}
+
+.home-text {
+  transform: translate(0%, -10%);
+}
+
 .make-flexbox {
   display: flex;
   flex-direction: row;
@@ -131,7 +158,8 @@
 
 .group-button {
   position: relative;
-  margin: 2px;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 .remove-icon {
@@ -143,5 +171,24 @@
 
 .devices-content {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+
+.empty-text1 {
+  text-align: center;
+  color: #3f51b5;
+  padding-top: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
+  left: 40%;
+}
+
+.empty-text2 {
+  text-align: center;
+  color: #3f51b5;
+  padding-top: 1%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 5%;
+  left: 40%;
 }

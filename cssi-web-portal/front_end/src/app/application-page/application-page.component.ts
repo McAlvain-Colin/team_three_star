@@ -29,6 +29,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Organization, Device } from '../data.config';
 import { MatDialog } from '@angular/material/dialog';
 import { RemovalDialogComponent } from '../removal-dialog/removal-dialog.component';
+import { TimerService } from '../login/login.component';
 
 @Component({
   selector: 'app-application-page',
@@ -78,7 +79,8 @@ export class ApplicationPageComponent {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private http: HttpClient,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private timerService: TimerService
   ) {} //makes an instance of the router
   ngOnInit(): void {
     this.appId = this.route.snapshot.paramMap.get('app'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -212,5 +214,9 @@ export class ApplicationPageComponent {
 
   handlePageEvent(pageEvent: PageEvent, pageType: number) {
     //Make get request here that sends in pageEvent.pageIndex
+  }
+  
+  logout() {
+    this.timerService.logout();
   }
 }

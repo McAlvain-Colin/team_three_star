@@ -86,3 +86,7 @@ body {
 .password-tooltip {
   white-space: pre-line;
 } //NEEDS TO BE IN THE MAIN STYLES so that the angular style actually applies to the angular component
+
+.no-hover.mat-tab-group:hover {
+  background-color: inherit !important;
+}

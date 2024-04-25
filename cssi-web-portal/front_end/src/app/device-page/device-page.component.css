@@ -1,5 +1,6 @@
 .toolbar {
   opacity: 0.9;
+  z-index: 10;
 }
 
 .absorb {
@@ -55,9 +56,27 @@
 }
 
 .background {
-  background-color: aliceblue;
-  height: 90%;
+  min-height: 100%;
+  position: absolute;
+  background-image: url("../../assets/dirtWDevice.jpg") !important;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: -1;
   width: 100%;
+
+  /*This below is for controlling the gradient overlay of the image in order to make the image look darker, */
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, #000000, #000000);
+    opacity: 0.4;
+  }
 }
 
 .about-device-box {
@@ -73,11 +92,25 @@
 .color-white {
   text-decoration: none;
   color: white;
-  padding-right: 6px;
+}
+
+.push-button-right {
+  /* This just grows the span so that it takes up the entire flexbox */
+  flex-grow: 1;
+}
+
+.home-icon {
+  transform: translate(-22%, 18%);
+}
+
+.home-text {
+  transform: translate(0%, -10%);
 }
 
 .device-title {
   color: rgba(63, 81, 181, 1);
+  font-size: 12pt;
+  font-weight: 400;
 }
 
 .device-divider {
@@ -96,8 +129,8 @@
   margin-top: 1%;
   margin-left: 5%;
   margin-right: 5%;
-  margin-bottom: 4%;
-  height: 32%;
+  margin-bottom: 2%;
+  height: 25%;
   max-height: 32%;
   width: 90%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
@@ -113,18 +146,21 @@
 
 .data-button {
   position: relative;
-  left: 25%;
-  top: 45%;
-  margin-top: 4%;
+  /*transform: translate(470%, -250%); */
+  transform: translate(0%, 250%);
+  bottom: 10%;
+  left: 20%;
+  z-index: 10;
 }
 
 .map-button {
   position: relative;
-  left: 45%;
-  top: 45%;
-  margin-top: 4%;
+  /*transform: translate(1000%, -250%); */
+  transform: translate(0%, 250%);
+  bottom: 10%;
+  left: 40%;
+  z-index: 10;
 }
-
 
 .about-device-box {
   width: 100%;
@@ -143,7 +179,7 @@
 
 .device-data {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .device-metadata-box {
@@ -159,7 +195,7 @@
 
 .device-metadata {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .metadata-search-bar {
@@ -171,7 +207,6 @@
   /* position: absolute; */
   position: relative;
 
-  
   top: 50%;
 
   margin-top: 1%;
@@ -193,7 +228,6 @@
   /* position: absolute; */
   position: relative;
 
-  
   top: 50%;
 
   margin-top: 1%;
@@ -210,21 +244,21 @@
   /* left: 5%; */
   top: 40%;
 }
-.Annotations{
+.Annotations {
   margin-left: 5%;
-  margin-top: 10px;;
+  margin-top: 10px;
   width: 90%;
   height: 100px;
   max-width: 100%;
 }
-.textarea{
+.textarea {
   /* margin-top: 10px; */
   margin-left: 0%;
   width: 90%;
   height: 80px;
   max-width: 100%;
 }
-.graph{
+.graph {
   width: 90%;
   margin-left: 5%;
   margin-top: 10px;

@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [style.height]="'100vh'">
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -14,6 +14,7 @@
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
       <a mat-list-item routerLink="/home">Home</a>
+      <a mat-list-item (click)="logout()"> Sign Out </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -25,37 +26,74 @@
         (click)="drawer.toggle()"
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon></button
-      ><a routerLink="/home" class="color-white">Home ></a>
-      Organization</mat-toolbar
+      ><a routerLink="/home" class="color-white"><mat-icon class="home-icon" aria-label="Home icon">home</mat-icon><span class="home-text">Home</span></a><mat-icon aria-label="next arrow">navigate_next</mat-icon>
+      Organization
+      <span class="push-button-right"></span
+        ><button mat-raised-button color="warn" (click)="logout()">
+          Sign Out <mat-icon class="leave-icon" aria-label="Sign Out icon">logout</mat-icon>
+        </button></mat-toolbar
     >
+    <body class="background">
+    <div class="check-expandable">
+    <div class="make-side-by-side">
     <mat-card class="organization-box">
       <mat-card-content class="organization-content">
-        <img
+        <!--img
           class="organization-image"
           src="{{ '../../assets/' + imgName + '.jpg' }}"
           alt="Grey cat sitting on couch"
-        />
+        /-->
         <mat-card-content class="about-org-box">
           <mat-card-header
             ><h3 class="organization-title">About {{ orgName }}</h3>
           </mat-card-header>
           <mat-divider class="organization-divider"></mat-divider>
-          <p>
+          <h4>
             {{ orgDescription }}
-          </p>
+          </h4>
+
+          <mat-list>
+            <h4>
+              <b><u>Admins</u></b>
+            </h4>
+            <div
+              mat-list-item
+              *ngFor="
+                let member of memberSource.data.slice(
+                  membersPaginator.pageIndex * membersPaginator.pageSize,
+                  (membersPaginator.pageIndex + 1) * membersPaginator.pageSize
+                )
+              "
+            >
+              <h4 *ngIf="member.role == 1">
+                <div class="make-flexbox">
+                  {{ member.name }}
+                  <span class="push-button-right"></span> Contact Email:
+                  {{ member.email }}
+                </div>
+              </h4>
+            </div>
+          </mat-list>
+          <h4>
+            Total members in {{ orgName }}:
+            {{
+              memberSource.data.length
+            }}
+          </h4>
         </mat-card-content>
       </mat-card-content>
     </mat-card>
     <mat-card class="apps-box">
       <mat-card-content class="apps-content">
-        <mat-tab-group [style.position]="'sticky'">
-          <mat-tab label="{{ orgName }}'s Applications">
+        <mat-tab-group class="no-hover" [disableRipple]="true">
+          <mat-tab label="{{ orgName }} Applications">
             <mat-nav-list>
               <div class="make-flexbox">
                 <!--Can make userName in link be ID instead to better tranfer information between pages if needed-->
                 <button
                   mat-raised-button
-                  color="accent"
+                  [style.background-color]="'#4CAF50'"
+                  [style.color]="'white'"
                   class="group-button"
                   *ngIf="userRole != 3"
                   routerLink="/add-application/{{ orgId }}"
@@ -95,6 +133,15 @@
                   </button>
                 </div>
               </a>
+              <h1 class="empty-text1" *ngIf="!appsSource.data.length">
+                You have no applications, to add one to your organization,
+                please hit Add in the upper left of this panel.
+              </h1>
+              <h1 class="empty-text2" *ngIf="!appsSource.data.length">
+                An application is a group of devices assigned for a specific
+                task, after creation, an admin or PI can add devices to the
+                application.
+              </h1>
             </mat-nav-list>
             <mat-paginator
               #appsPaginator
@@ -108,16 +155,18 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
+  </div>
     <mat-card class="member-box" [style.display]="!isAdmin ? 'none' : 'block'">
       <!--Created hidden instead of ngIF because of some weird properties of Angular that causes it not initialize the paginator, and thus no items are registered-->
       <mat-card-content class="member-content">
-        <mat-tab-group [style.position]="'sticky'">
-          <mat-tab label="{{ orgName }}'s Members">
+        <mat-tab-group class="no-hover" [disableRipple]="true">
+          <mat-tab label="{{ orgName }} Members">
             <mat-nav-list>
               <div class="make-flexbox">
                 <button
                   mat-raised-button
-                  color="accent"
+                  [style.background-color]="'#4CAF50'"
+                  [style.color]="'white'"
                   class="group-button"
                   *ngIf="userRole == 1"
                   routerLink="/invite-user/{{ orgId }}"
@@ -183,7 +232,8 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-    <body class="background"></body>
+  </div>
+</body>
     <!--app-temp-nav-bar></app-temp-nav-bar-->
   </mat-sidenav-content>
 </mat-sidenav-container>

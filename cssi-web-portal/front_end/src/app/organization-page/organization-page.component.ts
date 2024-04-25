@@ -31,13 +31,18 @@ import {
   _MatTableDataSource,
   MatTableDataSource,
 } from '@angular/material/table';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Organization, App, Member } from '../data.config';
 import { MatDividerModule } from '@angular/material/divider';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { SelectionChange } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TimerService } from '../login/login.component';
 
 @Component({
   selector: 'app-organization-page',
@@ -102,9 +107,9 @@ export class OrganizationPageComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private http: HttpClient,
-    private changeDetector: ChangeDetectorRef, 
+    private changeDetector: ChangeDetectorRef,
     private snackBar: MatSnackBar,
-
+    private timerService: TimerService
   ) {} //makes an instance of the router
   ngOnInit(): void {
     this.orgId = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -147,14 +152,12 @@ export class OrganizationPageComponent implements OnInit {
           this.appsSource.paginator = this.appsPaginator;
         },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-
-        }
+        },
       });
 
     this.http
@@ -185,14 +188,12 @@ export class OrganizationPageComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-
-        }
+        },
       });
 
     // this for getting org members
@@ -218,19 +219,18 @@ export class OrganizationPageComponent implements OnInit {
               id: resp.body.list[i].a_id,
               name: resp.body.list[i].name,
               role: resp.body.list[i].r_id,
+              email: resp.body.list[i].email,
             });
           }
           this.memberSource.paginator = this.membersPaginator;
         },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-
-        }
+        },
       });
 
     // this is for getting a org's applicatiiions
@@ -295,5 +295,9 @@ export class OrganizationPageComponent implements OnInit {
       this.applications.push('Application ' + i);
       this.members.push('Member ' + i);
     }
+  }
+  
+  logout() {
+    this.timerService.logout();
   }
 }

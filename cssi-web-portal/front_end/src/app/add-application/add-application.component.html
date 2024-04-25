@@ -12,8 +12,8 @@
         <input
           matInput
           name="appName"
-          [ngModel]="appName | badWordsFilter"
-          (ngModelChange)="appName = $event"
+          [ngModel]="appName"
+          (ngModelChange)="checkBadWords($event, 0)"
           #nameInput="ngModel"
           required
         />
@@ -25,8 +25,8 @@
         <input
           matInput
           name="appDescription"
-          [ngModel]="appDescription | badWordsFilter"
-          (ngModelChange)="appDescription = $event"
+          [ngModel]="appDescription"
+          (ngModelChange)="checkBadWords($event, 1)"
           #nameInput="ngModel"
         />
       </mat-form-field>

@@ -42,7 +42,12 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { TimerService } from '../login/login.component';
 
 @Component({
@@ -110,9 +115,9 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
     public router: Router,
     public dialog: MatDialog,
     private http: HttpClient,
-    private changeDetector: ChangeDetectorRef,    
-    private timerService : TimerService,
-    private snackBar: MatSnackBar,
+    private changeDetector: ChangeDetectorRef,
+    private timerService: TimerService,
+    private snackBar: MatSnackBar
   ) {} //makes an instance of the router alsoe creates aaa hhhttp object to use for Requests to backend
   ngOnInit(): void {
     this.http
@@ -141,8 +146,12 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
           this.ownedOrgSource = new MatTableDataSource(response.body?.list);
           this.ownedOrgSource.paginator = this.ownedOrgPaginator;
         },
-        error: (error) => {
-          console.error(error);
+        error: (error: HttpErrorResponse) => {
+          const message = error.error.errorMessage;
+          this.snackBar.open(message, 'Close', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
         },
       });
 
@@ -171,20 +180,20 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
           //   );
           // }
 
+          console.log(response.body?.list)
           this.joinedOrgSource = new MatTableDataSource(response.body?.list);
+          console.log(this.joinedOrgSource)
           this.joinedOrgSource.paginator = this.joinedOrgPaginator;
         },
         error: (error: HttpErrorResponse) => {
-          if(error.status != 422)
-          {
+          if (error.status != 422) {
             const message = error.error.errorMessage;
             this.snackBar.open(message, 'Close', {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
           }
-
-        }
+        },
       });
 
     this.userName = this.route.snapshot.paramMap.get('user'); //From the current route, get the route name, which should be the identifier for what you need to render.
@@ -248,15 +257,7 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
 
   logout() {
     this.timerService.logout();
-
   }
 
-  // setupExampleLists() {
-  //   for (let i = 1; i <= 14; i++) {
-  //     this.notifications.push('Notification ' + i);
-  //     this.ownedOrgs.push('Owned Organization ' + i);
-  //     this.joinedOrgs.push('Joined Organization ' + i);
-  //     this.favDevices.push('Favorite Device ' + i);
-  //   }
-  // }
+  //
 }

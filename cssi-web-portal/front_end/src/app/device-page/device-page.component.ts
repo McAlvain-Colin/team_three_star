@@ -41,8 +41,13 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TimerService } from '../login/login.component';
 
 //using code from the filter page here since it is essentiall the same
 //I want to redo this code if theres time using the pageinate module.
@@ -95,7 +100,7 @@ interface PayloadRecord {
 })
 export class DevicePageComponent implements AfterViewInit {
   form = new FormGroup({
-    notes: new FormControl('')
+    notes: new FormControl(''),
   });
   // private breakpointObserver = inject(BreakpointObserver);
 
@@ -139,7 +144,8 @@ export class DevicePageComponent implements AfterViewInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private snackBar: MatSnackBar 
+    private snackBar: MatSnackBar,
+    private timerService: TimerService
   ) {
     Chart.register(...registerables); // ...registerables is an array that contains all the components Chart.js offers
   }
@@ -195,15 +201,17 @@ export class DevicePageComponent implements AfterViewInit {
           this.getDataSetup();
         },
         error: (error: HttpErrorResponse) => {
-
           const message = error.error.errorMessage;
           this.snackBar.open(message, 'Close', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-  
-        }
+        },
       });
+  }
+
+  logout() {
+    this.timerService.logout();
   }
 
   @ViewChild('payloadPaginator') payloadPaginator!: MatPaginator;
@@ -230,7 +238,7 @@ export class DevicePageComponent implements AfterViewInit {
   removeDevice(): void {}
 
   private getDataSetup(): void {
-    if(this.deviceEUI) {
+    if (this.deviceEUI) {
       this.apiService.getData(this.deviceEUI, '100').subscribe({
         next: (data: SensorData[]) => {
           const records = data.map((item: SensorData) => ({
@@ -248,7 +256,13 @@ export class DevicePageComponent implements AfterViewInit {
             this.displayedPayloadColumns = ['Dev_eui', 'Dev_time'].concat(
               this.payloadColumns
             );
-            this.displayedMetadataColumns = ['Dev_eui', 'Dev_time', 'snr','rssi','channel_rssi'];
+            this.displayedMetadataColumns = [
+              'Dev_eui',
+              'Dev_time',
+              'snr',
+              'rssi',
+              'channel_rssi',
+            ];
           }
         },
         error: (error) => {
@@ -257,12 +271,15 @@ export class DevicePageComponent implements AfterViewInit {
       });
       this.apiService.getdevAnnotation(this.deviceEUI).subscribe({
         next: (data: string) => {
-          console.log("annotation: ", data)
-          this.deviceAnnotation = data},
-        error: (error) => {console.error('Error: ', error);},
+          console.log('annotation: ', data);
+          this.deviceAnnotation = data;
+        },
+        error: (error) => {
+          console.error('Error: ', error);
+        },
       });
       console.log('Annotation', this.deviceAnnotation);
-  
+
       this.createPayloadChart(this.deviceEUI);
       this.createMetadataChart(this.deviceEUI);
     }
@@ -283,7 +300,6 @@ export class DevicePageComponent implements AfterViewInit {
         // //console.log(payloadStatRecord)
 
         this.paylaodStatSource.data = payloadStatRecord;
-        
       },
 
       error: (error) => {
@@ -376,24 +392,20 @@ export class DevicePageComponent implements AfterViewInit {
       .join('\r\n');
   }
   exportPayloadData() {
-    const payloadData = this.payloadDataSource.data.map(
-      (item) => ({
-        devEUI: item.dev_eui,
-        devTime: item.dev_time,
-        ...item.payload_dict
-      })
-    );
-    this.exportToCSV( payloadData, 'payload_data.csv');
+    const payloadData = this.payloadDataSource.data.map((item) => ({
+      devEUI: item.dev_eui,
+      devTime: item.dev_time,
+      ...item.payload_dict,
+    }));
+    this.exportToCSV(payloadData, 'payload_data.csv');
   }
   exportMetadata() {
-    const metadata = this.metadataSource.data.map(
-      (item) => ({
-        devEUI: item.dev_eui,
-        devTime: item.dev_time,
-        ...item.metadata_dict
-      })
-    );
-    this.exportToCSV( metadata, 'metadata_data.csv');
+    const metadata = this.metadataSource.data.map((item) => ({
+      devEUI: item.dev_eui,
+      devTime: item.dev_time,
+      ...item.metadata_dict,
+    }));
+    this.exportToCSV(metadata, 'metadata_data.csv');
   }
   createPayloadChart(devId: string) {
     this.apiService.getPayload(devId, '100').subscribe({
@@ -435,7 +447,10 @@ export class DevicePageComponent implements AfterViewInit {
       this.payloadTimeRecord.length > 0 &&
       this.payloadRecord.length > 0
     ) {
-      const labels = Array.from({length: this.payloadTimeRecord.length }, (_,i) =>i+1);
+      const labels = Array.from(
+        { length: this.payloadTimeRecord.length },
+        (_, i) => i + 1
+      );
       const datasets = this.payloadColumns.map((col) => {
         return {
           label: col,
@@ -466,11 +481,11 @@ export class DevicePageComponent implements AfterViewInit {
           {
             id: 'customCanvasBackgroundColor',
             beforeDraw: (chart, args, options) => {
-              const { ctx }= chart;
+              const { ctx } = chart;
               ctx.save();
               ctx.globalCompositeOperation = 'destination-over';
-              ctx.fillStyle = 'white'
-              ctx.fillRect(0,0, chart.width, chart.height);
+              ctx.fillStyle = 'white';
+              ctx.fillRect(0, 0, chart.width, chart.height);
               ctx.restore();
             },
           },
@@ -479,13 +494,15 @@ export class DevicePageComponent implements AfterViewInit {
     }
   }
   initializeMetadataChart() {
-    const meta_ctx = document.getElementById('metadataChart') as HTMLCanvasElement;
+    const meta_ctx = document.getElementById(
+      'metadataChart'
+    ) as HTMLCanvasElement;
     if (
       meta_ctx &&
       this.metadataTimeRecord.length > 0 &&
       this.metadataRecord.length > 0
     ) {
-      const labels = Array.from({length: this.metadataTimeRecord.length }, (_,i) =>i+1); 
+      const labels = this.metadataTimeRecord;//Array.from({length: this.metadataTimeRecord.length }, (_,i) =>i+1); 
       const dataKeys = ['snr','rssi','channel_rssi'];
       const datasets = dataKeys.map((key) => {
         return {
@@ -517,11 +534,11 @@ export class DevicePageComponent implements AfterViewInit {
           {
             id: 'customCanvasBackgroundColor',
             beforeDraw: (chart, args, options) => {
-              const { ctx }= chart;
+              const { ctx } = chart;
               ctx.save();
               ctx.globalCompositeOperation = 'destination-over';
-              ctx.fillStyle = 'white'
-              ctx.fillRect(0,0, chart.width, chart.height);
+              ctx.fillStyle = 'white';
+              ctx.fillRect(0, 0, chart.width, chart.height);
               ctx.restore();
             },
           },
@@ -531,16 +548,15 @@ export class DevicePageComponent implements AfterViewInit {
   }
   shouldHighlightPayload(value: any, key: any): boolean {
     const dataValues = this.paylaodStatSource.data;
-    const statValues = dataValues[key+1];
-    try{
+    const statValues = dataValues[key + 1];
+    try {
       const mean = parseFloat(statValues.mean);
       const stddev = parseFloat(statValues.standard_deviation);
-      if( (value > (mean + stddev)) && (value < (mean - stddev))){ 
+      if (value > mean + stddev && value < mean - stddev) {
         return true;
       }
-      return false; 
-    }
-    catch{
+      return false;
+    } catch {
       return false;
     }
   }
@@ -572,19 +588,20 @@ export class DevicePageComponent implements AfterViewInit {
       this.showSpinner = false;
     }, 250);
   }
-  onSubmit(){
-    console.log('Form Submitted: ', this.form.value)
+  onSubmit() {
+    console.log('Form Submitted: ', this.form.value);
     const notesValue = this.form.value['notes'];
-    if(notesValue !== null && notesValue !== undefined){
+    if (notesValue !== null && notesValue !== undefined) {
       this.apiService.setdevAnnotation(this.deviceEUI, notesValue).subscribe({
         next: (data: string) => {
-          console.log("annotation: ", data);
+          console.log('annotation: ', data);
           this.deviceAnnotation = data;
-      },
-      error: (error) => {console.error('Error: ', error);},
+        },
+        error: (error) => {
+          console.error('Error: ', error);
+        },
       });
-    }
-    else {
+    } else {
       console.error('No notes to submit');
     }
   }
