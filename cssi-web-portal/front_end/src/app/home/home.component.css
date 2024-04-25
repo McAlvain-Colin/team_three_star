@@ -37,6 +37,7 @@
   -webkit-text-stroke-width: 0.5px;
   -webkit-text-stroke-color: black;
   color: white;
+  transform: translate(0%, -14%);
 }
 
 .body-description {

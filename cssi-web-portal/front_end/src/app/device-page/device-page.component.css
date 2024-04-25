@@ -116,6 +116,7 @@
 .device-divider {
   border-top-color: rgba(63, 81, 181, 0.6);
   border-top-width: 3px;
+  margin-bottom: 1%;
 }
 
 .device-image {
@@ -129,7 +130,6 @@
   margin-top: 1%;
   margin-left: 5%;
   margin-right: 5%;
-  margin-bottom: 2%;
   height: 25%;
   max-height: 32%;
   width: 90%;
@@ -147,8 +147,6 @@
 .data-button {
   position: relative;
   /*transform: translate(470%, -250%); */
-  transform: translate(0%, 250%);
-  bottom: 10%;
   left: 20%;
   z-index: 10;
 }
@@ -156,8 +154,6 @@
 .map-button {
   position: relative;
   /*transform: translate(1000%, -250%); */
-  transform: translate(0%, 250%);
-  bottom: 10%;
   left: 40%;
   z-index: 10;
 }
@@ -172,6 +168,7 @@
   position: relative;
   margin-left: 5%;
   margin-right: 5%;
+  margin-top: 2%;
   top: 40%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
@@ -187,7 +184,7 @@
   position: relative;
   margin-left: 5%;
   margin-right: 5%;
-  margin-top: 4%;
+  margin-top: 2%;
   top: 30%;
   box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
     0 1px 10px 0 rgba(0, 0, 0, 0.4);
@@ -212,7 +209,6 @@
   margin-top: 1%;
   /* margin-left: 5%; */
   margin-right: 5%;
-  margin-bottom: 4%;
 
   max-height: 500px;
   max-width: 100%;
@@ -233,7 +229,6 @@
   margin-top: 1%;
   /* margin-left: 5%; */
   margin-right: 5%;
-  margin-bottom: 4%;
 
   max-height: 500px;
   max-width: 100%;
@@ -247,6 +242,7 @@
 .Annotations {
   margin-left: 5%;
   margin-top: 10px;
+  margin-bottom: 2%;
   width: 90%;
   height: 100px;
   max-width: 100%;
@@ -254,7 +250,7 @@
 .textarea {
   /* margin-top: 10px; */
   margin-left: 0%;
-  width: 90%;
+  width: 86%;
   height: 80px;
   max-width: 100%;
 }

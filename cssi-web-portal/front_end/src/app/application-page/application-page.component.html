@@ -42,9 +42,15 @@
           ><h3 class="app-title">About {{ appName }}</h3>
         </mat-card-header>
         <mat-divider class="app-divider"></mat-divider>
-        <p>
+        <h4>
           {{ appDescription }}
-        </p>
+        </h4>
+        <h4>
+          Application ID: {{ appId }}
+        </h4>
+        <h4>
+          Total number of devices: {{ devices.length }}
+        </h4>
       </div>
     </mat-card>
     <mat-card class="devices-box">
