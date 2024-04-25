@@ -15,9 +15,9 @@
     <mat-nav-list>
       <button class="absorb" mat-button></button>
       <!--That button is needed to fix Angular bug where 1st element will always be highlighted in sidenav if it is in over mode-->
-      <a mat-list-item routerLink="/login">Login</a>
-      <a mat-list-item routerLink="/sign-up">Signup</a>
       <a mat-list-item routerLink="/about">About Us</a>
+      <a mat-list-item routerLink="/sign-up">Signup</a>
+      <a mat-list-item routerLink="/login">Login</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -36,9 +36,9 @@
       <span class="push-links-right"></span>
       <a routerLink="/about">About Us</a>
       <p class="vertical-seperator">|</p>
-      <a routerLink="/login">Login</a>
-      <p class="vertical-seperator">|</p>
       <a routerLink="/sign-up">Signup</a>
+      <p class="vertical-seperator">|</p>
+      <a routerLink="/login">Login</a>
     </mat-toolbar>
     <!-- Add Content Here, ng-content is used for angular content projection so we can add stuff in tool-bar wrapper in app html -->
     <ng-content></ng-content>
