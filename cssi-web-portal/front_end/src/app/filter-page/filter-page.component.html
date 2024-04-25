@@ -308,9 +308,13 @@
               class="dynamic_column"> 
 
               <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-              <td mat-cell *matCellDef="let element" [ngClass]="{'highlight': shouldHighlightPayload(element.payload_dict[column], displayedPayloadColumns.indexOf(column))}">
+              <!-- <td mat-cell *matCellDef="let element" [ngClass]="{'highlight': shouldHighlightPayload(element.payload_dict[column], displayedPayloadColumns.indexOf(column))}">
                 {{ element.payload_dict[column] || 'N/A' }}
-              </td>
+              </td> -->
+              <td mat-cell *matCellDef="let element">
+                {{ element.payload_dict[column] || 'N/A' }}
+              </td> 
+              
               
             </ng-container>
 
