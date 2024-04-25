@@ -570,12 +570,9 @@ export class FilterPageComponent {
   }
 
   filterSensorData() {
-    //console.log("this worked")
     const formValues = this.filterForm.value.range;
     console.log("form Values: ", formValues);
-    //console.log("payloadDataSource: ", this.payloadDataSource.data);
     const dict = this.payloadDataSource.data;
-    //console.log("object keys:  ", Object.keys(dict[1].payload_dict));
 
     let variables : variableMap = {};
 
@@ -603,9 +600,6 @@ export class FilterPageComponent {
               (!formValues.max || (dataValue != null && !isNaN(dataValue) && dataValue <= formValues.max)) 
             )
           }
-          // console.log("item: " , item);
-          // console.log("dataValue: ", dataValue);
-          // console.log("mix: ", formValues.min, ' Max: ', formValues.max);
 
           return (
             (!formValues.startTime || item.dev_time.includes(formValues.startTime)) &&
@@ -1050,4 +1044,3 @@ export class FilterPageComponent {
   //   }
   // }
 }
-
