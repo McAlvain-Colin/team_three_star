@@ -162,19 +162,36 @@
   overflow-y: auto;
 }
 
+.device-data-box {
+  display: flex;
+  position: relative;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2%;
+  top: 40%;
+  height: fit-content;
+  box-shadow: 0 4px 1px 1px rgba(0, 0, 0, 0.4), 0 4px 20px 0 rgba(0, 0, 0, 0.4),
+    0 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.device-data {
+  height: 100%;
+  overflow-y: auto;
+}
+
 .payload-table {
-  position: inline;
+  /* position: absolute; */
+  position: relative;
 
   top: 50%;
 
   margin-top: 1%;
   /* margin-left: 5%; */
   margin-right: 5%;
-  margin-bottom: 4%;
 
-  /* max-height: 500px;
-  max-width: 80%; */
-  /* overflow-y: auto; */
+  max-height: 500px;
+  max-width: 100%;
+  overflow-y: auto;
   overflow-x: scroll;
 
   width: 100%;
@@ -226,7 +243,6 @@
 
   margin-top: 1%;
   /* margin-left: 5%; */
-  margin-right: 5%;
   margin-bottom: 4%;
 
   /* max-height: 500px;
@@ -248,10 +264,13 @@
   margin-right: 5%;
   /* margin-bottom: 4%; */
 
+  padding-left: 1%;
+  padding-right: 1%;
+
   max-height: 500px;
   max-width: 80%;
   overflow-y: auto;
-  overflow-x: scroll;
+  overflow-x: auto;
 
   width: 80%;
   left: 5%;
