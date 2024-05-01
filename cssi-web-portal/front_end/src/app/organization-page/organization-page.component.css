@@ -172,6 +172,7 @@ body {
   z-index: 10000;
   border-color: red;
   margin-left: 2%;
+  margin-right: 2%;
 }
 
 .no-hover {

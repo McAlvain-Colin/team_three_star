@@ -514,8 +514,16 @@ def inviteUser():
 		ORGACCOUNTS.c.a_id == joinUser.id,
 		ORGACCOUNTS.c.active == False
 		)
-		if db.session.query(checkOrgAccount.exists()).scalar():
-			pass #Pass the creation function if it already exists
+		checkMembership = select(ORGACCOUNTS).where(
+		ORGACCOUNTS.c.o_id == orgId,
+		ORGACCOUNTS.c.a_id == joinUser.id,
+		ORGACCOUNTS.c.active == True
+		)
+
+		if db.session.query(checkMembership.exists()).scalar():
+			return jsonify(userExists = True)
+		elif db.session.query(checkOrgAccount.exists()).scalar():
+			pass #Pass the creation function if it already exists but is a non-active member
 		else:
 			orgacc = OrgAccount(a_id= joinUser.id, o_id= orgId)
 			orgacc.r_id = 3
