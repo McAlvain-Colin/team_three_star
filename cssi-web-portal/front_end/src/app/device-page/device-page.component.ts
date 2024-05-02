@@ -48,6 +48,8 @@ import {
 } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TimerService } from '../login/login.component';
+import * as Leaflet from 'leaflet';
+import { MatRippleModule } from '@angular/material/core';
 
 //using code from the filter page here since it is essentiall the same
 //I want to redo this code if theres time using the pageinate module.
@@ -57,6 +59,14 @@ export interface SensorData {
   dev_time: any;
   payload_dict: any;
   metadata_dict: any;
+}
+export interface DeviceLocation {
+  dev_eui: any;
+  latitude: any;
+  longitude: any;
+  altitude: any;
+  type: any;
+  application: any;
 }
 
 interface PayloadRecord {
@@ -96,6 +106,7 @@ interface PayloadRecord {
     MatSliderModule,
     MatDatepickerModule,
     MatCheckboxModule,
+    MatRippleModule,
   ],
 })
 export class DevicePageComponent implements AfterViewInit {
@@ -152,6 +163,29 @@ export class DevicePageComponent implements AfterViewInit {
 
   //chart variables.
   @Input() Devicelist!: SensorData[];
+  @Input() locationRecord!: DeviceLocation[];
+
+  myMap!: Leaflet.Map;
+  sensorIcon: Leaflet.Icon<Leaflet.IconOptions> = Leaflet.icon({
+    iconUrl: '../assets/sensor.png',
+    iconSize: [25, 25],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+  //array to keep map sensor info
+  sensors: Leaflet.Marker<any>[] = [];
+  gateways: Leaflet.Circle<any>[] = [];
+
+  showSensors: boolean = false;
+  showGateways: boolean = false;
+
+  // locationRecord: DeviceLocation[] = [];
+  // locationData: DeviceLocation[] = [];
+
+  // orgId: string | null = "";
+  // appId: string | null = "";
+  // devName: string | null = "";
 
   showSpinner: boolean = false;
   // records!: SensorData;
@@ -219,7 +253,9 @@ export class DevicePageComponent implements AfterViewInit {
   @ViewChild('devIDPaginator') devIDPaginator!: MatPaginator;
   @ViewChild('payloadStatsPaginator') payloadStatsPaginator!: MatPaginator;
   @ViewChild('metadataStatsPaginator') metadataStatsPaginator!: MatPaginator;
+  @ViewChild('locationPaginator') locationPaginator!: MatPaginator;
 
+  locationSource = new MatTableDataSource<DeviceLocation>([]);
   payloadDataSource = new MatTableDataSource<SensorData>([]);
   metadataSource = new MatTableDataSource<SensorData>([]);
   devIDSource = new MatTableDataSource<string>([]);
@@ -232,6 +268,7 @@ export class DevicePageComponent implements AfterViewInit {
     this.devIDSource.paginator = this.devIDPaginator;
     this.paylaodStatSource.paginator = this.payloadStatsPaginator;
     this.metadataStatSource.paginator = this.metadataStatsPaginator;
+    this.locationSource.paginator = this.locationPaginator;
   }
 
   addDevice(): void {}
@@ -330,6 +367,79 @@ export class DevicePageComponent implements AfterViewInit {
         //console.error('Error: ', error);
       },
     });
+
+    this.apiService.getDeviceLocation(this.deviceEUI).subscribe({ 
+      next: (data: any[]) => {
+        const locationRecord = data.map((item: any) => ({
+          dev_eui: item[0],
+          latitude: item[1],
+          longitude: item[2],
+          altitude: item[3],
+          type: item[4],
+          application: item[5],
+        }));
+        console.log('location record: ', locationRecord)
+
+        this.locationSource.data = locationRecord;
+        // this.locationData = this.locationSource.data;
+
+        console.log("Location Source: ", this.locationSource.data);
+        console.log("Location keys: ", Object.keys(this.locationSource.data));
+
+        console.log("Location Size: ", this.locationSource.data.length);
+
+        
+        if (this.showSensors === false) {
+          this.showSensors = true;
+
+          for (let i = 0; i < this.locationSource.data.length; i++) {
+            if(this.locationSource.data[i].type === 'device') {
+              this.sensors[i] = Leaflet.marker(
+                Leaflet.latLng(
+                  this.locationSource.data[i].latitude,
+                  this.locationSource.data[i].longitude,
+                  this.locationSource.data[i].altitude,                  
+                ),
+                { 
+                  icon: this.sensorIcon,
+                  title: this.locationSource.data[i].application
+                }
+              )
+                .addTo(this.myMap)
+                .bindPopup('endDevice: ' + this.locationSource.data[i].dev_eui.toString());
+            }
+          }
+        }
+
+        if (this.showGateways === false) {
+          this.showGateways = true;
+          for (let i = 0; i < this.locationSource.data.length; i++) {
+            if(this.locationSource.data[i].type === 'gateway') {
+              this.gateways[i] = Leaflet.circle(
+                Leaflet.latLng(
+                  this.locationSource.data[i].latitude,
+                  this.locationSource.data[i].longitude,
+                  this.locationSource.data[i].altitude,
+                ),
+                { radius: 25000 }
+              )
+                .addTo(this.myMap)
+                .bindPopup('gateway: ' + this.locationSource.data[i].dev_eui.toString());
+            }
+          }
+        }
+      },
+
+      error: (error) => {
+        console.error('Error: ', error);
+      },
+    });
+
+    this.myMap = Leaflet.map('map').setView([39.1, -120.05], 9);
+    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(this.myMap);
   }
 
   //filter function in order to allow users display only realivant data.
@@ -616,5 +726,122 @@ export class DevicePageComponent implements AfterViewInit {
     link.href = this.metadataChart.toBase64Image();
     link.download = 'chart.png';
     link.click();
+  }
+
+  // ###################################################################################
+  
+
+  // ngAfterViewInit() {
+  //   this.locationSource.paginator = this.locationPaginator;
+  // }
+
+  // addMarkers method will check if gateways are being displayed, if they are, the boolean value for checking gateway visibility is changed to false, the gateways icons previously added will be removed from the map and the array containing the gateway icons.
+  // if the end devices sensors are not being displayed, then the method will places the sensor icons using the marker function from Leaflet JS, which are created using the end device locations retrieved from the current selected device from the device list and will be placed on top of the map layer,
+  // and also add sensor popup icons depending on if the user clicks on the end device icon which as been added to the map. This was built using the marker documentation on Leaflet https://leafletjs.com/reference.html#marker
+  addMarkers(): void {
+    console.log('locationData: ',this.locationSource)
+    if (this.showGateways === true) {
+      this.showGateways = false;
+      for (let i = this.gateways.length - 1; i >= 0; i--) {
+        this.gateways[i].removeFrom(this.myMap);
+        this.gateways.pop();
+      }
+    }
+
+    if (this.showSensors === false) {
+      this.showSensors = true;
+      //placing all sensor locations in an array to be used later to delete if view gateways is called as well as placing the sensors into the leaflet map
+      console.log(this.locationRecord.length);
+      for (let i = 0; i < this.locationRecord.length; i++) {
+        this.sensors[i] = Leaflet.marker(
+          Leaflet.latLng(
+            this.locationRecord[i].latitude,
+            this.locationRecord[i].longitude,
+            this.locationRecord[i].altitude
+          ),
+          { icon: this.sensorIcon }
+        )
+          .addTo(this.myMap)
+          .bindPopup('endDevice: ' + this.locationRecord[i].dev_eui.toString());
+      }
+    }
+  }
+
+  // ShowGatewayRanges method will check if end device icons are being displayed, if they are, the boolean value for tracking end devices is changed to false, the end device sensor icons previously added will be removed from the map and the array containing the end device sensor icons.
+  // if the gateways are not being displayed, then the method will places the gateway polygons using the circle method from the Leaflet JS, which are created using the gateway locations retrieved from the current selected device from the device list and will be placed on top of the map layer using methods from Leaflet JS library,
+  // and also add gateway popup icons with EUI and depending on if the user clicks on any one of the gateway polygon which as been added to the map. The circle method comes from the Leaflet JS Documentation provided here: https://leafletjs.com/reference.html#circle
+  showGatewayRanges() {
+    if (this.showSensors === true) {
+      for (let i = this.sensors.length - 1; i >= 0; i--) {
+        this.sensors[i].removeFrom(this.myMap);
+        this.sensors.pop();
+      }
+      this.showSensors = false;
+    }
+    if (this.showGateways === false) {
+      this.showGateways = true;
+
+      for (let i = 0; i < this.locationRecord.length; i++) {
+        this.gateways[i] = Leaflet.circle(
+          Leaflet.latLng(
+            this.locationRecord[i].latitude,
+            this.locationRecord[i].longitude
+          ),
+          { radius: 3500 }
+        )
+          .addTo(this.myMap)
+          .bindPopup('gateway: ' + this.locationRecord[i].dev_eui.toString());
+      }
+    }
+  }
+
+  // showDevicesAndGateways will check if either types of icons are showing, end device sensors or gateways, if either one isnt displaying, then the method will add the missing type of layer to the map with similar functionality from showGatewayRanges or
+  // addMarkers methods above.
+  showDevicesAndGateways() {
+    if (this.showSensors === false) {
+      this.showSensors = true;
+
+      for (let i = 0; i < this.locationRecord.length; i++) {
+        this.sensors[i] = Leaflet.marker(
+          Leaflet.latLng(
+            this.locationRecord[i].latitude,
+            this.locationRecord[i].longitude
+          ),
+          { icon: this.sensorIcon}
+        )
+          .addTo(this.myMap)
+          .bindPopup('endDevice: ' + this.locationRecord[i].dev_eui.toString());
+      }
+    }
+
+    if (this.showGateways === false) {
+      this.showGateways = true;
+      for (let i = 0; i < this.locationRecord.length; i++) {
+        this.gateways[i] = Leaflet.circle(
+          Leaflet.latLng(
+            this.locationRecord[i].latitude,
+            this.locationRecord[i].longitude
+          ),
+          { 
+            radius: 3500, 
+            color: '#ff3388',
+            fillColor: 'red'
+          },
+        )
+          .addTo(this.myMap)
+          .bindPopup('gateway: ' + this.locationRecord[i].dev_eui.toString());
+      }
+    }
+  }
+
+  // Flyto method will use the flyto method from the leaflet JS library to indicate that if sensors or gateways are being displayed, then the map will center the map based on the location attributes from the device sent in as a parameter, this implementation was based off the Leaflet documetntation
+  // here :https://leafletjs.com/reference.html#map-flyto
+  flyTo(row: DeviceLocation) {
+    if (this.showSensors === true) {
+      this.myMap.flyTo(Leaflet.latLng(row.latitude, row.longitude), 11);
+    }
+    if (this.showGateways === true) {
+      this.myMap.flyTo(Leaflet.latLng(row.latitude, row.longitude), 11);
+    }
   }
 }

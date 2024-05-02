@@ -1102,6 +1102,19 @@ def get_location():
 	except Exception as e:
 		print('error')
 		return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/devLocation/<string:dev_id>', methods=['GET'])
+@jwt_required()
+def get_device_location(dev_id):
+	print('\n\nIn Get Device Location')
+	try:
+		records = read_records('device_location', 'device_location', dev_id) #hard coded for test
+		# data = parse_data(records)
+		print('\n\nExit Get Device Location')
+		print('------------------------\n\n')
+		return jsonify(records), 200 #200 shows correct  http responses
+	except Exception as e:
+		print('error')
+		return jsonify({'Error': str(e)}), 500 #500 shows server error
 @app.route('/payloadStats/<string:dev_id>/<string:numEnt>', methods=['GET'])
 @jwt_required()
 def get_payloadStats(dev_id, numEnt):

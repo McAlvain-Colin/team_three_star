@@ -30,6 +30,18 @@ import { Organization, Device } from '../data.config';
 import { MatDialog } from '@angular/material/dialog';
 import { RemovalDialogComponent } from '../removal-dialog/removal-dialog.component';
 import { TimerService } from '../login/login.component';
+import * as Leaflet from 'leaflet';
+import { MatRippleModule } from '@angular/material/core';
+import { ApiService } from '../api.service';
+
+export interface DeviceLocation {
+  dev_eui: any;
+  latitude: any;
+  longitude: any;
+  altitude: any;
+  type: any;
+  application: any;
+}
 
 @Component({
   selector: 'app-application-page',
@@ -50,8 +62,10 @@ import { TimerService } from '../login/login.component';
     TempNavBarComponent,
     DeviceMapComponent,
     RemovalDialogComponent,
+    MatRippleModule,
   ],
 })
+
 export class ApplicationPageComponent {
   base_url: string = 'http://localhost:5000';
   deviceList: Device[] = [];
@@ -76,6 +90,7 @@ export class ApplicationPageComponent {
   );
 
   constructor(
+    private apiService: ApiService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private http: HttpClient,
