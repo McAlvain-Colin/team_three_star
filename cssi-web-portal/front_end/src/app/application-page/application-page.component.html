@@ -128,6 +128,84 @@
       </mat-card-content>
     </mat-card>
   </div>
+  <mat-card class="dev-map">
+    <mat-card-title class="map-title">Device Map</mat-card-title>
+    <!-- <mat-card-header class="map-header">Device List</mat-card-header> -->
+    <mat-card-content>
+      <div class="grid-container">
+        <div class="grid-child">
+          <div
+          class="grid-child"
+          id="map"
+          style="height: 600px; border-radius: 5%"
+          ></div>
+          <table mat-table [dataSource]="locationSource" class="mat-elevation-z4">
+            <ng-container matColumnDef="endDeviceId">
+              <th mat-header-cell *matHeaderCellDef>Device</th>
+              <td mat-cell *matCellDef="let element">{{ element.dev_eui }}</td>
+            </ng-container>
+  
+            <ng-container matColumnDef="latitude">
+              <th mat-header-cell *matHeaderCellDef>latitude</th>
+              <td mat-cell *matCellDef="let element">{{ element.latitude }}</td>
+            </ng-container>
+  
+            <ng-container matColumnDef="longitude">
+              <th mat-header-cell *matHeaderCellDef>longitude</th>
+              <td mat-cell *matCellDef="let element">{{ element.longitude }}</td>
+            </ng-container>
+  
+            <ng-container matColumnDef="altitude">
+              <th mat-header-cell *matHeaderCellDef>altitude</th>
+              <td mat-cell *matCellDef="let element">{{ element.altitude }}</td>
+            </ng-container>
+  
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef>type</th>
+              <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+            </ng-container>
+  
+            <ng-container matColumnDef="application">
+              <th mat-header-cell *matHeaderCellDef>application</th>
+              <td mat-cell *matCellDef="let element">{{ element.application }}</td>
+            </ng-container>
+  
+            <tr
+              mat-header-row
+              *matHeaderRowDef="[
+                'endDeviceId',
+                'latitude',
+                'longitude',
+                'altitude',
+                'type',
+                'application'
+              ]"
+            ></tr>
+  
+            <tr
+              mat-row
+              matRipple
+              [matRippleCentered]="false"
+              [matRippleDisabled]="true"
+              [matRippleUnbounded]="false"
+              *matRowDef="
+                let row;
+                columns: [
+                  'endDeviceId',
+                  'latitude',
+                  'longitude',
+                  'altitude',
+                  'type',
+                  'application'
+                ]
+              "
+              (click)="flyTo(row)"
+            ></tr>
+          </table>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </body>
   </mat-sidenav-content>
 </mat-sidenav-container>

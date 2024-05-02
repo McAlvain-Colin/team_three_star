@@ -197,3 +197,13 @@
   padding-bottom: 5%;
   left: 40%;
 }
+.dev-map{
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 10px;
+}
+.map-title{
+  margin-top: 2%;
+  margin-left: 2%;
+  margin-bottom: 2%;
+}
