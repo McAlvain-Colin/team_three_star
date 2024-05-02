@@ -28,8 +28,10 @@ export class ApiService {
     return this.http.get(`${this.BASE_URL}/payload/${devId}/${numEnt}`);
   }
   getLocation(): Observable<any> {
-    // console.log(this.http.get(`${this.BASE_URL}/location`));
     return this.http.get(`${this.BASE_URL}/location`);
+  }
+  getDeviceLocation(devId: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/devLocation/${devId}`);
   }
   getPayloadStatisticsData(devId: string, numEnt: string) :Observable<any>{
     return this.http.get(`${this.BASE_URL}/payloadStats/${devId}/${numEnt}`);

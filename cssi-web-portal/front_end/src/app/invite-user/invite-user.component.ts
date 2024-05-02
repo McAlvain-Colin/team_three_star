@@ -121,7 +121,14 @@ export class InviteUserComponent {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
               });
-            } else {
+            } else if (resp.userExists) {
+              message = "User is already a part of this organization!";
+              this.snackBar.open(message, 'Dismiss', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+              });
+            }
+             else {
               message = "User doesn't exist!";
               this.snackBar.open(message, 'Dismiss', {
                 horizontalPosition: 'center',

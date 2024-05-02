@@ -248,9 +248,8 @@
   max-width: 100%;
 }
 .textarea {
-  /* margin-top: 10px; */
-  margin-left: 0%;
-  width: 86%;
+  margin-top: .3%;
+  width: 96%;
   height: 80px;
   max-width: 100%;
 }
@@ -258,4 +257,14 @@
   width: 90%;
   margin-left: 5%;
   margin-top: 10px;
+}
+.dev-map{
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 10px;
+}
+.map-title{
+  margin-top: 2%;
+  margin-left: 2%;
+  margin-bottom: 2%;
 }

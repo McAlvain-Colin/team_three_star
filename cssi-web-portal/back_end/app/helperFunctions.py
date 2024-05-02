@@ -85,6 +85,12 @@ def read_records(table, conditions=None, dev_eui=None, numEnt=100):
             sql = f"SELECT time, metadata FROM {table} WHERE dev_eui = '{dev_eui}' ORDER BY time DESC LIMIT {numEnt}"
             print(sql)
             cursor.execute(sql)
+        
+        elif conditions == 'device_location':
+            sql = f"SELECT * FROM {table} WHERE dev_eui = '{dev_eui}'"
+            print(sql)
+            cursor.execute(sql)
+
         elif conditions == 'location':
             sql = f"SELECT * FROM {table}"
             print(sql)

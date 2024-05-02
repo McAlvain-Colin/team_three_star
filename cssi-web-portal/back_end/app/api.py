@@ -514,8 +514,16 @@ def inviteUser():
 		ORGACCOUNTS.c.a_id == joinUser.id,
 		ORGACCOUNTS.c.active == False
 		)
-		if db.session.query(checkOrgAccount.exists()).scalar():
-			pass #Pass the creation function if it already exists
+		checkMembership = select(ORGACCOUNTS).where(
+		ORGACCOUNTS.c.o_id == orgId,
+		ORGACCOUNTS.c.a_id == joinUser.id,
+		ORGACCOUNTS.c.active == True
+		)
+
+		if db.session.query(checkMembership.exists()).scalar():
+			return jsonify(userExists = True)
+		elif db.session.query(checkOrgAccount.exists()).scalar():
+			pass #Pass the creation function if it already exists but is a non-active member
 		else:
 			orgacc = OrgAccount(a_id= joinUser.id, o_id= orgId)
 			orgacc.r_id = 3
@@ -1089,6 +1097,19 @@ def get_location():
 		records = read_records('device_location', 'location') #hard coded for test
 		# data = parse_data(records)
 		print('\n\nExit Get Location')
+		print('------------------------\n\n')
+		return jsonify(records), 200 #200 shows correct  http responses
+	except Exception as e:
+		print('error')
+		return jsonify({'Error': str(e)}), 500 #500 shows server error
+@app.route('/devLocation/<string:dev_id>', methods=['GET'])
+@jwt_required()
+def get_device_location(dev_id):
+	print('\n\nIn Get Device Location')
+	try:
+		records = read_records('device_location', 'device_location', dev_id) #hard coded for test
+		# data = parse_data(records)
+		print('\n\nExit Get Device Location')
 		print('------------------------\n\n')
 		return jsonify(records), 200 #200 shows correct  http responses
 	except Exception as e:

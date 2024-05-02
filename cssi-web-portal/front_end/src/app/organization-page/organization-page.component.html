@@ -79,6 +79,7 @@
               </h4>
             </div>
           </mat-list>
+          <span class="push-button-right"></span>
         </mat-card-content>
       </mat-card-content>
     </mat-card>
@@ -196,6 +197,13 @@
                 <div class="make-flexbox" *ngIf="member">
                   {{ member.name }}
                   <span class="push-button-right"></span>
+                  <button
+                  class="remove-icon"
+                  *ngIf="removeMembers && member.role != 1"
+                  (click)="confirmRemoval(4, undefined, member)"
+                >
+                  <mat-icon fontIcon="remove" color="warn"></mat-icon>
+                </button>
                   <mat-select
                     class="select-role"
                     [(value)]="member.role"
@@ -209,13 +217,6 @@
                       >Basic User</mat-option
                     ></mat-select
                   >
-                  <button
-                    class="remove-icon"
-                    *ngIf="removeMembers"
-                    (click)="confirmRemoval(4, undefined, member)"
-                  >
-                    <mat-icon fontIcon="remove" color="warn"></mat-icon>
-                  </button>
                 </div>
               </a>
             </mat-nav-list>
@@ -227,6 +228,7 @@
               [pageIndex]="0"
               (page)="handlePageEvent($event, 0)"
             ></mat-paginator>
+            <span class="push-button-right"></span>
           </mat-tab>
         </mat-tab-group>
       </mat-card-content>
