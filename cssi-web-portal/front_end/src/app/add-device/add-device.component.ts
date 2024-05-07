@@ -99,7 +99,8 @@ export class AddDeviceComponent {
         verticalPosition: 'top',
       });
     } else {
-      //Post stuff cuz we're creating things
+      //  a POST request to the addOrgAppDevice route, request body contains an object with five properties: appId, devEUI, joinEui, appKey, and devName for the backend. The .subscribe() method is used to handle the response from the server.
+      // The next callback function is executed when the server responds with a successful HTTP status code, a success message is displayed using the Angular Material snackBar component, indicating that the device has been added.The error callback function is executed when the server responds with an error HTTP status code (e.g., 400 Bad Request, 500 Internal Server Error).
       this.http
         .post(
           this.baseUrl + '/addOrgAppDevice',

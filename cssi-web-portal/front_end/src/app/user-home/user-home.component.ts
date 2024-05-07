@@ -76,6 +76,8 @@ import { TimerService } from '../login/login.component';
     TempNavBarComponent,
   ],
 })
+//The UserHomeComponent requests information from the backend with http requests to get user related information such as owned and joined orgs.
+//The received data is then assigned to the proper variables and data sources for pagination, which is outputted to the HTML.
 export class UserHomeComponent implements OnInit, AfterContentChecked {
   base_url: string = 'http://localhost:5000';
   notifications: string[] = [];
@@ -94,6 +96,7 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
 
   private breakpointObserver = inject(BreakpointObserver);
 
+  //Calls the paginator from the HTML and sets it to be static so it doesn"t constantly load and break the page.
   @ViewChild('ownedOrgPaginator', { static: true })
   ownedOrgPaginator: MatPaginator = new MatPaginator(
     new MatPaginatorIntl(),
@@ -120,6 +123,10 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
     private snackBar: MatSnackBar
   ) {} //makes an instance of the router alsoe creates aaa hhhttp object to use for Requests to backend
   ngOnInit(): void {
+
+    // GET request to the userOwnedOrgList route. The .subscribe() method is used to handle the response from the server. It takes an object with two callback functions: next and error.nside the next callback: A new instance of MatTableDataSource is created with the response.body?.list data, 
+    // which is the array of organizations returned from the server. The this.ownedOrgSource.paginator property is assigned the this.ownedOrgPaginator object. 
+    // Inside the error callback, an error message from the server (error.error.errorMessage)
     this.http
       .get<{ list: Organization[] }>(this.base_url + '/userOwnedOrgList', {
         observe: 'response',
@@ -127,21 +134,7 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
       })
       .subscribe({
         next: (response) => {
-          // const res = JSON.stringify(response);
-
-          // let resp = JSON.parse(res);
-
-          // console.log('resp is ');
-
-          // console.log(resp);
-          // console.log('body', resp.body.list);
-
-          // for(var i = 0; i  < resp.body.list.length; i++)
-          // {
-          //   console.log('index: ', resp.body.list[i].name)
-          //   this.ownedOrgs.push(resp.body.list[i].name + ' Description: ' + resp.body.list[i].description);
-
-          // }
+          
 
           this.ownedOrgSource = new MatTableDataSource(response.body?.list);
           this.ownedOrgSource.paginator = this.ownedOrgPaginator;
@@ -155,6 +148,9 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
         },
       });
 
+    // GET request to the userJoinedOrgList route. The .subscribe() method is used to handle the response from the server. It takes an object with two callback functions: next and error. 
+    // The next callback function is executed when the server responds with a successful HTTP status code. A new instance of MatTableDataSource is created with the response.body?.list data, which is the array of joined organizations returned from the server. The this.joinedOrgSource.paginator property is assigned the this.joinedOrgPaginator object.  The error callback function is executed when the server responds with an error HTTP status code. 
+    // Inside the error callback, if the error status code is not 422 (Unprocessable Entity), an error message from the server 
     this.http
       .get<{ list: Organization[] }>(this.base_url + '/userJoinedOrgList', {
         observe: 'response',
@@ -162,27 +158,9 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
       })
       .subscribe({
         next: (response) => {
-          // const res = JSON.stringify(response);
+          
 
-          // let resp = JSON.parse(res);
-
-          // console.log('resp is ');
-
-          // console.log(resp);
-          // console.log('body', resp.body.list);
-
-          // for (var i = 0; i < resp.body.list.length; i++) {
-          //   console.log('index: ', resp.body.list[i].name);
-          //   this.joinedOrgs.push(
-          //     resp.body.list[i].name +
-          //       ' Description: ' +
-          //       resp.body.list[i].description
-          //   );
-          // }
-
-          console.log(response.body?.list)
           this.joinedOrgSource = new MatTableDataSource(response.body?.list);
-          console.log(this.joinedOrgSource)
           this.joinedOrgSource.paginator = this.joinedOrgPaginator;
         },
         error: (error: HttpErrorResponse) => {
@@ -220,6 +198,7 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
   }
 
   //For removal, we use put in order to update the status of the org with a boolean.
+  //Opens the dialog component when called and pases in the correct value to remove the respective item.
   confirmRemoval(
     itemType: number,
     removeOrg?: Organization,
@@ -243,6 +222,7 @@ export class UserHomeComponent implements OnInit, AfterContentChecked {
     }
   }
 
+  //getRouteName returns a respective string that relates to the requested route.
   getRouteName(itemType: number, org?: Organization) {
     //Can add device? for when routing to devices
     if (itemType == 0) {

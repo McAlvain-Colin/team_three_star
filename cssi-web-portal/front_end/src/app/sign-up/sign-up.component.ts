@@ -93,9 +93,10 @@ export class SignUpComponent {
     '/',
   ];
 
+  //Using the badwords library this function checks if the user has inputed bad words, and will filter it out into * and sets the form to be unsubmitable
   checkBadWords(checkWord: string) {
     var filter = new Filter();
-    filter.removeWords('Dick');
+    filter.removeWords('Dick'); //Removing this word from the filter because it's a name a user can have.
 
     if (filter.isProfane(checkWord)) {
       this.hasBadWords = true;
@@ -106,10 +107,12 @@ export class SignUpComponent {
     }
   }
 
+  //When called, the string passed in will be scanned to see if there is a number, and then returns true or false.
   hasNumber(checkWord: string) {
     return /\d/.test(checkWord); //Checks through word for number and checks for metacharacter d = digit
   }
 
+  //When called, the string passed in will be scanned to see if there is atleast 1 uppercase and 1 lowercase, and then returns true or false.
   hasProperCases(checkWord: string) {
     if (checkWord === checkWord.toLowerCase()) {
       var message: string = 'There is no uppercase';
@@ -192,7 +195,9 @@ export class SignUpComponent {
       } else {
         this.passwordCode = this.hashPassword();
         this.sentPassword = this.passwordCode.toString();
-        console.log('in signin ');
+
+        // PUT request to the createUser route, with body for getting the email, password and name. The .subscribe() method is used to handle the response from the server. It takes an object with two callback functions: next and error. response body is parsed from JSON to a JavaScript object, 
+        // If resp.emailConfirmation is true, it displays a success message using the Angular Material snackBar component and navigates to the /login route, if result is false, it navigates to the /sign-up route. The error callback function is executed when the server responds with an error HTTP status code, then The error message is displayed using the snackBar component.  
         this.http
           .put(
             this.base_url + '/createUser',
@@ -220,8 +225,6 @@ export class SignUpComponent {
               }
             },
             error: (error: HttpErrorResponse) => {
-              console.error('mym errro', error.error.errorMessage);
-              // error.message.
               message = error.error.errorMessage;
               this.snackBar.open(message, 'Close', {
                 horizontalPosition: 'center',

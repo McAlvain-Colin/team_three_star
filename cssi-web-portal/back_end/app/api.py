@@ -27,14 +27,10 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, registry, rel
 from typing_extensions import Annotated
 from typing import List
 
-#for query paramters
-# from urllib.parse import unquote
 
-
-#db things###########################
 str_320 = Annotated[str, 320]
 
-
+# NOT USED: BASE class is used to declare a varchar variable with a specific length, based on the sqlalchemy documentation:https://docs.sqlalchemy.org/en/20/orm/declarative_tables.html
 class Base(DeclarativeBase):
 	registry = registry(type_annotation_map={
 		str_320: String(320)
@@ -47,45 +43,48 @@ db = SQLAlchemy(model_class=Base)
 ###############################
 mail = Mail()
 
-
+# this is for intially creating a Flask application, providing an instance of the Flask class that you can use to build and run your web application. docs:https://flask.palletsprojects.com/en/3.0.x/quickstart/#a-minimal-application
 app = Flask(__name__)
 
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:cssiwebportal2024@localhost/postgres'
+# configure the database connection URL for a Flask application that uses the SQLAlchemy library for database operations.docs: https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/
+#PASSWORD PORTION IN URI WAS ALTERED
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:DBPASSWORD@localhost/postgres' #ALTERED 
 db.init_app(app)
 
 
-
+# preparing the Flask application to use Flask-Mail to send emails through the specified SMTP server. DOCS: https://pythonhosted.org/Flask-Mail/
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'cssiportalconfirmation@gmail.com' # ALTERED FOR PRIVACY
-app.config['MAIL_PASSWORD'] = 'cljt ezlp ctmt hgmr'     # ALTERED FOR PRIVACY
+app.config['MAIL_USERNAME'] = '@gmail.com' # ALTERED FOR PRIVACY
+app.config['MAIL_PASSWORD'] = ''     # ALTERED FOR PRIVACY, FOR ENTERING PASSWORD, REFER TO https://stackoverflow.com/questions/37058567/configure-flask-mail-to-use-gmail
 
 #added this line to specify where the JWT token is when requests with cookies are recieved
-app.config['JWT_SECRET_KEY'] = 'secret' # ALTERED FOR PRIVACY
+app.config['JWT_SECRET_KEY'] = '' # ALTERED FOR PRIVACY
+# added tot specify jwt token expiration times
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes = 20)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(hours= 24)
 CORS(app, resources={r'/*': {'origins': ['http://localhost:4200', 'http://localhost:5000']}})
 
+# this is for initializating flask jwt extended instance in flask app, refer to docs for more info: https://flask-jwt-extended.readthedocs.io/en/stable/basic_usage.html
 jwt = JWTManager(app)
 
+#initilize flasK mail instance with flask app, flask mail doc found in line 55
 mail.init_app(app)
+
+# used for creating an instance of the URLSafeTimedSerializer class from the itsdangerous library in Python. This class is used to generate and verify digitally signed data with a time-based signature. docs: https://itsdangerous.palletsprojects.com/en/2.1.x/url_safe/
 s = URLSafeTimedSerializer('email-secret') 
 
 
 
-#REQUIRED#############################
+# Documentation for creating tables in flask_sqlalchemy: https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#create-the-tables
 
-
-
-
-
-
+# Python class Account that represents a database table using the SQLAlchemy Object-Relational Mapping (ORM) library with id, email, password, name, verified, and active define the columns (mapped attributes) of the "Account" table
+#note: orgAccounts defines a one-to-many relationship between the Account class and OrgAccount class. This line specifies that an Account instance can have multiple OrgAccount instances associated with it, and the back_populates parameter establishes a bidirectional relationship.
 class Account(Base):
 	__tablename__ = "Account"
 
-	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
+	id:Mapped[int] = mapped_column(primary_key= True) 
 	email:Mapped[str] = mapped_column(unique= True)
 	password:Mapped[bytes] = mapped_column(types.LargeBinary())
 	name: Mapped[str] = mapped_column()
@@ -104,10 +103,13 @@ class Account(Base):
 	def __repr__(self):
 		return f'id = {self.id}, email = {self.email}'
 
+
+# Organization that represents an organization entity in a database with the following columns: id, name, description, and active, orgAccounts defines a one-to-many relationship between the Organization class and OrgAccount class. 
+# This line specifies that an Organization instance can have multiple OrgAccount instances associated with it, and the back_populates parameter establishes a bidirectional relationship. Similarly, OrgApps defines a one-to-many relationship between the Organization class and OrgApplication class. This line specifies that an Organization instance can have multiple OrgApplication instances associated with it, and the back_populates parameter establishes a bidirectional relationship.
 class Organization(Base):
 	__tablename__ = "Organization"
 
-	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
+	id:Mapped[int] = mapped_column(primary_key= True) 
 	name: Mapped[str] = mapped_column(nullable= False, unique= True)
 	description:Mapped[str] = mapped_column(nullable= True)
 	active: Mapped[bool] = mapped_column(unique= False)
@@ -124,14 +126,18 @@ class Organization(Base):
 
 	def __repr__(self):
 		return f'organization: {self.name}'
-
-
+#################################################################
+# THE FOLLOWING INTEGER VALUES WERE USED TO IDENTIFY USER ROLES
 # 1- admin, 2- PI, 3 - basic user.
+###################################################################
 
+
+# Orgaccount represents the mapping between organizations and user accounts in a database with the following columns: id, a_id, o_id, r_id, org represents a one-to-many relationship between the OrgAccount class and the Organization class. Each OrgAccount instance is associated with one Organization instance, and an Organization instance can have multiple OrgAccount instances associated with it. The back_populates parameter establishes a bidirectional relationship. 
+# account represents a one-to-many relationship between the OrgAccount class and the Account class. Each OrgAccount instance is associated with one Account instance, and an Account instance can have multiple OrgAccount instances associated with it. The back_populates parameter establishes a bidirectional relationship.
 class OrgAccount(Base):
 	__tablename__ = 'OrgAccount'
 
-	id:Mapped[int] = mapped_column(primary_key= True) #implicitly Serail datatype in Postgres db
+	id:Mapped[int] = mapped_column(primary_key= True) 
 
 	a_id: Mapped[int] = mapped_column(ForeignKey('Account.id'))
 	account: Mapped['Account'] = relationship(back_populates='orgAccounts')
@@ -144,7 +150,8 @@ class OrgAccount(Base):
 	active: Mapped[bool] = mapped_column()
 
 
-
+# Application represents an application entity in a database with columns id, name, description, orgs and appSensors. Orgs efines a one-to-many relationship between the Application class and another class called OrgApplication. This line specifies that an Application instance can have multiple OrgApplication instances associated with it, and the back_populates parameter establishes a bidirectional relationship. 
+# Also, appSensors defines a one-to-many relationship between the Application class and another class called AppSensors. This line specifies that an Application instance can have multiple AppSensors instances associated with it, and the back_populates parameter establishes a bidirectional relationship.
 class Application(Base):
 	__tablename__ = 'Application'
 
@@ -159,6 +166,8 @@ class Application(Base):
 	def __repr__(self):
 		f'app: {self.id}, {self.name}'
 
+# OrgApplication represents a mapping between organizations and applications in a database with columns id, app_id, o_id, and active columns. app represents a many-to-one relationship between the OrgApplication class and the Application class. Each OrgApplication instance is associated with one Application instance, and an Application instance can have multiple OrgApplication instances associated with it. The back_populates parameter establishes a bidirectional relationship.
+# Also, org represents a many-to-one relationship between the OrgApplication class and the Organization class. Each OrgApplication instance is associated with one Organization instance, and an Organization instance can have multiple OrgApplication instances associated with it. The back_populates parameter establishes a bidirectional relationship.
 class OrgApplication(Base):
 	__tablename__ = 'OrgApplication'
 
@@ -181,10 +190,10 @@ class OrgApplication(Base):
 		return f'orgApp: {self.id} {self.app_id} {self.o_id}'
 
 
-
+# Appsensors represents a mapping between applications and sensors/devices in a database with columns app_id, dev_name, dev_eui. app represents a many-to-one relationship between the AppSensors class and the Application class. Each AppSensors instance is associated with one Application instance, and an Application instance can have multiple AppSensors instances associated with it. 
+# The back_populates parameter establishes a bidirectional relationship. There is a constraint that the nickname/human readable name given to a device has to be unique regardless of app the device-eui is in. 
 class AppSensors(Base):
 	__tablename__ = 'AppSensors'
-	# __table_args__  = (ForeignKeyConstraint(['dev_eui'], ['lab_sensor_json.dev_eui']),)
 
 	app_id: Mapped[int] = mapped_column(ForeignKey('Application.id'))
 	app: Mapped['Application'] = relationship(back_populates= 'appSensors')
@@ -192,9 +201,9 @@ class AppSensors(Base):
 	# dev_eui needs to have the table name as stored in postgreSQL
 	dev_name: Mapped[str] = mapped_column(String, nullable= False, unique= True)
 	dev_eui: Mapped[str] = mapped_column(Text, primary_key= True)
-#     devices: Mapped['Device'] = relationship(back_populates= 'appDevices')
 
-
+# Using the JWT FLASK EXTENDED extension with sqlalchemy, TokenBlockList represents a table for storing information about revoked or blocked JSON Web Tokens (JWTs) in the flask app. The table has columns: id, jti(unique identifier for a JWT), type (type of the JWT e.g., "access_token", "refresh_token"), user_id for the user who has access to the token, created_at is a datetime column named created_at that cannot be null and is set to the current time by default using the now() server function, 
+# valid indicates whether the JWT is still valid or has been revoked/blocked. 
 class TokenBlockList(Base):
 	__tablename__ = 'TokenBlockList'
 	id: Mapped[int] = mapped_column(primary_key=True)
@@ -205,9 +214,12 @@ class TokenBlockList(Base):
 	valid: Mapped[bool] = mapped_column(nullable= False)
 
 
-
+# SQLAlchemy model class called Device that maps to an existing database table: lab_sensor_json. with app.app_context(): creates an application context for the Flask application. This is necessary in order to work with Flask extensions like SQLAlchemy within the current script.
+# db.reflect() is a method provided by SQLAlchemy that reflects the existing database tables and their structure into Python objects. This allows you to create models based on the existing database schema instead of creating the schema from Python models. DOCS: https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/models/#reflecting-tables
+# class Device(Base): defines a new SQLAlchemy model class called Device that inherits from the Base class, which is likely a base class provided by SQLAlchemy for defining database models.
+# __tablename__ = db.metadata.tables['lab_sensor_json'] specifies the name of the database table that this class represents. Instead of using a string literal, it retrieves the table object for the lab_sensor_json table from the database metadata. This allows the code to map the Device class to an existing table in the database.DOCS:https://docs.sqlalchemy.org/en/20/core/metadata.html
 with app.app_context():
-# for creating db
+# for creating db with present db tables
 	db.reflect()
 
 # this table represent the lab sensor json provided by Zach
@@ -218,17 +230,10 @@ class Device(Base):
 
 
 
-			
-# NEED TO REMOVE THE INDEX ROUTE, 
-
-##############################
-
-@app.route('/')
-def index():
-	return "return backend home message"
 
 
-
+# check_if_token_revoked is a callback for the Flask-JWT-Extended extension. This function is responsible for checking if a given JSON Web Token (JWT) has been revoked or blocked. iT retrieves the JWT ID (jti) from the JWT payload and returns the first result of the query, which is expected to be a boolean value indicating whether the token is valid or not.  
+# BASED ON JWT FLASK EXTENDED EXAMPLE: https://flask-jwt-extended.readthedocs.io/en/stable/blocklist_and_token_revoking.html#databas
 @jwt.token_in_blocklist_loader
 def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
 	jti = jwt_payload['jti']
@@ -237,6 +242,8 @@ def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
 	return not token_valid
 
 
+# refresh route is responsible for creating a new access token for a user in a JSON Web Token (JWT) based authentication system using the Flask-JWT-Extended extension. it accepts HTTP POST requests, uses a a decorator that requires a valid refresh token to access this route, uses the user identity (typically the user ID) from the refresh token's payload using the get_jwt_identity() function provided by Flask-JWT-Extended,  creates a new access token for the user using the create_access_token() function from Flask-JWT-Extended, 
+# passing the user identity as an argument, creates a new row in the TokenBlockList table with the JWT ID (jti), token type (ttype), user ID (identity), creation time (now), and a valid flag set to True, commits this to the TokenBlockList table and returns a JSON response containing the new access token with an HTTP status code of 200 (OK).
 @app.route('/refresh', methods = ['POST'])
 @jwt_required(refresh = True)
 def refresh():
@@ -256,8 +263,10 @@ def refresh():
 	return jsonify({'token': token}), 200
 
 
-
-#using flask JWT extended based on the example provided in docs using JWT tokens.
+# handles user login and generates access and refresh tokens using the Flask-JWT-Extended extension. The route /login that accepts HTTP POST requests, retrieves the JSON data from the request body, gets the email and password from the request data, then queries the Account table to find a user with the provided email and a verified account status. The scalar() method returns the first result of the query, if no user was found with the provided email. 
+# If so, it returns a JSON response with {'login': False} and an HTTP status code of 401 (Unauthorized). The route checks if the provided password matches the user's hashed password stored in the database using the bcrypt library.If the password is correct, it proceeds to generate and store access and refresh tokens, as well as add new rows to the TokenBlockList table with the JWT ID, token type, user ID, creation time, and a valid flag set to True for both the access and refresh tokens, 
+# and creates a JSON response containing a 'login' status, the access token ('token'), and the refresh token ('refreshToken') returning the JSON response with an HTTP status code of 200 (OK). If the password is incorrect, it returns a JSON response with {'login': False} and an HTTP status code of 401 (Unauthorized).
+#This route is using flask JWT extended based on the example provided in docs using JWT tokens. DOCS: https://flask-jwt-extended.readthedocs.io/en/stable/basic_usage.html
 @app.route('/login', methods = ['POST'])
 def login_user():
 
@@ -297,7 +306,9 @@ def login_user():
 
 		return jsonify({'login': False}), 401
 
-#used to test authorized routes, only authenticated users can get this info
+
+
+#used to test authorized routes, only authenticated users can get this info, USED FRO TESTING IF ROUTE RETURN IS SUCCESSFUL
 @app.route('/protected', methods = ['GET'])  
 @jwt_required()
 def protected():
@@ -310,6 +321,9 @@ def protected():
 	return jsonify(j), 200
 
 
+# create_user route handles the creation of a new user account. It also sends an email confirmation link to the user's email address using the Flask-Mail extension. This route accepts HTTP PUT requests. The route retrieves the JSON data from the request body gets the email, password, and name from the request data. Also queries the Account table to check if a user with the provided email already exists and has a verified account status. 
+# Then checks if a user with the provided email already exists. If so, it returns a JSON response with 'The email is already registered' and conflicted HTTP code. If no user with the provided email exists, it proceeds to send an email confirmation link, then creates a signed token containing the user's email, password, and name using the URLSafeTimedSerializer (s) from the itsdangerous library. as well as creates a new email message object using the Flask-Mail extension, with the subject "Confirm Email", 
+# the sender email address user specifies, then  generates a URL for the confirm_email route, passing the generated emailtoken as a parameter. The _external=True parameter ensures that the generated URL includes the hostname and protocol returns a JSON response with {'emailConfirmation': True}, indicating that the email confirmation link has been sent successfully.
 @app.route('/createUser', methods = ['PUT'])  
 def create_user():
 
@@ -330,7 +344,7 @@ def create_user():
 			
 
 
-			msg = Message('Confirm Email', sender='cssiportalconfirmation@gmail.com', recipients= [email])
+			msg = Message('Confirm Email', sender='ENTER-YOUR-EMAIL@gmail.com', recipients= [email])
 
 			link = url_for('confirm_email', token = emailtoken, _external = True)
 
@@ -343,7 +357,8 @@ def create_user():
 			return jsonify({'errorMessage': "couldn't create a account" }), 409 
 
 
-
+# confirm_email route decorates a function to handle requests to the specified route, which includes a placeholder token, this token value is passed in the URL. Using the token as an argument. The code attempts to decode and verify the token using a loads function from the s object. It also specifies a salt value for the decoding process and sets a maximum age for the token. 
+# If successful, creates a new Account object with the extracted information, sets some flags for the account, adds it to the database session, and commits the changes to the database. if it catches the exception and redirects the user to a login page with a specified message appended to the URL back to login with a false value.
 @app.route('/confirm_email/<token>')  
 def confirm_email(token):
 
@@ -366,6 +381,7 @@ def confirm_email(token):
 	except SignatureExpired or exc.SQLAlchemyError:
 		return redirect("http://localhost:4200/login/false", code=302)
 
+# This function accepts an email and sends out the request to reset the password to the provided email>
 @app.route('/resetRequest', methods = ['PUT'])  
 def resetRequest():
 	data = request.get_json()
@@ -384,6 +400,7 @@ def resetRequest():
 
 	return jsonify(emailSent = True)
 
+# The reset_email function will hash the email and then send off the code into the reroute based on if the email was clicked on time.
 @app.route('/reset_email/<token>')  
 def reset_email(token):
 
@@ -395,7 +412,8 @@ def reset_email(token):
 		return redirect("http://localhost:4200/reset-password/" + resetToken, code=302)
 	except SignatureExpired:
 		return redirect("http://localhost:4200/login/false" , code=302)
-	
+
+# If this function is called, the password of the user with the specified email will be reset based on the newly provided password.
 @app.route('/resetPassword', methods = ['PUT'])
 def resetPassword():
 	try:
@@ -417,6 +435,9 @@ def resetPassword():
 		return redirect("http://localhost:4200/login/false", code=302)
 
 
+
+# logout route will handle DELETE requests. The function with a decorator from the Flask-JWT-Extended extension, indicating that JWT (JSON Web Token) authentication is required for this route, but the type of verification is not strict (verify_type=False). 
+# The route retrieves the identity (user ID or another unique identifier) from the JWT token in the request header, then it queries the database to retrieve all tokens associated with the user identified by 'identity' where the tokens are valid in the TokenBlocklist table, then marking the tokens as invalid in the db, then returning ok HTTP code.
 @app.route('/logout', methods = ['DELETE'])  
 @jwt_required(verify_type= False)
 def logout_user():
@@ -434,7 +455,8 @@ def logout_user():
 
 	return response, 200
 
-
+# createOrg route will handle POST requests, it requiring JWT authentication to access this route from the JWT flask extended extension. The route retrieves JSON data from the request body. If such an organization exists, it updates the organization and organization account tables to mark them as active and associates the organization with the user, 
+# then returns a JSON response with message indicating organization was created (orgCreated = True). If the org is not in db, the code proceeds to create a new organization (newOrg) and a corresponding organization account (orgAcc) linking the user with the organization in the database, returning error if not successful.
 @app.route('/createOrg', methods = ['POST'])  
 @jwt_required()
 def createOrganization():
@@ -487,6 +509,7 @@ def createOrganization():
 		
 		return jsonify(orgCreated = False)
 
+#inviteUser hashes the users information and makes the relation in the database if and only if the user exists< and has no relation to the organization. 
 @app.route('/inviteUser',  methods = ['PUT'])
 def inviteUser():
 	data = request.get_json()
@@ -535,6 +558,7 @@ def inviteUser():
 		mail.send(msg)
 		return jsonify(inviteSent = True)
 
+# The invite email will set the user"s account status if they exist to be a member of the organization through a relation.
 @app.route('/invite_email/<token>')  
 def invite_email(token):
 
@@ -558,7 +582,8 @@ def invite_email(token):
 	except SignatureExpired:
 		return redirect("http://localhost:4200/login/false", code=302)
 
-
+# The deleteOrg function will get a user"s id and then check their relation to the Organization altering their view of it if they aren"t admins.
+# If the user is an admin< then the organization itself is set to inactive which won"t show up in anyone'S list at all.
 @app.route('/deleteOrg', methods = ['PUT'])
 @jwt_required()
 def deleteOrg():
@@ -599,6 +624,8 @@ def deleteOrg():
 			return jsonify(orgDeleteSuccess = False)
 
 
+# userOrg route will handle GET requests, requiring JWT authentication to access this route. retrieves the 'org' parameter from the URL query string, which contains the ID of the organization the user wants to get info from. Then attempts to convert the retrieved 'orgId' to an integer (int(orgId)) and queries the database to fetch the organization details (name and description) based on the provided ID, 
+# a JSON response (res) containing the organization's name and description is returned with an HTTP status code 200 (OK). If  error occurs during the database query or if the 'orgId' cannot be converted to an integer (ValueError), it returns a JSON response with an error message and an HTTP status code 404 (Not Found).
 @app.route('/userOrg', methods = ['GET']) 
 @jwt_required() 
 def getOrg():
@@ -619,7 +646,10 @@ def getOrg():
 		return jsonify({'error': "couldn't get your org with name specified"}), 404
 
 
-		
+
+
+# orgMembers route will handle GET requests requiring JWT authentication to access this route. the route retrieves the 'org' parameter from the URL query string, which is expected to contain the ID of the organization,  
+# then attempts to convert the retrieved 'orgId' to an integer, then query selects specific columns  from the 'Account' table, joining it with the 'OrgAccount' table based on matching organization ID. The query also applies filters to only select active organization members, then formatted into a JSON response, returning ok HTTP code if sucessful, otherwise 404. 		
 @app.route('/OrgMembers', methods = ['GET']) 
 @jwt_required() 
 def getOrgMembers():
@@ -649,6 +679,7 @@ def getOrgMembers():
 	except exc.SQLAlchemyError or ValueError:
 		return jsonify({'error': "couldn't get your org members"}), 404
 
+# DeleteMember will remove the member from the organization by setting their active status to false.
 @app.route('/deleteMember', methods = ['PUT'])
 @jwt_required()
 def deleteMember():
@@ -666,6 +697,7 @@ def deleteMember():
 	db.session.commit()
 	return jsonify(memberDeleteSuccess = True)
 
+# ChangeMemberRole will alter the given member's role based on the provided role number in the OrgAccount table.
 @app.route('/changeMemberRole', methods = ['PUT'])
 @jwt_required()
 def changeMemberRole():
@@ -684,6 +716,10 @@ def changeMemberRole():
 	db.session.commit()
 	return jsonify(roleChangeSuccess = True)
 
+
+# userOwnedOrgList will handle GET requests, requiring JWT authentication to access this route, The route will retrieves the user ID (identity) from the JWT token in the request header. Then the route will query to fetch organizations owned by the user. 
+# It joins the 'Organization' table with the 'OrgAccount' table based on matching user id, where the user has a specific role ID-1 admin. etched organization data is formatted into a JSON response, returning HTTP status code 200 (OK), If any SQLAlchemy error occurs during the database query, 
+# it returns a JSON response with an error message and an HTTP status code 404
 @app.route('/userOwnedOrgList', methods = ['GET']) 
 @jwt_required() 
 def getOwnedOrgList():
@@ -712,7 +748,8 @@ def getOwnedOrgList():
 		return jsonify({'errorMessage': "Couldn't get your owned organizations"}), 404
 	
 	
-
+# userJoinedOrgList will handle GET requests requiring JWT authentication to access this route. The route will retrieve the user ID (identity) from the JWT token in the request header. Then the route will  query to fetch organizations that the user has joined. It joins the 'Organization' table with the 'OrgAccount' table based on matching user ID the query filters the results to include organizations where the user has role IDs 2 or 3 or user who have less permissions in the app. 
+# The fetched organization data is formatted into a JSON response with an organization with its ID, name, description, the number of active applications associated with it, returning  HTTP status code 200 (OK) if successful, otherwise if any SQLAlchemy error occurs during the database query, it returns a JSON response with an error message and an HTTP status code 404
 @app.route('/userJoinedOrgList', methods = ['GET']) 
 @jwt_required() 
 def getJoinedOrgList():
@@ -734,7 +771,6 @@ def getJoinedOrgList():
 			]
 		}
 		print(res)
-		#res = json.dumps(res)
 		return jsonify(res), 200
 	
 	except exc.SQLAlchemyError:
@@ -742,6 +778,8 @@ def getJoinedOrgList():
 		return jsonify({'errorMessage': "Couldn't get your Joined Organizations"}), 404
 
 
+# getOrgInfo will handle GET requests, requiring JWT authentication to access this route. The route.will retrieve the user ID (identity) from the JWT token in the request header. The route retrieves the 'org' parameter from the URL query string, which is expected to contain the ID of the organization. queries to fetch information about the organization and the user's role in that organization. 
+# It joins the 'Organization' table with the 'OrgAccount' table based on matching user and org ids, then fetched organization and user information is formatted into a JSON response with ok HTTP response code. If any SQLAlchemy error occurs during the database query, the function catches the exception and returns a JSON response with an error message and an HTTP status code 404.
 @app.route('/getOrgInfo', methods = ['GET'])
 @jwt_required()
 def getOrgInfo():
@@ -770,6 +808,8 @@ def getOrgInfo():
 		return jsonify({'errorMessage': "Couldn't get your Org info"}), 404
 
 
+# createOrgApp will handle POST requests, requiring JWT authentication to access this route. the route will retrieves JSON data from the request body, if an application with the same name already exists in the database, which is checked with a query, mark the application as active and links it with the organization, returning a JSON response for successful application creation. 
+# If the application does not already exist or is already active, the code proceeds to create a new application, inking it with the specified organization, return sucess with a ok HTTP code. If any SQLAlchemy error or failing  in casting http query parameter into integer during this process, it returns a JSON response with an error message, with 404 HTTP code error.
 @app.route('/createOrgApp', methods = ['POST'])  
 @jwt_required()
 def createOrgApplication():
@@ -825,6 +865,7 @@ def createOrgApplication():
 
 		return jsonify({'errorMessage': "Couldn't add your application"}), 404
 
+# The deleteOrgApp will set the active status of an application with its organization to false which removes it from the organization's view
 @app.route('/deleteOrgApp', methods = ['PUT'])
 @jwt_required()
 def deleteOrgApp():
@@ -844,7 +885,8 @@ def deleteOrgApp():
 
 
 
-
+# userOrgApp will handle GET requests, requiring JWT authentication to access this route. The route retrieves the 'app' parameter from the URL query string, which is expected to contain the ID of the organization application, attempts to convert the retrieved 'app_id' to an integer,
+#  The fetched organization application information is formatted into a JSON response is returned with an HTTP status code 200 (OK). If any SQLAlchemy error occurs during the database query or if the 'app_id' cannot be converted to an integer (ValueError), it returns a JSON response with an error message and an HTTP status code 404
 @app.route('/userOrgApp', methods = ['GET']) 
 @jwt_required() 
 def getOrgApp():
@@ -853,8 +895,6 @@ def getOrgApp():
 
 
 	try:
-
-
 
 		app_id = int(app_id)
 
@@ -872,7 +912,8 @@ def getOrgApp():
 	
 
 
-
+# userOrgAppList will  handle GET requests requiring JWT authentication to access this route. The route will retrieves the user ID (identity) from the JWT token in the request header, retrieves the 'org' parameter from the URL query string, which is expected to contain the ID of the organization, attempts to convert the retrieved 'oid' to an integer, query to fetch information about the organization applications associated with the specified org ID, 
+# The query  fetched organization application information is formatted into a JSON response, returned with ok HTTP code if successful, If any SQLAlchemy error occurs during the database query or if the 'oid' cannot be converted to an integer (ValueError), it returns a JSON response with an error message and an HTTP status code 404
 @app.route('/userOrgAppList', methods = ['GET']) 
 @jwt_required() 
 def getOrgAppList():
@@ -906,7 +947,8 @@ def getOrgAppList():
 		return jsonify({'errorMessage': "Couldn't get your organization applications"}), 404
 	
 	
-
+# addOrgAppDevice route will handle POST requests, requiring JWT authentication to access this route. The route retrieves JSON data from the request body, which is expected to contain information about the device to be added, 
+# including the application ID, device_eui, and the device nickname/human readable name provided by user.  if a device with the device EUI doesn't exist or same device name, then then a error message is returned with a conflicted HTTP code. If past queries are not successful, then the create a sensor object, link it with the specified application, and commit it to the database, returning ok HTTP code. If any SQLAlchemy error occurs during the database transaction, it returns a JSON response with an error message and an HTTP status code 404 (Not Found).
 @app.route('/addOrgAppDevice', methods = ['POST']) 
 @jwt_required() 
 def addAppDevice():
@@ -939,7 +981,8 @@ def addAppDevice():
 	except exc.SQLAlchemyError:
 
 		return jsonify({'errorMessage': "Couldn't add your device"}), 404
- 
+
+# This function deletes the device's relationship to the application, effectively removing the relationship between these two things, and that device will now be bale to be added to another application.
 @app.route('/removeOrgAppDevice', methods = ['PUT']) 
 @jwt_required() 
 def removeAppDevice():
@@ -960,6 +1003,8 @@ def removeAppDevice():
 	except exc.SQLAlchemyError:
 		return jsonify({'errorMessage': "Couldn't find your device"}), 404
 
+# userOrgAppDevice route will handle GET requests, requiring JWT authentication to access this route. The route will retrieve the 'app' and 'devName' parameters from the URL query string, convert the retrieved 'appId' to an integer, the fetched device EUI information is formatted into a JSON response with ok HTTP code,
+#  If any SQLAlchemy error occurs during the database query or if the 'appId' cannot be converted to an integer (ValueError), it returns a JSON response with an error message and an HTTP status code 404 
 @app.route('/userOrgAppDevice', methods = ['GET']) 
 @jwt_required() 
 def getOrgAppDevice():
@@ -986,7 +1031,8 @@ def getOrgAppDevice():
 
 
 
-
+# userOrgAppDeviceList route will handle GET requests, requiring JWT authentication to access this route.retrieves the user ID (identity) from the JWT token in the request header, retrieves the 'app' parameter from the URL query string, which is expected to contain the app ID, 
+# then  attempts to convert the retrieved 'appId' to an integer. Then the fetched device information is formatted into a JSON response with ok HTTP code. If any SQLAlchemy error occurs during the database query or if the 'appId' cannot be converted to an integer (ValueError), it returns a JSON response with an error message and an HTTP status code 404 
 @app.route('/userOrgAppDeviceList', methods = ['GET']) 
 @jwt_required() 
 def getOrgAppDeviceList():

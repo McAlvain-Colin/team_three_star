@@ -1,3 +1,5 @@
+//This file defines all the interfaces we've used for our relations on the frontend when retrieved form the backend.
+
 export interface Organization {
   o_id: number;
   name: string;

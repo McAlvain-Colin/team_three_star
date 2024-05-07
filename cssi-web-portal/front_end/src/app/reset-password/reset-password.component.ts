@@ -98,10 +98,12 @@ export class ResetPasswordComponent {
     }
   }
 
+  //When called, the string passed in will be scanned to see if there is a number, and then returns true or false.
   hasNumber(checkWord: string) {
     return /\d/.test(checkWord); //Checks through word for number and checks for metacharacter d = digit
   }
 
+  //When called, the string passed in will be scanned to see if there is atleast 1 uppercase and 1 lowercase, and then returns true or false.
   hasProperCases(checkWord: string) {
     if (checkWord === checkWord.toLowerCase()) {
       alert('There is no uppercase');

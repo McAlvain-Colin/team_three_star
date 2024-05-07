@@ -8,4 +8,4 @@ declare module 'bad-words' {
   export = Filter;
 }
 
-//Made the module so that we can adapt the javascript library bad-words to typescript.
+//Made the module so that we can adapt the javascript library bad-words to typescript, it essentially defines the functionality of the library in typescript so it could be exported to other files.

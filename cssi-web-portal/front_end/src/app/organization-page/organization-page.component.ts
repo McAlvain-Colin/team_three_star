@@ -114,15 +114,15 @@ export class OrganizationPageComponent implements OnInit {
   ngOnInit(): void {
     this.orgId = this.route.snapshot.paramMap.get('org'); //From the current route, get the route name, which should be the identifier for what you need to render.
     console.log(this.orgId);
-    // if (this.orgName == null) {
-    //   this.orgName = 'Cat Chairs';
-    // }
-    // this.setupLists();
 
     // this is to specify the orgId in the get request using query Parameters
-
+    //  an instance of HttpParams, This sets the org query parameter to the value of this.orgId, which is decoded using decodeURI and converted to a string using String.
     const param = new HttpParams().set('org', decodeURI(String(this.orgId)));
 
+    // GET request to theuserOrgAppList route. The .subscribe() method is used to handle the response from the server. It takes an object with two callback functions: next and error. The next callback function is executed when the server responds with a successful HTTP status code. on next, the for loop will For each application in the list, the following actions are performed:
+    // The application name is added to the this.applications array using this.applications.push(resp.body.list[i].name).
+    // An object containing the application ID, name, and description is pushed to the this.appList array using this.appList.push({ id: resp.body.list[i].app_id, name: resp.body.list[i].name, description: resp.body.list[i].description }).
+    // The this.appsSource.paginator property is assigned the this.appsPaginator object, which is a reference to a pagination component for a table or list.
     this.http
       .get<{ list: Organization }>(this.base_url + '/userOrgAppList', {
         observe: 'response',
@@ -135,10 +135,8 @@ export class OrganizationPageComponent implements OnInit {
 
           let resp = JSON.parse(res);
 
-          console.log('resp is ');
 
-          console.log(resp);
-          console.log('body', resp.body.list);
+          
 
           for (var i = 0; i < resp.body.list.length; i++) {
             this.applications.push(resp.body.list[i].name);
@@ -160,6 +158,9 @@ export class OrganizationPageComponent implements OnInit {
         },
       });
 
+    // a GET request to the getOrgInfo route, The .subscribe() method is used to handle the response from the server. It takes an object with two callback functions: next and error. The next callback function is executed when the server responds with a successful HTTP status code. The this.orgName property is assigned the value of resp.body.list[0].name, 
+    // The this.orgDescription property is assigned the value of resp.body.list[0].description, The this.userRole property is assigned the value of resp.body.list[0].r_id. If the this.userRole is equal to 1, for admin, The this.isAdmin property is set to true.
+    // The this.memberSource.data property is assigned the this.memberList array,The this.memberSource.paginator property is assigned the this.membersPaginator object. The error callback function is executed when the server responds with an error HTTP status code and Inside the error callback, an error message from the server. 
     this.http
       .get<{ list: Organization }>(this.base_url + '/getOrgInfo', {
         observe: 'response',
@@ -172,10 +173,7 @@ export class OrganizationPageComponent implements OnInit {
 
           let resp = JSON.parse(res);
 
-          console.log('resp is ');
-
-          console.log(resp);
-          console.log('body', resp.body.list);
+          
 
           this.orgName = resp.body.list[0].name;
           this.orgDescription = resp.body.list[0].description;
@@ -197,6 +195,9 @@ export class OrganizationPageComponent implements OnInit {
       });
 
     // this for getting org members
+    //  GET request to the OrgMembers route. The .subscribe() method is used to handle the response from the server. It takes an object with two callback functions: next and error.
+    // The next callback function is executed when the server responds with a successful HTTP status code. A for loop iterates over the resp.body.list array and for each member in the list, an object containing the member's ID, name, role, and email is pushed to the this.memberList array. 
+    // The this.memberSource.paginator property is assigned the this.membersPaginator object which is a reference to a pagination component
     this.http
       .get(this.base_url + '/OrgMembers', {
         observe: 'response',
@@ -209,10 +210,7 @@ export class OrganizationPageComponent implements OnInit {
 
           let resp = JSON.parse(res);
 
-          console.log('resp is ');
-
-          console.log(resp);
-          console.log('body', resp.body.list);
+          
 
           for (var i = 0; i < resp.body.list.length; i++) {
             this.memberList.push({
@@ -247,10 +245,12 @@ export class OrganizationPageComponent implements OnInit {
       shareReplay()
     );
 
+  //This function handles the event where the paginator is clicked< which could be used to paginate data from the backend, but we didn"t implement it that way.
   handlePageEvent(pageEvent: PageEvent, pageType: number) {
     //Make get request here that sends in pageEvent.pageIndex
   }
 
+  //confirmRemoval will check if the type of removal requested and pass the proper information toto the dialog component for removal
   confirmRemoval(itemType: number, removeApp?: App, removeMember?: Member) {
     if (itemType == 3) {
       const removalDialogRef = this.dialog.open(RemovalDialogComponent, {
@@ -269,11 +269,12 @@ export class OrganizationPageComponent implements OnInit {
           itemId: removeMember?.id,
           memberRole: removeMember?.role,
           itemType: itemType,
-        }, //Can pass in more data if needed, and also can do || to indicate that another variable can replace this, in case you want to remove fav devices from users.
+        },
       });
     }
   }
 
+  //Similar to confirmRemoval, role change passes in the member information in order to change the role of the member requested
   confirmRoleChange(changeMember: Member, roleEvent: MatSelectChange) {
     const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
@@ -285,11 +286,13 @@ export class OrganizationPageComponent implements OnInit {
     });
   }
 
+  //When called getRouteName will return a string to the next route for Angular's RouterLink
   getRouteName(app: App) {
     let routeName: string = '/application/' + app.id + '/' + this.orgId;
     return routeName;
   }
 
+  //An old function used to set up placeholder values for testing display of list items in an array.
   setupLists() {
     for (let i = 1; i <= 10; i++) {
       this.applications.push('Application ' + i);
@@ -297,6 +300,7 @@ export class OrganizationPageComponent implements OnInit {
     }
   }
   
+  //Calling this function logs out the user while they"re connected to their account.
   logout() {
     this.timerService.logout();
   }

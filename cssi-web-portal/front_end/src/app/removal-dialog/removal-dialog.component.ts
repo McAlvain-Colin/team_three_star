@@ -31,6 +31,7 @@ export class RemovalDialogComponent {
 
   message: string = 'Removed ' + this.data.itemName;
 
+  //The deleteItem function reads the itemType variable and calls the correct backend function to remove the right item requested< while also passing in the required information.
   deleteItem() {
     //Trigger delete here with Post message to backend to change the value, we can check which parameters was passed in that's not undefined so that we can post the right information
     if (this.data.itemType == 0) {
@@ -148,6 +149,7 @@ export class RemovalDialogComponent {
     }
   }
 
+  //When called reloadComponent will cause the component to refresh its contents.
   reloadComponent() {
     const url = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {

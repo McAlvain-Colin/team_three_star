@@ -1,4 +1,3 @@
-///* artifact and will be replaced*/
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -21,6 +20,8 @@ import { ToolBarComponent } from '../tool-bar/tool-bar.component';
     MatGridListModule,
   ],
 })
+
+/*This component just holds the values that display the information on the about page, and are just arrays that refer to the assets.*/
 export class AboutComponent {
   team_images = [
     { url: '../../assets/Colin.jpg', alt: 'Colin McAlvain' },

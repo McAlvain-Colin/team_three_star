@@ -7,10 +7,6 @@ import { RouterModule } from '@angular/router';
 
 //Basic generation of the typescript by angular, and the imports were made by Huy to properly import the correct materials for the page.
 
-//Basic generation of the typescript by angular, and the imports were made by Huy to properly import the correct materials for the page.
-
-//Basic generation of the typescript by angular, and the imports were made by Huy to properly import the correct materials for the page.
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

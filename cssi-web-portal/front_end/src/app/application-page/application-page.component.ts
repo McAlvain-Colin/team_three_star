@@ -126,11 +126,13 @@ export class ApplicationPageComponent {
       this.appName = 'Cat Patting';
     }
 
+    // The HttpParams object is used to construct the query parameters for the GET request. The first parameter app is set to the value of this.appId if it is not null, otherwise, it is set to -1. same for org parameter.
     const param = new HttpParams()
       .set('app', this.appId != null ? this.appId : '-1')
       .append('org', this.orgId != null ? this.orgId : '-1');
 
-    // this request is for getting application name, id, and description
+    //  GET request to the userOrgApp route, The observe option is set to 'response', which means the full HTTP response object will be returned, including headers and status code.The observe option is set to 'response', which means the full HTTP response object will be returned, including headers and status code.
+    // The.subscribe() method is used to handle the response from the server. It takes an object with two callback functions: next and error.this.appDescription property is assigned the value of resp.body.description,  error callback function is executed when the server responds with an error HTTP status code 
     this.http
       .get(this.base_url + '/userOrgApp', {
         observe: 'response',
@@ -143,7 +145,6 @@ export class ApplicationPageComponent {
 
           let resp = JSON.parse(res);
 
-          console.log('resp is in app page', resp);
 
           this.appName = resp.body.name;
           this.appDescription = resp.body.description;
@@ -157,6 +158,8 @@ export class ApplicationPageComponent {
         },
       });
 
+    // a GET request to the getOrgInfo route. The .subscribe() method is used to handle the response from the server. It takes an object with two callback functions: next and error. The next callback function is executed when the server responds with a successful HTTP status code (e.g., 200 OK). It receives the server's response as an argument. 
+    // The error callback function is executed when the server responds with an error HTTP status code (e.g., 400 Bad Request, 500 Internal Server Error).this.userRole property is assigned the value of resp.body.list[0]. The 'r_id', which is likely the user's role ID within the organization. 
     this.http
       .get<{ list: Organization }>(this.base_url + '/getOrgInfo', {
         observe: 'response',
@@ -180,7 +183,9 @@ export class ApplicationPageComponent {
         },
       });
 
-    // this is for getting the organizations's applications associated with it
+    // GET request to the userOrgAppDeviceList route. The .subscribe() method is used to handle the response from the server. It takes an object with two callback functions: next and error. For each device in the list, 
+    // the following actions are performed: An object containing the device name and device EUI (unique identifier) is pushed to the this.deviceList array using this.deviceList.push({ name: resp.body.list[i].name, devEUI: resp.body.list[i].dev }).The this.deviceSource.data property is assigned the this.deviceList array, which likely populates a data source for a table or list component, and The device name is added to the this.devices array using this.devices.push(resp.body.list[i].name).
+    // Inside the error callback, an error message from the server (error.error.errorMessage) is displayed using the Angular Material snackBar component, used when error HTTP status code is recieved
 
     this.http
       .get(this.base_url + '/userOrgAppDeviceList', {
@@ -195,7 +200,6 @@ export class ApplicationPageComponent {
           let resp = JSON.parse(res);
 
           for (var i = 0; i < resp.body.list.length; i++) {
-            console.log('index: ', resp.body.list[i].name);
             this.devices.push(resp.body.list[i].name);
             this.deviceList.push({
               name: resp.body.list[i].name,
@@ -449,9 +453,9 @@ export class ApplicationPageComponent {
   // Flyto method will use the flyto method from the leaflet JS library to indicate that if sensors or gateways are being displayed, then the map will center the map based on the location attributes from the device sent in as a parameter, this implementation was based off the Leaflet documetntation
   // here :https://leafletjs.com/reference.html#map-flyto
   flyTo(row: DeviceLocation) {
-    if (this.showSensors === true) {
-      this.myMap.flyTo(Leaflet.latLng(row.latitude, row.longitude), 11);
-    }
+    // if (this.showSensors === true) {
+    this.myMap.flyTo(Leaflet.latLng(row.latitude, row.longitude), 11);
+    // }
     if (this.showGateways === true) {
       this.myMap.flyTo(Leaflet.latLng(row.latitude, row.longitude), 11);
     }

@@ -3,6 +3,7 @@
   opacity: 0.9;
 }
 
+/* Colors all the text white so that it can look less like an underlined link*/
 .color-white {
   text-decoration: none;
   color: white;

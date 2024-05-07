@@ -52,6 +52,7 @@ export class AddOrganizationComponent {
   nameBadWords: boolean = false;
   descriptBadWords: boolean = false;
 
+  //backend api port
   baseUrl: string = 'http://localhost:5000';
 
   checkBadWords(checkWord: string, itemType: number) {
@@ -100,6 +101,8 @@ export class AddOrganizationComponent {
         verticalPosition: 'top',
       });
     } else {
+      // a POST request to createOrg route, request body contains an object with two properties: orgName and orgDescript for the backend server, The .subscribe() method is used to handle the response from the server. 
+      // It takes an object with two callback functions: next and error. The next callback function is executed when the server responds with a successful HTTP status code. If message is successful , a success message is displayed using the Angular Material snackBar component.The error callback function is executed when the server responds with an error HTTP status code 
       this.http
         .post(
           this.baseUrl + '/createOrg',

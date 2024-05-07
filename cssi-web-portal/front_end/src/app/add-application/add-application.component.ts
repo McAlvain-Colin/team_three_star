@@ -109,6 +109,8 @@ export class AddApplicationComponent {
         verticalPosition: 'top',
       });
     } else {
+      // This is a POST request to createOrgApp route. The POST body contains an object with three properties: orgId, appName, and appDescript. The .subscribe() method is used to handle the response from the server.
+      //  The next callback function is executed when the server responds with a successful HTTP status code (e.g., 200 OK). If the server message is ok, a message is displayed using the Angular Material snackBar component.
       this.http
         .post(
           this.baseUrl + '/createOrgApp',

@@ -59,6 +59,7 @@ export class InviteUserComponent {
 
     // this is to specify the orgId in the get request using query Parameters
 
+    /*This function will call the backend to get the information about the organization to display in the html.*/
     const param = new HttpParams().set('org', decodeURI(String(this.orgID)));
     this.http
       .get<{ list: Organization }>(this.base_url + '/getOrgInfo', {
@@ -85,6 +86,7 @@ export class InviteUserComponent {
       });
   }
 
+  /*Sumbitform is a function that will run only if the button has been clicked checking if the email is valid before sending it to the backend to process the invite.*/
   submitForm() {
     var message: string = `Invite sent to ${this.email}`;
     if (
