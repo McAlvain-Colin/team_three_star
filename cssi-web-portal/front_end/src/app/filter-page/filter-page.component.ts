@@ -40,6 +40,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { keyframes } from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatIconModule} from '@angular/material/icon';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { MatNativeDateModule } from '@angular/material/core';
@@ -59,6 +61,8 @@ export interface SensorData {
   dev_time: any;
   payload_dict: any;
   metadata_dict: any;
+  payloadDescription: any;
+  metadataDescription: any;
 }
 export interface PayloadRecord {
   [key: string]: number | string;
@@ -93,6 +97,13 @@ export class ApplicationPageComponent {
 @Component({
   selector: 'app-filter-page',
   templateUrl: './filter-page.component.html',
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
   styleUrls: ['./filter-page.component.css'],
   standalone: true,
   imports: [
